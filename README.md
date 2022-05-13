@@ -4,6 +4,7 @@
 <p>Rename <b>.env.example</b> file to <b>.env</b> file and configure your database settings.</p>
 <p>Generate new app_key by <code>php artisan key:generate</code> command.</p>
 <p>Create database tables and seed data inside it by <code>php artisan migrate:fresh --seed</code> command.</p>
+<p>You can use <a href="https://github.com/barryvdh/laravel-ide-helper">IDE Helper</a> library if you want. It is uncluded in the library <code>composer.json</code> file.</p>
 <p>You can use sample database and image contents that provided in the <b>extras</b> directory. This way you can have a clearer idea about the project.</p>
 <p>Start your local development server by <code>php artisan serve</code> command. You will need a local server program for this.(Xampp, Wampp etc.)</p>
 </p>
