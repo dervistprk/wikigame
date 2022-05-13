@@ -1,0 +1,13 @@
+body {
+    font-family: "Helvetica Neue", sans-serif;
+    background-color: ghostwhite;
+}
+
+.card {
+    background-color: #f8f9fa;
+}
+
+input[type=file] {
+    width: 250px;
+    display: block;
+}

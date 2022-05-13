@@ -1,0 +1,269 @@
+/*
+body
+ */
+[data-theme="dark"] {
+  background-color: #111 !important;
+  color: #eee;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: #333 !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: #000 !important;
+}
+
+[data-theme="dark"] .bg-black {
+  background-color: #eee !important;
+}
+
+/*
+card
+ */
+[data-theme="dark"] .card {
+    background-color: #222 !important;
+    color: #eee; !important;
+}
+
+[data-theme="dark"] .card:hover {
+    background-color: #333333 !important;
+    color: #eeeeee !important;
+}
+
+[data-theme="dark"] .card:active {
+    background-color: #4444 !important;
+    color: #eeeeee !important;
+}
+
+[data-theme="dark"] .card-header {
+    background-color: #333 !important;
+    color: #eee; !important;
+}
+
+/*
+navbar
+ */
+[data-theme="dark"] .dropdown-item {
+    background-color: #222222 !important;
+    color: #eee; !important;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: #333333 !important;
+    color: #eee; !important;
+}
+
+[data-theme="dark"] .dropdown-item:active {
+    background-color: #666666 !important;
+    color: #eee; !important;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: #222222 !important;
+    color: #eee; !important;
+}
+
+[data-theme="dark"] .navbar-dark {
+    background: rgb(52, 58, 64); !important;
+}
+
+/*
+links
+ */
+[data-theme="dark"] .game-detail-links {
+    color: #ffc107 !important;
+}
+
+[data-theme="dark"] .game-detail-links:hover {
+    color: yellow !important;
+}
+
+/*
+headers
+ */
+[data-theme="dark"] .game-info {
+    background-color: #222 !important;
+    color: #eee; !important;
+}
+
+[data-theme="dark"] .table {
+    background-color: #222 !important;
+    color: #eee; !important;
+}
+
+[data-theme="dark"] .game-subtitle {
+    color: orange; !important;
+}
+
+[data-theme="dark"] .sysreq-header {
+    color: yellow; !important;
+}
+
+[data-theme="dark"] .game-header {
+    color: yellow; !important;
+}
+
+[data-theme="dark"] .category-header {
+    color: yellow; !important;
+}
+
+[data-theme="dark"] .dev-header {
+    color: yellow; !important;
+}
+
+[data-theme="dark"] .hover-underline-animation {
+    display: inline-block; !important;
+    position: relative; !important;
+    color: yellow; !important;
+}
+
+[data-theme="dark"] .hover-underline-animation:after {
+    content: ''; !important;
+    position: absolute; !important;
+    width: 100%; !important;
+    transform: scaleX(0); !important;
+    height: 2px; !important;
+    bottom: 0; !important;
+    left: 0; !important;
+    background-color: orange; !important;
+    transform-origin: bottom right; !important;
+    transition: transform 0.25s ease-out; !important;
+}
+
+[data-theme="dark"] .hover-underline-animation:hover:after {
+    transform: scaleX(1); !important;
+    transform-origin: bottom left; !important;
+}
+
+[data-theme="dark"] .pub-header {
+    color: yellow; !important;
+}
+
+[data-theme="dark"] .latest-header {
+    color: yellow; !important;
+}
+
+[data-theme="dark"] .popular-header {
+    color: yellow; !important;
+}
+
+/*
+footer
+ */
+[data-theme="dark"] .footer {
+    background: rgb(52, 58, 64); !important;
+}
+
+/*
+selection
+ */
+[data-theme="dark"] ::-moz-selection {
+    color: ghostwhite; !important;
+    background: #6610f2; !important;
+}
+
+[data-theme="dark"] ::selection {
+    color: ghostwhite; !important;
+    background: #6610f2; !important;
+}
+
+/*
+dark-mode selection
+ */
+[data-theme="dark"] .fa-moon {
+    color: darkorange; !important;
+}
+
+[data-theme="dark"] .fa-sun {
+    color: ghostwhite; !important;
+}
+
+/*
+popular articles list
+ */
+[data-theme="dark"] .list-group {
+    background: #222222; !important;
+    color: ghostwhite; !important;
+}
+
+[data-theme="dark"] .list-group-item {
+    background: #222222; !important;
+    color: ghostwhite; !important;
+    transition: 0.3s;
+}
+
+[data-theme="dark"] .list-group-item:hover {
+    background: #333333; !important;
+}
+
+/*
+pagination
+ */
+[data-theme="dark"] .page-item.active .page-link {
+    z-index: 3;
+    color: #222222 !important  ;
+    background-color: #ffff00 !important;
+    border-color: #ffff00 !important;
+    border-radius: 50%;
+    padding: 6px 12px;
+}
+
+[data-theme="dark"] .page-link {
+    z-index: 3;
+    color: ghostwhite !important;
+    background-color: #333333;
+    border-color: #333333;
+    border-radius: 50%;
+    padding: 6px 12px !important;
+}
+
+[data-theme="dark"] .page-item:first-child .page-link {
+    border-radius: 30% !important;
+}
+
+[data-theme="dark"] .page-item:last-child .page-link {
+    border-radius: 30% !important;
+}
+
+[data-theme="dark"] .pagination li {
+    padding: 3px;
+}
+
+[data-theme="dark"] .page-link:hover {
+    background-color: #444444;
+}
+
+[data-theme="dark"] .disabled .page-link {
+    color: #222222 !important;
+    opacity: 0.5 !important;
+}
+
+/*
+ tooltip
+ */
+[data-theme="dark"] .tooltip-inner {
+    background: #ffff00;
+    color: #222222;
+    font-family: "Helvetica Neue", sans-serif;
+}
+
+[data-theme="dark"] .tooltip.bs-tooltip-right .tooltip-arrow::before {
+    border-right-color: #ffff00 !important;
+}
+
+[data-theme="dark"] .tooltip.bs-tooltip-left .tooltip-arrow::before {
+    border-left-color: #ffff00 !important;
+}
+
+[data-theme="dark"] .tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: #ffff00 !important;
+}
+
+[data-theme="dark"] .tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #ffff00 !important;
+}
+
+[data-theme="dark"] .tooltip.show {
+    opacity: 1;
+}
