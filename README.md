@@ -5,7 +5,7 @@
 <p>Generate new app_key by <code>php artisan key:generate</code> command.</p>
 <p>Create database tables and seed data inside it by <code>php artisan migrate:fresh --seed</code> command.<br>(Just type <code>php artisan migrate</code> command if you want to use the database and image files provided in the <code>extras</code> folder.)</p>
 <p>You can use <a href="https://github.com/barryvdh/laravel-ide-helper" target="_blank">IDE Helper</a> library if you want. It is uncluded in the library <code>composer.json</code> file.</p>
-<p>You can use sample database and image contents that provided in the <code>extras</code> directory. This way you can have a clearer idea about the project.</p>
+<p>You can use sample database and image contents that provided in the <code>extras</code> directory. Simply copy the <code>uploads</code> directory to <code>public</code> directory and setup your database tables with <code>laravel_wikigame.sql</code> file. This way you can have a clearer idea about the project.</p>
 <p>Start your local development server by <code>php artisan serve</code> command. You will need a local server program for this.(Xampp, Wampp etc.)</p>
 </p>
     Go to <code>http://localhost:8000/admin/giris</code> and type <code>admin@email.com</code> for email and <code>123456Aa</code> for the password.(You can change these in admin panel)<br>
