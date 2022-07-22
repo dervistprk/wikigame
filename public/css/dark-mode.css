@@ -49,6 +49,10 @@ navbar
     color: #eee; !important;
 }
 
+[data-theme="dark"] #navbar a:hover {
+    color: darkorange; !important;
+}
+
 [data-theme="dark"] .dropdown-item:hover {
     background-color: #333333 !important;
     color: #eee; !important;

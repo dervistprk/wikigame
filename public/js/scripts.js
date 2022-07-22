@@ -35,11 +35,12 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
+//categories drop-down when hover
 $(document).ready(function () {
     $('.navbar .dropdown').hover(function () {
         $(this).find('.dropdown-menu').first().stop(true, true).slideDown(150);
     }, function () {
-        $(this).find('.dropdown-menu').first().stop(true, true).slideUp(105)
+        $(this).find('.dropdown-menu').first().stop(true, true).slideUp(150)
     });
 });
 

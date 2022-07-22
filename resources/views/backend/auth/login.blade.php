@@ -35,12 +35,16 @@
                                         <input class="form-control" id="password" type="password" name="password" placeholder="Şifre"/>
                                         <label for="password">Şifre</label>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                        <button type="submit" class="btn btn-primary" href="">Giriş</button>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary col-sm-4">Giriş</button>
+                                        <div class="col-sm-4 d-inline-block">
+                                            <input type="checkbox" class="" name="remember_token" id="remember"/>
+                                            <label for="remember">Beni Hatırla</label>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
-                            <div class="card-footer text-center py-3">
+                            <div class="card-footer text-center py-3 text-secondary">WikiGame Yönetim Paneli Girişi
                             </div>
                         </div>
                     </div>

@@ -46,12 +46,24 @@ header navbar
 }
 
 .navbar-dark {
-    background-color: #21D4FD;
     background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
 }
 
 #navbar a:hover {
-    color: #20c997;
+    color: #1a202c;
+}
+
+#navbar .dropdown-item:hover {
+    color: #1a202c;
+}
+
+#navbar .dropdown .dropdown-menu, #navbar .dropdown .dropdown-menu .dropdown-item {
+    background: #21D4FD;
+
+}
+
+#navbar .dropdown .dropdown-menu .dropdown-item:hover {
+    background: #0a58ca;
 }
 
 #navbar a:active {
@@ -250,5 +262,12 @@ Pagination
 */
 .tooltip-inner {
     font-family: "Helvetica Neue", sans-serif;
+}
+
+/*
+ category drop-down clicking disabled
+ */
+.categories-drop-down {
+    pointer-events: none;
 }
 

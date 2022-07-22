@@ -77,14 +77,14 @@
                 </div>
             </div>
             <div class="sb-sidenav-footer">
-                WikiGame
+                WikiGame Admin Paneli
             </div>
         </nav>
     </div>
     <div id="layoutSidenav_content">
         @yield('content')
-        <footer class="py-4 bg-dark mt-auto">
-            <div class="container-fluid px-4">
+        <footer class="py-3 bg-dark mt-auto">
+            <div class="container-fluid px-3">
                 <div class="d-flex align-items-center justify-content-between small">
                     <div class="text-muted">Tüm Hakları Saklıdır &copy; WikiGame {{ \Illuminate\Support\Carbon::now()->format('Y') }}</div>
                 </div>

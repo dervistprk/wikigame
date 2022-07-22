@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ route('home') }}">@if(($settings->logo))
-                <img src="{{ $settings->logo }}" alt="Site Logo" width="40" height="40" title="Wikigame">@endif WikiGame</a>
+        <a class="navbar-brand" href="{{ route('home') }}">
+            @if(($settings->logo))
+                <img src="{{ $settings->logo }}" alt="Site Logo" width="40" height="40" title="Wikigame">
+            @endif WikiGame</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,7 +11,7 @@
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" action="{{ route('search') }}" method="post">
                 @csrf
                 <div class="input-group">
-                    <input class="form-control search-input" type="text" autocomplete="off" placeholder="Ara..." aria-label="Ara..." aria-describedby="btnNavbarSearch" name="search"/>
+                    <input class="form-control search-input" type="text" autocomplete="off" placeholder="Oyun Adını Yazın.." aria-label="Ara..." aria-describedby="btnNavbarSearch" name="search"/>
                     <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i id="search-icon" class="fas fa-search"></i></button>
                 </div>
             </form>
@@ -27,7 +29,7 @@
                     <a class="nav-link @if(Request::segment(1) == 'dagiticilar') active @endif" href="{{ route('publishers') }}"><i class="fas fa-newspaper"></i> Dağıtıcılar</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-bookmark"></i> Kategoriler</a>
+                    <a class="nav-link dropdown-toggle categories-drop-down" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-bookmark"></i> Kategoriler</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         @foreach($categories as $category)
                             <li>
@@ -70,7 +72,6 @@
                 return $.get(route, {
                     query: query
                 }, function (data) {
-                    console.log(data);
                     return process(data);
                 });
             },
