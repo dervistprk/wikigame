@@ -32,12 +32,12 @@ Route::get('bakimdayiz', function(){
 /**
  * Backend Routes
  */
-Route::prefix('admin')->name('admin.')->middleware('isLogin')->group(function(){
+Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isLogin'])->group(function(){
     Route::get('giris', [AuthController::class, 'login'])->name('login');
     Route::post('giris', [AuthController::class, 'loginPost'])->name('login.post');
 });
 
-Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function(){
+Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->group(function(){
     Route::get('yonetim', [AdminController::class, 'dashboard'])->name('dashboard');
 
     Route::get('profil', [AdminController::class, 'admin'])->name('profile');
