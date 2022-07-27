@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
         view()->share('categories', Categories::where('status', '=', 1)->orderBy('name', 'asc')->get());
         view()->share('settings', Settings::find(1));
@@ -88,16 +88,6 @@ class HomeController extends Controller
 
     public function autoComplete(Request $request)
     {
-        /*$query      = $request->get('query');
-        $games      = \DB::table('games')->select('id', 'name', 'slug')->where('name', 'LIKE', '%' . $query . '%')->orderBy('name')->get();
-        $developers = \DB::table('developers')->select('id', 'name', 'slug')->where('name', 'LIKE', '%' . $query . '%')->get();
-        $publishers = \DB::table('publishers')->select('id', 'name', 'slug')->where('name', 'LIKE', '%' . $query . '%')->get();
-        return json_encode([
-                               'games'      => $games,
-                               'developers' => $developers,
-                               'publishers' => $publishers
-                           ]);*/
-
         $query   = $request->get('query');
         $results = \DB::table('games')->select('id', 'name', 'slug')->where('name', 'LIKE', '%' . $query . '%')->orderBy('name')->get();
         return response()->json($results);
