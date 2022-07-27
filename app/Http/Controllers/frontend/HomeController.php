@@ -15,12 +15,6 @@ class HomeController extends Controller
 {
     public function __construct(Request $request)
     {
-        /*if (Settings::find(1)->site_status == 0) {
-            return redirect()->to('bakimdayiz')->send();
-        } elseif (Settings::find(1)->site_status != 0 && $request->segment(1) == 'bakimdayiz') {
-            return redirect()->to('home')->send();
-        }*/
-
         view()->share('categories', Categories::where('status', '=', 1)->orderBy('name', 'asc')->get());
         view()->share('settings', Settings::find(1));
     }
