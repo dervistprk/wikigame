@@ -33,7 +33,9 @@ class AdminController extends Controller
         $publishers_count = Publishers::where('status', '=', 1)->count();
         $articles_count   = Articles::where('status', '=', 1)->count();
 
-        return view('backend.dashboard', compact('games', 'categories', 'developers', 'publishers', 'games_count', 'articles', 'categories_count', 'developers_count', 'publishers_count', 'articles_count'));
+        $site_status = Settings::find(1)->site_status;
+
+        return view('backend.dashboard', compact('games', 'categories', 'developers', 'publishers', 'games_count', 'articles', 'categories_count', 'developers_count', 'publishers_count', 'articles_count', 'site_status'));
     }
 
     public function admin()
@@ -46,11 +48,12 @@ class AdminController extends Controller
     {
         $request->validate([
                                'email'    => 'email|required',
-                               'password' => ['required',
-                                              'min:6',
-                                              'regex:/[a-z]/',
-                                              'regex:/[A-Z]/',
-                                              'regex:/[0-9]/',
+                               'password' => [
+                                   'required',
+                                   'min:6',
+                                   'regex:/[a-z]/',
+                                   'regex:/[A-Z]/',
+                                   'regex:/[0-9]/',
                                ],
                            ]);
         $admin           = Admins::first();

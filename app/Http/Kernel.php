@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'isAdmin'          => \App\Http\Middleware\isAdmin::class,
         'isLogin'          => \App\Http\Middleware\isLogin::class,
         'white_list'       => \App\Http\Middleware\WhiteListMiddleware::class,
+        'maintenance'      => \App\Http\Middleware\Maintenance::class,
+        'prevent_access'   => \App\Http\Middleware\PreventAccessToMaintenancePage::class,
     ];
 }

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Maintenance Route
  */
-Route::get('bakimdayiz', function(){
+Route::middleware('prevent_access')->get('bakimdayiz', function(){
     return view('frontend.errors.maintenance');
 });
 
@@ -87,17 +87,20 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
 /**
  * Frontend Routes
  */
-Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::get('tum-oyunlar', [GamesController::class, 'list'])->name('all-games');
-Route::get('rastgele-oyun', [HomeController::class, 'randomGame'])->name('random-game');
-Route::get('oyun/{id}', [GamesController::class, 'gameDetails'])->name('game');
-Route::get('gelistiriciler', [GamesController::class, 'developers'])->name('developers');
-Route::get('gelistirici/{id}', [GamesController::class, 'developer'])->name('developer');
-Route::get('dagiticilar', [GamesController::class, 'publishers'])->name('publishers');
-Route::get('dagitici/{id}', [GamesController::class, 'publisher'])->name('publisher');
-Route::get('hakkinda', [HomeController::class, 'about'])->name('about');
-Route::get('kategori/{id}', [HomeController::class, 'category'])->name('category');
-Route::get('makaleler', [ArticlesController::class, 'articles'])->name('articles');
-Route::get('makale/{id}', [ArticlesController::class, 'article'])->name('article');
-Route::post('arama', [HomeController::class, 'search'])->name('search');
-Route::get('oto-arama', [HomeController::class, 'autoComplete'])->name('autocompleteSearch');
+
+Route::middleware('maintenance')->group(function(){
+    Route::get('/', [HomeController::class, 'home'])->name('home');
+    Route::get('tum-oyunlar', [GamesController::class, 'list'])->name('all-games');
+    Route::get('rastgele-oyun', [HomeController::class, 'randomGame'])->name('random-game');
+    Route::get('oyun/{id}', [GamesController::class, 'gameDetails'])->name('game');
+    Route::get('gelistiriciler', [GamesController::class, 'developers'])->name('developers');
+    Route::get('gelistirici/{id}', [GamesController::class, 'developer'])->name('developer');
+    Route::get('dagiticilar', [GamesController::class, 'publishers'])->name('publishers');
+    Route::get('dagitici/{id}', [GamesController::class, 'publisher'])->name('publisher');
+    Route::get('hakkinda', [HomeController::class, 'about'])->name('about');
+    Route::get('kategori/{id}', [HomeController::class, 'category'])->name('category');
+    Route::get('makaleler', [ArticlesController::class, 'articles'])->name('articles');
+    Route::get('makale/{id}', [ArticlesController::class, 'article'])->name('article');
+    Route::post('arama', [HomeController::class, 'search'])->name('search');
+    Route::get('oto-arama', [HomeController::class, 'autoComplete'])->name('autocompleteSearch');
+});

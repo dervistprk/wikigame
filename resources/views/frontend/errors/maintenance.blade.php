@@ -1,5 +1,5 @@
 <!doctype html>
-<title>Site Maintenance</title>
+<title>Bakımdayız - WikiGame</title>
 <style>
     body {
         text-align: center;
@@ -22,22 +22,12 @@
         width: 650px;
         margin: 0 auto;
     }
-
-    a {
-        color: #dc8100;
-        text-decoration: none;
-    }
-
-    a:hover {
-        color: darkgoldenrod;
-        text-decoration: none;
-    }
 </style>
 
 <article>
     <h1>Kısa zaman sonra döneceğiz.</h1>
     <div>
-        <p>Sitemizde kısa süreli bir bakım çalışması gerçekleşmektedir. Verdiğimiz rahatsızlık için özür dileriz. En kısa zaman da görüşmek üzere!</p>
+        <p>Sitemizde kısa süreli bir bakım çalışması gerçekleşmektedir. Verdiğimiz rahatsızlık için özür dileriz. En kısa zamanda görüşmek üzere!</p>
         <p>&mdash; WikiGame</p>
     </div>
 </article>

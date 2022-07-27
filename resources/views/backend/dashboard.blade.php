@@ -8,6 +8,11 @@
                     {{ session()->get('message') }}
                 </div>
             @endif
+            @if($site_status == 0)
+                    <div class="alert alert-danger m-2 text-center">
+                        <i class="fa fa-exclamation-triangle"></i> Site Bakım Modunda
+                    </div>
+            @endif
             <h1 class="mt-4 d-inline-block">Panel</h1>
             <a href="{{route('home')}}" class="btn btn-sm btn-primary float-end mt-3" title="Anasayfa" target="_blank"><i class="fas fa-home" style="margin-top: 3px;"></i> Siteye Git</a>
             <div class="card mb-4">
