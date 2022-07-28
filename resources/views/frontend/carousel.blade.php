@@ -105,20 +105,6 @@
     </div>
 </div>
 
-@section('custom-js')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#prev').on('click', function () {
-                $('#carouselBasicExample').carousel('prev');
-            });
-            $('#next').on('click', function () {
-                $('#carouselBasicExample').carousel('next');
-            });
-            $('#carouselBasicExample').carousel('pause');
-        });
-    </script>
-@endsection
-
 @section('custom-css')
     <style>
         #carouselBasicExample {
