@@ -10,6 +10,7 @@ use App\Http\Controllers\frontend\ArticlesController;
 use App\Http\Controllers\frontend\GamesController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\backend\AuthController;
+use App\Http\Controllers\frontend\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +38,7 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isLogin'])->g
     Route::post('giris', [AuthController::class, 'loginPost'])->name('login.post');
 });
 
-Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->group(function(){
+Route::prefix('admin')->name('admin.')->middleware(['white_list'])->group(function(){
     Route::get('yonetim', [AdminController::class, 'dashboard'])->name('dashboard');
 
     Route::get('profil', [AdminController::class, 'admin'])->name('profile');
@@ -103,4 +104,17 @@ Route::middleware('maintenance')->group(function(){
     Route::get('makale/{id}', [ArticlesController::class, 'article'])->name('article');
     Route::post('arama', [HomeController::class, 'search'])->name('search');
     Route::get('oto-arama', [HomeController::class, 'autoComplete'])->name('autocompleteSearch');
+    Route::get('uye-ol', [UserController::class, 'registerForm'])->name('register-form');
+    Route::post('uye-ol', [UserController::class, 'registerPost'])->name('register-post');
+    Route::get('giris', [UserController::class, 'loginForm'])->name('login-form');
+    Route::post('giris', [UserController::class, 'loginPost'])->name('login-post');
+
+    Route::middleware('is_verify_email')->group(function() {
+        Route::get('profil', [UserController::class, 'userProfile'])->name('user-profile');
+        Route::any('profil-guncelle', [UserController::class, 'updateProfile'])->name('update-profile');
+        Route::get('cikis', [UserController::class, 'logout'])->name('user-logout');
+    });
+
+    Route::get('profil/dogrula/{token}', [UserController::class, 'verifyAccount'])->name('user-verify');
+
 });

@@ -9,6 +9,7 @@ use App\Models\Developers;
 use App\Models\Games;
 use App\Models\Publishers;
 use App\Models\Settings;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Admins;
 
@@ -40,7 +41,7 @@ class AdminController extends Controller
 
     public function admin()
     {
-        $admin = Admins::first();
+        $admin = User::where('is_admin', 1)->first();
         return view('backend.auth.admin', compact('admin'));
     }
 
@@ -58,7 +59,7 @@ class AdminController extends Controller
                            ]);
         $admin           = Admins::first();
         $admin->email    = $request->email;
-        $admin->password = bcrypt($request->password);
+        $admin->password = \Hash::make($request->password);;
         $admin->save();
         return redirect()->route('admin.dashboard')->with('message', 'Yönetici Bilgileri Başarı ile Güncellendi.');
     }

@@ -202,7 +202,8 @@ return [
         'video3'           => 'Video3',
         'video4'           => 'Video4',
         'video5'           => 'Video5',
-        'password'         => 'Şifre'
+        'password'         => 'Şifre',
+        'about'            => 'Hakkımda'
     ],
 
 ];

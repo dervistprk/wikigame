@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'white_list'       => \App\Http\Middleware\WhiteListMiddleware::class,
         'maintenance'      => \App\Http\Middleware\Maintenance::class,
         'prevent_access'   => \App\Http\Middleware\PreventAccessToMaintenancePage::class,
+        'is_verify_email'  => \App\Http\Middleware\IsVerifyEmail::class,
     ];
 }

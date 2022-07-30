@@ -50,6 +50,21 @@
                 <li class="nav-item">
                     <a class="nav-link @if(Request::segment(1) == 'hakkinda') active @endif" href="{{ route('about') }}"><i class="fas fa-book"></i> Hakkında</a>
                 </li>
+                @if(\Auth::guest())
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('register-form') }}"><i class="fas fa-user"></i> Üye Ol</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('login-form') }}"><i class="fas fa-door-open"></i> Giriş Yap</a>
+                </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('user-profile') }}"><i class="fas fa-user-circle"></i> Profilim</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('user-logout') }}"><i class="fas fa-door-closed"></i> Çıkış Yap</a>
+                    </li>
+                @endif
             </ul>
         </div>
         <div class="custom-control custom-switch">

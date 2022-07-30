@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admins;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class AdminSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        Admins::factory()->count(1)->create();
+        User::factory()->count(1)->create();
     }
 }
