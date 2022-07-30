@@ -19,12 +19,17 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="email" class="text-info font-weight-bold">E-Posta (*)</label>
-                        <input type="text" name="email" id="email" class="form-control" value="{{$admin->email}}" required>
+                        <input type="text" name="email" id="email" class="form-control" value="{{$admin->email}}" readonly style="cursor: not-allowed">
                     </div>
                     <div class="form-group">
-                        <label for="password" class="text-info font-weight-bold">Şifre (*)</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
-                        <span class="small text-secondary"> Şifreniz :
+                        <label for="current_password" class="text-info font-weight-bold">Mevcut Şifre (*)</label>
+                        <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Mevcut Şifrenizi Girin" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="password" class="text-info font-weight-bold">Yeni Şifre (*)</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Şifre Girin" autocomplete="new-password" required/>
+                            <span class="small text-secondary"> Şifreniz :
                             <ul>
                                 <li>En az bir büyük karakter barındırmaldıır.</li>
                                 <li>En az bir küçük karakter barındırmaldıır.</li>
@@ -32,6 +37,11 @@
                                 <li>En az altı karakter uzunluğunda olmalıdır.</li>
                             </ul>
                         </span>
+                        </div>
+                        <div class="col">
+                            <label for="password_confirmation" class="text-info font-weight-bold">Yeni Şifre Tekrarı (*)</label>
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" autocomplete="new-password" placeholder="Şifre Tekrarını Girin" required/>
+                        </div>
                     </div>
                 </div>
             </div>

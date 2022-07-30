@@ -9,9 +9,8 @@ use App\Models\Developers;
 use App\Models\Games;
 use App\Models\Publishers;
 use App\Models\Settings;
-use App\Models\User;
+use Hash;
 use Illuminate\Http\Request;
-use App\Models\Admins;
 
 class AdminController extends Controller
 {
@@ -41,25 +40,32 @@ class AdminController extends Controller
 
     public function admin()
     {
-        $admin = User::where('is_admin', 1)->first();
+        $admin = \Auth::user();
         return view('backend.auth.admin', compact('admin'));
     }
 
     public function adminPost(Request $request)
     {
         $request->validate([
-                               'email'    => 'email|required',
-                               'password' => [
-                                   'required',
-                                   'min:6',
-                                   'regex:/[a-z]/',
-                                   'regex:/[A-Z]/',
-                                   'regex:/[0-9]/',
-                               ],
-                           ]);
-        $admin           = Admins::first();
+           'email'            => 'email|required',
+           'current_password' => 'required',
+           'password'         => [
+               'required',
+               'confirmed',
+               'min:6',
+               'regex:/[a-z]/',
+               'regex:/[A-Z]/',
+               'regex:/[0-9]/',
+           ],
+        ]);
+        $admin           = \Auth::user();
+
+        if (!Hash::check($request->current_password, $admin->password)) {
+            return redirect()->route('admin.profile')->withErrors('Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.');
+        }
+
         $admin->email    = $request->email;
-        $admin->password = \Hash::make($request->password);
+        $admin->password = Hash::make($request->password);
         $admin->save();
         return redirect()->route('admin.dashboard')->with('message', 'Yönetici Bilgileri Başarı ile Güncellendi.');
     }

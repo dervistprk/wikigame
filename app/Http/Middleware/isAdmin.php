@@ -23,7 +23,7 @@ class isAdmin
                 return $next($request);
             } else {
                 Auth::logout();
-                return redirect()->route('admin.login')->with('message', 'Lütfen yönetici yetkilerine sahip bir hesap ile giriş yapınız.');
+                return redirect()->route('admin.login')->with('message', 'Girmiş olduğunuz hesap yönetici yetkilerine sahip değildir.');
             }
         }
         return redirect()->route('admin.login')->with('message', 'Lütfen yönetici yetkilerine sahip bir hesap ile giriş yapınız.');

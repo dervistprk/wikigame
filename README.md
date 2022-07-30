@@ -9,8 +9,9 @@
 <p>Start your local development server by <code>php artisan serve</code> command. You will need a local server program for this.(Xampp, Wampp etc.)</p>
 <p>If you are not running the app on your local, then add your IP address to <code>whitelist</code> table. <code>127.0.0.1</code> should be already added by seeding.</p>
 </p>
-    Go to <code>http://localhost:8000/admin/giris</code> and type <code>admin@email.com</code> for email and <code>123456Aa</code> for the password.(You can change these in admin panel)<br>
-    Afterwards you will be automatically redirected to admin panel dashboard.
+    Go to <code>http://localhost:8000/admin/giris</code> and type <code>dervistprk@email.com</code> for email and <code>123456Aa</code> for the password.(You must add your ip address to reach admin panel.)<br>
+    Afterwards you will be automatically redirected to admin panel dashboard.<br>
+    You can also use the account you are logged in to for the administrator at the frontend of the project.
 </p>
 <p>
     To see the frontend of the website simply go to <code>http://localhost:8000/</code><br>

@@ -20,11 +20,11 @@
             <div class="m-4">
                 <div class="form-group">
                     <label for="email">E-Posta</label>
-                    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{ $user->email }}" readonly disabled style="cursor: not-allowed"/>
+                    <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{ $user->email }}" readonly style="cursor: not-allowed"/>
                 </div>
                 <div class="form-group">
                     <label for="user_name">Kullanıcı Adı</label>
-                    <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Kullanıcı Adı Girin" value="{{ $user->user_name }}" readonly disabled style="cursor: not-allowed"/>
+                    <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Kullanıcı Adı Girin" value="{{ $user->user_name }}" readonly style="cursor: not-allowed"/>
                 </div>
                 <hr>
                 <h5 class="dev-header">Kişisel Bilgiler</h5>
