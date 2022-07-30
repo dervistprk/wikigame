@@ -18,9 +18,14 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->isAdmin()) {
-            return $next($request);
+        if (Auth::check()) {
+            if (Auth::user()->isAdmin()) {
+                return $next($request);
+            } else {
+                Auth::logout();
+                return redirect()->route('admin.login')->with('message', 'Lütfen yönetici yetkilerine sahip bir hesap ile giriş yapınız.');
+            }
         }
-        return redirect()->route('admin.login');
+        return redirect()->route('admin.login')->with('message', 'Lütfen yönetici yetkilerine sahip bir hesap ile giriş yapınız.');
     }
 }

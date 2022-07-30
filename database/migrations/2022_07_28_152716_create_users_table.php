@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('users', function(Blueprint $table){
             $table->id();
             $table->string('email')->unique();
             $table->string('user_name')->unique();
@@ -31,10 +31,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * admins tablosunu sil ve users tablosu ile birleştir. users tablosuna is_admin kolonu ekleyip admin durumunu belirle.
-     */
 
     /**
      * Reverse the migrations.

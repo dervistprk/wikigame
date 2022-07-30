@@ -203,7 +203,9 @@ return [
         'video4'           => 'Video4',
         'video5'           => 'Video5',
         'password'         => 'Şifre',
-        'about'            => 'Hakkımda'
+        'about'            => 'Hakkımda',
+        'user_name'        => 'Kullanıcı Adı',
+        'email'            => 'E-Posta'
     ],
 
 ];

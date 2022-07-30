@@ -16,11 +16,17 @@
                 <div class="form-group">
                     <label for="email">E-Posta</label>
                     <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" aria-describedby="emailHelp" value="{{ old('email') }}" required/>
-                    <small id="emailHelp" class="form-text text-muted">E-Posta adresinizi başka kaynaklarla asla paylaşmayız.</small>
+                    <small id="emailHelp" class="form-text text-muted">
+                        <ul>
+                            <li>E-Posta adresinizi başka kaynaklarla asla paylaşmayız.</li>
+                            <li>Lütfen geçerli bir e-posta adresi giriniz.</li>
+                        </ul>
+                    </small>
                 </div>
                 <div class="form-group">
                     <label for="user_name">Kullanıcı Adı</label>
-                    <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Kullanıcı Adı Girin" value="{{ old('user_name') }}" required/>
+                    <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Kullanıcı Adı Girin" aria-describedby="user_name_help" value="{{ old('user_name') }}" required/>
+                    <small id="user_name_help" class="form-text text-muted">Lütfen Türkçe karakter kullanmayınız.</small>
                 </div>
                 <div class="form-row">
                     <div class="col">
@@ -119,18 +125,16 @@
 @section('custom-js')
     <script type="text/javascript">
 
-        $('#register-form input').blur(function()
-        {
-            if(!$(this).val()) {
+        $('#register-form input').blur(function () {
+            if (!$(this).val()) {
                 $(this).addClass('alert-danger');
             } else {
                 $(this).removeClass('alert-danger');
             }
         });
 
-        $('#user_about_text').blur(function()
-        {
-            if(!$(this).val()) {
+        $('#user_about_text').blur(function () {
+            if (!$(this).val()) {
                 $(this).addClass('alert-danger');
             } else {
                 $(this).removeClass('alert-danger');

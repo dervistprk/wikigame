@@ -18,11 +18,18 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-5">
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Yönetici Girişi</h3></div>
+                            <div class="card-header">
+                                <h3 class="text-center font-weight-light my-4">Yönetici Girişi</h3>
+                            </div>
                             <div class="card-body">
                                 @if($errors->any())
                                     <div class="alert alert-danger text-center">
                                         {{$errors->first()}}
+                                    </div>
+                                @endif
+                                @if(session()->has('message'))
+                                    <div class="alert alert-warning">
+                                        {!! session()->get('message') !!}
                                     </div>
                                 @endif
                                 <form method="post" action="{{ route('admin.login.post') }}">

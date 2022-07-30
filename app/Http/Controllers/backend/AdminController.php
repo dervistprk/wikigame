@@ -59,7 +59,7 @@ class AdminController extends Controller
                            ]);
         $admin           = Admins::first();
         $admin->email    = $request->email;
-        $admin->password = \Hash::make($request->password);;
+        $admin->password = \Hash::make($request->password);
         $admin->save();
         return redirect()->route('admin.dashboard')->with('message', 'Yönetici Bilgileri Başarı ile Güncellendi.');
     }

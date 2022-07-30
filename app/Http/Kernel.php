@@ -64,10 +64,11 @@ class Kernel extends HttpKernel
         'throttle'         => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified'         => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isAdmin'          => \App\Http\Middleware\isAdmin::class,
-        'isLogin'          => \App\Http\Middleware\isLogin::class,
         'white_list'       => \App\Http\Middleware\WhiteListMiddleware::class,
         'maintenance'      => \App\Http\Middleware\Maintenance::class,
         'prevent_access'   => \App\Http\Middleware\PreventAccessToMaintenancePage::class,
         'is_verify_email'  => \App\Http\Middleware\IsVerifyEmail::class,
+        'is_login_user'    => \App\Http\Middleware\isLoginUser::class,
+        'is_login_admin'   => \App\Http\Middleware\isLoginAdmin::class,
     ];
 }

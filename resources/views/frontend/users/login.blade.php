@@ -12,7 +12,7 @@
             @endif
             @if(session()->has('message'))
                 <div class="alert alert-warning m-2">
-                    {{ session()->get('message') }}
+                    {!! session()->get('message') !!}
                 </div>
             @endif
             @csrf
@@ -22,7 +22,7 @@
                     <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" value="{{ old('email') }}" required/>
                 </div>
                 <div class="form-group">
-                    <label for="password">Şifre Tekrarı</label>
+                    <label for="password">Şifre</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi Girin" required/>
                 </div>
                 <div class="text-center m-2">

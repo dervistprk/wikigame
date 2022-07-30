@@ -33,12 +33,12 @@ Route::middleware('prevent_access')->get('bakimdayiz', function(){
 /**
  * Backend Routes
  */
-Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isLogin'])->group(function(){
+Route::prefix('admin')->name('admin.')->middleware(['white_list', 'is_login_admin'])->group(function(){
     Route::get('giris', [AuthController::class, 'login'])->name('login');
     Route::post('giris', [AuthController::class, 'loginPost'])->name('login.post');
 });
 
-Route::prefix('admin')->name('admin.')->middleware(['white_list'])->group(function(){
+Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->group(function(){
     Route::get('yonetim', [AdminController::class, 'dashboard'])->name('dashboard');
 
     Route::get('profil', [AdminController::class, 'admin'])->name('profile');
@@ -109,12 +109,13 @@ Route::middleware('maintenance')->group(function(){
     Route::get('giris', [UserController::class, 'loginForm'])->name('login-form');
     Route::post('giris', [UserController::class, 'loginPost'])->name('login-post');
 
-    Route::middleware('is_verify_email')->group(function() {
+    Route::middleware(['is_login_user', 'is_verify_email'])->group(function() {
         Route::get('profil', [UserController::class, 'userProfile'])->name('user-profile');
         Route::any('profil-guncelle', [UserController::class, 'updateProfile'])->name('update-profile');
         Route::get('cikis', [UserController::class, 'logout'])->name('user-logout');
     });
 
+    Route::any('mail-gonder', [UserController::class, 'resendVerification'])->name('resend-verification');
     Route::get('profil/dogrula/{token}', [UserController::class, 'verifyAccount'])->name('user-verify');
 
 });

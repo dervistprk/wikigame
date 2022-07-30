@@ -51,18 +51,31 @@
                     <a class="nav-link @if(Request::segment(1) == 'hakkinda') active @endif" href="{{ route('about') }}"><i class="fas fa-book"></i> Hakkında</a>
                 </li>
                 @if(\Auth::guest())
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('register-form') }}"><i class="fas fa-user"></i> Üye Ol</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login-form') }}"><i class="fas fa-door-open"></i> Giriş Yap</a>
-                </li>
-                @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user-profile') }}"><i class="fas fa-user-circle"></i> Profilim</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle categories-drop-down" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> Üyelik</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('register-form') }}"><i class="fas fa-user"></i> Üye Ol</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('login-form') }}"><i class="fas fa-door-open"></i> Giriş Yap</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('resend-verification') }}"><i class="fas fa-paper-plane"></i> Doğrulama Postası Gönder</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user-logout') }}"><i class="fas fa-door-closed"></i> Çıkış Yap</a>
+                @else
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle categories-drop-down" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> Üyelik</a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('user-profile') }}"><i class="fas fa-user-circle"></i> Profilim</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('user-logout') }}"><i class="fas fa-door-closed"></i> Çıkış Yap</a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
             </ul>

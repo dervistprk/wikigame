@@ -2,7 +2,7 @@
 @section('title', 'Profil Güncelle')
 @section('content')
     <div class="container h-100 d-flex align-items-center justify-content-center">
-        <form class="game-info rounded col-sm-8 mt-2" action="{{ route('update-profile') }}" method="post" id="update-profile-form">
+        <form class="game-info rounded col-sm-10 mt-2" action="{{ route('update-profile') }}" method="post" id="update-profile-form">
             @if($errors->any())
                 <div class="alert alert-danger mt-2">
                     @foreach($errors->all() as $error)
@@ -11,7 +11,12 @@
                 </div>
             @endif
             @csrf
-            <h2 class="dev-header text-center">Profil Bilgilerimi Güncelle</h2>
+                <div class="btn-group h-100 d-flex align-items-center justify-content-center mt-2" role="group">
+                    <a type="button" class="btn btn-primary btn-lg active" href=" {{route('update-profile')}}">Profil Bilgilerimi Güncelle</a>
+                    <a type="button" class="btn btn-danger btn-lg" href="#">Şifremi Güncelle</a>
+                    <a type="button" class="btn btn-warning btn-lg" href="#">Yorumlarım</a>
+                </div>
+            <h2 class="dev-header text-center mt-2">Profil Bilgilerimi Güncelle</h2>
             <div class="m-4">
                 <div class="form-group">
                     <label for="email">E-Posta</label>
@@ -55,7 +60,8 @@
                 </div>
                 <hr>
                 <div class="text-center m-2">
-                    <button type="submit" class="btn btn-success me-2 btn-register"><i class="fa fa-save"></i> Kaydet</button>
+                    <button type="submit" class="btn btn-success me-2 btn-register"><i class="fa fa-save"></i> Kaydet
+                    </button>
                 </div>
             </div>
         </form>
@@ -65,18 +71,16 @@
 @section('custom-js')
     <script type="text/javascript">
 
-        $('#update-profile-form input').blur(function()
-        {
-            if(!$(this).val()) {
+        $('#update-profile-form input').blur(function () {
+            if (!$(this).val()) {
                 $(this).addClass('alert-danger');
             } else {
                 $(this).removeClass('alert-danger');
             }
         });
 
-        $('#user_about_text').blur(function()
-        {
-            if(!$(this).val()) {
+        $('#user_about_text').blur(function () {
+            if (!$(this).val()) {
                 $(this).addClass('alert-danger');
             } else {
                 $(this).removeClass('alert-danger');
@@ -85,7 +89,7 @@
 
         $('#charNum').text(500 - $('#user_about_text').val().length);
 
-        function countChar(val) {
+        function countChar (val) {
             var len = val.value.length;
             if (len >= 500) {
                 val.value = val.value.substring(0, 500);

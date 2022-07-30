@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Settings;
+use App\Models\WhiteList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -30,7 +31,7 @@ class UserController extends Controller
     {
         $request->validate([
                'email'     => 'required|email|unique:users|max:254',
-               'user_name' => 'required|min:3|unique:users|max:254',
+               'user_name' => 'required|min:3|unique:users|max:254|regex:/^[\w-]*$/',
                'password'  => [
                    'required',
                    'confirmed',
@@ -76,8 +77,45 @@ class UserController extends Controller
             $message->subject('WikiGame Doğrulama E-Postası');
         });
 
-        return redirect()->route('login-form')->with('message', 'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.');
+        $route = route('resend-verification');
+        return redirect()->route('login-form')->with('message', 'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.<br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen <a class="link-danger text-decoration-none" href="' . $route .'">tıklayın</a>.');
 
+    }
+
+    public function resendVerification(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $token = Str::random(64);
+
+            $user           = User::where('email', $request->email)->first();
+            $password_check = \Hash::check($request->password, $user->password);
+
+            if ($user && $password_check) {
+                if (!$user->is_email_verified) {
+                    UserVerify::updateOrCreate(
+                        [
+                            'user_id' => $user->id,
+                        ],
+                        [
+                            'token' => $token
+                        ]
+                    );
+
+                    Mail::send('frontend.emails.verificationMail', ['token' => $token], function($message) use($request){
+                        $message->to($request->email);
+                        $message->subject('WikiGame Doğrulama E-Postası');
+                    });
+                    return redirect()->route('login-form')->with('message', 'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol ediniz.');
+                } else {
+                    return redirect()->route('login-form')->with('message', 'Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.');
+                }
+            } else {
+                return redirect()->route('resend-verification')->with('message', 'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyiniz.');
+            }
+        }
+
+
+        return view('frontend.users.reSendVerification');
     }
 
     public function loginForm()
@@ -93,11 +131,22 @@ class UserController extends Controller
         return redirect()->route('login-form')->withErrors('E-Posta Adresi veya Şifre Hatalı')->withInput();
     }
 
-    public function userProfile()
+    public function userProfile(Request $request)
     {
         if(Auth::check()){
             $user = Auth::user();
-            return view('frontend.users.profile', compact('user'));
+            $white_list_ips   = WhiteList::get()->toArray();
+            $ips              = [];
+            $ip_check_message = '';
+
+            foreach ($white_list_ips as $white_list) {
+                $ips[] = $white_list['ip'];
+            }
+
+            if (!in_array($request->ip(), $ips)) {
+                $ip_check_message = 'Cihaz IP adresi, izin verilen IP adresleri listesinde mevcut değil.';
+            }
+            return view('frontend.users.profile', compact('user', 'ip_check_message'));
         }
 
         return redirect()->route('login-form')->with('message', 'Bu sayfayı görmek için lütfen giriş yapın!');
@@ -141,7 +190,7 @@ class UserController extends Controller
     {
         $verifyUser = UserVerify::where('token', $token)->first();
 
-        $message = 'Üzgünüz girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyiniz.';
+        $message = 'Üzgünüz, girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyiniz.';
 
         if(!is_null($verifyUser) ){
             $user = $verifyUser->user;
@@ -161,6 +210,6 @@ class UserController extends Controller
     public function logout() {
         Session::flush();
         Auth::logout();
-        return redirect()->route('login-form');
+        return redirect()->route('home');
     }
 }

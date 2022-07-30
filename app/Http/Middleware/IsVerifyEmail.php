@@ -19,8 +19,9 @@ class IsVerifyEmail
     {
         if (!Auth::user()->is_email_verified) {
             auth()->logout();
+            $route = route('resend-verification');
             return redirect()->route('login-form')
-                             ->with('message', 'Üyeliğinizi aktif etmeniz gerekiyor. Lütfen e-posta adresinizi kontrol edin.');
+                             ->with('message', 'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.<br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen <a class="link-danger text-decoration-none" href="' . $route .'">tıklayın</a>.');
         }
 
         return $next($request);
