@@ -8,6 +8,7 @@
 <p>You can use sample database and image contents that provided in the <code>extras</code> directory. Simply copy the <code>uploads</code> directory to <code>public</code> directory and setup your database tables with <code>laravel_wikigame.sql</code> file. This way you can have a clearer idea about the project.</p>
 <p>Start your local development server by <code>php artisan serve</code> command. You will need a local server program for this.(Xampp, Wampp etc.)</p>
 <p>If you are not running the app on your local, then add your IP address to <code>whitelist</code> table. <code>127.0.0.1</code> should be already added by seeding.</p>
+<p>You need to set your mail setting in the <code>.env</code> file to test verification mail after registering to app.</p>
 </p>
     Go to <code>http://localhost:8000/admin/giris</code> and type <code>dervistprk@email.com</code> for email and <code>123456Aa</code> for the password.(You must add your ip address to reach admin panel.)<br>
     Afterwards you will be automatically redirected to admin panel dashboard.<br>
