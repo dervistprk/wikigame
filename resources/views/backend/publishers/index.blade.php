@@ -2,8 +2,11 @@
 @section('title', 'Dağıtıcılar')
 @section('content')
     @if(session()->has('message'))
-        <div class="alert alert-success m-2">
-            {{ session()->get('message') }}
+        <div class="alert alert-success m-2 alert-dismissible fade show">
+            {!! session()->get('message') !!}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         </div>
     @endif
     <div class="m-2">

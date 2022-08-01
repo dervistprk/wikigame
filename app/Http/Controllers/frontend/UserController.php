@@ -89,7 +89,7 @@ class UserController extends Controller
             $token = Str::random(64);
 
             $user           = User::where('email', $request->email)->first();
-            $password_check = Hash::check($request->password, $user->password);
+            $password_check = $user ? Hash::check($request->password, $user->password) : null;
 
             if ($user && $password_check) {
                 if (!$user->is_email_verified) {

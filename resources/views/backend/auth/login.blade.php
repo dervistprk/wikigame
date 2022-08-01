@@ -28,8 +28,11 @@
                                     </div>
                                 @endif
                                 @if(session()->has('message'))
-                                    <div class="alert alert-warning">
+                                    <div class="alert alert-warning m-2 alert-dismissible fade show">
                                         {!! session()->get('message') !!}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
                                     </div>
                                 @endif
                                 <form method="post" action="{{ route('admin.login.post') }}">

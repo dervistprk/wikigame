@@ -2,6 +2,14 @@
 @section('title', 'Oyunseverlerin Buluşma Noktası')
 @section('content')
     <div class="container">
+        @if(session()->has('message'))
+            <div class="alert alert-warning m-2 alert-dismissible fade show">
+                {!! session()->get('message') !!}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        @endif
         <h2 class="latest-header">Son Eklenen Oyunlar</h2>
         @if(isset($latest_games))
             @foreach($latest_games as $latest_game)

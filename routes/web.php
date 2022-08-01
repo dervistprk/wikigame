@@ -104,10 +104,13 @@ Route::middleware('maintenance')->group(function(){
     Route::get('makale/{id}', [ArticlesController::class, 'article'])->name('article');
     Route::post('arama', [HomeController::class, 'search'])->name('search');
     Route::get('oto-arama', [HomeController::class, 'autoComplete'])->name('autocompleteSearch');
-    Route::get('uye-ol', [UserController::class, 'registerForm'])->name('register-form');
-    Route::post('uye-ol', [UserController::class, 'registerPost'])->name('register-post');
     Route::get('giris', [UserController::class, 'loginForm'])->name('login-form');
     Route::post('giris', [UserController::class, 'loginPost'])->name('login-post');
+
+    Route::middleware('prevent_if_login')->group(function() {
+        Route::get('uye-ol', [UserController::class, 'registerForm'])->name('register-form');
+        Route::post('uye-ol', [UserController::class, 'registerPost'])->name('register-post');
+    });
 
     Route::middleware(['is_login_user', 'is_verify_email'])->group(function() {
         Route::get('profil', [UserController::class, 'userProfile'])->name('user-profile');
