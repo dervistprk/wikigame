@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="category" class="text-primary font-weight-bold">Kategori*</label>
-                    <select class="form-control" id="category" name="category" required>
+                    <select class="form-control custom-select" id="category" name="category" required>
                         @foreach($categories as $category)
                             <option @if($game->category_id == $category->id) selected="selected" @endif value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <label for="developer" class="text-primary font-weight-bold">Geliştirici*</label>
-                    <select class="form-control" id="developer" name="developer" required>
+                    <select class="form-control custom-select" id="developer" name="developer" required>
                         @foreach($developers as $developer)
                             <option @if($game->developer_id == $developer->id) selected="selected" @endif value="{{ $developer->id }}">{{ $developer->name }}</option>
                         @endforeach
@@ -42,7 +42,7 @@
                 </div>
                 <div class="form-group">
                     <label for="publisher" class="text-primary font-weight-bold">Dağıtıcı*</label>
-                    <select class="form-control" id="publisher" name="publisher" required>
+                    <select class="form-control custom-select" id="publisher" name="publisher" required>
                         @foreach($publishers as $publisher)
                             <option @if($game->publisher_id == $publisher->id) selected="selected" @endif value="{{ $publisher->id }}">{{ $publisher->name }}</option>
                         @endforeach
@@ -50,7 +50,7 @@
                 </div>
                 <div class="form-group">
                     <label for="age_rating" class="text-primary font-weight-bold">Yaş Sınırı*</label>
-                    <select class="form-control" id="age_rating" name="age_rating">
+                    <select class="form-control custom-select" id="age_rating" name="age_rating">
                         <option @if($game->details->age_rating == 3) selected="selected" @endif value="3">3</option>
                         <option @if($game->details->age_rating == 7) selected="selected" @endif value="7">7</option>
                         <option @if($game->details->age_rating == 12) selected="selected" @endif value="12">12</option>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label for="status" class="text-primary font-weight-bold">Durum*</label>
-                    <select class="form-control" id="status" name="status">
+                    <select class="form-control custom-select" id="status" name="status">
                         <option @if($game->status == 0) selected="selected" @endif value="0">Pasif</option>
                         <option @if($game->status == 1) selected="selected" @endif value="1">Aktif</option>
                     </select>
@@ -321,41 +321,3 @@
         </div>
     </form>
 @endsection
-
-@section('custom-css')
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-@endsection
-
-@section('custom-js')
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-tr-TR.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#description').summernote({
-                toolbar: [
-                    ['style'],
-                    ['fontsize'],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontname'],
-                    ['color'],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                    ['insert', ['picture', 'hr', 'video']],
-                    ['table', ['table']],
-                    ['codeview', ['codeview']],
-                    ['link', ['link']],
-                    ['actions', ['undo', 'redo']],
-                ],
-                fontSizes: ['7', '8', '9', '10', '11', '12', '14','16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
-                height: 400,
-                focus: false,
-                placeholder: 'Oyun Açıklaması Giriniz',
-                dialogsFade: true,
-                lang: 'tr-TR'
-                }
-            );
-        });
-    </script>
-@endsection
-

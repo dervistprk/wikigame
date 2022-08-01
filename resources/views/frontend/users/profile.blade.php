@@ -20,7 +20,7 @@
             </div>
         <div class="btn-group h-100 d-flex align-items-center justify-content-center mt-2" role="group">
             <a type="button" class="btn btn-primary btn-lg" href=" {{route('update-profile')}}">Profil Bilgilerimi Güncelle</a>
-            <a type="button" class="btn btn-danger btn-lg" href="#">Şifremi Güncelle</a>
+            <a type="button" class="btn btn-danger btn-lg" href="#">Favorilerim</a>
             <a type="button" class="btn btn-warning btn-lg" href="#">Yorumlarım</a>
         </div>
     </div>

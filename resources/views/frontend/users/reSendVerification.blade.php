@@ -18,11 +18,11 @@
             @csrf
             <h2 class="text-center dev-header mt-1">Doğrulama E-Postası Gönder</h2>
             <div class="form-group">
-                <label for="email">E-Posta</label>
+                <label for="email" class="font-weight-bold">E-Posta</label>
                 <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" value="{{ old('email') }}" required/>
             </div>
             <div class="form-group">
-                <label for="password">Şifre</label>
+                <label for="password" class="font-weight-bold">Şifre</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi Girin" required/>
             </div>
             <div class="text-center m-2">

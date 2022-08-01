@@ -10,6 +10,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->backend_favicon) }}"/>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/backend.css') }}" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
@@ -100,6 +101,36 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="{{ asset('backend/js/datatables-simple-demo.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-tr-TR.js"></script>
+<script>
+    $(document).ready(function () {
+        $('textarea').summernote({
+                toolbar: [
+                    ['style'],
+                    ['fontsize'],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontname'],
+                    ['color'],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['picture', 'hr', 'video']],
+                    ['table', ['table']],
+                    ['codeview', ['codeview']],
+                    ['link', ['link']],
+                    ['actions', ['undo', 'redo', 'fullscreen']],
+                ],
+                fontSizes: ['7', '8', '9', '10', '11', '12', '14','16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
+                height: 400,
+                focus: false,
+                placeholder: 'Kategori Açıklaması Giriniz',
+                dialogsFade: true,
+                lang: 'tr-TR'
+            }
+        );
+    });
+</script>
 @yield('custom-js')
 </body>
 </html>

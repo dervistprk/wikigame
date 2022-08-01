@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="category" class="text-primary font-weight-bold">Kategori*</label>
-                    <select class="form-control" id="category" name="category" required>
+                    <select class="form-control custom-select" id="category" name="category" required>
                         <option value="">Kategori Seçiniz</option>
                         @foreach($categories as $category)
                             @if (old('category') == $category->id)
@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     <label for="developer" class="text-primary font-weight-bold">Geliştirici*</label>
-                    <select class="form-control" id="developer" name="developer" required>
+                    <select class="form-control custom-select" id="developer" name="developer" required>
                         <option value="">Geliştirici Seçiniz</option>
                         @foreach($developers as $developer)
                             @if (old('developer') == $developer->id)
@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group">
                     <label for="publisher" class="text-primary font-weight-bold">Dağıtıcı*</label>
-                    <select class="form-control" id="publisher" name="publisher" required>
+                    <select class="form-control custom-select" id="publisher" name="publisher" required>
                         <option value="">Dağıtıcı Seçiniz</option>
                         @foreach($publishers as $publisher)
                             @if (old('publisher') == $publisher->id)
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group"> <!--TODO: age_rating, platform ve genre için ayrı tablolar oluşturup modelleri bağla ve ilgili her yeri düzenle -->
                     <label for="age_rating" class="text-primary font-weight-bold">Yaş Sınırı*</label>
-                    <select class="form-control" id="age_rating" name="age_rating">
+                    <select class="form-control custom-select" id="age_rating" name="age_rating">
                         <option value="">Yaş Sınırı Seçiniz</option>
                         @if(old('age_rating') == 3)
                             <option value="3" selected="selected">3</option>
@@ -371,41 +371,3 @@
         </div>
     </form>
 @endsection
-
-@section('custom-css')
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-@endsection
-
-@section('custom-js')
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-tr-TR.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#description').summernote({
-                toolbar: [
-                    ['style'],
-                    ['fontsize'],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontname'],
-                    ['color'],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                    ['insert', ['picture', 'hr', 'video']],
-                    ['table', ['table']],
-                    ['codeview', ['codeview']],
-                    ['link', ['link']],
-                    ['actions', ['undo', 'redo']],
-                ],
-                fontSizes: ['7', '8', '9', '10', '11', '12', '14','16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
-                height: 400,
-                focus: false,
-                placeholder: 'Oyun Açıklaması Giriniz',
-                dialogsFade: true,
-                lang: 'tr-TR'
-                }
-            );
-        });
-    </script>
-@endsection
-

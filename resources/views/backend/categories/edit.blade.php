@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="status" class="text-primary font-weight-bold">Durum*</label>
-                    <select class="form-control" id="status" name="status">
+                    <select class="form-control custom-select" id="status" name="status">
                         <option @if($category->status == 0) selected="selected" @endif value="0">Pasif</option>
                         <option @if($category->status == 1) selected="selected" @endif value="1">Aktif</option>
                     </select>
@@ -39,41 +39,3 @@
         </div>
     </form>
 @endsection
-
-@section('custom-css')
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-@endsection
-
-@section('custom-js')
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-tr-TR.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#description').summernote({
-                toolbar: [
-                    ['style'],
-                    ['fontsize'],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontname'],
-                    ['color'],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                    ['insert', ['picture', 'hr', 'video']],
-                    ['table', ['table']],
-                    ['codeview', ['codeview']],
-                    ['link', ['link']],
-                    ['actions', ['undo', 'redo']],
-                ],
-                fontSizes: ['7', '8', '9', '10', '11', '12', '14','16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
-                height: 400,
-                focus: false,
-                placeholder: 'Kategori Açıklaması Giriniz',
-                dialogsFade: true,
-                lang: 'tr-TR'
-                }
-            );
-        });
-    </script>
-@endsection
-

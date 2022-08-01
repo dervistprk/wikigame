@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="status" class="text-primary font-weight-bold">Durum*</label>
-                    <select class="form-control" id="status" name="status">
+                    <select class="form-control custom-select" id="status" name="status">
                         <option @if($article->status == 0) selected="selected" @endif value="0">Pasif</option>
                         <option @if($article->status == 1) selected="selected" @endif value="1">Aktif</option>
                     </select>

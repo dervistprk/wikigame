@@ -14,7 +14,7 @@
             <h2 class="text-center dev-header mt-1">Üye Kayıt Formu</h2>
             <div class="m-4">
                 <div class="form-group">
-                    <label for="email">E-Posta</label>
+                    <label for="email" class="font-weight-bold">E-Posta</label>
                     <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" aria-describedby="emailHelp" value="{{ old('email') }}" required/>
                     <small id="emailHelp" class="form-text text-muted">
                         <ul>
@@ -24,15 +24,15 @@
                     </small>
                 </div>
                 <div class="form-group">
-                    <label for="user_name">Kullanıcı Adı</label>
+                    <label for="user_name" class="font-weight-bold">Kullanıcı Adı</label>
                     <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Kullanıcı Adı Girin" aria-describedby="user_name_help" value="{{ old('user_name') }}" required/>
                     <small id="user_name_help" class="form-text text-muted">Lütfen Türkçe karakter kullanmayınız.</small>
                 </div>
                 <div class="form-row">
                     <div class="col">
-                        <label for="password">Şifre</label>
+                        <label for="password" class="font-weight-bold">Şifre</label>
                         <input type="password" name="password" class="form-control" id="password" placeholder="Şifre Girin" autocomplete="new-password" required/>
-                        <span class="small text-secondary"> Şifreniz :
+                        <span class="small form-text text-muted"> Şifreniz :
                             <ul>
                                 <li>En az bir büyük karakter barındırmaldıır.</li>
                                 <li>En az bir küçük karakter barındırmaldıır.</li>
@@ -42,7 +42,7 @@
                         </span>
                     </div>
                     <div class="col">
-                        <label for="password_confirmation">Şifre Tekrarı</label>
+                        <label for="password_confirmation" class="font-weight-bold">Şifre Tekrarı</label>
                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" autocomplete="new-password" placeholder="Şifre Tekrarını Girin" required/>
                     </div>
                 </div>
@@ -50,21 +50,21 @@
                 <h5 class="dev-header">Kişisel Bilgiler</h5>
                 <div class="form-row">
                     <div class="col">
-                        <label for="name">Ad</label>
+                        <label for="name" class="font-weight-bold">Ad</label>
                         <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" required/>
                     </div>
                     <div class="col">
-                        <label for="surname">Soyad</label>
+                        <label for="surname" class="font-weight-bold">Soyad</label>
                         <input type="text" name="surname" class="form-control" id="surname" value="{{ old('surname') }}" required/>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col mt-2">
-                        <label for="birth_day">Doğum Tarihi</label>
+                        <label for="birth_day" class="font-weight-bold">Doğum Tarihi</label>
                         <input type="date" name="birth_day" class="form-control" id="birth_day" value="{{ old('birth_day') }}" required/>
                     </div>
                     <div class="col mt-2">
-                        <label for="gender">Cinsiyet</label>
+                        <label for="gender" class="font-weight-bold">Cinsiyet</label>
                         <select class="form-control" name="gender" id="gender" required>
                             <option value="">Lütfen Seçiniz</option>
                             <option value="erkek" @if(old('gender') == 'erkek') selected @endif>Erkek</option>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="form-group mt-2">
-                    <label for="user_about_text">Hakkımda</label>
+                    <label for="user_about_text" class="font-weight-bold">Hakkımda</label>
                     <textarea class="form-control" name="about" id="user_about_text" rows="7" placeholder="Hakkınızda tanıtıcı kısa bir yazı yazın." onkeyup="countChar(this)" required>{{ old('about') }}</textarea>
                     <small id="emailHelp" class="form-text text-muted d-inline-block">En az 30 karakter uzunluğunda olmalıdır.</small>
                     <span id="charNum" class="text-muted d-inline-block float-end">500</span>

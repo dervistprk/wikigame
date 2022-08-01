@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Settings;
 use App\Models\WhiteList;
+use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -62,7 +63,7 @@ class UserController extends Controller
         }
 
         $user           = new User($user_data);
-        $user->password = \Hash::make($request->password);
+        $user->password = Hash::make($request->password);
         $user->save();
 
         $token = Str::random(64);
@@ -88,7 +89,7 @@ class UserController extends Controller
             $token = Str::random(64);
 
             $user           = User::where('email', $request->email)->first();
-            $password_check = \Hash::check($request->password, $user->password);
+            $password_check = Hash::check($request->password, $user->password);
 
             if ($user && $password_check) {
                 if (!$user->is_email_verified) {
@@ -175,6 +176,24 @@ class UserController extends Controller
 
             foreach ($user_field as $field) {
                 $user_data[$field] = $request->input($field);
+            }
+
+            if ($request->current_password && $request->password && $request->password_confirmation) {
+                $request->validate([
+                   'password'  => [
+                       'confirmed',
+                       'min:6',
+                       'regex:/[a-z]/',
+                       'regex:/[A-Z]/',
+                       'regex:/[0-9]/',
+                   ],
+                ]);
+
+                if (!Hash::check($request->current_password, $user->password)) {
+                    return redirect()->route('update-profile')->withErrors('Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.');
+                }
+
+                $user_data['password'] = Hash::make($request->password);
             }
 
             User::where('id', $user->id)->update($user_data);
