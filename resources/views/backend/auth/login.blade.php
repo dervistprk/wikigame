@@ -9,6 +9,7 @@
     <title>Yönetici Girişi - WikiGame</title>
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body style="background: ghostwhite">
 <div id="layoutAuthentication">
@@ -23,12 +24,17 @@
                             </div>
                             <div class="card-body">
                                 @if($errors->any())
-                                    <div class="alert alert-danger text-center">
-                                        {{$errors->first()}}
+                                    <div class="alert alert-danger text-center alert-dismissible fade show">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
                                     </div>
                                 @endif
                                 @if(session()->has('message'))
-                                    <div class="alert alert-warning m-2 alert-dismissible fade show">
+                                    <div class="alert alert-warning alert-dismissible fade show">
                                         {!! session()->get('message') !!}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">×</span>
@@ -46,10 +52,10 @@
                                         <label for="password">Şifre</label>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary col-sm-4">Giriş</button>
-                                        <div class="col-sm-4 d-inline-block">
-                                            <input type="checkbox" class="" name="remember_token" id="remember"/>
-                                            <label for="remember">Beni Hatırla</label>
+                                        <button type="submit" class="btn btn-primary col-sm-4"><i class="fa fa-user-cog"></i> Giriş</button>
+                                        <div class="col-sm-4 d-inline-block ms-2">
+                                            <input type="checkbox" class="form-check-input form-check-inline" name="remember_token" id="remember"/>
+                                            <label for="remember" class="form-check-label">Beni Hatırla</label>
                                         </div>
                                     </div>
                                 </form>
@@ -63,7 +69,7 @@
         </main>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="{{ asset('js/scripts.js') }}js/scripts.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

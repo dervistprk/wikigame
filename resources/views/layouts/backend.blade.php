@@ -124,7 +124,7 @@
                 fontSizes: ['7', '8', '9', '10', '11', '12', '14','16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
                 height: 400,
                 focus: false,
-                placeholder: 'Kategori Açıklaması Giriniz',
+                placeholder: 'Açıklama Giriniz',
                 dialogsFade: true,
                 lang: 'tr-TR'
             }

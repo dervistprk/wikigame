@@ -3,10 +3,13 @@
 @section('content')
     <form class="container mt-2" method="post" action="{{route('admin.create-article-post')}}" enctype="multipart/form-data">
         @if($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-danger text-center alert-dismissible fade show">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
         @endif
         @csrf

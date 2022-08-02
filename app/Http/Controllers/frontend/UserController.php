@@ -126,7 +126,9 @@ class UserController extends Controller
 
     public function loginPost(Request $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $remember = $request->input('remember_token');
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember ? true : false)) {
             return redirect()->route('user-profile');
         }
         return redirect()->route('login-form')->withErrors('E-Posta Adresi veya Şifre Hatalı')->withInput();
@@ -134,23 +136,20 @@ class UserController extends Controller
 
     public function userProfile(Request $request)
     {
-        if(Auth::check()){
-            $user = Auth::user();
-            $white_list_ips   = WhiteList::get()->toArray();
-            $ips              = [];
-            $ip_check_message = '';
+        $user             = Auth::user();
+        $white_list_ips   = WhiteList::get()->toArray();
+        $ips              = [];
+        $ip_check_message = '';
 
-            foreach ($white_list_ips as $white_list) {
-                $ips[] = $white_list['ip'];
-            }
-
-            if (!in_array($request->ip(), $ips)) {
-                $ip_check_message = 'Cihaz IP adresi, izin verilen IP adresleri listesinde mevcut değil.';
-            }
-            return view('frontend.users.profile', compact('user', 'ip_check_message'));
+        foreach ($white_list_ips as $white_list) {
+            $ips[] = $white_list['ip'];
         }
 
-        return redirect()->route('login-form')->with('message', 'Bu sayfayı görmek için lütfen giriş yapın!');
+        if (!in_array($request->ip(), $ips)) {
+            $ip_check_message = 'Cihaz IP adresi, izin verilen IP adresleri listesinde mevcut değil.';
+        }
+
+        return view('frontend.users.profile', compact('user', 'ip_check_message'));
     }
 
     public function updateProfile(Request $request)

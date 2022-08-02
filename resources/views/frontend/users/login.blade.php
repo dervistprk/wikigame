@@ -4,15 +4,21 @@
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <form class="game-info rounded col-sm-8 mt-2" action="{{ route('login-post') }}" method="post" id="login-form">
             @if($errors->any())
-                <div class="alert alert-danger mt-2">
+                <div class="alert alert-danger mt-2  alert-dismissible fade show">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             @endif
             @if(session()->has('message'))
-                <div class="alert alert-warning m-2">
+                <div class="alert alert-warning alert-dismissible m-2 fade show">
                     {!! session()->get('message') !!}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
             @endif
             @csrf
@@ -26,7 +32,11 @@
                     <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi Girin" required/>
                 </div>
                 <div class="text-center m-2">
-                    <button type="submit" class="btn btn-success me-2 btn-register"><i class="fa fa-door-open"></i> Giriş Yap</button>
+                    <button type="submit" class="btn btn-success btn-register col-sm-3"><i class="fa fa-door-open"></i> Giriş Yap</button>
+                    <div class="col-sm-3 d-inline-block">
+                        <input type="checkbox" class="form-check-inline form-check-input" name="remember_token" id="remember"/>
+                        <label for="remember" class="form-check-label">Beni Hatırla</label>
+                    </div>
                 </div>
         </form>
     </div>

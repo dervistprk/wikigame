@@ -2,7 +2,7 @@
 @section('title', 'Kategoriler')
 @section('content')
     @if(session()->has('message'))
-        <div class="alert alert-success m-2 alert-dismissible fade show">
+        <div class="alert alert-success m-2 alert-dismissible fade show text-center">
             {!! session()->get('message') !!}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span>

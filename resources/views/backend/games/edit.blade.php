@@ -3,19 +3,22 @@
 @section('content')
     <form class="container mt-2" method="post" action="{{route('admin.edit-game-post', [$game->id])}}" enctype="multipart/form-data">
         @if($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-danger text-center alert-dismissible fade show">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
         @endif
         @csrf
         <div class="card">
-            <div class="card-header font-weight-bold text-secondary">
+            <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#game-information" role="button" aria-expanded="true" aria-controls="game-information">
                 <i class="fas fa-gamepad"></i>
                 Oyun Bilgileri <span class="float-end text-secondary">* Zorunlu Alanlar</span>
             </div>
-            <div class="card-body">
+            <div class="card-body collapse show" id="game-information">
                 <div class="form-group">
                     <label for="name" class="text-primary font-weight-bold">Adı*</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Oyun Adını Giriniz" value="{{ $game->name }}" required>
@@ -118,204 +121,216 @@
                 </div>
             </div>
         </div>
-        <div class="card mt-2 d-inline-block" style="width: 48%">
-            <div class="card-header font-weight-bold text-secondary">
-                Minimum Sistem Gereksinimleri*
-            </div>
-            <div class="card-body">
-                <div class="form-group col-md">
-                    <label for="cpu_min" class="text-primary font-weight-bold">İşlemci</label>
-                    <input type="text" class="form-control" id="cpu_min" name="cpu_min" placeholder="İşlemci Giriniz" value="{{ $game->systemReqMin->cpu }}">
-                </div>
-                <div class="form-group col-md">
-                    <label for="gpu_min" class="text-primary font-weight-bold">Ekran Kartı</label>
-                    <input type="text" class="form-control" id="gpu_min" name="gpu_min" placeholder="Ekran Kartı Giriniz" value="{{ $game->systemReqMin->gpu }}">
-                </div>
-                <div class="form-group d-inline-block col-md-6">
-                    <label for="ram_min" class="text-primary font-weight-bold">Bellek</label>
-                    <input type="number" class="form-control" id="ram_min" name="ram_min" placeholder="Bellek Giriniz" value="{{ $game->systemReqMin->ram }}">
-                </div>
-                <div class="form-group d-inline-block col-md-4">
-                    <label for="ram_min_unit" class="text-primary font-weight-bold">Birim</label>
-                    <select class="form-control" id="ram_min_unit" name="ram_min_unit">
-                        <option value="0" @if($game->systemReqMin->ram_unit == 0) selected="selected"@endif>MB</option>
-                        <option value="1" @if($game->systemReqMin->ram_unit == 1) selected="selected"@endif>GB</option>
-                    </select>
-                </div>
-                <div class="form-group d-inline-block col-md-6">
-                    <label for="storage_min" class="text-primary font-weight-bold">Depolama Alanı</label>
-                    <input type="number" class="form-control" id="storage_min" name="storage_min" placeholder="Depolama Alanı Giriniz" value="{{ $game->systemReqMin->storage }}">
-                </div>
-                <div class="form-group d-inline-block col-md-4">
-                    <label for="storage_min_unit" class="text-primary font-weight-bold">Birim</label>
-                    <select class="form-control" id="storage_min_unit" name="storage_min_unit">
-                        <option value="0" @if($game->systemReqMin->storage_unit == 0) selected="selected"@endif>MB</option>
-                        <option value="1" @if($game->systemReqMin->storage_unit == 1) selected="selected"@endif>GB</option>
-                    </select>
-                </div>
-                <div class="form-group col-md">
-                    <label for="os_min" class="text-primary font-weight-bold">İşletim Sistemi</label>
-                    <input type="text" class="form-control" id="os_min" name="os_min" placeholder="İşletim Sistemi Giriniz" value="{{ $game->systemReqMin->os }}">
-                </div>
-            </div>
-        </div>
-        <div class="card mt-2 m-lg-3 d-inline-block" style="width: 48%">
-            <div class="card-header font-weight-bold text-secondary">
-                Önerilen Sistem Gereksinimleri*
-            </div>
-            <div class="card-body">
-                <div class="form-group col-md">
-                    <label for="cpu_rec" class="text-primary font-weight-bold">İşlemci</label>
-                    <input type="text" class="form-control" id="cpu_rec" name="cpu_rec" placeholder="İşlemci Giriniz" value="{{ $game->systemReqRec->cpu }}">
-                </div>
-                <div class="form-group col-md">
-                    <label for="gpu_rec" class="text-primary font-weight-bold">Ekran Kartı</label>
-                    <input type="text" class="form-control" id="gpu_rec" name="gpu_rec" placeholder="Ekran Kartı Giriniz" value="{{ $game->systemReqRec->gpu }}">
-                </div>
-                <div class="form-group col-md d-inline-block col-md-6">
-                    <label for="ram_rec" class="text-primary font-weight-bold">Bellek</label>
-                    <input type="number" class="form-control" id="ram_rec" name="ram_rec" placeholder="Bellek Giriniz" value="{{ $game->systemReqRec->ram }}">
-                </div>
-                <div class="form-group d-inline-block col-md-4">
-                    <label for="ram_rec_unit" class="text-primary font-weight-bold">Birim</label>
-                    <select class="form-control" id="ram_rec_unit" name="ram_rec_unit">
-                        <option value="0" @if($game->systemReqRec->ram_unit == 0) selected="selected"@endif>MB</option>
-                        <option value="1" @if($game->systemReqRec->ram_unit == 1) selected="selected"@endif>GB</option>
-                    </select>
-                </div>
-                <div class="form-group col-md d-inline-block col-md-6">
-                    <label for="storage_rec" class="text-primary font-weight-bold">Depolama Alanı</label>
-                    <input type="number" class="form-control" id="storage_rec" name="storage_rec" placeholder="Depolama Alanı Giriniz" value="{{ $game->systemReqRec->storage }}">
-                </div>
-                <div class="form-group d-inline-block col-md-4">
-                    <label for="storage_rec_unit" class="text-primary font-weight-bold">Birim</label>
-                    <select class="form-control" id="storage_rec_unit" name="storage_rec_unit">
-                        <option value="0" @if($game->systemReqRec->storage_unit == 0) selected="selected"@endif>MB</option>
-                        <option value="1" @if($game->systemReqRec->storage_unit == 1) selected="selected"@endif>GB</option>
-                    </select>
-                </div>
-                <div class="form-group col-md">
-                    <label for="os_rec" class="text-primary font-weight-bold">İşletim Sistemi</label>
-                    <input type="text" class="form-control" id="os_rec" name="os_rec" placeholder="İşletim Sistemi Giriniz" value="{{ $game->systemReqRec->os }}">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card mt-2">
+                    <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#sys-req-min" role="button" aria-expanded="true" aria-controls="sys-req-min">
+                        Minimum Sistem Gereksinimleri*
+                    </div>
+                    <div class="card-body collapse show" id="sys-req-min">
+                        <div class="form-group col-md">
+                            <label for="cpu_min" class="text-primary font-weight-bold">İşlemci</label>
+                            <input type="text" class="form-control" id="cpu_min" name="cpu_min" placeholder="İşlemci Giriniz" value="{{ $game->systemReqMin->cpu }}">
+                        </div>
+                        <div class="form-group col-md">
+                            <label for="gpu_min" class="text-primary font-weight-bold">Ekran Kartı</label>
+                            <input type="text" class="form-control" id="gpu_min" name="gpu_min" placeholder="Ekran Kartı Giriniz" value="{{ $game->systemReqMin->gpu }}">
+                        </div>
+                        <div class="form-group d-inline-block col-md-6">
+                            <label for="ram_min" class="text-primary font-weight-bold">Bellek</label>
+                            <input type="number" class="form-control" id="ram_min" name="ram_min" placeholder="Bellek Giriniz" value="{{ $game->systemReqMin->ram }}">
+                        </div>
+                        <div class="form-group d-inline-block col-md-4">
+                            <label for="ram_min_unit" class="text-primary font-weight-bold">Birim</label>
+                            <select class="form-control" id="ram_min_unit" name="ram_min_unit">
+                                <option value="0" @if($game->systemReqMin->ram_unit == 0) selected="selected"@endif>MB</option>
+                                <option value="1" @if($game->systemReqMin->ram_unit == 1) selected="selected"@endif>GB</option>
+                            </select>
+                        </div>
+                        <div class="form-group d-inline-block col-md-6">
+                            <label for="storage_min" class="text-primary font-weight-bold">Depolama Alanı</label>
+                            <input type="number" class="form-control" id="storage_min" name="storage_min" placeholder="Depolama Alanı Giriniz" value="{{ $game->systemReqMin->storage }}">
+                        </div>
+                        <div class="form-group d-inline-block col-md-4">
+                            <label for="storage_min_unit" class="text-primary font-weight-bold">Birim</label>
+                            <select class="form-control" id="storage_min_unit" name="storage_min_unit">
+                                <option value="0" @if($game->systemReqMin->storage_unit == 0) selected="selected"@endif>MB</option>
+                                <option value="1" @if($game->systemReqMin->storage_unit == 1) selected="selected"@endif>GB</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md">
+                            <label for="os_min" class="text-primary font-weight-bold">İşletim Sistemi</label>
+                            <input type="text" class="form-control" id="os_min" name="os_min" placeholder="İşletim Sistemi Giriniz" value="{{ $game->systemReqMin->os }}">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card mt-3 d-inline-block mb-3" style="width: 48%">
-            <div class="card-header font-weight-bold text-secondary">
-                Oyun Resimleri
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="cover_image" class="text-primary font-weight-bold">Kapak Resmi*</label>
-                    <input type="file" name="cover_image" id="cover_image" class="form-control btn btn-primary btn-sm">
-                    <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="mt-1 rounded" width="175" height="225">
-                </div>
-                <div class="form-group">
-                    <label class="text-primary font-weight-bold">Resim1*</label>
-                    <input type="file" name="image1" id="image1" class="form-control btn btn-primary btn-sm">
-                    <img src="{{ $game->image1 }}" alt="{{ $game->name }} Resim1" title="{{ $game->name }} Resim1" class="mt-1 rounded" width="500" height="300">
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label class="text-primary font-weight-bold">Resim2</label>
-                    <input type="file" name="image2" id="image2" class="form-control btn btn-primary btn-sm">
-                    @if(isset($game->image2))
-                        <img src="{{ $game->image2 }}" alt="{{ $game->name }} Resim2" title="{{ $game->name }} Resim2" class="mt-1 rounded" width="500" height="300">
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label class="text-primary font-weight-bold">Resim3</label>
-                    <input type="file" name="image3" id="image3" class="form-control btn btn-primary btn-sm">
-                    @if(isset($game->image3))
-                        <img src="{{ $game->image3 }}" alt="{{ $game->name }} Resim3" title="{{ $game->name }} Resim3" class="mt-1 rounded" width="500" height="300">
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label class="text-primary font-weight-bold">Resim4</label>
-                    <input type="file" name="image4" id="image4" class="form-control btn btn-primary btn-sm">
-                    @if(isset($game->image4))
-                        <img src="{{ $game->image4 }}" alt="{{ $game->name }} Resim4" title="{{ $game->name }} Resim4" class="mt-1 rounded" width="500" height="300">
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label class="text-primary font-weight-bold">Resim5</label>
-                    <input type="file" name="image5" id="image5" class="form-control btn btn-primary btn-sm">
-                    @if(isset($game->image5))
-                        <img src="{{ $game->image5 }}" alt="{{ $game->name }} Resim5" title="{{ $game->name }} Resim5" class="mt-1 rounded" width="500" height="300">
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label class="text-primary font-weight-bold">Resim6</label>
-                    <input type="file" name="image6" id="image6" class="form-control btn btn-primary btn-sm">
-                    @if(isset($game->image6))
-                        <img src="{{ $game->image6 }}" alt="{{ $game->name }} Resim6" title="{{ $game->name }} Resim6" class="mt-1 rounded" width="500" height="300">
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label class="text-primary font-weight-bold">Resim7</label>
-                    <input type="file" name="image7" id="image7" class="form-control btn btn-primary btn-sm">
-                    @if(isset($game->image7))
-                        <img src="{{ $game->image7 }}" alt="{{ $game->name }} Resim7" title="{{ $game->name }} Resim7" class="mt-1 rounded" width="500" height="300">
-                    @endif
+            <div class="col-sm-6">
+                <div class="card mt-2" data-toggle="collapse" href="#sys-req-rec" role="button" aria-expanded="true" aria-controls="sys-req-rec">
+                    <div class="card-header font-weight-bold text-secondary">
+                        Önerilen Sistem Gereksinimleri*
+                    </div>
+                    <div class="card-body collapse show" id="sys-req-rec">
+                        <div class="form-group col-md">
+                            <label for="cpu_rec" class="text-primary font-weight-bold">İşlemci</label>
+                            <input type="text" class="form-control" id="cpu_rec" name="cpu_rec" placeholder="İşlemci Giriniz" value="{{ $game->systemReqRec->cpu }}">
+                        </div>
+                        <div class="form-group col-md">
+                            <label for="gpu_rec" class="text-primary font-weight-bold">Ekran Kartı</label>
+                            <input type="text" class="form-control" id="gpu_rec" name="gpu_rec" placeholder="Ekran Kartı Giriniz" value="{{ $game->systemReqRec->gpu }}">
+                        </div>
+                        <div class="form-group col-md d-inline-block col-md-6">
+                            <label for="ram_rec" class="text-primary font-weight-bold">Bellek</label>
+                            <input type="number" class="form-control" id="ram_rec" name="ram_rec" placeholder="Bellek Giriniz" value="{{ $game->systemReqRec->ram }}">
+                        </div>
+                        <div class="form-group d-inline-block col-md-4">
+                            <label for="ram_rec_unit" class="text-primary font-weight-bold">Birim</label>
+                            <select class="form-control" id="ram_rec_unit" name="ram_rec_unit">
+                                <option value="0" @if($game->systemReqRec->ram_unit == 0) selected="selected"@endif>MB</option>
+                                <option value="1" @if($game->systemReqRec->ram_unit == 1) selected="selected"@endif>GB</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md d-inline-block col-md-6">
+                            <label for="storage_rec" class="text-primary font-weight-bold">Depolama Alanı</label>
+                            <input type="number" class="form-control" id="storage_rec" name="storage_rec" placeholder="Depolama Alanı Giriniz" value="{{ $game->systemReqRec->storage }}">
+                        </div>
+                        <div class="form-group d-inline-block col-md-4">
+                            <label for="storage_rec_unit" class="text-primary font-weight-bold">Birim</label>
+                            <select class="form-control" id="storage_rec_unit" name="storage_rec_unit">
+                                <option value="0" @if($game->systemReqRec->storage_unit == 0) selected="selected"@endif>MB</option>
+                                <option value="1" @if($game->systemReqRec->storage_unit == 1) selected="selected"@endif>GB</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md">
+                            <label for="os_rec" class="text-primary font-weight-bold">İşletim Sistemi</label>
+                            <input type="text" class="form-control" id="os_rec" name="os_rec" placeholder="İşletim Sistemi Giriniz" value="{{ $game->systemReqRec->os }}">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card m-lg-3 d-inline-block align-top" style="width: 48%">
-            <div class="card-header font-weight-bold text-secondary">
-                Oyun Videoları
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card mt-2">
+                    <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#game-images" role="button" aria-expanded="true" aria-controls="game-images">
+                        Oyun Resimleri
+                    </div>
+                    <div class="card-body collapse show" id="game-images">
+                        <div class="form-group">
+                            <label for="cover_image" class="text-primary font-weight-bold">Kapak Resmi*</label>
+                            <input type="file" name="cover_image" id="cover_image" class="form-control btn btn-primary btn-sm">
+                            <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="mt-1 rounded" width="175" height="225">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-primary font-weight-bold">Resim1*</label>
+                            <input type="file" name="image1" id="image1" class="form-control btn btn-primary btn-sm">
+                            <img src="{{ $game->image1 }}" alt="{{ $game->name }} Resim1" title="{{ $game->name }} Resim1" class="mt-1 rounded" width="500" height="300">
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="text-primary font-weight-bold">Resim2</label>
+                            <input type="file" name="image2" id="image2" class="form-control btn btn-primary btn-sm">
+                            @if(isset($game->image2))
+                                <img src="{{ $game->image2 }}" alt="{{ $game->name }} Resim2" title="{{ $game->name }} Resim2" class="mt-1 rounded" width="500" height="300">
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="text-primary font-weight-bold">Resim3</label>
+                            <input type="file" name="image3" id="image3" class="form-control btn btn-primary btn-sm">
+                            @if(isset($game->image3))
+                                <img src="{{ $game->image3 }}" alt="{{ $game->name }} Resim3" title="{{ $game->name }} Resim3" class="mt-1 rounded" width="500" height="300">
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="text-primary font-weight-bold">Resim4</label>
+                            <input type="file" name="image4" id="image4" class="form-control btn btn-primary btn-sm">
+                            @if(isset($game->image4))
+                                <img src="{{ $game->image4 }}" alt="{{ $game->name }} Resim4" title="{{ $game->name }} Resim4" class="mt-1 rounded" width="500" height="300">
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="text-primary font-weight-bold">Resim5</label>
+                            <input type="file" name="image5" id="image5" class="form-control btn btn-primary btn-sm">
+                            @if(isset($game->image5))
+                                <img src="{{ $game->image5 }}" alt="{{ $game->name }} Resim5" title="{{ $game->name }} Resim5" class="mt-1 rounded" width="500" height="300">
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="text-primary font-weight-bold">Resim6</label>
+                            <input type="file" name="image6" id="image6" class="form-control btn btn-primary btn-sm">
+                            @if(isset($game->image6))
+                                <img src="{{ $game->image6 }}" alt="{{ $game->name }} Resim6" title="{{ $game->name }} Resim6" class="mt-1 rounded" width="500" height="300">
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="text-primary font-weight-bold">Resim7</label>
+                            <input type="file" name="image7" id="image7" class="form-control btn btn-primary btn-sm">
+                            @if(isset($game->image7))
+                                <img src="{{ $game->image7 }}" alt="{{ $game->name }} Resim7" title="{{ $game->name }} Resim7" class="mt-1 rounded" width="500" height="300">
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <a href="https://support.google.com/youtube/answer/171780?hl=tr" class="text-danger text-decoration-none d-inline-block mb-1" target="_blank">Youtube Video Ekleme Yardım İçin Tıklayınız</a>
-                <div class="form-group">
-                    <label for="video1" class="text-primary font-weight-bold">Video1*</label>
-                    <input type="text" class="form-control" id="video1" name="video1" placeholder="Video Linki Giriniz" value="{{ $game->video1 }}">
-                    <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
-                    <iframe src="{{ $game->video1 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label for="video2" class="text-primary font-weight-bold">Video2</label>
-                    <input type="text" class="form-control" id="video2" name="video2" placeholder="Video Linki Giriniz" value="{{ $game->video2 }}">
-                    <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
-                    @if(isset($game->video2))
-                        <iframe src="{{ $game->video2 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label for="video3" class="text-primary font-weight-bold">Video3</label>
-                    <input type="text" class="form-control" id="video3" name="video3" placeholder="Video Linki Giriniz" value="{{ $game->video3 }}">
-                    <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
-                    @if(isset($game->video3))
-                        <iframe src="{{ $game->video3 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label for="video4" class="text-primary font-weight-bold">Video4</label>
-                    <input type="text" class="form-control" id="video4" name="video4" placeholder="Video Linki Giriniz" value="{{ $game->video4 }}">
-                    <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
-                    @if(isset($game->video4))
-                        <iframe src="{{ $game->video4 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
-                    @endif
-                </div>
-                <hr>
-                <div class="form-group">
-                    <label for="video5" class="text-primary font-weight-bold">Video5</label>
-                    <input type="text" class="form-control" id="video5" name="video5" placeholder="Video Linki Giriniz" value="{{ $game->video5 }}">
-                    <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
-                    @if(isset($game->video5))
-                        <iframe src="{{ $game->video5 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
-                    @endif
+            <div class="col-sm-6">
+                <div class="card mt-2 align-top">
+                    <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#game-videos" role="button" aria-expanded="true" aria-controls="game-videos">
+                        Oyun Videoları
+                    </div>
+                    <div class="card-body collapse show" id="game-videos">
+                        <a href="https://support.google.com/youtube/answer/171780?hl=tr" class="text-danger text-decoration-none d-inline-block mb-1" target="_blank">Youtube Video Ekleme Yardım İçin Tıklayınız</a>
+                        <div class="form-group">
+                            <label for="video1" class="text-primary font-weight-bold">Video1*</label>
+                            <input type="text" class="form-control" id="video1" name="video1" placeholder="Video Linki Giriniz" value="{{ $game->video1 }}">
+                            <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
+                            <iframe src="{{ $game->video1 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="video2" class="text-primary font-weight-bold">Video2</label>
+                            <input type="text" class="form-control" id="video2" name="video2" placeholder="Video Linki Giriniz" value="{{ $game->video2 }}">
+                            <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
+                            @if(isset($game->video2))
+                                <iframe src="{{ $game->video2 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="video3" class="text-primary font-weight-bold">Video3</label>
+                            <input type="text" class="form-control" id="video3" name="video3" placeholder="Video Linki Giriniz" value="{{ $game->video3 }}">
+                            <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
+                            @if(isset($game->video3))
+                                <iframe src="{{ $game->video3 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="video4" class="text-primary font-weight-bold">Video4</label>
+                            <input type="text" class="form-control" id="video4" name="video4" placeholder="Video Linki Giriniz" value="{{ $game->video4 }}">
+                            <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
+                            @if(isset($game->video4))
+                                <iframe src="{{ $game->video4 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
+                            @endif
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="video5" class="text-primary font-weight-bold">Video5</label>
+                            <input type="text" class="form-control" id="video5" name="video5" placeholder="Video Linki Giriniz" value="{{ $game->video5 }}">
+                            <span class="form-text text-muted"><i>https://www.youtube.com/embed/</i> sonrasını düzenleyiniz.</span>
+                            @if(isset($game->video5))
+                                <iframe src="{{ $game->video5 }}" class="mt-2 rounded" width="500" height="300" allowfullscreen></iframe>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-group text-center">
+        <div class="form-group text-center mt-2">
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Kaydet</button>
             <a href="{{route('admin.games')}}" class="btn btn-danger"><i class="fa fa-backspace"></i> Vazgeç</a>
         </div>
