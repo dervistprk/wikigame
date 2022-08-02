@@ -9,12 +9,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - WikiGame</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->favicon) }}"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-4.4.1.css') }}">
+    <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('css/dark-mode.css') }}">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/cookie-sent-3.min.css') }}"/>
     @yield('custom-css')
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KY0WRBH1EE"></script>
@@ -30,14 +30,14 @@
 @yield('content')
 <button class="btn btn-warning rounded-circle" onclick="topFunction()" id="topBtn" data-toggle="tooltip" data-placement="top" title="En Üste Git"><i class="fas fa-angle-up"></i></button>
 @include('layouts.footer')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
+<script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>
+<script src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
+<script src="{{ asset('js/popper-1.12.9.js') }}"></script>
 <script src="{{ asset('js/scripts.js') }}"></script>
 <script src="{{ asset('js/dark-mode-switch.js') }}"></script>
 <script src="{{ asset('js/lazysizes.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script src="{{ asset('js/cookie-sent-3.min.js') }}"></script>
 <script>
     window.cookieconsent.initialise({
         "palette": {

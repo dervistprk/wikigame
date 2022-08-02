@@ -8,8 +8,8 @@
     <meta name="author" content="dervistprk"/>
     <title>Yönetici Girişi - WikiGame</title>
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-4.3.1.css') }}">
 </head>
 <body style="background: ghostwhite">
 <div id="layoutAuthentication">
@@ -69,7 +69,7 @@
         </main>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="{{ asset('backend/js/jquery-3.3.1-slim.js') }}"></script>
+<script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}"></script>
 </body>
 </html>
