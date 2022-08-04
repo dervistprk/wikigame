@@ -22,11 +22,12 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->timestamp('birth_day')->default(Carbon::now());
-            $table->string('gender');
-            $table->text('about');
+            $table->string('gender')->nullable();
+            $table->text('about')->nullable();
             $table->boolean('is_admin')->default(0);
             $table->integer('comment_count')->default(0);
             $table->boolean('is_email_verified')->default(0);
+            $table->string('google_id')->nullable();
             $table->string('remember_token')->nullable();
             $table->timestamps();
         });

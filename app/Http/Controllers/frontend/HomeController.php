@@ -10,6 +10,7 @@ use App\Models\Games;
 use App\Models\Publishers;
 use App\Models\Settings;
 use Illuminate\Http\Request;
+use Cache;
 
 class HomeController extends Controller
 {
@@ -26,11 +27,35 @@ class HomeController extends Controller
 
     public function home()
     {
-        $latest_games     = Games::where('status', '=', 1)->orderBy('created_at', 'desc')->take(8)->get();
-        $popular_games    = Games::where('status', '=', 1)->orderBy('hit', 'desc')->take(8)->get();
-        $latest_articles  = Articles::where('status', '=', 1)->orderBy('created_at', 'desc')->take(4)->get();
-        $popular_articles = Articles::where('status', '=', 1)->orderBy('hit', 'desc')->take(4)->get();
-        if ($latest_games->count() > 0 && $popular_games->count() > 0) {
+        if (Cache::has('latest_games')) {
+            $latest_games = Cache::get('latest_games');
+        } else {
+            $latest_games     = Games::where('status', '=', 1)->orderBy('created_at', 'desc')->take(8)->get();
+            Cache::put('latest_games', $latest_games, 900);
+        }
+
+        if (Cache::has('popular_games')) {
+            $popular_games = Cache::get('popular_games');
+        } else {
+            $popular_games    = Games::where('status', '=', 1)->orderBy('hit', 'desc')->take(8)->get();
+            Cache::put('popular_games', $popular_games, 900);
+        }
+
+        if (Cache::has('latest_articles')) {
+            $latest_articles = Cache::get('latest_articles');
+        } else {
+            $latest_articles  = Articles::where('status', '=', 1)->orderBy('created_at', 'desc')->take(4)->get();
+            Cache::put('latest_articles', $latest_articles, 900);
+        }
+
+        if (Cache::has('popular_articles')) {
+            $popular_articles = Cache::get('popular_articles');
+        } else {
+            $popular_articles = Articles::where('status', '=', 1)->orderBy('hit', 'desc')->take(4)->get();
+            Cache::put('popular_articles', $popular_articles, 900);
+        }
+
+        if ($latest_games->count() > 0 && $latest_articles->count() > 0) {
             return view('frontend.home', compact('latest_games', 'popular_games', 'latest_articles', 'popular_articles'));
         }
 
@@ -65,8 +90,19 @@ class HomeController extends Controller
 
     public function category($slug)
     {
-        $game_category = Categories::where('status', '=', 1)->where('slug', '=', $slug)->first();
-        $games         = $game_category->games()->paginate(12);
+        if (Cache::has('category')) {
+            $game_category = Cache::get('category');
+        } else {
+            $game_category = Categories::where('status', '=', 1)->where('slug', '=', $slug)->first();
+            Cache::put('category', $game_category, 3600);
+        }
+
+        if (Cache::has('category_games')) {
+            $games = Cache::get('category_games');
+        } else {
+            $games         = $game_category->games()->paginate(12);
+            Cache::put('category_games', $games, 3600);
+        }
 
         return view('frontend.category', compact('games', 'game_category'));
     }

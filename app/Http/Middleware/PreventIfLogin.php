@@ -17,7 +17,7 @@ class PreventIfLogin
     public function handle(Request $request, Closure $next)
     {
         if (\Auth::check()) {
-            return redirect()->route('home')->with('message', 'Yeni bir üyelik almak için lütfen öncelikle mevcut üyeliğinizden çıkış yapınız.');
+            return redirect()->route('home')->with('message', 'Lütfen öncelikle mevcut oturumdan çıkış yapınız.');
         }
         return $next($request);
     }
