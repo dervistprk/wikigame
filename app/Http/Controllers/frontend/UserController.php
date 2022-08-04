@@ -253,7 +253,6 @@ class UserController extends Controller
             $password = Str::random(10);
             $token    = Str::random(64);
             $simplify = trim(strtolower($user->user['given_name'] . $user->user['family_name']));
-            //$simplify = preg_replace('/\s+/', '', $simplify);
 
             $search  = array('Ç','ç','Ğ','ğ','ı','İ','Ö','ö','Ş','ş','Ü','ü');
             $replace = array('c','c','g','g','i','i','o','o','s','s','u','u');
