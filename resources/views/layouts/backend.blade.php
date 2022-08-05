@@ -10,10 +10,11 @@
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->backend_favicon) }}"/>
     <link href="{{ asset('backend/css/simple-datatables.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-4.3.1.css') }}">
-    <link href="{{ asset('backend/css/summernote-0.9.18-bs4.css') }}" rel="stylesheet">
+{{--<link href="{{ asset('backend/css/summernote-0.8.18-bs4.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/backend.css') }}" rel="stylesheet"/>
     <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     @yield('custom-css')
 </head>
 <body class="sb-nav-fixed">
@@ -99,7 +100,7 @@
 <script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>
 <script src="{{ asset('backend/js/scripts.js') }}"></script>
 <script src="{{ asset('backend/js/chart-2.8.0.js') }}"></script>
-<script src="{{ asset('backend/js/simple-datatables.js') }}" crossorigin="anonymous"></script>
+<script src="{{ asset('backend/js/simple-datatables.js') }}"></script>
 <script src="{{ asset('backend/js/datatables-simple-demo.js') }}"></script>
 <script src="{{ asset('backend/js/summernote-0.8.18-bs4.js') }}"></script>
 <script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}"></script>

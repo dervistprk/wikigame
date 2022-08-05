@@ -44,13 +44,26 @@ card
 /*
 navbar
  */
+[data-theme="dark"] .nav-item::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #fec400;
+    transition: 0.4s
+}
+
 [data-theme="dark"] .dropdown-item {
     background-color: #222222 !important;
     color: #eee; !important;
 }
 
 [data-theme="dark"] #navbar a:hover {
-    color: darkorange; !important;
+    color: #fec400; !important;
+}
+
+[data-theme="dark"] #navbar2 a:hover {
+    color: #fec400; !important;
 }
 
 [data-theme="dark"] .dropdown-item:hover {

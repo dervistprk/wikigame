@@ -18,8 +18,10 @@ function scrollFunction() {
     var currentScrollPos = window.pageYOffset;
     if (prevScrollpos > currentScrollPos) {
         document.getElementById("navbar").style.top = "0";
+        document.getElementById("navbar2").style.top = "60px";
     } else {
         document.getElementById("navbar").style.top = "-60px";
+        document.getElementById("navbar2").style.top = "0";
     }
     prevScrollpos = currentScrollPos;
 
@@ -44,6 +46,7 @@ $(document).ready(function () {
     });
 });
 
+//initialize tooltip
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })

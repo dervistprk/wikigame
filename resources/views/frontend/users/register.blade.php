@@ -110,6 +110,11 @@
                         </button>
                     </div>
                     <div class="modal-body text-body">
+                        <p>
+                            Lütfen aşağıda belirtilen kuralları dikkatle okuyunuz.<br>
+                            Kuralları okumamanızdan kaynaklı bir sorunda WikiGame herhangi bir sorumluluk kabul etmemektedir.
+                        </p>
+                        <hr>
                         <ul>
                             <li>E-posta adresimin site veritabanı tarafından kaydedilmesini kabul ediyorum.</li>
                             <li>Doğum tarihi, cinsiyet gibi özel bilgilerimin kaydedilmesini kabul ediyorum.</li>
@@ -117,6 +122,7 @@
                             <li>Moderatörlerle tartışmaya girmeyeceğimi, hakkımda verdikleri kararlara saygı duyacağımı kabul ediyorum.</li>
                             <li>Diğer kullanıcılara saygısızlık yapmayacağımı kabul ediyorum.</li>
                             <li>Diğer kullanıcılarla din, siyaset, ırkçılık gibi konularda tartışma çıkarmayacağımı kabul ediyorum</li>
+                            <li>Özel oyun haberleri gibi önemli gelişmelerde Wikigame'den e-posta almak istediğimi kabul ediyorum.</li>
                         </ul>
                         <hr>
                         <p>

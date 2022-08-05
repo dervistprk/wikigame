@@ -38,6 +38,7 @@
 <script src="{{ asset('js/dark-mode-switch.js') }}"></script>
 <script src="{{ asset('js/lazysizes.min.js') }}"></script>
 <script src="{{ asset('js/cookie-sent-3.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 <script>
     window.cookieconsent.initialise({
         "palette": {
@@ -55,6 +56,19 @@
             "dismiss": "Anladım",
             "link": "Daha Fazla Bilgi"
         }
+    });
+
+    var route = "{{ route('autocompleteSearch') }}";
+    $('.search-input').typeahead({
+        minLength: 3,
+        highlight: true,
+        source   : function (query, process) {
+            return $.get(route, {
+                query: query
+            }, function (data) {
+                return process(data);
+            });
+        },
     });
 </script>
 @yield('custom-js')

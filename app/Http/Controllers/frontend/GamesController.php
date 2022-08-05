@@ -20,13 +20,7 @@ class GamesController extends Controller
 
     public function list()
     {
-        if (Cache::has('games_list')) {
-            $games = Cache::get('games_list');
-        } else {
-            $games = Games::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
-            Cache::put('games_list', $games, env('cache_expire'));
-        }
-
+        $games = Games::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
         if ($games->count() > 0) {
             return view('frontend.all_games', compact('games'));
         }
@@ -56,13 +50,7 @@ class GamesController extends Controller
 
     public function developers()
     {
-        if (Cache::has('developers')) {
-            $developers = Cache::get('developers');
-        } else {
-            $developers = Developers::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
-            Cache::put('developers', $developers, env('cache_expire'));
-        }
-
+        $developers = Developers::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
         if ($developers->count() > 0) {
             return view('frontend.lists.developers', compact('developers'));
         }
@@ -80,12 +68,7 @@ class GamesController extends Controller
 
     public function publishers()
     {
-        if (Cache::has('publishers')) {
-            $publishers = Cache::get('publishers');
-        } else {
-            $publishers = Publishers::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
-        }
-
+        $publishers = Publishers::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
         if ($publishers->count() > 0) {
             return view('frontend.lists.publishers', compact('publishers'));
         }
