@@ -23,12 +23,16 @@
     p {
         padding: 4px;
     }
+
+    .social {
+        font-weight: bold;
+    }
 </style>
 <div class="body">
     <h1>Üyelik Bilgileriniz</h1>
     <h3>WikiGame'e hoşgeldiniz. Sizi aramızda görmekten mutluluk duyuyoruz.</h3>
     <p>
-        Google servisini kullanarak üye oldunuz. Giriş bilgileriniz aşağıda belirtilmiştir.<br>
+        <span class="social">{{ $social }}</span> servisini kullanarak üye oldunuz. Giriş bilgileriniz aşağıda belirtilmiştir.<br>
         Şifrenizi değiştirmenizi şiddetle tavsiye ederiz.<br>
         Şifrenizi değiştirmek ve diğer bilgilerinizi güncellemek için <strong>profilim->profil bilgilerimi güncelle</strong> adımlarını takip edebilirsiniz.
     </p>

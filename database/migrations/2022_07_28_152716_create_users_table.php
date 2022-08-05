@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->integer('comment_count')->default(0);
             $table->boolean('is_email_verified')->default(0);
             $table->string('google_id')->nullable();
+            $table->string('facebook_id')->nullable();
             $table->string('remember_token')->nullable();
             $table->timestamps();
         });

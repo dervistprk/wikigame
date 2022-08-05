@@ -5,7 +5,7 @@
         @if(isset($game))
             <div>
                 <h2 class="game-header">{{$game->name}}</h2>
-                <div style="margin: 0 100px 0 100px">
+                <div class="justify-content-center align-content-center d-flex h-100">
                     @include('frontend.carousel')
                 </div>
                 <div class="game-info m-3 p-3 rounded">

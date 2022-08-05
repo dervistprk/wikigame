@@ -39,10 +39,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col text-center">
-                        <a class="btn btn-outline-danger m-2" href="{{ route('redirect-google') }}" role="button" style="text-transform:none">
-                            <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-                            Login with Google
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="google-btn-overlay">
+                        <a class="btn btn-outline-danger m-2" id="google-btn" href="{{ route('redirect-google') }}" role="button" style="text-transform:none">
+                            <i class="fab fa-google"></i> Google ile Giriş Yap
+                        </a>
+                    </div>
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="facebook-btn-overlay">
+                        <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}">
+                            <i class="fab fa-facebook"></i> Facebook ile Giriş Yap
                         </a>
                     </div>
                 </div>

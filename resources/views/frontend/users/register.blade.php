@@ -81,11 +81,21 @@
                 <hr>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="agreement_confirmation" required/>
-                    <label class="form-check-label" for="agreement_confirmation"><a href="" class="game-detail-links text-decoration-none" data-toggle="modal" data-target="#exampleModalLong">Site kurallarını</a> okudum ve kabul ediyorum.</label>
+                    <label class="form-check-label" for="agreement_confirmation"><a href="" class="game-detail-links text-decoration-none" data-toggle="modal" data-target="#exampleModalLong">Kullanıcı sözleşmesini</a> okudum ve kabul ediyorum.</label>
                 </div>
                 <div class="text-center m-2">
                     <button type="submit" class="btn btn-success me-2 btn-register"><i class="fa fa-user"></i> Üye Ol</button>
                     <button type="reset" class="btn btn-danger"><i class="fa fa-undo"></i> Sıfırla</button>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="google-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                        <a class="btn btn-outline-danger m-2" id="google-btn" href="{{ route('redirect-google') }}" role="button" style="text-transform:none">
+                            <i class="fab fa-google"></i> Google ile Üye Ol
+                        </a>
+                    </div>
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="facebook-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                        <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}"><i class="fab fa-facebook"></i> Facebook ile Üye Ol</a>
+                    </div>
                 </div>
             </div>
         </form>
@@ -124,7 +134,6 @@
 
 @section('custom-js')
     <script type="text/javascript">
-
         $('#register-form input').blur(function () {
             if (!$(this).val()) {
                 $(this).addClass('alert-danger');
@@ -149,5 +158,24 @@
                 $('#charNum').text(500 - len);
             }
         }
+
+        var social_btn         = $('#google-btn, #facebook-btn');
+        var social_btn_overlay = $('#google-btn-overlay, #facebook-btn-overlay');
+
+        social_btn.addClass('disabled');
+        social_btn.css('pointer-events', 'none');
+
+        $('#agreement_confirmation').change(function() {
+            var is_checked = $('#agreement_confirmation')[0].checked
+            if (is_checked) {
+                social_btn.removeClass('disabled');
+                social_btn.css('pointer-events', 'auto');
+                social_btn_overlay.tooltip('disable');
+            } else {
+                social_btn.addClass('disabled');
+                social_btn.css('pointer-events', 'none');
+                social_btn_overlay.tooltip('enable');
+            }
+        });
     </script>
 @endsection

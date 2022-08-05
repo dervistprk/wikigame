@@ -9,7 +9,7 @@
 <p>Start your local development server by <code>php artisan serve</code> command. You will need a local server program for this.(Xampp, Wampp etc.)</p>
 <p>If you are not running the app on your local, then add your IP address to <code>whitelist</code> table. <code>127.0.0.1</code> should be already added by seeding.</p>
 <p>You need to set your mail setting in the <code>.env</code> file in order to test verification mail after registering to app.</p>
-<p>You need to set your google credentials values in the <code>.env</code> file in order to use sign in with google option.</p>
+<p>You need to set your social credentials values in the <code>.env</code> file in order to use sign in with social media login options.(<i>You can examine <code>.env.example</code> in order to get clearer idea about it.</i>)</p>
 </p>
     Go to <code>http://localhost:8000/admin/giris</code> and type <code>dervistprk@email.com</code> for email and <code>123456Aa</code> for the password.(You must add your ip address to reach admin panel.)<br>
     Afterwards you will be automatically redirected to admin panel dashboard.<br>

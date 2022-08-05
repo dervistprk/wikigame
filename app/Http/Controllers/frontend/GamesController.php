@@ -24,7 +24,7 @@ class GamesController extends Controller
             $games = Cache::get('games_list');
         } else {
             $games = Games::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
-            Cache::put('games_list', $games, 600);
+            Cache::put('games_list', $games, env('cache_expire'));
         }
 
         if ($games->count() > 0) {
@@ -36,13 +36,8 @@ class GamesController extends Controller
 
     public function gameDetails($slug)
     {
-        if (Cache::has('game')) {
-            $game = Cache::get('game');
-        } else {
-            $game = Games::where('status', '=', 1)->where('slug','=' , $slug)->first();
-            Cache::put('game', $game, 3600);
-        }
 
+        $game           = Games::where('status', '=', 1)->where('slug', '=', $slug)->first();
         $developer      = $game->developer;
         $publisher      = $game->publisher;
         $game_details   = $game->details;
@@ -65,7 +60,7 @@ class GamesController extends Controller
             $developers = Cache::get('developers');
         } else {
             $developers = Developers::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
-            Cache::put('developers', $developers, 3600);
+            Cache::put('developers', $developers, env('cache_expire'));
         }
 
         if ($developers->count() > 0) {
@@ -77,15 +72,8 @@ class GamesController extends Controller
 
     public function developer($slug)
     {
-        if (Cache::has('developer') && Cache::has('dev_games')) {
-            $developer = Cache::get('developer');
-            $games     = Cache::get('dev_games');
-        } else {
-            $developer = Developers::where('status', '=', 1)->where('slug','=' , $slug)->first();
-            $games     = $developer->games()->where('status', '=', 1)->paginate(12);
-            Cache::put('developer', $developer, 3600);
-            Cache::put('dev_games', $games, 3600);
-        }
+        $developer = Developers::where('status', '=', 1)->where('slug', '=', $slug)->first();
+        $games     = $developer->games()->where('status', '=', 1)->paginate(12);
 
         return view('frontend.developer', compact('developer', 'games'));
     }
@@ -107,15 +95,8 @@ class GamesController extends Controller
 
     public function publisher($slug)
     {
-        if (Cache::has('publisher') && Cache::has('pub_games')) {
-            $publisher = Cache::get('publisher');
-            $games     = Cache::get('pub_games');
-        } else {
-            $publisher = Publishers::where('status', '=', 1)->where('slug','=' , $slug)->first();
-            $games     = $publisher->games()->where('status', '=', 1)->paginate(12);
-            Cache::put('publisher', $publisher, 3600);
-            Cache::put('pub_games', $games, 3600);
-        }
+        $publisher = Publishers::where('status', '=', 1)->where('slug', '=', $slug)->first();
+        $games     = $publisher->games()->where('status', '=', 1)->paginate(12);
 
         return view('frontend.publisher', compact('publisher', 'games'));
     }

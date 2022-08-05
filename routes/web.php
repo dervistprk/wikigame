@@ -104,14 +104,16 @@ Route::middleware('maintenance')->group(function(){
     Route::get('makale/{id}', [ArticlesController::class, 'article'])->name('article');
     Route::post('arama', [HomeController::class, 'search'])->name('search');
     Route::get('oto-arama', [HomeController::class, 'autoComplete'])->name('autocompleteSearch');
-    Route::get('/redirect-google', [UserController::class, 'redirectToGoogle'])->name('redirect-google');
-    Route::get('/callback-google', [UserController::class, 'handleGoogleCallback'])->name('handle-google');
 
     Route::middleware('prevent_if_login')->group(function() {
         Route::get('uye-ol', [UserController::class, 'registerForm'])->name('register-form');
         Route::post('uye-ol', [UserController::class, 'registerPost'])->name('register-post');
         Route::get('giris', [UserController::class, 'loginForm'])->name('login-form');
         Route::post('giris', [UserController::class, 'loginPost'])->name('login-post');
+        Route::get('/redirect-google', [UserController::class, 'redirectToGoogle'])->name('redirect-google');
+        Route::get('/callback-google', [UserController::class, 'handleGoogleCallback'])->name('handle-google');
+        Route::get('/redirect-facebook', [UserController::class, 'redirectToFacebook'])->name('redirect-facebook');
+        Route::get('/callback-facebook', [UserController::class, 'handleFacebookCallback'])->name('handle-facebook');
     });
 
     Route::middleware(['is_login_user', 'is_verify_email'])->group(function() {
