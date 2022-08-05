@@ -107,15 +107,17 @@ class UserController extends Controller
                         $message->to($request->email);
                         $message->subject('WikiGame Doğrulama E-Postası');
                     });
+                    toastr()->success('Doğrulama e-postası tekrar gönderildi.', 'Başarılı');
                     return redirect()->route('login-form')->with('message', 'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol ediniz.');
                 } else {
+                    toastr()->warning('E-posta daha önce doğrulanmış.', 'Uyarı');
                     return redirect()->route('login-form')->with('message', 'Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.');
                 }
             } else {
+                toastr()->error('E-posta veya şifre yanlış.', 'Hata');
                 return redirect()->route('resend-verification')->with('message', 'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyiniz.');
             }
         }
-
 
         return view('frontend.users.reSendVerification');
     }
@@ -130,6 +132,7 @@ class UserController extends Controller
         $remember = $request->input('remember_token');
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember ? true : false)) {
+            toastr()->success('Sisteme başarıyla giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         }
         return redirect()->route('login-form')->withErrors('E-Posta Adresi veya Şifre Hatalı')->withInput();
@@ -249,7 +252,8 @@ class UserController extends Controller
 
         if($existing_user){
             auth()->login($existing_user, true);
-            return redirect()->route('user-profile')->with('message', 'Google servisi ile giriş yaptınız. Sitemizde iyi vakit geçirmenizi dileriz.');
+            toastr()->success('Sisteme Google servisi ile giriş yaptınız', 'Başarılı');
+            return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);
             $token    = Str::random(64);
@@ -311,7 +315,8 @@ class UserController extends Controller
 
         if ($existing_user) {
             auth()->login($existing_user, true);
-            return redirect()->route('user-profile')->with('message', 'Facebook servisi ile giriş yaptınız. Sitemizde iyi vakit geçirmenizi dileriz.');
+            toastr()->success('Sisteme Facebook servisi ile giriş yaptınız', 'Başarılı');
+            return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);
             $token    = Str::random(64);
