@@ -94,7 +94,19 @@
                         </a>
                     </div>
                     <div class="col-sm-4 mx-auto text-center d-inline-block" id="facebook-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
-                        <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}"><i class="fab fa-facebook"></i> Facebook ile Üye Ol</a>
+                        <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}">
+                            <i class="fab fa-facebook"></i> Facebook ile Üye Ol
+                        </a>
+                    </div>
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="github-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                        <a class="btn btn-outline-secondary m-2" id="github-btn" href="{{ route('redirect-github') }}">
+                            <i class="fab fa-github"></i> Github ile Üye Ol
+                        </a>
+                    </div>
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="linkedin-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                        <a class="btn btn-outline-primary m-2" id="linkedin-btn" href="{{ route('redirect-linkedin') }}">
+                            <i class="fab fa-linkedin"></i> LinkedIn ile Üye Ol
+                        </a>
                     </div>
                 </div>
             </div>
@@ -165,8 +177,8 @@
             }
         }
 
-        var social_btn         = $('#google-btn, #facebook-btn');
-        var social_btn_overlay = $('#google-btn-overlay, #facebook-btn-overlay');
+        var social_btn         = $('#google-btn, #facebook-btn, #github-btn, #linkedin-btn');
+        var social_btn_overlay = $('#google-btn-overlay, #facebook-btn-overlay, #github-btn-overlay, #linkedin-btn-overlay');
 
         social_btn.addClass('disabled');
         social_btn.css('pointer-events', 'none');

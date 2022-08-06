@@ -11,6 +11,10 @@ use App\Http\Controllers\frontend\GamesController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\backend\AuthController;
 use App\Http\Controllers\frontend\UserController;
+use App\Services\FacebookAuthService;
+use App\Services\GithubAuthService;
+use App\Services\GoogleAuthService;
+use App\Services\LinkedinAuthService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -110,10 +114,14 @@ Route::middleware('maintenance')->group(function(){
         Route::post('uye-ol', [UserController::class, 'registerPost'])->name('register-post');
         Route::get('giris', [UserController::class, 'loginForm'])->name('login-form');
         Route::post('giris', [UserController::class, 'loginPost'])->name('login-post');
-        Route::get('/redirect-google', [UserController::class, 'redirectToGoogle'])->name('redirect-google');
-        Route::get('/callback-google', [UserController::class, 'handleGoogleCallback'])->name('handle-google');
-        Route::get('/redirect-facebook', [UserController::class, 'redirectToFacebook'])->name('redirect-facebook');
-        Route::get('/callback-facebook', [UserController::class, 'handleFacebookCallback'])->name('handle-facebook');
+        Route::get('/redirect-google', [GoogleAuthService::class, 'redirectToGoogle'])->name('redirect-google');
+        Route::get('/callback-google', [GoogleAuthService::class, 'handleGoogleCallback'])->name('handle-google');
+        Route::get('/redirect-facebook', [FacebookAuthService::class, 'redirectToFacebook'])->name('redirect-facebook');
+        Route::get('/callback-facebook', [FacebookAuthService::class, 'handleFacebookCallback'])->name('handle-facebook');
+        Route::get('/redirect-github', [GithubAuthService::class, 'redirectToGithub'])->name('redirect-github');
+        Route::get('/callback-github', [GithubAuthService::class, 'handleGithubCallback'])->name('handle-github');
+        Route::get('/redirect-linkedin', [LinkedinAuthService::class, 'redirectToLinkedin'])->name('redirect-linkedin');
+        Route::get('/callback-linkedin', [LinkedinAuthService::class, 'handleLinkedinCallback'])->name('handle-linkedin');
     });
 
     Route::middleware(['is_login_user', 'is_verify_email'])->group(function() {

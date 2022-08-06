@@ -49,6 +49,16 @@
                             <i class="fab fa-facebook"></i> Facebook ile Giriş Yap
                         </a>
                     </div>
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="github-btn-overlay">
+                        <a class="btn btn-outline-secondary m-2" id="github-btn" href="{{ route('redirect-github') }}">
+                            <i class="fab fa-github"></i> Github ile Giriş Yap
+                        </a>
+                    </div>
+                    <div class="col-sm-4 mx-auto text-center d-inline-block" id="linkedin-btn-overlay">
+                        <a class="btn btn-outline-primary m-2" id="linkedin-btn" href="{{ route('redirect-linkedin') }}">
+                            <i class="fab fa-linkedin"></i> LinkedIn ile Giriş Yap
+                        </a>
+                    </div>
                 </div>
         </form>
     </div>
