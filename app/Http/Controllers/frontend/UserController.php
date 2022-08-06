@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Settings;
 use App\Models\WhiteList;
-use Carbon\Carbon;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +14,6 @@ use App\Models\User;
 use App\Models\UserVerify;
 use Illuminate\Support\Str;
 use Mail;
-use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {

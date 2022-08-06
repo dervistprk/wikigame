@@ -58,18 +58,37 @@
         }
     });
 
-    var route = "{{ route('autocompleteSearch') }}";
     $('.search-input').typeahead({
-        minLength: 3,
-        highlight: true,
-        source   : function (query, process) {
-            return $.get(route, {
-                query: query
-            }, function (data) {
-                return process(data);
-            });
+        source     : function (request, response) {
+            $.ajax({
+                url     : "{{ route('autocompleteSearch') }}",
+                type    : 'GET',
+                dataType: 'JSON',
+                data    : {query: $('.search-input').val()},
+                beforeSend: function () {
+                    $('#search-icon').removeClass('fa-paper-search').addClass('fa-spinner fa-spin');
+                },
+                success : function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            url  : item.slug,
+                            value: item.name
+                        }
+                    }))
+                    $('#search-icon').removeClass('fa-spinner fa-spin').addClass('fa-search');
+                }
+            })
+        },
+        minLength  : 3,
+        highlight  : true,
+        displayText: function (item) {
+            return item.value
+        },
+        updater    : function (event) {
+            window.location.href = '/oyun/' + event.url;
         },
     });
+
 </script>
 @yield('custom-js')
 </body>
