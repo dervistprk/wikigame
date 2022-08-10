@@ -89,6 +89,15 @@ navbar
     background: #212529; !important;
 }
 
+[data-theme="dark"] #navbar2 .navbar-collapse, #navbar2 .collapse {
+    background: #212529; !important;
+}
+
+[data-theme="dark"] #navbar .navbar-collapse, #navbar .collapse {
+    background: #1a1e21; !important;
+}
+
+
 /*
 links
  */

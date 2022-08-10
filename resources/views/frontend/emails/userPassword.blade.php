@@ -38,6 +38,8 @@
     </p>
     <p>
         <strong>Şifreniz:</strong> {{ $password }}<br>
+    </p>
+    <p>
         Profil sayfanıza gitmek için <a class="login" href="{{ route('user-profile') }}">buraya</a> tıklayınız.<br>
     </p>
 </div>

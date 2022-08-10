@@ -1,5 +1,5 @@
 <div class="fixed-top" data-toggle="affix">
-    <nav class="navbar navbar-expand-lg navbar-dark" id="navbar">
+    <nav class="navbar navbar-expand-xl navbar-dark" id="navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('home') }}">
                 @if(($settings->logo))
@@ -56,25 +56,30 @@
                             </ul>
                         </li>
                     @endif
+                    <li class="nav-item">
+                        <div class="custom-control custom-switch me-3 mt-2">
+                            <span style="margin-right: 50px;"><i class="fas fa-sun"></i></span>
+                            <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                            <label class="custom-control-label p-1" for="darkSwitch"></label>
+                            <i class="fas fa-moon"></i>
+                        </div>
+                    </li>
                 </ul>
-            </div>
-            <div class="custom-control custom-switch">
-                <span style="margin-right: 50px;"><i class="fas fa-sun"></i></span>
-                <input type="checkbox" class="custom-control-input" id="darkSwitch">
-                <label class="custom-control-label p-1" for="darkSwitch"></label>
-                <i class="fas fa-moon"></i>
             </div>
         </div>
     </nav>
 <!-- Second Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" id="navbar2">
+    <nav class="navbar navbar-expand-xl navbar-dark" id="navbar2">
         <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="form-inline w-25" action="{{ route('search') }}" method="post">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+                <form class="form-inline" action="{{ route('search') }}" method="post">
                     @csrf
-                    <div class="input-group w-100">
+                    <div class="input-group w-100 m-1 ms-3 me-3">
                         <input class="form-control search-input" type="text" autocomplete="off" placeholder="Aramak İstediğiniz Oyun Adını Yazın" aria-label="Ara..." aria-describedby="btnNavbarSearch" name="search"/>
-                        <button class="btn btn-primary" id="btnNavbarSearch" type="submit">
+                        <button class="btn btn-primary mr-sm-2" id="btnNavbarSearch" type="submit">
                             <i id="search-icon" class="fas fa-search"></i></button>
                     </div>
                 </form>

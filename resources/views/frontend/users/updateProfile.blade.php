@@ -4,10 +4,17 @@
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <form class="game-info rounded col-sm-10 mt-2" action="{{ route('update-profile') }}" method="post" id="update-profile-form">
             @if($errors->any())
-                <div class="alert alert-danger mt-2">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
+                <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                        <div class="alert alert-danger mt-2 alert-dismissible fade show">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             @endif
             @csrf

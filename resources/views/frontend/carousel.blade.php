@@ -1,5 +1,5 @@
 <!-- Carousel wrapper -->
-<div id="carouselBasicExample" class="carousel slide" data-ride="carousel">
+<div id="carouselBasicExample" class="carousel slide carousel-fade" data-ride="carousel">
     <!-- Controls -->
     <button id="prev" class="carousel-control-prev fontIcon rounded-circle" type="button" data-target="#carouselBasicExample" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -116,7 +116,7 @@
 
         #carouselBasicExample iframe {
             width: 1000px;
-            height: 560px;
+            height: 563px;
         }
 
         .fontIcon {

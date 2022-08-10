@@ -4,13 +4,17 @@
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <form class="game-info rounded col-sm-8 mt-2" action="{{ route('login-post') }}" method="post" id="login-form">
             @if($errors->any())
-                <div class="alert alert-danger mt-2  alert-dismissible fade show">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                        <div class="alert alert-danger mt-2 alert-dismissible fade show">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             @endif
             @if(session()->has('message'))
@@ -40,7 +44,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-4 mx-auto text-center d-inline-block" id="google-btn-overlay">
-                        <a class="btn btn-outline-danger m-2" id="google-btn" href="{{ route('redirect-google') }}" role="button" style="text-transform:none">
+                        <a class="btn btn-outline-danger m-2" id="google-btn" href="{{ route('redirect-google') }}">
                             <i class="fab fa-google"></i> Google ile Giriş Yap
                         </a>
                     </div>
