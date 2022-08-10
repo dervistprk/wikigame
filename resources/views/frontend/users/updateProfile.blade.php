@@ -64,7 +64,12 @@
                 <div class="form-row">
                     <div class="col mt-2">
                         <label for="birth_day" class="font-weight-bold">Doğum Tarihi</label>
-                        <input type="date" name="birth_day" class="form-control" id="birth_day" value="{{ date('Y-m-d', strtotime($user->birth_day)) }}" required/>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                            <input type="text" name="birth_day" class="form-control date-picker" id="birth_day" value="{{ date('Y-m-d', strtotime($user->birth_day)) }}" required/>
+                        </div>
                     </div>
                     <div class="col mt-2">
                         <label for="gender" class="font-weight-bold">Cinsiyet</label>

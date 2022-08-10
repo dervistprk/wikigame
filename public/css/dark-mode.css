@@ -81,8 +81,12 @@ navbar
     color: #eee; !important;
 }
 
-[data-theme="dark"] .navbar-dark {
-    background: rgb(52, 58, 64); !important;
+[data-theme="dark"] #navbar {
+    background: #1a1e21; !important;
+}
+
+[data-theme="dark"] #navbar2 {
+    background: #212529; !important;
 }
 
 /*

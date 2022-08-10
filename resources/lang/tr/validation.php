@@ -204,8 +204,9 @@ return [
         'video5'           => 'Video5',
         'password'         => 'Şifre',
         'about'            => 'Hakkımda',
-        'user_name'        => 'Kullanıcı Adı',
-        'email'            => 'E-Posta'
+        'user_name'        => 'Kullanıcı adı',
+        'email'            => 'E-Posta',
+        'current_password' => 'Mevcut şifre',
     ],
 
 ];

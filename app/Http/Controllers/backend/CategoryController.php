@@ -32,11 +32,12 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        //TODO: editör validasyonu min:15 değeri düzelt.
         $request->validate([
-                               'name'        => 'required',
-                               'description' => 'required|min:15',
-                               'status'      => 'required'
-                           ]);
+               'name'        => 'required',
+               'description' => 'required|min:15',
+               'status'      => 'required'
+        ]);
 
         $category              = new Categories();
         $category->name        = $request->name;
@@ -56,10 +57,10 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-                               'name'        => 'required',
-                               'description' => 'required|min:15',
-                               'status'      => 'required',
-                           ]);
+               'name'        => 'required',
+               'description' => 'required|min:15',
+               'status'      => 'required',
+        ]);
 
         $category              = Categories::findOrFail($id);
         $category->name        = $request->name;

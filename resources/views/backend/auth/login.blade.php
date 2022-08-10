@@ -11,7 +11,7 @@
     <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-4.3.1.css') }}">
 </head>
-<body style="background: ghostwhite">
+<body class="bg-light">
 <div id="layoutAuthentication">
     <div id="layoutAuthentication_content">
         <main>
@@ -44,11 +44,11 @@
                                 <form method="post" action="{{ route('admin.login.post') }}">
                                     @csrf
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" type="email" name="email" placeholder="E-Posta Adresinizi Giriniz"/>
+                                        <input class="form-control" id="email" type="email" name="email" placeholder="E-Posta Adresinizi Giriniz" required/>
                                         <label for="email">E-Posta</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="password" type="password" name="password" placeholder="Şifre"/>
+                                        <input class="form-control" id="password" type="password" name="password" placeholder="Şifre" required/>
                                         <label for="password">Şifre</label>
                                     </div>
                                     <div class="text-center">

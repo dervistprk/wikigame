@@ -1,5 +1,5 @@
 <!-- Carousel wrapper -->
-<div id="carouselBasicExample" class="carousel slide carousel-fade" data-ride="carousel">
+<div id="carouselBasicExample" class="carousel slide" data-ride="carousel">
     <!-- Controls -->
     <button id="prev" class="carousel-control-prev fontIcon rounded-circle" type="button" data-target="#carouselBasicExample" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -45,60 +45,60 @@
         @endif
     </ol>
     <!-- Inner -->
-    <div class="carousel-inner embed-responsive embed-responsive-16by9">
+    <div class="carousel-inner">
         <div class="carousel-item embed-responsive-item active">
             <iframe id="video1" src="{{ $game->video1 }}" title="{{ $game->name }} Video" class="d-block" allowfullscreen></iframe>
         </div>
         @if(($game->video2))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item">
                 <iframe id="video2" src="{{ $game->video2 }}" title="{{ $game->name }} Video2" class="d-block" allowfullscreen></iframe>
             </div>
         @endif
         @if(($game->video3))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item">
                 <iframe id="video3" src="{{ $game->video3 }}" title="{{ $game->name }} Video3" class="d-block" allowfullscreen></iframe>
             </div>
         @endif
         @if(($game->video4))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item">
                 <iframe id="video4" src="{{ $game->video4 }}" title="{{ $game->name }} Video4" class="d-block" allowfullscreen></iframe>
             </div>
         @endif
         @if(($game->video5))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item">
                 <iframe id="video5" src="{{ $game->video5 }}" title="{{ $game->name }} Video5" class="d-block" allowfullscreen></iframe>
             </div>
         @endif
-        <div class="carousel-item embed-responsive-item">
+        <div class="carousel-item img-fluid">
             <img src="{{ $game->image1 }}" class="d-block" alt="{{ $game->name }} Resim1" title="{{ $game->name }}"/>
         </div>
         @if(($game->image2))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item img-fluid">
                 <img src="{{ $game->image2 }}" class="d-block" alt="{{ $game->name }} Resim2" title="{{ $game->name }}"/>
             </div>
         @endif
         @if(($game->image3))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item img-fluid">
                 <img src="{{ $game->image3 }}" class="d-block" alt="{{ $game->name }} Resim3" title="{{ $game->name }}"/>
             </div>
         @endif
         @if(($game->image4))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item img-fluid">
                 <img src="{{ $game->image4 }}" class="d-block" alt="{{ $game->name }} Resim4" title="{{ $game->name }}"/>
             </div>
         @endif
         @if(($game->image5))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item img-fluid">
                 <img src="{{ $game->image5 }}" class="d-block" alt="{{ $game->name }} Resim5" title="{{ $game->name }}"/>
             </div>
         @endif
         @if(($game->image6))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item img-fluid">
                 <img src="{{ $game->image6 }}" class="d-block" alt="{{ $game->name }} Resim6" title="{{ $game->name }}"/>
             </div>
         @endif
         @if(($game->image7))
-            <div class="carousel-item embed-responsive-item">
+            <div class="carousel-item img-fluid">
                 <img src="{{ $game->image7 }}" class="d-block" alt="{{ $game->name }} Resim7" title="{{ $game->name }}"/>
             </div>
         @endif
@@ -110,8 +110,8 @@
         #carouselBasicExample {
             margin-left: 50px;
             margin-right: 50px;
-            width: 1000px;
-            height: 600px;
+            max-width: 1000px;
+            max-height: 600px;
         }
 
         #carouselBasicExample iframe {
@@ -127,8 +127,8 @@
         }
 
         .carousel-item img {
-            width: 1000px;
-            height: 560px;
+            width: 100%;
+            height: 100%;
         }
 
         .carousel-control-prev,

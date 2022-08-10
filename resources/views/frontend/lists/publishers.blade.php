@@ -3,6 +3,9 @@
 @section('content')
     @if(isset($publishers))
         <div class="container">
+            <h2 class="pub-header">
+                Dağıtıcılar
+            </h2>
             @foreach($publishers as $publisher)
                 <div class="card-deck" style="margin: 10px; display: inline-block" title="{{ $publisher->name }}">
                     <div class="card">

@@ -2,13 +2,17 @@
 @section('title', 'Yönetim Paneli')
 @section('content')
     <main>
-        <div class="container-fluid px-4">
+        <div class="container">
             @if(session()->has('message'))
-                <div class="alert alert-success m-2 alert-dismissible fade show text-center">
-                    {!! session()->get('message') !!}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                        <div class="alert alert-success m-2 alert-dismissible fade show text-center">
+                            {!! session()->get('message') !!}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             @endif
             @if($site_status == 0)
@@ -16,15 +20,15 @@
                     <i class="fa fa-exclamation-triangle"></i> Site Bakım Modunda
                 </div>
             @endif
-            <h1 class="mt-4 d-inline-block">Panel</h1>
+            <h1 class="mt-4 d-inline-block">Yönetim Paneli</h1>
             <a href="{{route('home')}}" class="btn btn-sm btn-primary float-end mt-3" title="Anasayfa" target="_blank"><i class="fas fa-home" style="margin-top: 3px;"></i> Siteye Git</a>
-            <div class="card mb-4">
+            <div class="card mb-4 shadow">
                 <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-games" role="button" aria-expanded="true" aria-controls="latest-games">
                     <i class="fas fa-gamepad"></i>
                     Son Eklenen Oyunlar <span class="float-end">Toplam {{$games_count}} Oyun</span>
                 </div>
                 <div class="card-body collapse show" id="latest-games">
-                    <table class="table table-hover">
+                    <table class="table table-hover table-responsive">
                         <thead>
                         <tr>
                             <th>Kapak Resmi</th>
@@ -39,14 +43,14 @@
                         </thead>
                         <tbody>
                         @foreach($games as $game)
-                            <tr>
+                            <tr class="@if($game->status == 0) alert-danger @endif">
                                 <td>
-                                    <img src="{{ $game->cover_image }}" alt="kapak_resmi" title="{{ $game->name }}" width="75" height="100">
+                                    <img src="{{ $game->cover_image }}" alt="kapak_resmi" title="{{ $game->name }}" class="img-fluid rounded img-thumbnail" width="120" height="150">
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.edit-game', $game->id) }}" class="text-primary text-decoration-none" title="{{ $game->name }}">{{ $game->name }}</a>
                                     @if($game->status == 0)
-                                        <span class="d-inline-block alert-danger p-1"><i class="fas fa-times" style="color: red"></i> Pasif</span>
+                                        <span class="d-inline-block text-danger p-1"><i class="fas fa-times"></i> Pasif</span>
                                     @endif
                                 </td>
                                 <td>
@@ -69,13 +73,13 @@
                     </table>
                 </div>
             </div>
-            <div class="card mb-4">
+            <div class="card mb-4 shadow">
                 <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-categories" role="button" aria-expanded="true" aria-controls="latest-categories">
                     <i class="fas fa-bookmark"></i>
                     Son Eklenen Kategoriler <span class="float-end">Toplam {{$categories_count}} Kategori</span>
                 </div>
                 <div class="card-body collapse show" id="latest-categories">
-                    <table class="table table-hover">
+                    <table class="table table-hover table-responsive">
                         <thead>
                         <tr>
                             <th>Adı</th>
@@ -85,11 +89,11 @@
                         </thead>
                         <tbody>
                         @foreach($categories as $category)
-                            <tr>
+                            <tr class="@if($category->status == 0) alert-danger @endif">
                                 <td>
                                     <a href="{{ route('admin.edit-category', $category->id) }}" class="text-primary text-decoration-none" title="{{ $category->name }} Kategorisi">{{ $category->name }}</a>
                                     @if($category->status == 0)
-                                        <span class="alert-danger p-1"><i class="fas fa-times" style="color: red"></i> Pasif</span>
+                                        <span class="text-danger p-1"><i class="fas fa-times"></i> Pasif</span>
                                     @endif
                                 </td>
                                 <td>
@@ -104,13 +108,13 @@
             </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="card mb-4">
+                        <div class="card mb-4 shadow">
                             <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-developers" role="button" aria-expanded="true" aria-controls="latest-developers">
                                 <i class="fas fa-calculator"></i>
                                 Son Eklenen Geliştiriciler <span class="float-end">Toplam {{$developers_count}} Geliştirici</span>
                             </div>
                             <div class="card-body collapse show" id="latest-developers">
-                                <table class="table table-hover">
+                                <table class="table table-hover table-responsive">
                                     <thead>
                                     <tr>
                                         <th></th>
@@ -120,14 +124,14 @@
                                     </thead>
                                     <tbody>
                                     @foreach($developers as $developer)
-                                        <tr>
+                                        <tr class="@if($developer->status == 0) alert-danger @endif">
                                             <td>
-                                                <img src="{{ $developer->image }}" alt="developer_resmi" height="75" width="100" class="m-2" title="{{ $developer->name }}">
+                                                <img src="{{ $developer->image }}" alt="developer_resmi" height="100" width="130" class="img-fluid rounded img-thumbnail" title="{{ $developer->name }}">
                                             </td>
                                             <td style="width: 50%">
                                                 <a href="{{ route('admin.edit-developer', $developer->id) }}" class="text-primary text-decoration-none" title="{{ $developer->name }} Geliştiricisi">{{ $developer->name }}</a>
                                                 @if($developer->status == 0)
-                                                    <span class="alert-danger p-1"><i class="fas fa-times" style="color: red"></i> Pasif</span>
+                                                    <span class="text-danger p-1"><i class="fas fa-times"></i> Pasif</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">{{ $developer->games_count }}</td>
@@ -139,13 +143,13 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="card mb-4">
+                        <div class="card mb-4 shadow">
                             <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-publishers" role="button" aria-expanded="true" aria-controls="latest-publishers">
                                 <i class="fas fa-newspaper"></i>
                                 Son Eklenen Dağıtıcılar <span class="float-end">Toplam {{$publishers_count}} Dağıtıcı</span>
                             </div>
                             <div class="card-body collapse show" id="latest-publishers">
-                                <table class="table table-hover">
+                                <table class="table table-hover table-responsive">
                                     <thead>
                                     <tr>
                                         <th></th>
@@ -155,14 +159,14 @@
                                     </thead>
                                     <tbody>
                                     @foreach($publishers as $publisher)
-                                        <tr>
+                                        <tr class="@if($publisher->status == 0) alert-danger @endif">
                                             <td>
-                                                <img src="{{ $publisher->image }}" alt="developer_resmi" height="75" width="100" class="m-2" title="{{ $publisher->name }}">
+                                                <img src="{{ $publisher->image }}" alt="developer_resmi" height="100" width="130" class="img-fluid rounded img-thumbnail" title="{{ $publisher->name }}">
                                             </td>
                                             <td style="width: 50%">
                                                 <a href="{{ route('admin.edit-publisher', $publisher->id) }}" class="text-primary text-decoration-none" title="{{ $publisher->name }} Dağıtıcısı">{{ $publisher->name }}</a>
                                                 @if($publisher->status == 0)
-                                                    <span class="alert-danger p-1"><i class="fas fa-times" style="color: red"></i> Pasif</span>
+                                                    <span class="text-danger p-1"><i class="fas fa-times"></i> Pasif</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">{{ $publisher->games_count }}</td>
@@ -174,13 +178,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mb-4">
+                <div class="card mb-4 shadow">
                     <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-articles" role="button" aria-expanded="true" aria-controls="latest-articles">
                         <i class="fas fa-book-open"></i>
                         Son Eklenen Makaleler <span class="float-end">Toplam {{$articles_count}} Makale</span>
                     </div>
                     <div class="card-body collapse show" id="latest-articles">
-                        <table class="table table-hover">
+                        <table class="table table-hover table-responsive">
                             <thead>
                             <tr>
                                 <th></th>
@@ -191,25 +195,24 @@
                             </thead>
                             <tbody>
                             @foreach($articles as $article)
-                                <tr>
+                                <tr class="@if($article->status == 0) alert-danger @endif">
                                     <td>
-                                        <img src="{{ $article->image }}" alt="makale_resmi" height="150" width="200" class="m-2" title="{{ $article->title }}">
+                                        <img src="{{ $article->image }}" alt="makale_resmi" height="200" width="300" class="img-fluid rounded img-thumbnail" title="{{ $article->title }}">
                                     </td>
                                     <td>
                                         <a href="{{ route('admin.edit-article', $article->id) }}" class="text-primary text-decoration-none" title="{{ $article->title }}">{{ $article->title }}</a>
                                         @if($article->status == 0)
-                                            <span class="alert-danger p-1"><i class="fas fa-times" style="color: red"></i> Pasif</span>
+                                            <span class="text-danger p-1"><i class="fas fa-times"></i> Pasif</span>
                                         @endif
                                     </td>
                                     <td>{{ \Str::limit(strip_tags(str_replace('&nbsp;', ' ', $article->sub_title)), 250, '...') }}</td>
-                                    <td class="text-center" style="width: 12%">{{ $article->hit }}</td>
+                                    <td class="text-center">{{ $article->hit }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-
         </div>
     </main>
 @endsection

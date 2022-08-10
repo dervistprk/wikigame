@@ -20,7 +20,8 @@ class ArticlesController extends Controller
     {
         $articles         = Articles::where('status', '=', 1)->orderBy('created_at', 'desc')->paginate(5);
         $popular_articles = Articles::where('status', '=', 1)->orderBy('hit', 'desc')->take(5)->get();
-        return view('frontend.all_articles', compact('articles', 'popular_articles'));
+        $random_articles  = Articles::where('status', '=', 1)->inRandomOrder()->take(5)->get();
+        return view('frontend.all_articles', compact('articles', 'popular_articles', 'random_articles'));
     }
 
     public function article($slug)

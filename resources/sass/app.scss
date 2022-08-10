@@ -2,3 +2,56 @@
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
+/* Import responsive font size scss */
+@import "../node_modules/rfs/scss";
+
+h1 {
+  @include font-size(3rem);
+  font-weight: 500;
+}
+
+h2 {
+  @include font-size(2.6rem);
+  font-weight: 400;
+}
+
+h3 {
+  @include font-size(2.2rem);
+  font-weight: 300;
+}
+
+h4 {
+  @include font-size(1.8rem);
+  font-weight: 200;
+}
+
+h5 {
+  @include font-size(1.4rem);
+  font-weight: 125;
+}
+
+h6 {
+  @include font-size(1rem);
+  font-weight: 100;
+}
+
+a {
+  @include font-size(0.8rem);
+  font-weight: 75;
+}
+
+span {
+  @include font-size(0.8rem);
+  font-weight: 75;
+}
+
+p {
+  @include font-size(0.8rem);
+  font-weight: 75;
+}
+
+.game-info {
+  @include font-size(1rem);
+  @include padding(3rem);
+}
+

@@ -14,6 +14,7 @@
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/backend.css') }}" rel="stylesheet"/>
     <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     @yield('custom-css')
 </head>
@@ -95,15 +96,18 @@
     </div>
 </div>
 <script src="{{ asset('backend/js/jquery-3.3.1-slim.js') }}"></script>
+<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
 <script src="{{ asset('backend/js/popper-1.14.7.js') }}"></script>
 <script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}"></script>
 <script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="{{ asset('backend/js/scripts.js') }}"></script>
 <script src="{{ asset('backend/js/chart-2.8.0.js') }}"></script>
 <script src="{{ asset('backend/js/simple-datatables.js') }}"></script>
 <script src="{{ asset('backend/js/datatables-simple-demo.js') }}"></script>
 <script src="{{ asset('backend/js/summernote-0.8.18-bs4.js') }}"></script>
 <script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}"></script>
+<script src="{{ asset('js/datepicker-tr.js') }}"></script>
 <script>
     $(document).ready(function () {
         $('textarea').summernote({
@@ -130,6 +134,35 @@
                 lang: 'tr-TR'
             }
         );
+
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear : true,
+            showAnim   : 'slideDown',
+            dateFormat : 'yy-mm-dd',
+            yearRange  : '1900:' + new Date().getFullYear(),
+            maxDate    : '+0D'
+        });
+
+        $('.date-picker').attr('readonly', true).css({
+            'cursor': 'pointer'
+        });
+
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
     });
 </script>
 @yield('custom-js')

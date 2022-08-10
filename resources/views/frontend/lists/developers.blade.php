@@ -3,6 +3,9 @@
 @section('content')
     @if(isset($developers))
         <div class="container">
+            <h2 class="dev-header">
+                Geliştiriciler
+            </h2>
             @foreach($developers as $developer)
                 <div class="card-deck" style="margin: 10px; display: inline-block" title="{{ $developer->name }}">
                     <div class="card">

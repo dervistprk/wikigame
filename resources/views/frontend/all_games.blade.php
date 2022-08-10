@@ -2,7 +2,7 @@
 @section('title', 'Tüm Oyunlar')
 @section('content')
     <div class="container">
-        <h2 class="text-warning">Tüm Oyunlar</h2>
+        <h2 class="game-header">Tüm Oyunlar</h2>
         @if(isset($games))
             @include('frontend.lists.games')
         @else

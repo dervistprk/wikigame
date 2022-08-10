@@ -1,5 +1,5 @@
 <div class="fixed-top" data-toggle="affix">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark" id="navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('home') }}">
                 @if(($settings->logo))
