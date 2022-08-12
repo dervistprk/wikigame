@@ -17,10 +17,24 @@ class ArticleController extends Controller
         view()->share('settings', Settings::find(1));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Articles::get();
-        return view('backend.articles.index', compact('articles'));
+        $per_page     = $request->input('per_page', 10);
+        $quick_search = $request->input('quick_search');
+
+        $sort_by  = $request->get('sort_by', 'id');
+        $sort_dir = $request->get('sort_dir', 'desc');
+
+        if ($sort_dir == 'desc') {
+            $sort_dir = 'asc';
+        } else {
+            $sort_dir = 'desc';
+        }
+
+        $articles = Articles::where('title', 'LIKE', '%' . $quick_search . '%')
+                            ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
+
+        return view('backend.articles.index', compact('articles', 'per_page', 'quick_search', 'sort_by', 'sort_dir'));
     }
 
     public function create()
@@ -121,5 +135,11 @@ class ArticleController extends Controller
         return redirect()->route('admin.articles')->with('message', 'Makale Başarıyla Silindi.');
     }
 
-
+    public function switchStatus(Request $request)
+    {
+        $article         = Articles::findOrFail($request->id);
+        $article->status = $request->state == 'true' ? 1 : 0;
+        $article->save();
+        return true;
+    }
 }

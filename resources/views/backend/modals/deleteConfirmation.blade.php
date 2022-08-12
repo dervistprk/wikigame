@@ -1,8 +1,8 @@
-<div class="modal fade" id="delete{{$target->slug}}Modal_{{$target->id}}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="delete{{$target->slug}}ModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete{{ $target->slug }}Modal_{{ $target->id }}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="delete{{ $target->slug }}ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="delete{{$target->slug}}ModalLabel">Silme Onay Penceresi</h5>
+                <h5 class="modal-title" id="delete{{ $target->slug }}ModalLabel">Silme Onay Penceresi</h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('admin.delete-' . $route, $target->id) }}">

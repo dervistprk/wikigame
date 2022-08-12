@@ -57,6 +57,7 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
     Route::get('oyun-duzenle/{id}', [\App\Http\Controllers\backend\GamesController::class, 'edit'])->name('edit-game');
     Route::post('oyun-duzenle/{id}', [\App\Http\Controllers\backend\GamesController::class, 'update'])->name('edit-game-post');
     Route::get('oyun-sil/{id}', [\App\Http\Controllers\backend\GamesController::class, 'destroy'])->name('delete-game');
+    Route::post('oyun-durumu/', [\App\Http\Controllers\backend\GamesController::class, 'switchStatus'])->name('switch-game-status');
 
     Route::get('kategoriler', [CategoryController::class, 'index'])->name('categories');
     Route::get('kategori-ekle', [CategoryController::class, 'create'])->name('create-category');
@@ -64,6 +65,7 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
     Route::get('kategori-duzenle/{id}', [CategoryController::class, 'edit'])->name('edit-category');
     Route::post('kategori-duzenle/{id}', [CategoryController::class, 'update'])->name('edit-category-post');
     Route::get('kategori-sil/{id}', [CategoryController::class, 'destroy'])->name('delete-category');
+    Route::post('kategori-durumu/', [CategoryController::class, 'switchStatus'])->name('switch-category-status');
 
     Route::get('gelistiriciler', [DeveloperController::class, 'index'])->name('developers');
     Route::get('gelistirici-ekle', [DeveloperController::class, 'create'])->name('create-developer');
@@ -71,6 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
     Route::get('gelistirici-duzenle/{id}', [DeveloperController::class, 'edit'])->name('edit-developer');
     Route::post('gelistirici-duzenle/{id}', [DeveloperController::class, 'update'])->name('edit-developer-post');
     Route::get('gelistirici-sil/{id}', [DeveloperController::class, 'destroy'])->name('delete-developer');
+    Route::post('gelistirici-durumu/', [DeveloperController::class, 'switchStatus'])->name('switch-developer-status');
 
     Route::get('dagiticilar', [PublisherController::class, 'index'])->name('publishers');
     Route::get('dagitici-ekle', [PublisherController::class, 'create'])->name('create-publisher');
@@ -78,6 +81,7 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
     Route::get('dagitici-duzenle/{id}', [PublisherController::class, 'edit'])->name('edit-publisher');
     Route::post('dagitici-duzenle/{id}', [PublisherController::class, 'update'])->name('edit-publisher-post');
     Route::get('dagitici-sil/{id}', [PublisherController::class, 'destroy'])->name('delete-publisher');
+    Route::post('dagitici-durumu/', [PublisherController::class, 'switchStatus'])->name('switch-publisher-status');
 
     Route::get('makaleler', [ArticleController::class, 'index'])->name('articles');
     Route::get('makale-ekle', [ArticleController::class, 'create'])->name('create-article');
@@ -85,6 +89,7 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
     Route::get('makale-duzenle/{id}', [ArticleController::class, 'edit'])->name('edit-article');
     Route::post('makale-duzenle/{id}', [ArticleController::class, 'update'])->name('edit-article-post');
     Route::get('makale-sil/{id}', [ArticleController::class, 'destroy'])->name('delete-article');
+    Route::post('makale-durumu/', [ArticleController::class, 'switchStatus'])->name('switch-article-status');
 
     Route::get('cikis', [AuthController::class, 'logout'])->name('logout');
 });

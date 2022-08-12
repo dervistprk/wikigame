@@ -17,15 +17,29 @@ class PublisherController extends Controller
         view()->share('settings', Settings::find(1));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $publishers = Publishers::orderBy('name', 'asc')->get();
+        $per_page     = $request->input('per_page', 10);
+        $quick_search = $request->input('quick_search');
+
+        $sort_by  = $request->get('sort_by', 'id');
+        $sort_dir = $request->get('sort_dir', 'desc');
+
+        if ($sort_dir == 'desc') {
+            $sort_dir = 'asc';
+        } else {
+            $sort_dir = 'desc';
+        }
+
+        $publishers = Publishers::where('name', 'LIKE', '%' . $quick_search . '%')
+                                ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
+
         foreach ($publishers as $publisher) {
             $publisher->games_count = $publisher->games->count();
             $publisher->save();
         }
 
-        return view('backend.publishers.index', compact('publishers'));
+        return view('backend.publishers.index', compact('publishers', 'per_page', 'quick_search', 'sort_dir', 'sort_by'));
     }
 
     public function create()
@@ -125,5 +139,13 @@ class PublisherController extends Controller
         $publisher->delete();
 
         return redirect()->route('admin.publishers')->with('message', 'Dağıtıcı Başarıyla Silindi.');
+    }
+
+    public function switchStatus(Request $request)
+    {
+        $publisher         = Publishers::findOrFail($request->id);
+        $publisher->status = $request->state == 'true' ? 1 : 0;
+        $publisher->save();
+        return true;
     }
 }

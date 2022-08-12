@@ -27,11 +27,11 @@ class AdminController extends Controller
         $publishers = Publishers::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
         $articles   = Articles::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
 
-        $games_count      = Games::where('status', '=', 1)->count();
-        $categories_count = Categories::where('status', '=', 1)->count();
-        $developers_count = Developers::where('status', '=', 1)->count();
-        $publishers_count = Publishers::where('status', '=', 1)->count();
-        $articles_count   = Articles::where('status', '=', 1)->count();
+        $games_count      = $games ?  Games::where('status', '=', 1)->count() : 0;
+        $categories_count = $categories ? Categories::where('status', '=', 1)->count() : 0;
+        $developers_count = $developers ? Developers::where('status', '=', 1)->count() : 0;
+        $publishers_count = $publishers ? Publishers::where('status', '=', 1)->count() : 0;
+        $articles_count   = $articles ? Articles::where('status', '=', 1)->count() : 0;
 
         $site_status = Settings::find(1)->site_status;
 

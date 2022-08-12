@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content="{{ $settings->meta_description }}"/>
     <meta name="author" content="dervis"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title') - WikiGame</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->backend_favicon) }}"/>
     <link href="{{ asset('backend/css/simple-datatables.css') }}" rel="stylesheet"/>
@@ -16,6 +17,7 @@
     <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     @yield('custom-css')
 </head>
 <body class="sb-nav-fixed">
@@ -100,6 +102,7 @@
 <script src="{{ asset('backend/js/popper-1.14.7.js') }}"></script>
 <script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}"></script>
 <script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="{{ asset('backend/js/scripts.js') }}"></script>
 <script src="{{ asset('backend/js/chart-2.8.0.js') }}"></script>
@@ -110,6 +113,11 @@
 <script src="{{ asset('js/datepicker-tr.js') }}"></script>
 <script>
     $(document).ready(function () {
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-tooltip="tooltip"]').tooltip()
+        })
+
         $('textarea').summernote({
                 toolbar: [
                     ['style'],

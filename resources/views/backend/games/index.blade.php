@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 @section('title', 'Oyunlar')
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         @if(session()->has('message'))
             <div class="row justify-content-center">
                 <div class="col-sm-6">
@@ -15,83 +15,212 @@
             </div>
         @endif
         <div class="m-2">
-            <a href="{{route('admin.create-game')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus" style="margin-top: 3px;"></i> Oyun Ekle</a>
+            <a href="{{route('admin.create-game')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Oyun Ekle</a>
         </div>
-        <div class="card mb-4 m-2 shadow">
-            <div class="card-header font-weight-bold text-secondary">
+        <div class="card mb-4 m-2 shadow font-weight-bold text-secondary">
+            <div class="card-header">
                 <i class="fas fa-gamepad"></i>
                 Kayıtlı Oyunlar
+                <div class="float-end">
+                    <form class="form-inline" id="query-form" method="get" action="{{ route('admin.games') }}">
+                        <input type="hidden" name="sort_by"/>
+                        <input type="hidden" name="sort_dir"/>
+                        <div class="m-2">
+                            <label for="per-page" class="form-label">Öge Sayısı</label>
+                            <select class="form-select" name="per_page" id="per-page">
+                                <option value="10" @if($per_page == 10) selected @endif>10</option>
+                                <option value="20" @if($per_page == 20) selected @endif>20</option>
+                                <option value="30" @if($per_page == 30) selected @endif>30</option>
+                                <option value="40" @if($per_page == 40) selected @endif>40</option>
+                                <option value="50" @if($per_page == 50) selected @endif>50</option>
+                            </select>
+                        </div>
+                        <div class="m-2">
+                            <label for="quick-search">Hızlı Ara</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ $quick_search ?? null }}" name="quick_search" id="quick-search" placeholder="Oyun Ara"/>
+                                <button class="btn btn-primary btn-sm mr-sm-2" id="btn-search" type="submit">
+                                    <i id="search-icon" class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="m-2 mt-4">
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#detailedSearch">
+                                <i class="fa fa-info-circle"></i> Detaylı
+                            </button>
+                        </div>
+                        <div class="m-2 mt-4">
+                            <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none" data-toggle="tooltip" data-placement="top" title="Temizle">
+                                <i class="fa fa-undo"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="card-body">
-                <table id="datatablesSimple" class="table-responsive">
-                    <thead>
-                    <tr>
-                        <th>Kapak Resmi</th>
-                        <th>Adı</th>
-                        <th>Kategori</th>
-                        <th>Geliştirici</th>
-                        <th>Dağıtıcı</th>
-                        <th>Website</th>
-                        <th>Çıkış Tarihi</th>
-                        <th>Yaş Sınırı</th>
-                        <th>İşlemler</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($games as $game)
-                        @php
-                            $target = $game;
-                            $route  = 'game';
-                        @endphp
-                        <tr class="@if($game->status == 0) alert-danger @endif">
-                            <td>
-                                <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="img-fluid img-thumbnail" width="150" height="200">
-                            </td>
-                            <td class="font-weight-bold">
-                                {{ $game->name }}
-                                @if($game->status == 0)
-                                    <span class="text-danger d-inline-block p-1 m-1"><i class="fas fa-times"></i> Pasif</span>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.edit-category', [$game->category->id]) }}" class="text-primary text-decoration-none">{{ $game->category->name }}</a>
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.edit-developer', [$game->developer->id]) }}" class="text-primary text-decoration-none">{{ $game->developer->name }}</a>
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.edit-publisher', [$game->publisher->id]) }}" class="text-primary text-decoration-none">{{ $game->publisher->name }}</a>
-                            </td>
-                            <td>
-                                <a href="{{ $game->details->website }}" class="text-primary text-decoration-none" target="_blank">{{ $game->name }}</a>
-                            </td>
-                            <td>
-                                {{ Carbon\Carbon::parse($game->details->release_date)->format('d/m/Y') }}
-                            </td>
-                            <td>
-                                <img src="{{asset('assets/pegi_ratings/pegi_') . $game->details->age_rating . '.png'}}" class="img-fluid" alt="pegi_rating" width="30" height="30" title="{{ $game->details->age_rating }} yaş ve üzeri">
-                            </td>
-                            <td>
-                                <div>
-                                    @if($game->status == 1)
-                                        <div>
-                                            <a target="_blank" href="{{ route('game', [$game->slug]) }}" class="btn btn-sm btn-success" title="Görüntüle"><i class="fas fa-eye"></i> Görüntüle</a>
+                @if($games->items())
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Kapak Resmi</th>
+                                <th class="sorter" data-column="name">Adı</th>
+                                <th class="sorter" data-column="category_id">Kategori</th>
+                                <th class="sorter" data-column="developer_id">Geliştirici</th>
+                                <th class="sorter" data-column="publisher_id">Dağıtıcı</th>
+                                <th>Website</th>
+                                <th>Çıkış Tarihi</th>
+                                <th>Yaş Sınırı</th>
+                                <th>İşlemler</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($games as $game)
+                                @php
+                                    $target = $game;
+                                    $route  = 'game';
+                                @endphp
+                                <tr class="@if($game->status == 0) alert-danger @endif">
+                                    <td>
+                                        <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="img-fluid img-thumbnail" width="120" height="170">
+                                    </td>
+                                    <td class="font-weight-bold">
+                                        {{ $game->name }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.edit-category', [$game->category->id]) }}" class="text-primary text-decoration-none">{{ $game->category->name }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.edit-developer', [$game->developer->id]) }}" class="text-primary text-decoration-none">{{ $game->developer->name }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.edit-publisher', [$game->publisher->id]) }}" class="text-primary text-decoration-none">{{ $game->publisher->name }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ $game->details->website }}" class="text-primary text-decoration-none" target="_blank">{{ $game->name }}</a>
+                                    </td>
+                                    <td>
+                                        {{ Carbon\Carbon::parse($game->details->release_date)->format('d/m/Y') }}
+                                    </td>
+                                    <td>
+                                        <img src="{{asset('assets/pegi_ratings/pegi_') . $game->details->age_rating . '.png'}}" class="img-fluid" alt="pegi_rating" width="30" height="30" title="{{ $game->details->age_rating }} yaş ve üzeri">
+                                    </td>
+                                    <td>
+                                        @if($game->status == 1)
+                                            <div class="mt-1">
+                                                <a target="_blank" href="{{ route('game', [$game->slug]) }}" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                            </div>
+                                        @endif
+                                        <div class="mt-1">
+                                            <a href="{{ route('admin.edit-game', [$game->id]) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Düzenle"><i class="fas fa-pen"></i></a>
                                         </div>
-                                    @endif
-                                    <div class="mt-1">
-                                        <a href="{{ route('admin.edit-game', [$game->id]) }}" class="btn btn-sm btn-primary" title="Düzenle"><i class="fas fa-pen"></i> Düzenle</a>
-                                    </div>
-                                    <div class="mt-1">
-                                        <a href="#" data-id="{{$game->id}}" class="btn btn-danger delete" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}"><i class="fas fa-trash"></i> Sil</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @include('backend.modals.deleteConfirmation')
-                    @endforeach
-                    </tbody>
-                </table>
+                                        <div class="mt-1">
+                                            <a href="#" data-id="{{ $game->id }}" class="btn btn-danger btn-sm delete" data-toggle="modal" data-target="#delete{{ $target->slug }}Modal_{{ $target->id }}" data-tooltip="tooltip" data-placement="top" title="Sil"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                        <div class="mt-1">
+                                            <input type="checkbox" data-id="{{ $game->id }}" class="status-switch" name="status" @if($game->status == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
+                                        </div>
+                                    </td>
+                                </tr>
+                                @include('backend.modals.deleteConfirmation')
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-danger text-center">Aranan kriterlere uygun oyun bulunamadı.</div>
+                @endif
+                @include('backend.modals.detailedGameSearch')
             </div>
         </div>
+        {!! $games->withQueryString()->links() !!}
     </div>
+@endsection
+@section('custom-js')
+    <script type="text/javascript">
+       $(function() {
+          $('.status-switch').change(function() {
+             var id    = $(this)[0].getAttribute('data-id');
+             var state = $(this).prop('checked');
+
+             $.ajaxSetup({
+                headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+             });
+
+             $.ajax({
+                url     : "{{route('admin.switch-game-status') }}",
+                type    : 'POST',
+                dataType: 'json',
+                data    : {
+                   state: state,
+                   id   : id,
+                },
+                success : function() {
+                   location.reload();
+                },
+                error   : function(xhr, status, error) {
+                   console.log(xhr.responseText);
+                   console.log(status);
+                   console.log(error);
+                },
+             });
+          });
+
+          $('#detailed-search-form').submit(function() {
+             $('input').each(function(index, obj) {
+                if ($(obj).val() == '') {
+                   $(obj).remove();
+                }
+             });
+          });
+
+          $('#query-form').submit(function() {
+             $('input').each(function(index, obj) {
+                if ($(obj).val() == '') {
+                   $(obj).remove();
+                }
+             });
+          });
+
+          $('#per-page').change(function() {
+             $('#query-form').submit();
+          });
+
+          $('#reset-parameters').click(function() {
+             window.location.href = "{{ route('admin.games') }}";
+          });
+
+          var url = window.location.href;
+          if (url.includes('?')) {
+             $('#reset-parameters').removeClass('d-none');
+          } else {
+             $('#reset-parameters').addClass('d-none');
+          }
+
+          var urlParams   = new URLSearchParams(window.location.search);
+          var sort_column = urlParams.get('sort_by');
+          var sort_dir    = urlParams.get('sort_dir');
+
+          if (sort_dir == 'asc') {
+             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
+          } else {
+             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
+          }
+
+          $('.sorter').css({'cursor': 'pointer'}).hover(
+              function() { $(this).css('color', 'green'); },
+              function() { $(this).css('color', 'black'); },
+          ).click(function() {
+             var column = $(this).attr('data-column');
+             var dir    = "{{ $sort_dir }}";
+
+             $('input[name="sort_by"]').val(column);
+             $('input[name="sort_dir"]').val(dir);
+
+             $('#query-form').submit();
+          });
+       });
+    </script>
 @endsection

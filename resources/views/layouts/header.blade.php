@@ -80,7 +80,8 @@
                     <div class="input-group w-100 m-1 ms-3 me-3">
                         <input class="form-control search-input" type="text" autocomplete="off" placeholder="Aramak İstediğiniz Oyun Adını Yazın" aria-label="Ara..." aria-describedby="btnNavbarSearch" name="search"/>
                         <button class="btn btn-primary mr-sm-2" id="btnNavbarSearch" type="submit">
-                            <i id="search-icon" class="fas fa-search"></i></button>
+                            <i id="search-icon" class="fas fa-search"></i>
+                        </button>
                     </div>
                 </form>
                 <ul class="navbar-nav ms-3">

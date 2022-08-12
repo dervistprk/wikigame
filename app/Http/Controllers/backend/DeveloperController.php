@@ -17,15 +17,29 @@ class DeveloperController extends Controller
         view()->share('settings', Settings::find(1));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $developers = Developers::orderBy('name', 'asc')->get();
+        $per_page     = $request->input('per_page', 10);
+        $quick_search = $request->input('quick_search');
+
+        $sort_by  = $request->get('sort_by', 'id');
+        $sort_dir = $request->get('sort_dir', 'desc');
+
+        if ($sort_dir == 'desc') {
+            $sort_dir = 'asc';
+        } else {
+            $sort_dir = 'desc';
+        }
+
+        $developers = Developers::where('name', 'LIKE', '%' . $quick_search . '%')
+                                ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
+
         foreach ($developers as $developer) {
             $developer->games_count = $developer->games->count();
             $developer->save();
         }
 
-        return view('backend.developers.index', compact('developers'));
+        return view('backend.developers.index', compact('developers', 'per_page', 'quick_search', 'sort_by', 'sort_dir'));
     }
 
     public function create()
@@ -123,5 +137,13 @@ class DeveloperController extends Controller
 
         $developer->delete();
         return redirect()->route('admin.developers')->with('message', 'Geliştirici Başarıyla Silindi.');
+    }
+
+    public function switchStatus(Request $request)
+    {
+        $developer         = Developers::findOrFail($request->id);
+        $developer->status = $request->state == 'true' ? 1 : 0;
+        $developer->save();
+        return true;
     }
 }

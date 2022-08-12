@@ -23,10 +23,77 @@ class GamesController extends Controller
         view()->share('settings', Settings::find(1));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $games = Games::orderBy('id', 'desc')->get();
-        return view('backend.games.index', compact('games'));
+        $per_page     = $request->get('per_page', 10);
+        $quick_search = $request->get('quick_search');
+
+        $name_query             = $request->get('name_query');
+        $id_query               = $request->get('id_query');
+        $category_query         = $request->get('category_query');
+        $developer_query        = $request->get('developer_query');
+        $publisher_query        = $request->get('publisher_query');
+        $release_date_max_query = $request->get('release_date_max_query');
+        $release_date_min_query = $request->get('release_date_min_query');
+        $status_query           = $request->get('status_query');
+
+        $sort_by          = $request->get('sort_by', 'id');
+        $sort_dir         = $request->get('sort_dir', 'desc');
+
+        $detailed_search = [];
+        $relation_search = [];
+
+        if (!is_null($quick_search)) {
+            $detailed_search[] = ['name', 'LIKE', '%' . $quick_search . '%'];
+        }
+
+        if (!is_null($id_query)) {
+            $detailed_search[] = ['id', '=', $id_query];
+        }
+
+        if (!is_null($name_query)) {
+            $detailed_search[] = ['name', 'LIKE', '%' . $name_query . '%'];
+        }
+
+        if (!is_null($category_query)) {
+            $detailed_search[] = ['category_id', '=', $category_query];
+        }
+
+        if (!is_null($developer_query)) {
+            $detailed_search[] = ['developer_id', '=', $developer_query];
+        }
+
+        if (!is_null($publisher_query)) {
+            $detailed_search[] = ['publisher_id', '=', $publisher_query];
+        }
+
+        if (!is_null($release_date_max_query)) {
+            $relation_search[] = ['release_date', '<=', $release_date_max_query];
+        }
+
+        if (!is_null($release_date_min_query)) {
+            $relation_search[] = ['release_date', '>=', $release_date_min_query];
+        }
+
+        if (!is_null($status_query)) {
+            $detailed_search[] = ['status', '=', $status_query];
+        }
+
+        if ($sort_dir == 'desc') {
+            $sort_dir = 'asc';
+        } else {
+            $sort_dir = 'desc';
+        }
+
+        $games = Games::whereHas('details', function($q) use ($relation_search) {
+            return $q->where($relation_search);
+        })->orderBy($sort_by, $sort_dir)->where($detailed_search)->paginate($per_page)->appends('per_page', $per_page);
+
+        $developers = Developers::where('status', '=', 1)->get();
+        $publishers = Publishers::where('status', '=', 1)->get();
+        $categories = Categories::where('status', '=', 1)->get();
+
+        return view('backend.games.index', compact('games', 'per_page', 'quick_search', 'developers', 'publishers', 'categories', 'name_query', 'id_query', 'category_query', 'developer_query', 'publisher_query', 'release_date_min_query', 'release_date_max_query', 'status_query', 'sort_dir', 'sort_by'));
     }
 
     public function create()
@@ -444,5 +511,13 @@ class GamesController extends Controller
         $sys_req_rec->delete();
 
         return redirect()->route('admin.games')->with('message', 'Oyun Başarıyla Silindi.');
+    }
+
+    public function switchStatus(Request $request)
+    {
+        $game         = Games::findOrFail($request->id);
+        $game->status = $request->state == 'true' ? 1 : 0;
+        $game->save();
+        return true;
     }
 }
