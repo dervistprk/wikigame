@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Settings;
+use App\Models\Setting;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -18,7 +18,7 @@ class Maintenance
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->site_settings = Settings::find(1);
+        $this->site_settings = Setting::find(1);
         if ($this->site_settings->site_status == 0) {
             return redirect()->to('bakimdayiz')->send();
         }

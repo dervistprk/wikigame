@@ -15,7 +15,7 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function(Blueprint $table){
             $table->id();
-            $table->tinyInteger('site_status')->default(1);
+            $table->boolean('site_status')->default(1);
             $table->string('footer_text')->nullable();
             $table->longText('about_text')->nullable();
             $table->string('meta_description')->nullable();

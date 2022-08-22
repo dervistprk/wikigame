@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Articles;
-use App\Models\Settings;
+use App\Models\Article;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -14,7 +14,7 @@ class ArticleController extends Controller
 {
     public function __construct()
     {
-        view()->share('settings', Settings::find(1));
+        view()->share('settings', Setting::find(1));
     }
 
     public function index(Request $request)
@@ -31,8 +31,8 @@ class ArticleController extends Controller
             $sort_dir = 'desc';
         }
 
-        $articles = Articles::where('title', 'LIKE', '%' . $quick_search . '%')
-                            ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
+        $articles = Article::where('title', 'LIKE', '%' . $quick_search . '%')
+                           ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
 
         return view('backend.articles.index', compact('articles', 'per_page', 'quick_search', 'sort_by', 'sort_dir'));
     }
@@ -51,7 +51,7 @@ class ArticleController extends Controller
                                'image'     => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
                            ]);
 
-        $article            = new Articles();
+        $article            = new Article();
         $article->title     = $request->title;
         $article->slug      = Str::slug($request->title);
         $article->sub_title = $request->sub_title;
@@ -78,7 +78,7 @@ class ArticleController extends Controller
 
     public function edit($id)
     {
-        $article = Articles::findOrFail($id);
+        $article = Article::findOrFail($id);
         return view('backend.articles.edit', compact('article'));
     }
 
@@ -91,7 +91,7 @@ class ArticleController extends Controller
                                'image'   => 'image|mimes:jpg,jpeg,png,svg|max:2048'
                            ]);
 
-        $article          = Articles::findOrFail($id);
+        $article          = Article::findOrFail($id);
         $article->title   = $request->title;
         $article->slug    = Str::slug($request->title);
         $article->writing = $request->writing;
@@ -119,7 +119,7 @@ class ArticleController extends Controller
 
     public function destroy($id)
     {
-        $article = Articles::findOrFail($id);
+        $article = Article::findOrFail($id);
         $path    = public_path('uploads/articles/') . Str::slug($article->title);
 
         if (File::exists(public_path($article->image))) {
@@ -137,7 +137,7 @@ class ArticleController extends Controller
 
     public function switchStatus(Request $request)
     {
-        $article         = Articles::findOrFail($request->id);
+        $article         = Article::findOrFail($request->id);
         $article->status = $request->state == 'true' ? 1 : 0;
         $article->save();
         return true;

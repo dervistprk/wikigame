@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
-use App\Models\Settings;
+use App\Models\Category;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        view()->share('settings', Settings::find(1));
+        view()->share('settings', Setting::find(1));
     }
 
     public function index(Request $request)
@@ -29,12 +29,14 @@ class CategoryController extends Controller
             $sort_dir = 'desc';
         }
 
-        $categories = Categories::where('name', 'LIKE', '%' . $quick_search . '%')
-                                ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
+        $categories = Category::with('games')->where('name', 'LIKE', '%' . $quick_search . '%')
+                              ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
 
-        foreach ($categories as $category) {
-            $category->games_count = $category->games->count();
-            $category->save();
+        if ($categories->count() > 0) {
+            foreach ($categories as $category) {
+                $category->games_count = $category->games->count();
+                $category->save();
+            }
         }
 
         return view('backend.categories.index', compact('categories', 'per_page', 'quick_search', 'sort_dir', 'sort_by'));
@@ -51,13 +53,14 @@ class CategoryController extends Controller
         //TODO: kategori pasif yapılınca ilgili oyunları da pasife al (aynısına geliştirici ve dağıtıcı için de bak)
         //TODO: oyunların; resim, video ve varsa başka bu şekilde kolonlarını ana tablodan kaldırıp yeni bir tablo oluşturup oraya al.
         //TODO: bu tablolara modelleri oluştur, ilgili kolonların kullanıldığı yerleri tespit edip gerekli değişiklikleri yap.
+        //TODO: oyunların pasif-aktif etme durumlarını düzenle sayfası için de kontrol ettir.(kategorisi vs. pasif mi diye)
         $request->validate([
                'name'        => 'required',
                'description' => 'required|min:15',
                'status'      => 'required'
         ]);
 
-        $category              = new Categories();
+        $category              = new Category();
         $category->name        = $request->name;
         $category->slug        = Str::slug($request->name);
         $category->description = $request->description;
@@ -68,7 +71,7 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $category = Categories::findOrFail($id);
+        $category = Category::findOrFail($id);
         return view('backend.categories.edit', compact('category'));
     }
 
@@ -80,7 +83,7 @@ class CategoryController extends Controller
                'status'      => 'required',
         ]);
 
-        $category              = Categories::findOrFail($id);
+        $category              = Category::findOrFail($id);
         $category->name        = $request->name;
         $category->slug        = Str::slug($request->name);
         $category->description = $request->description;
@@ -92,16 +95,34 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        $category = Categories::findOrFail($id);
+        $category = Category::findOrFail($id);
+
+        if ($category->games->count() > 0) {
+            foreach ($category->games as $c_game) {
+                GameController::destroy($c_game->id);
+            }
+        }
+
         $category->delete();
         return redirect()->route('admin.categories')->with('message', 'Kategori Başarıyla Silindi.');
     }
 
     public function switchStatus(Request $request)
     {
-        $category         = Categories::findOrFail($request->id);
+        $category         = Category::findOrFail($request->id);
         $category->status = $request->state == 'true' ? 1 : 0;
         $category->save();
+
+        $category_games = $category->games;
+
+        if ($category_games->count() > 0) {
+            if ($category->status == 0) {
+                foreach ($category_games as $c_game) {
+                    $c_game->update(['status' => 0]);
+                }
+            }
+        }
+
         return true;
     }
 }

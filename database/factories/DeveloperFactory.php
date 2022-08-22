@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Categories;
+use App\Models\Developer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class CategoriesFactory extends Factory
+class DeveloperFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Categories::class;
+    protected $model = Developer::class;
 
     /**
      * Define the model's default state.
@@ -27,8 +27,8 @@ class CategoriesFactory extends Factory
             'name'        => $name,
             'slug'        => Str::slug($name),
             'description' => $this->faker->paragraph(5),
-            'created_at'  => $this->faker->dateTime(),
-            'updated_at'  => now(),
+            'image'       => $this->faker->imageUrl(),
         ];
+
     }
 }

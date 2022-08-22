@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
-use App\Models\Settings;
+use App\Models\Category;
+use App\Models\Setting;
 use App\Models\WhiteList;
 use Hash;
 use Illuminate\Http\Request;
@@ -19,8 +19,8 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        view()->share('categories', Categories::where('status', '=', 1)->orderBy('name', 'asc')->get());
-        view()->share('settings', Settings::find(1));
+        view()->share('categories', Category::where('status', '=', 1)->orderBy('name', 'asc')->get());
+        view()->share('settings', Setting::find(1));
     }
 
     public function registerForm()

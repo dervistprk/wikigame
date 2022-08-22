@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Settings;
+use App\Models\Setting;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class SettingsFactory extends Factory
+class SettingFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,7 +14,7 @@ class SettingsFactory extends Factory
      * @return array
      */
 
-    protected $model = Settings::class;
+    protected $model = Setting::class;
 
     public function definition()
     {
@@ -29,8 +29,6 @@ class SettingsFactory extends Factory
             'linkedin'         => 'https://www.linkedin.com/in/derviş-toprak-0698a81b7/',
             'youtube'          => 'https://www.youtube.com',
             'instagram'        => 'https://www.instagram.com/dervistprk',
-            'created_at'       => now(),
-            'updated_at'       => now(),
         ];
     }
 }

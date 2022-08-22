@@ -4,10 +4,9 @@ use App\Http\Controllers\backend\AdminController;
 use App\Http\Controllers\backend\ArticleController;
 use App\Http\Controllers\backend\CategoryController;
 use App\Http\Controllers\backend\DeveloperController;
+use App\Http\Controllers\backend\GameController;
 use App\Http\Controllers\backend\PublisherController;
-use App\Http\Controllers\backend\SettingsController;
-use App\Http\Controllers\frontend\ArticlesController;
-use App\Http\Controllers\frontend\GamesController;
+use App\Http\Controllers\backend\SettingController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\backend\AuthController;
 use App\Http\Controllers\frontend\UserController;
@@ -48,16 +47,16 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
     Route::get('profil', [AdminController::class, 'admin'])->name('profile');
     Route::post('profil', [AdminController::class, 'adminPost'])->name('profile.post');
 
-    Route::get('ayarlar', [SettingsController::class, 'settings'])->name('settings');
-    Route::post('ayarlar', [SettingsController::class, 'settingsUpdate'])->name('settings-update');
+    Route::get('ayarlar', [SettingController::class, 'settings'])->name('settings');
+    Route::post('ayarlar', [SettingController::class, 'settingsUpdate'])->name('settings-update');
 
-    Route::get('oyunlar', [\App\Http\Controllers\backend\GamesController::class, 'index'])->name('games');
-    Route::get('oyun-ekle', [\App\Http\Controllers\backend\GamesController::class, 'create'])->name('create-game');
-    Route::post('oyun-ekle', [\App\Http\Controllers\backend\GamesController::class, 'store'])->name('create-game-post');
-    Route::get('oyun-duzenle/{id}', [\App\Http\Controllers\backend\GamesController::class, 'edit'])->name('edit-game');
-    Route::post('oyun-duzenle/{id}', [\App\Http\Controllers\backend\GamesController::class, 'update'])->name('edit-game-post');
-    Route::get('oyun-sil/{id}', [\App\Http\Controllers\backend\GamesController::class, 'destroy'])->name('delete-game');
-    Route::post('oyun-durumu/', [\App\Http\Controllers\backend\GamesController::class, 'switchStatus'])->name('switch-game-status');
+    Route::get('oyunlar', [GameController::class, 'index'])->name('games');
+    Route::get('oyun-ekle', [GameController::class, 'create'])->name('create-game');
+    Route::post('oyun-ekle', [GameController::class, 'store'])->name('create-game-post');
+    Route::get('oyun-duzenle/{id}', [GameController::class, 'edit'])->name('edit-game');
+    Route::post('oyun-duzenle/{id}', [GameController::class, 'update'])->name('edit-game-post');
+    Route::get('oyun-sil/{id}', [GameController::class, 'destroy'])->name('delete-game');
+    Route::post('oyun-durumu/', [GameController::class, 'switchStatus'])->name('switch-game-status');
 
     Route::get('kategoriler', [CategoryController::class, 'index'])->name('categories');
     Route::get('kategori-ekle', [CategoryController::class, 'create'])->name('create-category');
@@ -100,17 +99,17 @@ Route::prefix('admin')->name('admin.')->middleware(['white_list', 'isAdmin'])->g
 
 Route::middleware('maintenance')->group(function(){
     Route::get('/', [HomeController::class, 'home'])->name('home');
-    Route::get('tum-oyunlar', [GamesController::class, 'list'])->name('all-games');
+    Route::get('tum-oyunlar', [\App\Http\Controllers\frontend\GameController::class, 'list'])->name('all-games');
     Route::get('rastgele-oyun', [HomeController::class, 'randomGame'])->name('random-game');
-    Route::get('oyun/{id}', [GamesController::class, 'gameDetails'])->name('game');
-    Route::get('gelistiriciler', [GamesController::class, 'developers'])->name('developers');
-    Route::get('gelistirici/{id}', [GamesController::class, 'developer'])->name('developer');
-    Route::get('dagiticilar', [GamesController::class, 'publishers'])->name('publishers');
-    Route::get('dagitici/{id}', [GamesController::class, 'publisher'])->name('publisher');
+    Route::get('oyun/{id}', [\App\Http\Controllers\frontend\GameController::class, 'gameDetails'])->name('game');
+    Route::get('gelistiriciler', [\App\Http\Controllers\frontend\GameController::class, 'developers'])->name('developers');
+    Route::get('gelistirici/{id}', [\App\Http\Controllers\frontend\GameController::class, 'developer'])->name('developer');
+    Route::get('dagiticilar', [\App\Http\Controllers\frontend\GameController::class, 'publishers'])->name('publishers');
+    Route::get('dagitici/{id}', [\App\Http\Controllers\frontend\GameController::class, 'publisher'])->name('publisher');
     Route::get('hakkinda', [HomeController::class, 'about'])->name('about');
     Route::get('kategori/{id}', [HomeController::class, 'category'])->name('category');
-    Route::get('makaleler', [ArticlesController::class, 'articles'])->name('articles');
-    Route::get('makale/{id}', [ArticlesController::class, 'article'])->name('article');
+    Route::get('makaleler', [\App\Http\Controllers\frontend\ArticleController::class, 'articles'])->name('articles');
+    Route::get('makale/{id}', [\App\Http\Controllers\frontend\ArticleController::class, 'article'])->name('article');
     Route::post('arama', [HomeController::class, 'search'])->name('search');
     Route::get('oto-arama', [HomeController::class, 'autoComplete'])->name('autocompleteSearch');
 

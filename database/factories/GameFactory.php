@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Games;
+use App\Models\Game;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class GamesFactory extends Factory
+class GameFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Games::class;
+    protected $model = Game::class;
 
     /**
      * Define the model's default state.
@@ -34,11 +34,8 @@ class GamesFactory extends Factory
             'game_details_id' => rand(1, 5),
             'slug'            => Str::slug($name),
             'description'     => $this->faker->paragraph(12),
-            'cover_image'     => $this->faker->imageUrl(200, 320),
+            'cover_image'     => $this->faker->imageUrl(230, 300),
             'image1'          => $this->faker->imageUrl(1920, 1080),
-            'video1'          => $this->faker->url(),
-            'created_at'      => $this->faker->dateTime(),
-            'updated_at'      => now(),
         ];
     }
 }

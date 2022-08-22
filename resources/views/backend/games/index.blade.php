@@ -77,8 +77,9 @@
                             <tbody>
                             @foreach($games as $game)
                                 @php
-                                    $target = $game;
-                                    $route  = 'game';
+                                    $target                 = $game;
+                                    $route                  = 'game';
+                                    $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($game->status == 0) alert-danger @endif">
                                     <td>
@@ -133,6 +134,9 @@
                 @include('backend.modals.detailedGameSearch')
             </div>
         </div>
+        <div id="dialog" class="d-none" title="Oyun Aktive Etme Hatası">
+            <p class="dialog-content"></p>
+        </div>
         {!! $games->withQueryString()->links() !!}
     </div>
 @endsection
@@ -143,29 +147,101 @@
              var id    = $(this)[0].getAttribute('data-id');
              var state = $(this).prop('checked');
 
-             $.ajaxSetup({
-                headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                },
-             });
+             @foreach($games as $g)
+                 var game_id          = {{ $g->id }};
+                 var category_status  = {{ $g->category->status }};
+                 var developer_status = {{ $g->developer->status }};
+                 var publisher_status = {{ $g->publisher->status }};
 
-             $.ajax({
-                url     : "{{route('admin.switch-game-status') }}",
-                type    : 'POST',
-                dataType: 'json',
-                data    : {
-                   state: state,
-                   id   : id,
-                },
-                success : function() {
-                   location.reload();
-                },
-                error   : function(xhr, status, error) {
-                   console.log(xhr.responseText);
-                   console.log(status);
-                   console.log(error);
-                },
-             });
+                 var initialize_dialog = function() {
+                    $('#dialog').dialog({
+                       resizable  : false,
+                       dialogClass: 'no-close',
+                       height     : 'auto',
+                       width      : 'auto',
+                       modal      : true,
+                       buttons    : {
+                          'Tamam': function() {
+                             $(this).dialog('close');
+                             location.reload();
+                          }
+                       }
+                    });
+                 }
+
+                 if (game_id == id) {
+                    if (category_status == 0) {
+                       initialize_dialog();
+                       $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">kategorisini</span> aktive edin.');
+                       $('#dialog').removeClass('d-none');
+                    } else if (developer_status == 0) {
+                       initialize_dialog();
+                       $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">geliştiricisini</span> aktive edin.');
+                       $('#dialog').removeClass('d-none');
+                    } else if (publisher_status == 0) {
+                       initialize_dialog();
+                       $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">dağıtıcısını</span> aktive edin.');
+                       $('#dialog').removeClass('d-none');
+                    } else {
+                       $.ajaxSetup({
+                          headers: {
+                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                          },
+                       });
+
+                       $.ajax({
+                          url     : "{{route('admin.switch-game-status') }}",
+                          type    : 'POST',
+                          dataType: 'json',
+                          data    : {
+                             state: state,
+                             id   : id,
+                          },
+                          success : function(response) {
+                             if (response.result) {
+                                location.reload();
+                             }
+                          },
+                          error   : function(xhr, status, error) {
+                             console.log(xhr.responseText);
+                             console.log(status);
+                             console.log(error);
+                          },
+                       });
+                    }
+                 }
+             @endforeach
+
+              /*if (category_status == 0) {
+               $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelike <span class="text-primary font-weight-bold">kategorisini</span> aktive edin.');
+               $('#dialog').removeClass('d-none');
+               } else {
+               $.ajaxSetup({
+               headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+               },
+               });
+
+               $.ajax({
+               url     : "{{route('admin.switch-game-status') }}",
+               type    : 'POST',
+               dataType: 'json',
+               data    : {
+               state: state,
+               id   : id,
+               },
+               success : function(response) {
+               if (response.result == 'true') {
+               location.reload();
+               }
+               },
+               error   : function(xhr, status, error) {
+               console.log(xhr.responseText);
+               console.log(status);
+               console.log(error);
+               },
+               });
+               }*/
           });
 
           $('#detailed-search-form').submit(function() {
@@ -210,8 +286,8 @@
           }
 
           $('.sorter').css({'cursor': 'pointer'}).hover(
-              function() { $(this).css('color', 'green'); },
-              function() { $(this).css('color', 'black'); },
+            function() { $(this).css('color', 'green'); },
+            function() { $(this).css('color', 'black'); },
           ).click(function() {
              var column = $(this).attr('data-column');
              var dir    = "{{ $sort_dir }}";

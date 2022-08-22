@@ -9,10 +9,11 @@ class SystemRequirementsMin extends Model
 {
     use HasFactory;
 
-    protected $table = 'system_requirements_min';
+    protected $table   = 'system_requirements_min';
+    protected $guarded = [];
 
     public function game()
     {
-        return $this->hasOne(Games::class, 'syst_req_min_id', 'id');
+        return $this->hasOne(Game::class, 'syst_req_min_id', 'id');
     }
 }

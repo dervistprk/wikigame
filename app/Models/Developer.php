@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Publishers extends Model
+class Developer extends Model
 {
     use HasFactory;
 
-    protected $table = 'publishers';
+    protected $table   = 'developers';
+    protected $guarded = [];
 
     public function games()
     {
-        return $this->hasMany(Games::class, 'publisher_id', 'id');
+        return $this->hasMany(Game::class, 'developer_id', 'id');
     }
 }

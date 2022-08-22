@@ -14,6 +14,6 @@ class WhiteListSeeder extends Seeder
      */
     public function run()
     {
-        WhiteList::factory()->count(1)->create();
+        WhiteList::factory(1)->create();
     }
 }

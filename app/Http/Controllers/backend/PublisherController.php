@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Publishers;
-use App\Models\Settings;
+use App\Models\Publisher;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -14,7 +14,7 @@ class PublisherController extends Controller
 {
     public function __construct()
     {
-        view()->share('settings', Settings::find(1));
+        view()->share('settings', Setting::find(1));
     }
 
     public function index(Request $request)
@@ -31,12 +31,14 @@ class PublisherController extends Controller
             $sort_dir = 'desc';
         }
 
-        $publishers = Publishers::where('name', 'LIKE', '%' . $quick_search . '%')
-                                ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
+        $publishers = Publisher::where('name', 'LIKE', '%' . $quick_search . '%')
+                               ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
 
-        foreach ($publishers as $publisher) {
-            $publisher->games_count = $publisher->games->count();
-            $publisher->save();
+        if ($publishers->count() > 0) {
+            foreach ($publishers as $publisher) {
+                $publisher->games_count = $publisher->games->count();
+                $publisher->save();
+            }
         }
 
         return view('backend.publishers.index', compact('publishers', 'per_page', 'quick_search', 'sort_dir', 'sort_by'));
@@ -56,7 +58,7 @@ class PublisherController extends Controller
                                'image'       => 'required|image|mimes:jpg,jpeg,png,svg|max:2048'
                            ]);
 
-        $publisher              = new Publishers();
+        $publisher              = new Publisher();
         $publisher->name        = $request->name;
         $publisher->slug        = Str::slug($request->name);
         $publisher->description = $request->description;
@@ -82,7 +84,7 @@ class PublisherController extends Controller
 
     public function edit($id)
     {
-        $publisher = Publishers::findOrFail($id);
+        $publisher = Publisher::findOrFail($id);
         return view('backend.publishers.edit', compact('publisher'));
     }
 
@@ -95,7 +97,7 @@ class PublisherController extends Controller
                                'image'       => 'image|mimes:jpg,jpeg,png,webp|max:2048'
                            ]);
 
-        $publisher              = Publishers::findOrFail($id);
+        $publisher              = Publisher::findOrFail($id);
         $publisher->name        = $request->name;
         $publisher->slug        = Str::slug($request->name);
         $publisher->description = $request->description;
@@ -123,9 +125,15 @@ class PublisherController extends Controller
 
     public function destroy($id)
     {
-        $publisher = Publishers::findOrFail($id);
+        $publisher = Publisher::findOrFail($id);
 
         $path = public_path('uploads/publishers/') . Str::slug($publisher->name);
+
+        if ($publisher->games->count() > 0) {
+            foreach ($publisher->games as $p_game) {
+                GameController::destroy($p_game->id);
+            }
+        }
 
         if (File::exists(public_path($publisher->image))) {
             File::delete(public_path($publisher->image));
@@ -143,9 +151,19 @@ class PublisherController extends Controller
 
     public function switchStatus(Request $request)
     {
-        $publisher         = Publishers::findOrFail($request->id);
+        $publisher         = Publisher::findOrFail($request->id);
         $publisher->status = $request->state == 'true' ? 1 : 0;
         $publisher->save();
+
+        $pub_games = $publisher->games;
+
+        if ($pub_games->count() > 0) {
+            if ($publisher->status == 0) {
+                foreach ($pub_games as $p_game) {
+                    $p_game->update(['status' => $publisher->status]);
+                }
+            }
+        }
         return true;
     }
 }

@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GameDetails extends Model
+class GameVideo extends Model
 {
     use HasFactory;
 
-    protected $table = 'game_details';
+    protected $table = 'game_videos';
+    protected $guarded = [];
 
     public function game()
     {
-        return $this->hasOne(Games::class, 'game_details_id', 'id');
+        return $this->hasOne(Game::class, 'id', 'game_id');
     }
 }

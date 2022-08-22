@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Publishers;
+use App\Models\Publisher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class PublishersFactory extends Factory
+class PublisherFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Publishers::class;
+    protected $model = Publisher::class;
 
     /**
      * Define the model's default state.
@@ -28,8 +28,6 @@ class PublishersFactory extends Factory
             'slug'        => Str::slug($name),
             'description' => $this->faker->paragraph(5),
             'image'       => $this->faker->imageUrl(),
-            'created_at'  => $this->faker->dateTime(),
-            'updated_at'  => now(),
         ];
     }
 }

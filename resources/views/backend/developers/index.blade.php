@@ -68,6 +68,7 @@
                                 @php
                                     $target = $developer;
                                     $route  = 'developer';
+                                    $developer->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz, geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($developer->status == 0) alert-danger @endif">
                                     <td>
@@ -80,14 +81,14 @@
                                     <td>
                                         @if($developer->status == 1)
                                             <div class="mt-1">
-                                                <a target="_blank" href="{{ route('developer', [$developer->slug]) }}" class="btn btn-sm btn-success" title="Görüntüle"><i class="fas fa-eye"></i> Görüntüle</a>
+                                                <a target="_blank" href="{{ route('developer', [$developer->slug]) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Görüntüle"><i class="fas fa-eye"></i></a>
                                             </div>
                                         @endif
                                         <div class="mt-1">
-                                            <a href="{{ route('admin.edit-developer', [$developer->id]) }}" class="btn btn-sm btn-primary" title="Düzenle"><i class="fas fa-pen"></i> Düzenle</a>
+                                            <a href="{{ route('admin.edit-developer', [$developer->id]) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Düzenle"><i class="fas fa-pen"></i></a>
                                         </div>
                                         <div class="mt-1">
-                                            <a href="#" data-id="{{ $developer->id }}" class="btn btn-sm btn-danger delete" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}"><i class="fas fa-trash"></i> Sil</a>
+                                            <a href="#" data-id="{{ $developer->id }}" class="btn btn-sm btn-danger delete" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}" data-tooltip="tooltip" data-placement="top" title="Sil"><i class="fas fa-trash"></i></a>
                                         </div>
                                         <div class="mt-1">
                                             <input type="checkbox" data-id="{{ $developer->id }}" class="status-switch" name="status" @if($developer->status == 1) checked @endif data-toggle="toggle" data-on="Aktif" data-size="sm" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
@@ -101,6 +102,11 @@
                     </div>
                 @endif
             </div>
+        </div>
+        <div id="dialog-confirm" class="d-none" title="Kategori Pasif Yap">
+            <p class="confirm-text">
+                <i class="fa fa-exclamation-triangle text-danger"></i> Geliştiriciyi <span class="text-danger font-weight-bold">pasif</span> hale getirmek, barındırdığı oyunları da <span class="text-danger font-weight-bold">pasif</span> hale getirecektir. Devam etmek istiyor musunuz?
+            </p>
         </div>
         {!! $developers->withQueryString()->links() !!}
     </div>
@@ -118,23 +124,59 @@
                 },
              });
 
-             $.ajax({
-                url     : "{{route('admin.switch-developer-status') }}",
-                type    : 'POST',
-                dataType: 'json',
-                data    : {
-                   state: state,
-                   id   : id,
-                },
-                success : function() {
-                   location.reload();
-                },
-                error   : function(xhr, status, error) {
-                   console.log(xhr.responseText);
-                   console.log(status);
-                   console.log(error);
-                },
-             });
+             if (!state) {
+                $('#dialog-confirm').removeClass('d-none');
+                $('#dialog-confirm').dialog({
+                   resizable  : false,
+                   dialogClass: 'no-close',
+                   height     : 'auto',
+                   width      : 'auto',
+                   modal      : true,
+                   buttons    : {
+                      'Devam Et': function() {
+                         $.ajax({
+                            url     : "{{route('admin.switch-developer-status') }}",
+                            type    : 'POST',
+                            dataType: 'json',
+                            data    : {
+                               state: state,
+                               id   : id,
+                            },
+                            success : function() {
+                               location.reload();
+                            },
+                            error   : function(xhr, status, error) {
+                               console.log(xhr.responseText);
+                               console.log(status);
+                               console.log(error);
+                            },
+                         });
+                      },
+                      'Kapat'  : function() {
+                         $(this).dialog('close');
+                         location.reload();
+                      }
+                   }
+                });
+             } else {
+                $.ajax({
+                   url     : "{{route('admin.switch-developer-status') }}",
+                   type    : 'POST',
+                   dataType: 'json',
+                   data    : {
+                      state: state,
+                      id   : id,
+                   },
+                   success : function() {
+                      location.reload();
+                   },
+                   error   : function(xhr, status, error) {
+                      console.log(xhr.responseText);
+                      console.log(status);
+                      console.log(error);
+                   },
+                });
+             }
           });
 
           $('#query-form').submit(function() {
@@ -171,8 +213,8 @@
           }
 
           $('.sorter').css({'cursor': 'pointer'}).hover(
-              function() { $(this).css('color', 'green'); },
-              function() { $(this).css('color', 'black'); },
+            function() { $(this).css('color', 'green'); },
+            function() { $(this).css('color', 'black'); },
           ).click(function() {
              var column = $(this).attr('data-column');
              var dir    = "{{ $sort_dir }}";

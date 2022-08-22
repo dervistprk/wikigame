@@ -1,6 +1,7 @@
 body {
     font-family: "Helvetica Neue", sans-serif;
     background-color: ghostwhite;
+    font-size: 14px;
 }
 
 .card {
@@ -10,4 +11,8 @@ body {
 input[type=file] {
     width: 250px;
     display: block;
+}
+
+.no-close .ui-dialog-titlebar-close {
+    display: none;
 }

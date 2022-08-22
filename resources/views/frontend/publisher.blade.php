@@ -10,7 +10,7 @@
                 <p>{!! $publisher->description !!}</p>
             </div>
         </div>
-        <h2 class="pub-header">Dağıtıcıya Ait Oyunlar</h2>
+        <h2 class="pub-header text-center">Dağıtıcıya Ait Oyunlar</h2>
         @foreach($games as $game)
             <div class="card-deck d-inline-block m-2" title="{{ $game->name }}">
                 <div class="card">

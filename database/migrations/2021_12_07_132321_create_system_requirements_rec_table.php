@@ -15,13 +15,13 @@ class CreateSystemRequirementsRecTable extends Migration
     {
         Schema::create('system_requirements_rec', function(Blueprint $table){
             $table->id();
-            $table->string('cpu');
-            $table->string('gpu');
-            $table->integer('ram');
-            $table->tinyInteger('ram_unit');
-            $table->integer('storage');
-            $table->tinyInteger('storage_unit');
-            $table->string('os');
+            $table->string('cpu_rec');
+            $table->string('gpu_rec');
+            $table->integer('ram_rec');
+            $table->boolean('ram_rec_unit');
+            $table->integer('storage_rec');
+            $table->boolean('storage_rec_unit');
+            $table->string('os_rec');
             $table->timestamps();
         });
     }

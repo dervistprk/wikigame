@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Games;
+use App\Models\Game;
 use Illuminate\Database\Seeder;
 
 class GameSeeder extends Seeder
@@ -14,6 +14,6 @@ class GameSeeder extends Seeder
      */
     public function run()
     {
-        Games::factory()->count(10)->create();
+        Game::factory(10)->create();
     }
 }

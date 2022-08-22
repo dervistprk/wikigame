@@ -2,16 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\Articles;
-use App\Models\Categories;
-use App\Models\Developers;
-use App\Models\GameDetails;
-use App\Models\Games;
-use App\Models\Publishers;
-use App\Models\Settings;
+use App\Models\Article;
+use App\Models\Category;
+use App\Models\Developer;
+use App\Models\GameDetail;
+use App\Models\Game;
+use App\Models\GameImage;
+use App\Models\GameVideo;
+use App\Models\Publisher;
+use App\Models\Setting;
 use App\Models\SystemRequirementsMin;
 use App\Models\SystemRequirementsRec;
 use App\Models\User;
+use App\Models\UserVerify;
 use App\Models\WhiteList;
 use Illuminate\Database\Seeder;
 
@@ -24,17 +27,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        Categories::factory(5)->create();
-        Developers::factory(5)->create();
-        Publishers::factory(5)->create();
-        GameDetails::factory(5)->create();
+        Category::factory(5)->create();
+        Developer::factory(5)->create();
+        Publisher::factory(5)->create();
+        GameDetail::factory(5)->create();
         SystemRequirementsMin::factory(5)->create();
         SystemRequirementsRec::factory(5)->create();
-        Settings::factory()->count(1)->create();
-        Articles::factory()->count(5)->create();
-        WhiteList::factory()->count(1)->create();
-        User::factory()->count(1)->create();
-        Games::factory(10)->create();
+        Setting::factory(1)->create();
+        Article::factory(5)->create();
+        WhiteList::factory(1)->create();
+        User::factory(1)->create();
+        UserVerify::factory(1)->create();
+        GameImage::factory(10)->create();
+        GameVideo::factory(10)->create();
+        Game::factory(10)->create();
     }
 }

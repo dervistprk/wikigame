@@ -4,19 +4,19 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Settings;
+use App\Models\Setting;
 
-class SettingsController extends Controller
+class SettingController extends Controller
 {
     public function settings()
     {
-        $settings = Settings::first();
+        $settings = Setting::first();
         return view('backend.settings', compact('settings'));
     }
 
     public function settingsUpdate(Request $request)
     {
-        $settings = Settings::first();
+        $settings = Setting::first();
         $request->validate([
                                'about_text'       => 'required|min:15',
                                'meta_description' => 'required|min:5',

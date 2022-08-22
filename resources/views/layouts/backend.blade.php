@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content="{{ $settings->meta_description }}"/>
     <meta name="author" content="dervis"/>
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title') - WikiGame</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->backend_favicon) }}"/>
     <link href="{{ asset('backend/css/simple-datatables.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-4.3.1.css') }}">
-{{--<link href="{{ asset('backend/css/summernote-0.8.18-bs4.css') }}" rel="stylesheet">--}}
+    {{--<link href="{{ asset('backend/css/summernote-0.8.18-bs4.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/backend.css') }}" rel="stylesheet"/>
     <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
@@ -34,7 +34,8 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i> {{ \Auth::user()->name . ' ' . \Auth::user()->surname}}</a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user-circle"></i> Profil</a></li>
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user-circle"></i> Profil</a>
+                </li>
                 <li>
                     <hr class="dropdown-divider"/>
                 </li>
@@ -112,66 +113,66 @@
 <script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}"></script>
 <script src="{{ asset('js/datepicker-tr.js') }}"></script>
 <script>
-    $(document).ready(function () {
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-            $('[data-tooltip="tooltip"]').tooltip()
-        })
+   $(document).ready(function() {
+      $(function() {
+         $('[data-toggle="tooltip"]').tooltip();
+         $('[data-tooltip="tooltip"]').tooltip();
+      });
 
-        $('textarea').summernote({
-                toolbar: [
-                    ['style'],
-                    ['fontsize'],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontname'],
-                    ['color'],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                    ['insert', ['picture', 'hr', 'video']],
-                    ['table', ['table']],
-                    ['codeview', ['codeview']],
-                    ['link', ['link']],
-                    ['actions', ['undo', 'redo', 'fullscreen']],
-                ],
-                fontSizes: ['7', '8', '9', '10', '11', '12', '14','16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
-                height: 400,
-                focus: false,
-                placeholder: 'Açıklama Giriniz',
-                dialogsFade: true,
-                lang: 'tr-TR'
-            }
-        );
+      $('textarea').summernote({
+           toolbar    : [
+              ['style'],
+              ['fontsize'],
+              ['style', ['bold', 'italic', 'underline', 'clear']],
+              ['font', ['strikethrough', 'superscript', 'subscript']],
+              ['fontname'],
+              ['color'],
+              ['para', ['ul', 'ol', 'paragraph']],
+              ['height', ['height']],
+              ['insert', ['picture', 'hr', 'video']],
+              ['table', ['table']],
+              ['codeview', ['codeview']],
+              ['link', ['link']],
+              ['actions', ['undo', 'redo', 'fullscreen']],
+           ],
+           fontSizes  : ['7', '8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
+           height     : 400,
+           focus      : false,
+           placeholder: 'Açıklama Giriniz',
+           dialogsFade: true,
+           lang       : 'tr-TR'
+        }
+      );
 
-        $('.date-picker').datepicker({
-            changeMonth: true,
-            changeYear : true,
-            showAnim   : 'slideDown',
-            dateFormat : 'yy-mm-dd',
-            yearRange  : '1900:' + new Date().getFullYear(),
-            maxDate    : '+0D'
-        });
+      $('.date-picker').datepicker({
+         changeMonth: true,
+         changeYear : true,
+         showAnim   : 'slideDown',
+         dateFormat : 'yy-mm-dd',
+         yearRange  : '1900:' + new Date().getFullYear(),
+         maxDate    : '+0D'
+      });
 
-        $('.date-picker').attr('readonly', true).css({
-            'cursor': 'pointer'
-        });
+      $('.date-picker').attr('readonly', true).css({
+         'cursor': 'pointer'
+      });
 
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-    });
+      (function() {
+         'use strict';
+         window.addEventListener('load', function() {
+            var forms      = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+               form.addEventListener('submit', function(event) {
+                  if (form.checkValidity() === false) {
+                     event.preventDefault();
+                     event.stopPropagation();
+                  }
+                  form.classList.add('was-validated');
+               }, false);
+            });
+         }, false);
+      })();
+   });
 </script>
 @yield('custom-js')
 </body>

@@ -14,6 +14,6 @@ class SystemRequirementsMinSeeder extends Seeder
      */
     public function run()
     {
-        SystemRequirementsMin::factory()->count(5)->create();
+        SystemRequirementsMin::factory(5)->create();
     }
 }

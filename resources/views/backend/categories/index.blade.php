@@ -68,27 +68,25 @@
                                 @php
                                     $target = $category;
                                     $route  = 'category';
+                                    $category->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu kategoriyi silerseniz, kategoriye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($category->status == 0) alert-danger @endif">
                                     <td class="font-weight-bold">
                                         {{ $category->name }}
-                                        @if($category->status == 0)
-                                            <span class="d-inline-block p-1 m-1 text-danger"><i class="fas fa-times"></i> Pasif</span>
-                                        @endif
                                     </td>
                                     <td>{!! trim(strip_tags(Str::limit($category->description, '1000'))) !!}  </td>
                                     <td class="font-weight-bold">{{ $category->games_count }}</td>
                                     <td>
                                         @if($category->status == 1)
                                             <div class="mt-1">
-                                                <a target="_blank" href="{{ route('category', [$category->slug]) }}" class="btn btn-sm btn-success" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                                <a target="_blank" href="{{ route('category', [$category->slug]) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Görüntüle"><i class="fas fa-eye"></i></a>
                                             </div>
                                         @endif
                                         <div class="mt-1">
-                                            <a href="{{ route('admin.edit-category', [$category->id]) }}" class="btn btn-sm btn-primary" title="Düzenle"><i class="fas fa-pen"></i></a>
+                                            <a href="{{ route('admin.edit-category', [$category->id]) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Düzenle"><i class="fas fa-pen"></i></a>
                                         </div>
                                         <div class="mt-1">
-                                            <a href="#" data-id="{{ $category->id }}" class="btn btn-danger btn-sm delete" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}"><i class="fas fa-trash"></i></a>
+                                            <a href="#" data-id="{{ $category->id }}" class="btn btn-danger btn-sm delete" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}" data-tooltip="tooltip" data-placement="top" title="Sil"><i class="fas fa-trash"></i></a>
                                         </div>
                                         <div class="mt-1">
                                             <input type="checkbox" data-id="{{ $category->id }}" class="status-switch" name="status" @if($category->status == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
@@ -103,7 +101,12 @@
                 @endif
             </div>
         </div>
-            {!! $categories->withQueryString()->links() !!}
+        <div id="dialog-confirm" class="d-none" title="Kategori Pasif Yap">
+            <p class="confirm-text">
+                <i class="fa fa-exclamation-triangle text-danger"></i> Kategoriyi <span class="text-danger font-weight-bold">pasif</span> hale getirmek, barındırdığı oyunları da <span class="text-danger font-weight-bold">pasif</span> hale getirecektir. Devam etmek istiyor musunuz?
+            </p>
+        </div>
+        {!! $categories->withQueryString()->links() !!}
     </div>
 @endsection
 @section('custom-js')
@@ -119,23 +122,59 @@
                 },
              });
 
-             $.ajax({
-                url     : "{{route('admin.switch-category-status') }}",
-                type    : 'POST',
-                dataType: 'json',
-                data    : {
-                   state: state,
-                   id   : id,
-                },
-                success : function() {
-                   location.reload();
-                },
-                error   : function(xhr, status, error) {
-                   console.log(xhr.responseText);
-                   console.log(status);
-                   console.log(error);
-                },
-             });
+             if (!state) {
+                $('#dialog-confirm').removeClass('d-none');
+                $('#dialog-confirm').dialog({
+                   resizable  : false,
+                   dialogClass: 'no-close',
+                   height     : 'auto',
+                   width      : 'auto',
+                   modal      : true,
+                   buttons    : {
+                      'Devam Et': function() {
+                         $.ajax({
+                            url     : "{{route('admin.switch-category-status') }}",
+                            type    : 'POST',
+                            dataType: 'json',
+                            data    : {
+                               state: state,
+                               id   : id,
+                            },
+                            success : function() {
+                               location.reload();
+                            },
+                            error   : function(xhr, status, error) {
+                               console.log(xhr.responseText);
+                               console.log(status);
+                               console.log(error);
+                            },
+                         });
+                      },
+                      'Kapat'  : function() {
+                         $(this).dialog('close');
+                         location.reload();
+                      }
+                   }
+                });
+             } else {
+                $.ajax({
+                   url     : "{{route('admin.switch-category-status') }}",
+                   type    : 'POST',
+                   dataType: 'json',
+                   data    : {
+                      state: state,
+                      id   : id,
+                   },
+                   success : function() {
+                      location.reload();
+                   },
+                   error   : function(xhr, status, error) {
+                      console.log(xhr.responseText);
+                      console.log(status);
+                      console.log(error);
+                   },
+                });
+             }
           });
 
           $('#query-form').submit(function() {
@@ -172,8 +211,8 @@
           }
 
           $('.sorter').css({'cursor': 'pointer'}).hover(
-              function() { $(this).css('color', 'green'); },
-              function() { $(this).css('color', 'black'); },
+            function() { $(this).css('color', 'green'); },
+            function() { $(this).css('color', 'black'); },
           ).click(function() {
              var column = $(this).attr('data-column');
              var dir    = "{{ $sort_dir }}";

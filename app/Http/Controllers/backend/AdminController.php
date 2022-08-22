@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Articles;
-use App\Models\Categories;
-use App\Models\Developers;
-use App\Models\Games;
-use App\Models\Publishers;
-use App\Models\Settings;
+use App\Models\Article;
+use App\Models\Category;
+use App\Models\Developer;
+use App\Models\Game;
+use App\Models\Publisher;
+use App\Models\Setting;
 use Hash;
 use Illuminate\Http\Request;
 
@@ -16,24 +16,24 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        view()->share('settings', Settings::find(1));
+        view()->share('settings', Setting::find(1));
     }
 
     public function dashboard()
     {
-        $games      = Games::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
-        $categories = Categories::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
-        $developers = Developers::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
-        $publishers = Publishers::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
-        $articles   = Articles::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
+        $games      = Game::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
+        $categories = Category::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
+        $developers = Developer::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
+        $publishers = Publisher::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
+        $articles   = Article::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
 
-        $games_count      = $games ?  Games::where('status', '=', 1)->count() : 0;
-        $categories_count = $categories ? Categories::where('status', '=', 1)->count() : 0;
-        $developers_count = $developers ? Developers::where('status', '=', 1)->count() : 0;
-        $publishers_count = $publishers ? Publishers::where('status', '=', 1)->count() : 0;
-        $articles_count   = $articles ? Articles::where('status', '=', 1)->count() : 0;
+        $games_count      = $games ?  Game::where('status', '=', 1)->count() : 0;
+        $categories_count = $categories ? Category::where('status', '=', 1)->count() : 0;
+        $developers_count = $developers ? Developer::where('status', '=', 1)->count() : 0;
+        $publishers_count = $publishers ? Publisher::where('status', '=', 1)->count() : 0;
+        $articles_count   = $articles ? Article::where('status', '=', 1)->count() : 0;
 
-        $site_status = Settings::find(1)->site_status;
+        $site_status = Setting::find(1)->site_status;
 
         return view('backend.dashboard', compact('games', 'categories', 'developers', 'publishers', 'games_count', 'articles', 'categories_count', 'developers_count', 'publishers_count', 'articles_count', 'site_status'));
     }

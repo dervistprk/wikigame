@@ -21,7 +21,7 @@ class CreateArticlesTable extends Migration
             $table->longText('writing');
             $table->string('image');
             $table->integer('hit')->default(0);
-            $table->tinyInteger('status')->default(1);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

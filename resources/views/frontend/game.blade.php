@@ -23,7 +23,7 @@
                     </div>
                 </div>
             <div class="mt-2">
-                <h2 class="game-header">{{ $game->category->name }} Kategorisinde Popüler</h2>
+                <h2 class="game-header text-center">{{ $game->category->name }} Kategorisinde Popüler</h2>
                 @if($other_games->count() > 0)
                     @foreach($other_games as $other)
                         <div class="card-deck d-inline-block m-2" title="{{ $other->name }}">

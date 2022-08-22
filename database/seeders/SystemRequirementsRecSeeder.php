@@ -14,6 +14,6 @@ class SystemRequirementsRecSeeder extends Seeder
      */
     public function run()
     {
-        SystemRequirementsRec::factory()->count(5)->create();
+        SystemRequirementsRec::factory(5)->create();
     }
 }

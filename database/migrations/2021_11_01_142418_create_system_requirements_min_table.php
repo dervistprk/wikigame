@@ -15,13 +15,13 @@ class CreateSystemRequirementsMinTable extends Migration
     {
         Schema::create('system_requirements_min', function(Blueprint $table){
             $table->id();
-            $table->string('cpu');
-            $table->string('gpu');
-            $table->integer('ram');
-            $table->tinyInteger('ram_unit');
-            $table->integer('storage');
-            $table->tinyInteger('storage_unit');
-            $table->string('os');
+            $table->string('cpu_min');
+            $table->string('gpu_min');
+            $table->integer('ram_min');
+            $table->boolean('ram_min_unit');
+            $table->integer('storage_min');
+            $table->boolean('storage_min_unit');
+            $table->string('os_min');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateSystemRequirementsMinTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('system_requirements');
+        Schema::dropIfExists('system_requirements_min');
     }
 }

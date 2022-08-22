@@ -10,9 +10,9 @@
                 <p>{!! $developer->description !!}</p>
             </div>
         </div>
-        <h2 class="dev-header">Geliştiriciye Ait Oyunlar</h2>
+        <h2 class="dev-header text-center">Geliştiriciye Ait Oyunlar</h2>
         @foreach($games as $game)
-            <div class="card-deck" style="margin: 10px; display: inline-block" title="{{ $game->name }}">
+            <div class="card-deck m-2 d-inline-block" title="{{ $game->name }}">
                 <div class="card">
                     <img class="card-img-top" src="{{$game->cover_image}}" alt="{{ $game->name }}" title="{{ $game->name }}" width="220" height="300">
                     <div class="card-body">

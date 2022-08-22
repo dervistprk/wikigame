@@ -3,24 +3,24 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
-use App\Models\Developers;
-use App\Models\Games;
-use App\Models\Publishers;
-use App\Models\Settings;
+use App\Models\Category;
+use App\Models\Developer;
+use App\Models\Game;
+use App\Models\Publisher;
+use App\Models\Setting;
 use Cache;
 
-class GamesController extends Controller
+class GameController extends Controller
 {
     public function __construct()
     {
-        view()->share('categories', Categories::where('status', '=', 1)->get());
-        view()->share('settings', Settings::find(1));
+        view()->share('categories', Category::where('status', '=', 1)->get());
+        view()->share('settings', Setting::find(1));
     }
 
     public function list()
     {
-        $games = Games::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
+        $games = Game::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
         if ($games->count() > 0) {
             return view('frontend.all_games', compact('games'));
         }
@@ -31,7 +31,7 @@ class GamesController extends Controller
     public function gameDetails($slug)
     {
 
-        $game           = Games::where('status', '=', 1)->where('slug', '=', $slug)->first();
+        $game           = Game::where('status', '=', 1)->where('slug', '=', $slug)->firstOrFail();
         $developer      = $game->developer;
         $publisher      = $game->publisher;
         $game_details   = $game->details;
@@ -39,7 +39,7 @@ class GamesController extends Controller
         $system_req_rec = $game->systemReqRec;
         $game->increment('hit');
 
-        $other_games = Games::where([
+        $other_games = Game::where([
            ['status', '=', 1],
            ['category_id', '=', $game->category_id],
            ['id', '!=', $game->id]
@@ -50,7 +50,7 @@ class GamesController extends Controller
 
     public function developers()
     {
-        $developers = Developers::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
+        $developers = Developer::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
         if ($developers->count() > 0) {
             return view('frontend.lists.developers', compact('developers'));
         }
@@ -60,7 +60,7 @@ class GamesController extends Controller
 
     public function developer($slug)
     {
-        $developer = Developers::where('status', '=', 1)->where('slug', '=', $slug)->first();
+        $developer = Developer::where('status', '=', 1)->where('slug', '=', $slug)->firstOrFail();
         $games     = $developer->games()->where('status', '=', 1)->paginate(12);
 
         return view('frontend.developer', compact('developer', 'games'));
@@ -68,7 +68,7 @@ class GamesController extends Controller
 
     public function publishers()
     {
-        $publishers = Publishers::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
+        $publishers = Publisher::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
         if ($publishers->count() > 0) {
             return view('frontend.lists.publishers', compact('publishers'));
         }
@@ -78,7 +78,7 @@ class GamesController extends Controller
 
     public function publisher($slug)
     {
-        $publisher = Publishers::where('status', '=', 1)->where('slug', '=', $slug)->first();
+        $publisher = Publisher::where('status', '=', 1)->where('slug', '=', $slug)->firstOrFail();
         $games     = $publisher->games()->where('status', '=', 1)->paginate(12);
 
         return view('frontend.publisher', compact('publisher', 'games'));

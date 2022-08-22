@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\SystemRequirementsRec;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SystemRequirementsRecFactory extends Factory
@@ -23,15 +22,13 @@ class SystemRequirementsRecFactory extends Factory
     public function definition()
     {
         return [
-            'cpu'          => $this->faker->word(),
-            'gpu'          => $this->faker->word(),
-            'ram'          => $this->faker->numberBetween(1, 16),
-            'ram_unit'     => 1,
-            'storage'      => $this->faker->numberBetween(20, 120),
-            'storage_unit' => 1,
-            'os'           => $this->faker->sentence(2),
-            'created_at'   => Carbon::now(),
-            'updated_at'   => Carbon::now(),
+            'cpu_rec'          => $this->faker->word(),
+            'gpu_rec'          => $this->faker->word(),
+            'ram_rec'          => $this->faker->numberBetween(1, 16),
+            'ram_rec_unit'     => 1,
+            'storage_rec'      => $this->faker->numberBetween(20, 120),
+            'storage_rec_unit' => 1,
+            'os_rec'           => $this->faker->sentence(2),
         ];
     }
 }

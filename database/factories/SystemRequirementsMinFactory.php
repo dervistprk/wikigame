@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\SystemRequirementsMin;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SystemRequirementsMinFactory extends Factory
@@ -23,15 +22,13 @@ class SystemRequirementsMinFactory extends Factory
     public function definition()
     {
         return [
-            'cpu'          => $this->faker->word(3),
-            'gpu'          => $this->faker->word(3),
-            'ram'          => $this->faker->numberBetween(1, 16),
-            'ram_unit'     => 0,
-            'storage'      => $this->faker->numberBetween(20, 120),
-            'storage_unit' => 0,
-            'os'           => $this->faker->sentence(2),
-            'created_at'   => Carbon::now(),
-            'updated_at'   => Carbon::now(),
+            'cpu_min'          => $this->faker->word(3),
+            'gpu_min'          => $this->faker->word(3),
+            'ram_min'          => $this->faker->numberBetween(1, 16),
+            'ram_min_unit'     => 0,
+            'storage_min'      => $this->faker->numberBetween(20, 120),
+            'storage_min_unit' => 0,
+            'os_min'           => $this->faker->sentence(2),
         ];
     }
 }

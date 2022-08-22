@@ -19,7 +19,7 @@ class CreateDevelopersTable extends Migration
             $table->string('slug');
             $table->longText('description');
             $table->bigInteger('games_count')->default(0);
-            $table->tinyInteger('status')->default(1)->comment('0:pasif 1:aktif');
+            $table->boolean('status')->default(1)->comment('0:pasif 1:aktif');
             $table->string('image')->default(null);
             $table->timestamps();
         });

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Developer;
+use App\Models\GameVideo;
 use Illuminate\Database\Seeder;
 
-class DeveloperSeeder extends Seeder
+class GameVideoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class DeveloperSeeder extends Seeder
      */
     public function run()
     {
-        Developer::factory(5)->create();
+        GameVideo::factory(10)->create();
     }
 }

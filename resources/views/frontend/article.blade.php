@@ -12,12 +12,12 @@
         </div>
         @if(isset($random_articles))
             <div class="container-fluid">
-                <h2 class="game-header">Bunları da Okumak İsteyebilirsiniz</h2>
-                <div class="row mt-2">
+                <h2 class="game-header text-center">Bunları da Okumak İsteyebilirsiniz</h2>
+                <div class="row mt-2 justify-content-center align-content-center">
                     @foreach($random_articles as $random_article)
-                        <div class="col">
+                        <div class="col-sm-3">
                             <div class="card-deck d-inline-block" title="{{ $random_article->title }}">
-                                <div class="card" style=" max-width: 400px; max-height: 300px">
+                                <div class="card">
                                     <img class="card-img-top img-fluid lazyload" data-src="{{$random_article->image}}" src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $random_article->title }}" title="{{ $random_article->title }}" width="400" height="250" loading="lazy">
                                     <div class="card-body">
                                         <h6 class="card-title">{{ $random_article->title }}</h6>

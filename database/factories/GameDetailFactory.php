@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\GameDetails;
-use Carbon\Carbon;
+use App\Models\GameDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class GameDetailsFactory extends Factory
+class GameDetailFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = GameDetails::class;
+    protected $model = GameDetail::class;
 
     /**
      * Define the model's default state.
@@ -31,8 +30,6 @@ class GameDetailsFactory extends Factory
             'release_date' => $this->faker->date(),
             'platform'     => $this->faker->colorName(),
             'website'      => $this->faker->url(),
-            'created_at'   => Carbon::now(),
-            'updated_at'   => Carbon::now(),
         ];
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Developer;
+use App\Models\UserVerify;
 use Illuminate\Database\Seeder;
 
-class DeveloperSeeder extends Seeder
+class UserVerifySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class DeveloperSeeder extends Seeder
      */
     public function run()
     {
-        Developer::factory(5)->create();
+        UserVerify::factory(1)->create();
     }
 }

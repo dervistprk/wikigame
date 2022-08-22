@@ -9,5 +9,6 @@ class WhiteList extends Model
 {
     use HasFactory;
 
-    protected $table = 'whitelist';
+    protected $table   = 'whitelist';
+    protected $guarded = [];
 }
