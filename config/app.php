@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('WikiGame', 'Laravel'),
+    'name' => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -123,6 +123,12 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+
+    /*
+     * Cache expire time
+     */
+
+    'cache_expire' => env('CACHE_EXPIRE', 15),
 
     /*
     |--------------------------------------------------------------------------
