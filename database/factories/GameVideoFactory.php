@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\GameVideo;
+use Faker\Provider\Youtube;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GameVideoFactory extends Factory
@@ -21,10 +22,12 @@ class GameVideoFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new Youtube($faker));
         return [
-            'game_id'    => rand(1, 10),
+            'game_id'    => $this->faker->numberBetween(1,10),
             'video_hash' => \Str::random(20),
-            'url'        => $this->faker->url()
+            'url'        => $faker->youtubeEmbedUri()
         ];
     }
 }

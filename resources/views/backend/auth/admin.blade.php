@@ -2,7 +2,7 @@
 @section('title', 'Admin Profili')
 @section('content')
     <div class="container">
-        <form method="post" class="mt-2 needs-validation" novalidate action="{{route('admin.profile.post')}}">
+        <form method="post" class="mt-2 needs-validation" novalidate action="{{route('admin.profile-post')}}">
             @if($errors->any())
                 <div class="row justify-content-center">
                     <div class="col-sm-6">

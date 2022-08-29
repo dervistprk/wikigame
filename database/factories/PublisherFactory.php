@@ -27,7 +27,7 @@ class PublisherFactory extends Factory
             'name'        => $name,
             'slug'        => Str::slug($name),
             'description' => $this->faker->paragraph(5),
-            'image'       => $this->faker->imageUrl(),
+            'image'       => $this->faker->imageUrl(300, 220),
         ];
     }
 }

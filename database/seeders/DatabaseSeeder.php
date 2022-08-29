@@ -9,6 +9,8 @@ use App\Models\GameDetail;
 use App\Models\Game;
 use App\Models\GameImage;
 use App\Models\GameVideo;
+use App\Models\Genre;
+use App\Models\Platform;
 use App\Models\Publisher;
 use App\Models\Setting;
 use App\Models\SystemRequirementsMin;
@@ -31,6 +33,8 @@ class DatabaseSeeder extends Seeder
         Developer::factory(5)->create();
         Publisher::factory(5)->create();
         GameDetail::factory(5)->create();
+        Platform::factory(5)->create();
+        Genre::factory(5)->create();
         SystemRequirementsMin::factory(5)->create();
         SystemRequirementsRec::factory(5)->create();
         Setting::factory(1)->create();
@@ -40,6 +44,6 @@ class DatabaseSeeder extends Seeder
         UserVerify::factory(1)->create();
         GameImage::factory(10)->create();
         GameVideo::factory(10)->create();
-        Game::factory(10)->create();
+        Game::factory(10)->hasImages(1)->hasGenres(1)->hasPlatforms(1)->hasVideos(1)->create();
     }
 }

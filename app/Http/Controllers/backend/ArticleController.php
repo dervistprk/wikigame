@@ -9,13 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
+use Validator;
 
 class ArticleController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function index(Request $request)
     {
@@ -44,75 +42,126 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-                               'title'     => 'required|min:5',
-                               'sub_title' => 'required|min:5',
-                               'writing'   => 'required|min:10',
-                               'image'     => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
-                           ]);
+        $article_fields = [
+            'title',
+            'sub_title',
+            'writing',
+            'status'
+        ];
 
-        $article            = new Article();
-        $article->title     = $request->title;
-        $article->slug      = Str::slug($request->title);
-        $article->sub_title = $request->sub_title;
-        $article->writing   = $request->writing;
-        $article->status    = $request->status;
+        $article_rules = [
+            'title'     => 'required|min:5',
+            'sub_title' => 'required|min:5',
+            'writing'   => 'required|min:10',
+            'status'    => 'required',
+        ];
 
-        $path = public_path('uploads/articles/') . Str::slug($request->title);
+        foreach ($article_fields as $field) {
+            $article_data[$field] = $request->input($field);
+        }
+
+        $article_data['slug'] = Str::slug($request->input('title'));
+
+        $validate_article = Validator::make($article_data, $article_rules);
+
+        if ($validate_article->fails()) {
+            return redirect()->route('admin.create-article')
+                             ->withErrors($validate_article)
+                             ->withInput();
+        }
+
+        $image_rules = [
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:3092'
+        ];
+
+        $validate_image = Validator::make($request->file(), $image_rules);
+
+        if ($validate_image->fails()) {
+            return redirect()->route('admin.create-article')
+                             ->withErrors($validate_image)
+                             ->withInput();
+        }
+
+        $path = public_path('uploads/articles/') . Str::slug($request->input('title'));
 
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
 
-        $image        = $request->file('image');
-        $imageName    = Str::slug($request->title) . '.' . $request->image->getClientOriginalExtension();
-        $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(1920, 1080);
-        $image_resize->save($path . '/' . $imageName);
-        $article->image = '/uploads/articles/' . Str::slug($request->title) . '/' . $imageName;
+        $image     = $request->file('image');
+        $imageName = Str::slug($request->input('title')) . '.' . $request->image->getClientOriginalExtension();
+        Image::make($image->getRealPath())->resize(1920, 1080)->save($path . '/' . $imageName);
+        $article_data['image'] = '/uploads/articles/' . Str::slug($request->input('title')) . '/' . $imageName;
 
-        $article->save();
+        Article::create($article_data);
 
         return redirect()->route('admin.articles')->with('message', 'Makale Başarıyla Oluşturuldu');
     }
 
-    public function edit($id)
+    public function edit($article_id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::findOrFail($article_id);
         return view('backend.articles.edit', compact('article'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $article_id)
     {
-        $request->validate([
-                               'title'   => 'required',
-                               'writing' => 'required|min:15',
-                               'status'  => 'required',
-                               'image'   => 'image|mimes:jpg,jpeg,png,svg|max:2048'
-                           ]);
+        $article_fields = [
+            'title',
+            'sub_title',
+            'writing',
+            'status'
+        ];
 
-        $article          = Article::findOrFail($id);
-        $article->title   = $request->title;
-        $article->slug    = Str::slug($request->title);
-        $article->writing = $request->writing;
-        $article->status  = $request->status;
+        $article_rules = [
+            'title'     => 'required|min:5',
+            'sub_title' => 'required|min:5',
+            'writing'   => 'required|min:15',
+            'status'    => 'required',
+        ];
 
-        $path = public_path('uploads/articles/') . Str::slug($request->title);
+        foreach ($article_fields as $field) {
+            $article_data[$field] = $request->input($field);
+        }
+
+        $article_data['slug'] = Str::slug($request->input('title'));
+
+        $validate_article = Validator::make($article_data, $article_rules);
+
+        if ($validate_article->fails()) {
+            return redirect()->route('admin.edit-article', $article_id)
+                             ->withErrors($validate_article)
+                             ->withInput();
+        }
+
+        $image_rules = [
+            'image' => 'image|mimes:jpg,jpeg,png,webp|max:3092'
+        ];
+
+        $validate_image = Validator::make($request->file(), $image_rules);
+
+        if ($validate_image->fails()) {
+            return redirect()->route('admin.create-article')
+                             ->withErrors($validate_image)
+                             ->withInput();
+        }
+
+        $article = Article::findOrFail($article_id);
+
+        $path = public_path('uploads/articles/') . Str::slug($request->input('title'));
 
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
 
         if ($request->hasFile('image')) {
-            $image        = $request->file('image');
-            $imageName    = Str::slug($request->title) . '.' . $request->image->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $article->image = '/uploads/articles/' . Str::slug($request->title) . '/' . $imageName;
+            $image     = $request->file('image');
+            $imageName = Str::slug($request->input('title')) . '.' . $request->image->getClientOriginalExtension();
+            Image::make($image->getRealPath())->resize(1920, 1080)->save($path . '/' . $imageName);
+            $article_data['image'] = '/uploads/articles/' . Str::slug($request->input('title')) . '/' . $imageName;
         }
 
-        $article->save();
+        $article->update($article_data);
 
         return redirect()->route('admin.articles')->with('message', 'Makale Başarıyla Güncellendi.');
     }
@@ -137,9 +186,12 @@ class ArticleController extends Controller
 
     public function switchStatus(Request $request)
     {
-        $article         = Article::findOrFail($request->id);
-        $article->status = $request->state == 'true' ? 1 : 0;
-        $article->save();
-        return true;
+        if ($request->ajax()) {
+            $article         = Article::findOrFail($request->id);
+            $article->status = $request->state == 'true' ? 1 : 0;
+            $article->save();
+            return true;
+        }
+        return false;
     }
 }

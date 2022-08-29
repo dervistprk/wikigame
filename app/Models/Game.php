@@ -51,4 +51,14 @@ class Game extends Model
     {
         return $this->hasMany(GameImage::class, 'game_id', 'id');
     }
+
+    public function platforms()
+    {
+        return $this->belongsToMany(Platform::class, 'platform_game');
+    }
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'genre_game');
+    }
 }

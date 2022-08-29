@@ -14,10 +14,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function dashboard()
     {
@@ -27,7 +24,7 @@ class AdminController extends Controller
         $publishers = Publisher::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
         $articles   = Article::where('status', '=', 1)->orderBy('created_at', 'desc')->take(5)->get();
 
-        $games_count      = $games ?  Game::where('status', '=', 1)->count() : 0;
+        $games_count      = $games ? Game::where('status', '=', 1)->count() : 0;
         $categories_count = $categories ? Category::where('status', '=', 1)->count() : 0;
         $developers_count = $developers ? Developer::where('status', '=', 1)->count() : 0;
         $publishers_count = $publishers ? Publisher::where('status', '=', 1)->count() : 0;
@@ -47,18 +44,18 @@ class AdminController extends Controller
     public function adminPost(Request $request)
     {
         $request->validate([
-           'email'            => 'email|required',
-           'current_password' => 'required',
-           'password'         => [
-               'required',
-               'confirmed',
-               'min:6',
-               'regex:/[a-z]/',
-               'regex:/[A-Z]/',
-               'regex:/[0-9]/',
-           ],
+            'email'            => 'email|required',
+            'current_password' => 'required',
+            'password'         => [
+                'required',
+                'confirmed',
+                'min:6',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+            ],
         ]);
-        $admin           = \Auth::user();
+        $admin = \Auth::user();
 
         if (!Hash::check($request->current_password, $admin->password)) {
             return redirect()->route('admin.profile')->withErrors('Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.');

@@ -10,24 +10,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link @if(Request::segment(1) == '') active @endif" aria-current="page" href="{{ route('home') }}"><i class="fas fa-home"></i> Ana Sayfa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('random-game') }}"><i class="fas fa-random"></i> Rastgele Oyun</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if(Request::segment(1) == 'gelistiriciler') active @endif" href="{{ route('developers') }}"><i class="fas fa-calculator"></i> Geliştiriciler</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if(Request::segment(1) == 'dagiticilar') active @endif" href="{{ route('publishers') }}"><i class="fas fa-newspaper"></i> Dağıtıcılar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if(Request::segment(1) == 'makaleler') active @endif" href="{{ route('articles') }}"><i class="fas fa-book-open"></i> Makaleler</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if(Request::segment(1) == 'hakkinda') active @endif" href="{{ route('about') }}"><i class="fas fa-book"></i> Hakkında</a>
-                    </li>
+                    @foreach(config('frontend.menus') as $menu)
+                        <li class="nav-item">
+                            <a class="nav-link @if(Request::segment(1) == $menu['segment']) active @endif"
+                               aria-current="page" href="{{ route($menu['route']) }}"><i class="fas fa-{{ $menu['icon'] }}"></i>
+                                {{ $menu['title'] }}
+                            </a>
+                        </li>
+                    @endforeach
                     @if(Auth::guest())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle categories-drop-down" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> Üyelik</a>
@@ -56,19 +46,16 @@
                             </ul>
                         </li>
                     @endif
-                    <li class="nav-item">
-                        <div class="custom-control custom-switch me-3 mt-2">
-                            <span style="margin-right: 50px;"><i class="fas fa-sun"></i></span>
-                            <input type="checkbox" class="custom-control-input" id="darkSwitch">
-                            <label class="custom-control-label p-1" for="darkSwitch"></label>
-                            <i class="fas fa-moon"></i>
-                        </div>
-                    </li>
+                    <div class="form-check form-switch me-2 mt-2">
+                        <i class="fas fa-sun"></i>
+                        <input type="checkbox" class="form-check-input" role="switch" id="darkSwitch">
+                        <i class="fas fa-moon"></i>
+                    </div>
                 </ul>
             </div>
         </div>
     </nav>
-<!-- Second Navbar -->
+    <!-- Second Navbar -->
     <nav class="navbar navbar-expand-xl navbar-dark" id="navbar2">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,9 +73,9 @@
                 </form>
                 <ul class="navbar-nav ms-3">
                     @foreach($categories as $category)
-                    <li class="nav-item me-2">
-                        <a class="nav-link @if(Request::segment(2) == $category->slug) active @endif" href="{{ route('category', [$category->slug]) }}">{{ $category->name }}</a>
-                    </li>
+                        <li class="nav-item ms-3">
+                            <a class="nav-link @if(Request::segment(2) == $category->slug) active @endif" href="{{ route('category', [$category->slug]) }}">{{ $category->name }}</a>
+                        </li>
                     @endforeach
                     <li class="nav-item">
                         <a class="nav-link @if(Request::segment(1) == 'tum-oyunlar') active @endif" href="{{ route('all-games') }}"><i class="fa fa-gamepad"></i> Tüm Oyunlar</a>

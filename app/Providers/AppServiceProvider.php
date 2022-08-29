@@ -30,8 +30,13 @@ class AppServiceProvider extends ServiceProvider
         Paginator::defaultView('vendor.pagination.custom');
         \View::composer(['errors::401', 'errors::403', 'errors::404', 'errors::419', 'errors::429', 'errors::500', 'errors::503'], function ($view) {
             $settings = Setting::find(1);
-            $categories = Category::get();
+            $categories = Category::where('status', '=', 1)->get();
             $view->with(['settings' => $settings, 'categories' => $categories]);
         });
+
+        if (!app()->runningInConsole()) {
+            view()->share('categories', Category::where('status', '=', 1)->get());
+            view()->share('settings', Setting::find(1));
+        }
     }
 }

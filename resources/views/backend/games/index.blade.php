@@ -17,8 +17,8 @@
         <div class="m-2">
             <a href="{{route('admin.create-game')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Oyun Ekle</a>
         </div>
-        <div class="card mb-4 m-2 shadow font-weight-bold text-secondary">
-            <div class="card-header">
+        <div class="card mb-4 m-2 shadow text-secondary">
+            <div class="card-header font-weight-bold">
                 <i class="fas fa-gamepad"></i>
                 Kayıtlı Oyunlar
                 <div class="float-end">
@@ -61,7 +61,7 @@
                 @if($games->items())
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                             <tr>
                                 <th>Kapak Resmi</th>
                                 <th class="sorter" data-column="name">Adı</th>
@@ -83,7 +83,7 @@
                                 @endphp
                                 <tr class="@if($game->status == 0) alert-danger @endif">
                                     <td>
-                                        <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="img-fluid img-thumbnail" width="120" height="170">
+                                        <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="img-fluid rounded img-thumbnail" width="120" height="150">
                                     </td>
                                     <td class="font-weight-bold">
                                         {{ $game->name }}
@@ -104,7 +104,7 @@
                                         {{ Carbon\Carbon::parse($game->details->release_date)->format('d/m/Y') }}
                                     </td>
                                     <td>
-                                        <img src="{{asset('assets/pegi_ratings/pegi_') . $game->details->age_rating . '.png'}}" class="img-fluid" alt="pegi_rating" width="30" height="30" title="{{ $game->details->age_rating }} yaş ve üzeri">
+                                        <img src="{{asset('assets/pegi_ratings/pegi_') . $game->details->age_rating . '.png'}}" class="img-fluid" alt="{{ $game->details->age_rating }} yaş ve üzeri" width="30" height="30" title="{{ $game->details->age_rating }} yaş ve üzeri">
                                     </td>
                                     <td>
                                         @if($game->status == 1)
@@ -142,160 +142,138 @@
 @endsection
 @section('custom-js')
     <script type="text/javascript">
-       $(function() {
-          $('.status-switch').change(function() {
-             var id    = $(this)[0].getAttribute('data-id');
-             var state = $(this).prop('checked');
+       $(document).ready(function() {
+          $(function() {
+             $('.status-switch').change(function() {
+                var id    = $(this)[0].getAttribute('data-id');
+                var state = $(this).prop('checked');
 
-             @foreach($games as $g)
-                 var game_id          = {{ $g->id }};
-                 var category_status  = {{ $g->category->status }};
-                 var developer_status = {{ $g->developer->status }};
-                 var publisher_status = {{ $g->publisher->status }};
+                @foreach($games as $game)
+                    var game_id          = {{ $game->id }};
+                    var category_status  = {{ $game->category->status }};
+                    var developer_status = {{ $game->developer->status }};
+                    var publisher_status = {{ $game->publisher->status }};
 
-                 var initialize_dialog = function() {
-                    $('#dialog').dialog({
-                       resizable  : false,
-                       dialogClass: 'no-close',
-                       height     : 'auto',
-                       width      : 'auto',
-                       modal      : true,
-                       buttons    : {
-                          'Tamam': function() {
-                             $(this).dialog('close');
-                             location.reload();
-                          }
-                       }
-                    });
-                 }
-
-                 if (game_id == id) {
-                    if (category_status == 0) {
-                       initialize_dialog();
-                       $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">kategorisini</span> aktive edin.');
-                       $('#dialog').removeClass('d-none');
-                    } else if (developer_status == 0) {
-                       initialize_dialog();
-                       $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">geliştiricisini</span> aktive edin.');
-                       $('#dialog').removeClass('d-none');
-                    } else if (publisher_status == 0) {
-                       initialize_dialog();
-                       $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">dağıtıcısını</span> aktive edin.');
-                       $('#dialog').removeClass('d-none');
-                    } else {
-                       $.ajaxSetup({
-                          headers: {
-                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                          },
-                       });
-
-                       $.ajax({
-                          url     : "{{route('admin.switch-game-status') }}",
-                          type    : 'POST',
-                          dataType: 'json',
-                          data    : {
-                             state: state,
-                             id   : id,
-                          },
-                          success : function(response) {
-                             if (response.result) {
-                                location.reload();
+                    var initialize_dialog = function() {
+                       $('#dialog').dialog({
+                          resizable  : false,
+                          dialogClass: 'no-close',
+                          draggable  : false,
+                          height     : 'auto',
+                          width      : 'auto',
+                          modal      : true,
+                          show       : true,
+                          hide       : true,
+                          buttons    : [
+                             {
+                                text   : 'Tamam',
+                                'class': 'btn btn-sm btn-secondary',
+                                click  : function() {
+                                   $(this).dialog('close');
+                                   location.reload();
+                                }
                              }
-                          },
-                          error   : function(xhr, status, error) {
-                             console.log(xhr.responseText);
-                             console.log(status);
-                             console.log(error);
-                          },
+                          ]
                        });
+                    };
+
+                    if (game_id == id) {
+                       if (category_status == 0) {
+                          initialize_dialog();
+                          $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">kategorisini</span> aktive edin.');
+                          $('#dialog').removeClass('d-none');
+                       } else if (developer_status == 0) {
+                          initialize_dialog();
+                          $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">geliştiricisini</span> aktive edin.');
+                          $('#dialog').removeClass('d-none');
+                       } else if (publisher_status == 0) {
+                          initialize_dialog();
+                          $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">dağıtıcısını</span> aktive edin.');
+                          $('#dialog').removeClass('d-none');
+                       } else {
+                          $.ajaxSetup({
+                             headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                             },
+                          });
+
+                          $.ajax({
+                             url     : "{{route('admin.switch-game-status') }}",
+                             type    : 'POST',
+                             dataType: 'json',
+                             data    : {
+                                state: state,
+                                id   : id,
+                             },
+                             success : function(response) {
+                                if (response.result) {
+                                   location.reload();
+                                }
+                             },
+                             error   : function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                                console.log(status);
+                                console.log(error);
+                             },
+                          });
+                       }
                     }
-                 }
-             @endforeach
-
-              /*if (category_status == 0) {
-               $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelike <span class="text-primary font-weight-bold">kategorisini</span> aktive edin.');
-               $('#dialog').removeClass('d-none');
-               } else {
-               $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-               },
-               });
-
-               $.ajax({
-               url     : "{{route('admin.switch-game-status') }}",
-               type    : 'POST',
-               dataType: 'json',
-               data    : {
-               state: state,
-               id   : id,
-               },
-               success : function(response) {
-               if (response.result == 'true') {
-               location.reload();
-               }
-               },
-               error   : function(xhr, status, error) {
-               console.log(xhr.responseText);
-               console.log(status);
-               console.log(error);
-               },
-               });
-               }*/
-          });
-
-          $('#detailed-search-form').submit(function() {
-             $('input').each(function(index, obj) {
-                if ($(obj).val() == '') {
-                   $(obj).remove();
-                }
+                @endforeach
              });
-          });
 
-          $('#query-form').submit(function() {
-             $('input').each(function(index, obj) {
-                if ($(obj).val() == '') {
-                   $(obj).remove();
-                }
+             $('#detailed-search-form').submit(function() {
+                $('input').each(function(index, obj) {
+                   if ($(obj).val() == '') {
+                      $(obj).remove();
+                   }
+                });
              });
-          });
 
-          $('#per-page').change(function() {
-             $('#query-form').submit();
-          });
+             $('#query-form').submit(function() {
+                $('input').each(function(index, obj) {
+                   if ($(obj).val() == '') {
+                      $(obj).remove();
+                   }
+                });
+             });
 
-          $('#reset-parameters').click(function() {
-             window.location.href = "{{ route('admin.games') }}";
-          });
+             $('#per-page').change(function() {
+                $('#query-form').submit();
+             });
 
-          var url = window.location.href;
-          if (url.includes('?')) {
-             $('#reset-parameters').removeClass('d-none');
-          } else {
-             $('#reset-parameters').addClass('d-none');
-          }
+             $('#reset-parameters').click(function() {
+                window.location.href = "{{ route('admin.games') }}";
+             });
 
-          var urlParams   = new URLSearchParams(window.location.search);
-          var sort_column = urlParams.get('sort_by');
-          var sort_dir    = urlParams.get('sort_dir');
+             var url = window.location.href;
+             if (url.includes('?')) {
+                $('#reset-parameters').removeClass('d-none');
+             } else {
+                $('#reset-parameters').addClass('d-none');
+             }
 
-          if (sort_dir == 'asc') {
-             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
-          } else {
-             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
-          }
+             var urlParams   = new URLSearchParams(window.location.search);
+             var sort_column = urlParams.get('sort_by');
+             var sort_dir    = urlParams.get('sort_dir');
 
-          $('.sorter').css({'cursor': 'pointer'}).hover(
-            function() { $(this).css('color', 'green'); },
-            function() { $(this).css('color', 'black'); },
-          ).click(function() {
-             var column = $(this).attr('data-column');
-             var dir    = "{{ $sort_dir }}";
+             if (sort_dir == 'asc') {
+                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
+             } else {
+                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
+             }
 
-             $('input[name="sort_by"]').val(column);
-             $('input[name="sort_dir"]').val(dir);
+             $('.sorter').css({'cursor': 'pointer'}).hover(
+               function() { $(this).css('color', 'green'); },
+               function() { $(this).css('color', 'white'); },
+             ).click(function() {
+                var column = $(this).attr('data-column');
+                var dir    = "{{ $sort_dir }}";
 
-             $('#query-form').submit();
+                $('input[name="sort_by"]').val(column);
+                $('input[name="sort_dir"]').val(dir);
+
+                $('#query-form').submit();
+             });
           });
        });
     </script>

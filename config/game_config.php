@@ -9,5 +9,12 @@ return [
   'statuses' => [
       0 => 'Pasif',
       1 => 'Aktif'
+  ],
+  'age_ratings' => [
+      0 => 3,
+      1 => 7,
+      2 => 12,
+      3 => 16,
+      4 => 18
   ]
 ];

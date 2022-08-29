@@ -10,11 +10,7 @@ use Cache;
 
 class ArticleController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('categories', Category::where('status', '=', 1)->get());
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function articles()
     {

@@ -41,7 +41,7 @@
                                         </button>
                                     </div>
                                 @endif
-                                <form method="post" action="{{ route('admin.login.post') }}">
+                                <form method="post" action="{{ route('admin.login-post') }}">
                                     @csrf
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="email" type="email" name="email" placeholder="E-Posta Adresinizi Giriniz" required/>

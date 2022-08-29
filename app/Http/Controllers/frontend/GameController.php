@@ -12,15 +12,11 @@ use Cache;
 
 class GameController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('categories', Category::where('status', '=', 1)->get());
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function list()
     {
-        $games = Game::where('status', '=', 1)->orderBy('name', 'asc')->paginate(12);
+        $games = Game::where('status', '=', 1)->orderBy('name')->paginate(12);
         if ($games->count() > 0) {
             return view('frontend.all_games', compact('games'));
         }
@@ -30,22 +26,22 @@ class GameController extends Controller
 
     public function gameDetails($slug)
     {
+        $game         = Game::where('status', '=', 1)->where('slug', '=', $slug)->firstOrFail();
+        $game_genres  = $game->genres->pluck('name')->toArray();
+        $game_genres  = implode(', ', $game_genres);
+        $game_details = $game->details;
 
-        $game           = Game::where('status', '=', 1)->where('slug', '=', $slug)->firstOrFail();
-        $developer      = $game->developer;
-        $publisher      = $game->publisher;
-        $game_details   = $game->details;
-        $system_req_min = $game->systemReqMin;
-        $system_req_rec = $game->systemReqRec;
+
         $game->increment('hit');
+        $video_count = 1;
 
         $other_games = Game::where([
-           ['status', '=', 1],
-           ['category_id', '=', $game->category_id],
-           ['id', '!=', $game->id]
+            ['status', '=', 1],
+            ['category_id', '=', $game->category_id],
+            ['id', '!=', $game->id]
         ])->orderBy('hit', 'desc')->take(4)->get();
 
-        return view('frontend.game', compact('game', 'developer', 'publisher', 'game_details', 'system_req_min', 'system_req_rec', 'other_games'));
+        return view('frontend.game', compact('game', 'game_details', 'other_games', 'video_count', 'game_genres'));
     }
 
     public function developers()

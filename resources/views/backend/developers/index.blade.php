@@ -55,17 +55,18 @@
                 @if($developers->items())
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                             <tr>
                                 <th>Geliştirici Logosu</th>
                                 <th class="sorter" data-column="name">Adı</th>
-                                <th class="sorter" data-column="games_count">Oyun Sayısı</th>
+                                <th>Oyun Sayısı</th>
                                 <th>İşlemler</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($developers as $developer)
                                 @php
+                                    $title = 'Geliştirici';
                                     $target = $developer;
                                     $route  = 'developer';
                                     $developer->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz, geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
@@ -77,7 +78,7 @@
                                     <td class="font-weight-bold">
                                         {{ $developer->name }}
                                     </td>
-                                    <td class="font-weight-bold">{{ $developer->games_count }}</td>
+                                    <td class="font-weight-bold">{{ $developer->games->count() }}</td>
                                     <td>
                                         @if($developer->status == 1)
                                             <div class="mt-1">
@@ -97,132 +98,143 @@
                                 </tr>
                                 @include('backend.modals.deleteConfirmation')
                             @endforeach
+                            @include('backend.modals.statusDialog')
                             </tbody>
                         </table>
                     </div>
+                @else
+                    <div class="text-danger text-center">Aranan kriterlere uygun geliştirici bulunamadı.</div>
                 @endif
             </div>
-        </div>
-        <div id="dialog-confirm" class="d-none" title="Kategori Pasif Yap">
-            <p class="confirm-text">
-                <i class="fa fa-exclamation-triangle text-danger"></i> Geliştiriciyi <span class="text-danger font-weight-bold">pasif</span> hale getirmek, barındırdığı oyunları da <span class="text-danger font-weight-bold">pasif</span> hale getirecektir. Devam etmek istiyor musunuz?
-            </p>
         </div>
         {!! $developers->withQueryString()->links() !!}
     </div>
 @endsection
 @section('custom-js')
     <script type="text/javascript">
-       $(function() {
-          $('.status-switch').change(function() {
-             var id    = $(this)[0].getAttribute('data-id');
-             var state = $(this).prop('checked');
+       $(document).ready(function() {
+          $(function() {
+             $('.status-switch').change(function() {
+                var id    = $(this)[0].getAttribute('data-id');
+                var state = $(this).prop('checked');
 
-             $.ajaxSetup({
-                headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                },
-             });
+                $.ajaxSetup({
+                   headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                   },
+                });
 
-             if (!state) {
-                $('#dialog-confirm').removeClass('d-none');
-                $('#dialog-confirm').dialog({
-                   resizable  : false,
-                   dialogClass: 'no-close',
-                   height     : 'auto',
-                   width      : 'auto',
-                   modal      : true,
-                   buttons    : {
-                      'Devam Et': function() {
-                         $.ajax({
-                            url     : "{{route('admin.switch-developer-status') }}",
-                            type    : 'POST',
-                            dataType: 'json',
-                            data    : {
-                               state: state,
-                               id   : id,
-                            },
-                            success : function() {
+                if (!state) {
+                   $('#dialog-confirm').removeClass('d-none');
+                   $('#dialog-confirm').dialog({
+                      resizable  : false,
+                      dialogClass: 'no-close',
+                      draggable  : false,
+                      height     : 'auto',
+                      width      : 'auto',
+                      modal      : true,
+                      show       : true,
+                      hide       : true,
+                      buttons    : [
+                         {
+                            text   : 'Devam Et',
+                            'class': 'btn btn-sm btn-primary',
+                            click  : function() {
+                               $.ajax({
+                                  url     : "{{ route('admin.switch-developer-status') }}",
+                                  type    : 'POST',
+                                  dataType: 'json',
+                                  data    : {
+                                     state: state,
+                                     id   : id,
+                                  },
+                                  success : function() {
+                                     location.reload();
+                                  },
+                                  error   : function(xhr, status, error) {
+                                     console.log(xhr.responseText);
+                                     console.log(status);
+                                     console.log(error);
+                                  },
+                               });
+                            }
+                         },
+                         {
+                            text   : 'İptal',
+                            'class': 'btn btn-sm btn-secondary',
+                            click  : function() {
+                               $(this).dialog('close');
                                location.reload();
-                            },
-                            error   : function(xhr, status, error) {
-                               console.log(xhr.responseText);
-                               console.log(status);
-                               console.log(error);
-                            },
-                         });
+                            }
+                         }
+                      ]
+                   });
+                } else {
+                   $.ajax({
+                      url     : "{{route('admin.switch-developer-status') }}",
+                      type    : 'POST',
+                      dataType: 'json',
+                      data    : {
+                         state: state,
+                         id   : id,
                       },
-                      'Kapat'  : function() {
-                         $(this).dialog('close');
+                      success : function() {
                          location.reload();
-                      }
-                   }
-                });
-             } else {
-                $.ajax({
-                   url     : "{{route('admin.switch-developer-status') }}",
-                   type    : 'POST',
-                   dataType: 'json',
-                   data    : {
-                      state: state,
-                      id   : id,
-                   },
-                   success : function() {
-                      location.reload();
-                   },
-                   error   : function(xhr, status, error) {
-                      console.log(xhr.responseText);
-                      console.log(status);
-                      console.log(error);
-                   },
-                });
-             }
-          });
-
-          $('#query-form').submit(function() {
-             $('input').each(function(index, obj) {
-                if ($(obj).val() == '') {
-                   $(obj).remove();
+                      },
+                      error   : function(xhr, status, error) {
+                         console.log(xhr.responseText);
+                         console.log(status);
+                         console.log(error);
+                      },
+                   });
                 }
              });
-          });
 
-          $('#per-page').change(function() {
-             $('#query-form').submit();
-          });
+             $('#query-form').submit(function() {
+                $('input').each(function(index, obj) {
+                   if ($(obj).val() == '') {
+                      $(obj).remove();
+                   }
+                });
+             });
 
-          $('#reset-parameters').click(function() {
-             window.location.href = "{{ route('admin.categories') }}";
-          });
+             $('#per-page').change(function() {
+                $('#query-form').submit();
+             });
 
-          var url = window.location.href;
-          if (url.includes('?')) {
-             $('#reset-parameters').removeClass('d-none');
-          } else {
-             $('#reset-parameters').addClass('d-none');
-          }
+             $('#reset-parameters').click(function() {
+                window.location.href = "{{ route('admin.categories') }}";
+             });
 
-          var urlParams   = new URLSearchParams(window.location.search);
-          var sort_column = urlParams.get('sort_by');
-          var sort_dir    = urlParams.get('sort_dir');
+             var url = window.location.href;
+             if (url.includes('?')) {
+                $('#reset-parameters').removeClass('d-none');
+             } else {
+                $('#reset-parameters').addClass('d-none');
+             }
 
-          if (sort_dir == 'asc') {
-             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
-          } else {
-             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
-          }
+             var urlParams   = new URLSearchParams(window.location.search);
+             var sort_column = urlParams.get('sort_by');
+             var sort_dir    = urlParams.get('sort_dir');
 
-          $('.sorter').css({'cursor': 'pointer'}).hover(
-            function() { $(this).css('color', 'green'); },
-            function() { $(this).css('color', 'black'); },
-          ).click(function() {
-             var column = $(this).attr('data-column');
-             var dir    = "{{ $sort_dir }}";
+             if (sort_dir == 'asc') {
+                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
+             } else {
+                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
+             }
 
-             $('input[name="sort_by"]').val(column);
-             $('input[name="sort_dir"]').val(dir);
+             $('.sorter').css({'cursor': 'pointer'}).hover(
+               function() { $(this).css('color', 'green'); },
+               function() { $(this).css('color', 'white'); },
+             ).click(function() {
+                var column = $(this).attr('data-column');
+                var dir    = "{{ $sort_dir }}";
 
-             $('#query-form').submit();
+                $('input[name="sort_by"]').val(column);
+                $('input[name="sort_dir"]').val(dir);
+
+                $('#query-form').submit();
+             });
           });
        });
     </script>

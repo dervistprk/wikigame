@@ -2,17 +2,17 @@
 <html lang="tr">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield('redirect-js')
     <meta name="description" content="{{ $settings->meta_description }}"/>
     <meta name="author" content="WikiGame"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - WikiGame</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->favicon) }}"/>
-{{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">--}}
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-4.4.1.css') }}">
-    <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
-    <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    {{--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">--}}
+    {{--<link rel="stylesheet" href="{{ asset('css/bootstrap-4.4.1.css') }}">--}}
+    {{--<link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>--}}
     <link rel="stylesheet" href="{{ asset('css/dark-mode.css') }}">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -32,10 +32,13 @@
 @yield('content')
 <button class="btn btn-warning rounded-circle" onclick="topFunction()" id="topBtn" data-toggle="tooltip" data-placement="top" title="En Üste Git"><i class="fas fa-angle-up"></i></button>
 @include('layouts.footer')
-<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
-<script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>
-<script src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>
-<script src="{{ asset('js/popper-1.12.9.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
+{{--<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>--}}
+{{--<script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>--}}
+{{--<script src="{{ asset('js/bootstrap-4.4.1.js') }}"></script>--}}
+{{--<script src="{{ asset('js/popper-1.12.9.js') }}"></script>--}}
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="{{ asset('js/scripts.js') }}"></script>
 <script src="{{ asset('js/dark-mode-switch.js') }}"></script>

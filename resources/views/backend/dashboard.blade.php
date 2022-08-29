@@ -31,7 +31,7 @@
                     <div class="table-responsive">
                         @if($games)
                             <table class="table table-hover table-bordered">
-                                <thead>
+                                <thead class="thead-dark">
                                 <tr>
                                     <th>Kapak Resmi</th>
                                     <th>Adı</th>
@@ -89,7 +89,7 @@
                     <div class="table-responsive">
                         @if($categories)
                             <table class="table table-hover table-bordered">
-                                <thead>
+                                <thead class="thead-dark">
                                 <tr>
                                     <th>Adı</th>
                                     <th>Açıklama</th>
@@ -105,7 +105,7 @@
                                         <td>
                                             {{ \Str::limit(strip_tags(str_replace('&nbsp;', ' ', $category->description)), 250, '...') }}
                                         </td>
-                                        <td class="text-center" style="width: 10%">{{ $category->games_count }}</td>
+                                        <td class="text-center" style="width: 10%">{{ $category->games->count() }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -130,7 +130,7 @@
                             <div class="table-responsive">
                                 @if($developers)
                                     <table class="table table-hover table-bordered">
-                                        <thead>
+                                        <thead class="thead-dark">
                                         <tr>
                                             <th>Geliştirici Logosu</th>
                                             <th>Adı</th>
@@ -146,7 +146,7 @@
                                                 <td>
                                                     <a href="{{ route('admin.edit-developer', $developer->id) }}" class="text-primary text-decoration-none" title="{{ $developer->name }} Geliştiricisi">{{ $developer->name }}</a>
                                                 </td>
-                                                <td class="text-center">{{ $developer->games_count }}</td>
+                                                <td class="text-center">{{ $developer->games->count() }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -170,7 +170,7 @@
                             <div class="table-responsive">
                                 @if($publishers)
                                     <table class="table table-hover table-bordered">
-                                        <thead>
+                                        <thead class="thead-dark">
                                         <tr>
                                             <th>Dağıtıcı Logosu</th>
                                             <th>Adı</th>
@@ -186,7 +186,7 @@
                                                 <td>
                                                     <a href="{{ route('admin.edit-publisher', $publisher->id) }}" class="text-primary text-decoration-none" title="{{ $publisher->name }} Dağıtıcısı">{{ $publisher->name }}</a>
                                                 </td>
-                                                <td class="text-center">{{ $publisher->games_count }}</td>
+                                                <td class="text-center">{{ $publisher->games->count() }}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -210,11 +210,11 @@
                     <div class="table-responsive">
                         @if($articles)
                         <table class="table table-hover table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                             <tr>
                                 <th>Makale Kapak Resmi</th>
                                 <th>Başlık</th>
-                                <th>Alt başlık</th>
+                                <th>Alt Başlık</th>
                                 <th>Okunma Sayısı</th>
                             </tr>
                             </thead>

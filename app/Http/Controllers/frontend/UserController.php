@@ -17,11 +17,7 @@ use Mail;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('categories', Category::where('status', '=', 1)->orderBy('name', 'asc')->get());
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function registerForm()
     {
@@ -31,21 +27,21 @@ class UserController extends Controller
     public function registerPost(Request $request)
     {
         $request->validate([
-               'email'     => 'required|email|unique:users|max:254',
-               'user_name' => 'required|min:3|unique:users|max:254|regex:/^[\w-]*$/',
-               'password'  => [
-                   'required',
-                   'confirmed',
-                   'min:6',
-                   'regex:/[a-z]/',
-                   'regex:/[A-Z]/',
-                   'regex:/[0-9]/',
-               ],
-               'name'      => 'required|max:254',
-               'surname'   => 'required|max:254',
-               'birth_day' => 'required|date',
-               'gender'    => 'required',
-               'about'     => 'required|min:30'
+            'email'     => 'required|email|unique:users|max:254',
+            'user_name' => 'required|min:3|unique:users|max:254|regex:/^[\w-]*$/',
+            'password'  => [
+                'required',
+                'confirmed',
+                'min:6',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+            ],
+            'name'      => 'required|max:254',
+            'surname'   => 'required|max:254',
+            'birth_day' => 'required|date',
+            'gender'    => 'required',
+            'about'     => 'required|min:30'
         ]);
 
         $user_field = [
@@ -69,17 +65,16 @@ class UserController extends Controller
         $token = Str::random(64);
 
         UserVerify::create([
-               'user_id' => $user->id,
-               'token'   => $token
+            'user_id' => $user->id,
+            'token'   => $token
         ]);
 
-        Mail::send('frontend.emails.verificationMail', ['token' => $token], function($message) use($request){
+        Mail::send('frontend.emails.verificationMail', ['token' => $token], function($message) use ($request) {
             $message->to($request->email);
             $message->subject('WikiGame Doğrulama E-Postası');
         });
 
-        return redirect()->route('login-form')->with('message', 'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.<br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen <a class="link-primary text-decoration-none" href="' . route('resend-verification') .'">tıklayın</a>.');
-
+        return redirect()->route('login-form')->with('message', 'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.<br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen <a class="link-primary text-decoration-none" href="' . route('resend-verification') . '">tıklayın</a>.');
     }
 
     public function resendVerification(Request $request)
@@ -101,7 +96,7 @@ class UserController extends Controller
                         ]
                     );
 
-                    Mail::send('frontend.emails.verificationMail', ['token' => $token], function($message) use($request){
+                    Mail::send('frontend.emails.verificationMail', ['token' => $token], function($message) use ($request) {
                         $message->to($request->email);
                         $message->subject('WikiGame Doğrulama E-Postası');
                     });
@@ -160,11 +155,11 @@ class UserController extends Controller
 
         if ($request->isMethod('post')) {
             $request->validate([
-                   'name'      => 'required|max:254',
-                   'surname'   => 'required|max:254',
-                   'birth_day' => 'required|date',
-                   'gender'    => 'required',
-                   'about'     => 'required|min:30'
+                'name'      => 'required|max:254',
+                'surname'   => 'required|max:254',
+                'birth_day' => 'required|date',
+                'gender'    => 'required',
+                'about'     => 'required|min:30'
             ]);
 
             $user_field = [
@@ -181,13 +176,13 @@ class UserController extends Controller
 
             if ($request->current_password && $request->password && $request->password_confirmation) {
                 $request->validate([
-                   'password'  => [
-                       'confirmed',
-                       'min:6',
-                       'regex:/[a-z]/',
-                       'regex:/[A-Z]/',
-                       'regex:/[0-9]/',
-                   ],
+                    'password' => [
+                        'confirmed',
+                        'min:6',
+                        'regex:/[a-z]/',
+                        'regex:/[A-Z]/',
+                        'regex:/[0-9]/',
+                    ],
                 ]);
 
                 if (!Hash::check($request->current_password, $user->password)) {
@@ -212,10 +207,10 @@ class UserController extends Controller
 
         $message = 'Üzgünüz, girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyiniz.';
 
-        if(!is_null($verifyUser) ){
+        if (!is_null($verifyUser)) {
             $user = $verifyUser->user;
 
-            if(!$user->is_email_verified) {
+            if (!$user->is_email_verified) {
                 $verifyUser->user->is_email_verified = 1;
                 $verifyUser->user->save();
                 $message = "E-posta adresi başarıyla doğrulandı. Sisteme giriş yapabilirsiniz.";
@@ -227,7 +222,8 @@ class UserController extends Controller
         return redirect()->route('login-form')->with('message', $message);
     }
 
-    public function logout() {
+    public function logout()
+    {
         Session::flush();
         Auth::logout();
         return redirect()->route('home');

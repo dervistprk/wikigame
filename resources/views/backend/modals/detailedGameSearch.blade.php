@@ -37,7 +37,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="category_query" class="col-form-label">Kategori</label>
-                                <select class="form-select" name="category_query" id="category_query">
+                                <select class="form-select select2" name="category_query" id="category_query">
                                     <option value="" selected hidden>Kategori Seçin</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" @if($category_query == $category->id) selected @endif>{{ $category->name }}</option>
@@ -50,7 +50,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="developer_query" class="col-form-label">Geliştirici</label>
-                                <select class="form-select" name="developer_query" id="developer_query">
+                                <select class="form-select select2" name="developer_query" id="developer_query">
                                     <option selected hidden value="">Geliştirici Seçin</option>
                                     @foreach($developers as $developer)
                                         <option value="{{ $developer->id }}" @if($developer_query == $developer->id) selected @endif>{{ $developer->name }}</option>
@@ -61,7 +61,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="publisher_query" class="col-form-label">Dağıtıcı</label>
-                                <select class="form-select" name="publisher_query" id="publisher_query">
+                                <select class="form-select select2" name="publisher_query" id="publisher_query">
                                     <option value="" selected hidden>Dağıtıcı Seçin</option>
                                     @foreach($publishers as $publisher)
                                         <option value="{{ $publisher->id }}" @if($publisher_query == $publisher->id) selected @endif>{{ $publisher->name }}</option>

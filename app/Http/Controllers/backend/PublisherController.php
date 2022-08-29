@@ -9,13 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
+use Validator;
 
 class PublisherController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function index(Request $request)
     {
@@ -34,13 +32,6 @@ class PublisherController extends Controller
         $publishers = Publisher::where('name', 'LIKE', '%' . $quick_search . '%')
                                ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
 
-        if ($publishers->count() > 0) {
-            foreach ($publishers as $publisher) {
-                $publisher->games_count = $publisher->games->count();
-                $publisher->save();
-            }
-        }
-
         return view('backend.publishers.index', compact('publishers', 'per_page', 'quick_search', 'sort_dir', 'sort_by'));
     }
 
@@ -51,18 +42,43 @@ class PublisherController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-                               'name'        => 'required',
-                               'description' => 'required|min:15',
-                               'status'      => 'required',
-                               'image'       => 'required|image|mimes:jpg,jpeg,png,svg|max:2048'
-                           ]);
+        $publisher_fields = [
+            'name',
+            'description',
+            'status',
+        ];
 
-        $publisher              = new Publisher();
-        $publisher->name        = $request->name;
-        $publisher->slug        = Str::slug($request->name);
-        $publisher->description = $request->description;
-        $publisher->status      = $request->status;
+        $publisher_rules = [
+            'name'        => 'required',
+            'description' => 'required|min:15',
+            'status'      => 'required',
+        ];
+
+        foreach ($publisher_fields as $field) {
+            $publisher_data[$field] = $request->input($field);
+        }
+
+        $publisher_data['slug'] = Str::slug($request->input('name'));
+
+        $validate_publisher = Validator::make($publisher_data, $publisher_rules);
+
+        if ($validate_publisher->fails()) {
+            return redirect()->route('admin.create-publisher')
+                             ->withErrors($validate_publisher)
+                             ->withInput();
+        }
+
+        $image_rules = [
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp,svg|max:2048'
+        ];
+
+        $validate_image = Validator::make($request->file(), $image_rules);
+
+        if ($validate_image->fails()) {
+            return redirect()->route('admin.create-publisher')
+                             ->withErrors($validate_image)
+                             ->withInput();
+        }
 
         $path = public_path('uploads/publishers/') . Str::slug($request->name);
 
@@ -70,62 +86,87 @@ class PublisherController extends Controller
             mkdir($path, 0777, true);
         }
 
-        $image        = $request->file('image');
-        $imageName    = Str::slug($request->name) . '.' . $request->image->getClientOriginalExtension();
-        $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(300, 220);
-        $image_resize->save($path . '/' . $imageName);
-        $publisher->image = '/uploads/publishers/' . Str::slug($request->name) . '/' . $imageName;
+        $image     = $request->file('image');
+        $imageName = Str::slug($request->input('name')) . '.' . $request->image->getClientOriginalExtension();
+        Image::make($image->getRealPath())->resize(300, 220)->save($path . '/' . $imageName);
+        $publisher_data['image'] = '/uploads/publishers/' . Str::slug($request->input('name')) . '/' . $imageName;
 
-        $publisher->save();
+        Publisher::create($publisher_data);
 
         return redirect()->route('admin.publishers')->with('message', 'Dağıtıcı Başarıyla Oluşturuldu.');
     }
 
-    public function edit($id)
+    public function edit($publisher_id)
     {
-        $publisher = Publisher::findOrFail($id);
+        $publisher = Publisher::findOrFail($publisher_id);
         return view('backend.publishers.edit', compact('publisher'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $publisher_id)
     {
-        $request->validate([
-                               'name'        => 'required',
-                               'description' => 'required|min:15',
-                               'status'      => 'required',
-                               'image'       => 'image|mimes:jpg,jpeg,png,webp|max:2048'
-                           ]);
+        $publisher = Publisher::findOrFail($publisher_id);
 
-        $publisher              = Publisher::findOrFail($id);
-        $publisher->name        = $request->name;
-        $publisher->slug        = Str::slug($request->name);
-        $publisher->description = $request->description;
-        $publisher->status      = $request->status;
+        $publisher_fields = [
+            'name',
+            'description',
+            'status',
+        ];
 
-        $path = public_path('uploads/publishers/') . Str::slug($request->name);
+        $publisher_rules = [
+            'name'        => 'required',
+            'description' => 'required|min:15',
+            'status'      => 'required',
+        ];
 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        foreach ($publisher_fields as $field) {
+            $publisher_data[$field] = $request->input($field);
+        }
+
+        $validate_publisher = Validator::make($publisher_data, $publisher_rules);
+
+        if ($validate_publisher->fails()) {
+            return redirect()->route('admin.edit-publisher', $publisher_id)
+                             ->withErrors($validate_publisher)
+                             ->withInput();
+        }
+
+        $image_rules = [
+            'image' => 'image|mimes:jpg,jpeg,png,webp,svg|max:2048'
+        ];
+
+        $validate_image = Validator::make($request->file(), $image_rules);
+
+        if ($validate_image->fails()) {
+            return redirect()->route('admin.edit-publisher', $publisher_id)
+                             ->withErrors($validate_image)
+                             ->withInput();
         }
 
         if ($request->hasFile('image')) {
-            $image        = $request->file('image');
-            $imageName    = Str::slug($request->name) . '.' . $request->image->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(300, 220);
-            $image_resize->save($path . '/' . $imageName);
-            $publisher->image = '/uploads/publishers/' . Str::slug($request->name) . '/' . $imageName;
+            $path = public_path('uploads/publishers/') . Str::slug($request->input('name'));
+
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+
+            $image     = $request->file('image');
+            $imageName = Str::slug($request->input('name')) . '.' . $request->image->getClientOriginalExtension();
+            Image::make($image->getRealPath())->resize(300, 220)->save($path . '/' . $imageName);
+            $publisher_data['image'] = '/uploads/publishers/' . Str::slug($request->input('name')) . '/' . $imageName;
         }
 
-        $publisher->save();
+        $publisher->update($publisher_data);
 
         return redirect()->route('admin.publishers')->with('message', 'Dağıtıcı Bilgileri Başarıyla Güncellendi.');
     }
 
     public function destroy($id)
     {
-        $publisher = Publisher::findOrFail($id);
+        /**
+         * @var Publisher $publisher
+         */
+
+        $publisher = Publisher::with('games')->findOrFail($id);
 
         $path = public_path('uploads/publishers/') . Str::slug($publisher->name);
 
@@ -151,19 +192,24 @@ class PublisherController extends Controller
 
     public function switchStatus(Request $request)
     {
-        $publisher         = Publisher::findOrFail($request->id);
-        $publisher->status = $request->state == 'true' ? 1 : 0;
-        $publisher->save();
+        /**
+         * @var Publisher $publisher
+         */
 
-        $pub_games = $publisher->games;
+        if ($request->ajax()) {
+            $publisher         = Publisher::with('games')->findOrFail($request->id);
+            $publisher->status = $request->state == 'true' ? 1 : 0;
+            $publisher->save();
 
-        if ($pub_games->count() > 0) {
-            if ($publisher->status == 0) {
-                foreach ($pub_games as $p_game) {
-                    $p_game->update(['status' => $publisher->status]);
+            if ($publisher->games->count() > 0) {
+                if ($publisher->status == 0) {
+                    foreach ($publisher->games as $p_game) {
+                        $p_game->update(['status' => 0]);
+                    }
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 }

@@ -13,7 +13,7 @@
             <h3 class="game-header">Hoşgeldiniz sayın {{ $user->name }} {{ $user->surname }}</h3>
             <div class="game-info m-3 p-3 rounded">
                 @if(\Auth::user()->isAdmin())
-                    <span class="badge badge-secondary float-end">Yönetici Hesabı</span>
+                    <span class="badge bg-secondary float-end">Yönetici Hesabı</span>
                     <a class="btn btn-warning mb-2 @if($ip_check_message) disabled @endif" target="_blank" href="{{ route('admin.dashboard') }}"><i class="fa fa-user-cog"></i> Yönetici Paneli</a>
                     @if($ip_check_message) <span class="text-danger">{{ $ip_check_message }}</span> @endif
                 @endif

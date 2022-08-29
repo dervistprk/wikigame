@@ -14,11 +14,7 @@ use Cache;
 
 class HomeController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('categories', Category::where('status', '=', 1)->orderBy('name', 'asc')->get());
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function maintenance()
     {
@@ -30,29 +26,29 @@ class HomeController extends Controller
         if (Cache::has('latest_games')) {
             $latest_games = Cache::get('latest_games');
         } else {
-            $latest_games     = Game::where('status', '=', 1)->orderBy('created_at', 'desc')->take(8)->get();
-            Cache::put('latest_games', $latest_games, env('cache_expire'));
+            $latest_games = Game::where('status', '=', 1)->orderBy('created_at', 'desc')->take(8)->get();
+            Cache::put('latest_games', $latest_games, config('app.cache_expire'));
         }
 
         if (Cache::has('popular_games')) {
             $popular_games = Cache::get('popular_games');
         } else {
-            $popular_games    = Game::where('status', '=', 1)->orderBy('hit', 'desc')->take(8)->get();
-            Cache::put('popular_games', $popular_games, env('cache_expire'));
+            $popular_games = Game::where('status', '=', 1)->orderBy('hit', 'desc')->take(8)->get();
+            Cache::put('popular_games', $popular_games, config('app.cache_expire'));
         }
 
         if (Cache::has('latest_articles')) {
             $latest_articles = Cache::get('latest_articles');
         } else {
-            $latest_articles  = Article::where('status', '=', 1)->orderBy('created_at', 'desc')->take(4)->get();
-            Cache::put('latest_articles', $latest_articles, env('cache_expire'));
+            $latest_articles = Article::where('status', '=', 1)->orderBy('created_at', 'desc')->take(4)->get();
+            Cache::put('latest_articles', $latest_articles, config('app.cache_expire'));
         }
 
         if (Cache::has('popular_articles')) {
             $popular_articles = Cache::get('popular_articles');
         } else {
             $popular_articles = Article::where('status', '=', 1)->orderBy('hit', 'desc')->take(4)->get();
-            Cache::put('popular_articles', $popular_articles, env('cache_expire'));
+            Cache::put('popular_articles', $popular_articles, config('app.cache_expire'));
         }
 
         if ($latest_games->count() > 0 && $latest_articles->count() > 0) {
@@ -72,9 +68,9 @@ class HomeController extends Controller
             $system_req_min = $game->systemReqMin;
             $system_req_rec = $game->systemReqRec;
             $other_games    = Game::where([
-                   ['status', '=', 1],
-                   ['category_id', '=', $game->category_id],
-                   ['id', '!=', $game->id]
+                ['status', '=', 1],
+                ['category_id', '=', $game->category_id],
+                ['id', '!=', $game->id]
             ])->orderBy('hit', 'desc')->take(4)->get();
 
             return view('frontend.game', compact('game', 'developer', 'publisher', 'game_details', 'system_req_min', 'system_req_rec', 'other_games'));

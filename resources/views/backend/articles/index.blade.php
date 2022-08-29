@@ -55,7 +55,7 @@
                 @if($articles->items())
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
-                            <thead>
+                            <thead class="thead-dark">
                             <tr>
                                 <th>Makale Kapak Resmi</th>
                                 <th class="sorter" data-column="title">Başlık</th>
@@ -67,8 +67,9 @@
                             <tbody>
                             @foreach($articles as $article)
                                 @php
-                                    $target = $article;
-                                    $route  = 'article';
+                                    $target                 = $article;
+                                    $route                  = 'article';
+                                    $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($article->status == 0) alert-danger @endif">
                                     <td>
@@ -111,82 +112,83 @@
 @endsection
 @section('custom-js')
     <script type="text/javascript">
-       $(function() {
-          $('.status-switch').change(function() {
-             var id    = $(this)[0].getAttribute('data-id');
-             var state = $(this).prop('checked');
+       $(document).ready(function() {
+          $(function() {
+             $('.status-switch').change(function() {
+                var id    = $(this)[0].getAttribute('data-id');
+                var state = $(this).prop('checked');
 
-             $.ajaxSetup({
-                headers: {
-                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                },
+                $.ajaxSetup({
+                   headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                   },
+                });
+
+                $.ajax({
+                   url     : "{{route('admin.switch-article-status') }}",
+                   type    : 'POST',
+                   dataType: 'json',
+                   data    : {
+                      state: state,
+                      id   : id,
+                   },
+                   success : function() {
+                      location.reload();
+                   },
+                   error   : function(xhr, status, error) {
+                      console.log(xhr.responseText);
+                      console.log(status);
+                      console.log(error);
+                   },
+                });
              });
 
-             $.ajax({
-                url     : "{{route('admin.switch-article-status') }}",
-                type    : 'POST',
-                dataType: 'json',
-                data    : {
-                   state: state,
-                   id   : id,
-                },
-                success : function() {
-                   location.reload();
-                },
-                error   : function(xhr, status, error) {
-                   console.log(xhr.responseText);
-                   console.log(status);
-                   console.log(error);
-                },
+             $('#query-form').submit(function() {
+                $('input').each(function(index, obj) {
+                   if ($(obj).val() == '') {
+                      $(obj).remove();
+                   }
+                });
              });
-          });
 
-          $('#query-form').submit(function() {
-             $('input').each(function(index, obj) {
-                if ($(obj).val() == '') {
-                   $(obj).remove();
-                }
+             $('#per-page').change(function() {
+                $('#query-form').submit();
              });
-          });
 
-          $('#per-page').change(function() {
-             $('#query-form').submit();
-          });
+             $('#reset-parameters').click(function() {
+                window.location.href = "{{ route('admin.articles') }}";
+             });
 
-          $('#reset-parameters').click(function() {
-             window.location.href = "{{ route('admin.articles') }}";
-          });
+             var url = window.location.href;
+             if (url.includes('?')) {
+                $('#reset-parameters').removeClass('d-none');
+             } else {
+                $('#reset-parameters').addClass('d-none');
+             }
 
-          var url = window.location.href;
-          if (url.includes('?')) {
-             $('#reset-parameters').removeClass('d-none');
-          } else {
-             $('#reset-parameters').addClass('d-none');
-          }
+             var urlParams   = new URLSearchParams(window.location.search);
+             var sort_column = urlParams.get('sort_by');
+             var sort_dir    = urlParams.get('sort_dir');
 
-          var urlParams   = new URLSearchParams(window.location.search);
-          var sort_column = urlParams.get('sort_by');
-          var sort_dir    = urlParams.get('sort_dir');
+             if (sort_dir == 'asc') {
+                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
+             } else {
+                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
+             }
 
-          if (sort_dir == 'asc') {
-             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
-          } else {
-             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
-          }
+             $('.sorter').css({'cursor': 'pointer'}).hover(
+               function() { $(this).css('color', 'green'); },
+               function() { $(this).css('color', 'white'); },
+             ).click(function() {
+                var column = $(this).attr('data-column');
+                var dir    = "{{ $sort_dir }}";
 
-          $('.sorter').css({'cursor': 'pointer'}).hover(
-              function() { $(this).css('color', 'green'); },
-              function() { $(this).css('color', 'black'); },
-          ).click(function() {
-             var column = $(this).attr('data-column');
-             var dir    = "{{ $sort_dir }}";
+                $('input[name="sort_by"]').val(column);
+                $('input[name="sort_dir"]').val(dir);
 
-             $('input[name="sort_by"]').val(column);
-             $('input[name="sort_dir"]').val(dir);
-
-             $('#query-form').submit();
+                $('#query-form').submit();
+             });
           });
        });
-
     </script>
 @endsection

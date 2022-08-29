@@ -7,7 +7,10 @@ use App\Models\Category;
 use App\Models\Developer;
 use App\Models\GameDetail;
 use App\Models\Game;
+use App\Models\GameImage;
 use App\Models\GameVideo;
+use App\Models\Genre;
+use App\Models\Platform;
 use App\Models\Publisher;
 use App\Models\Setting;
 use App\Models\SystemRequirementsMin;
@@ -20,10 +23,7 @@ use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
-    public function __construct()
-    {
-        view()->share('settings', Setting::find(1));
-    }
+    public function __construct() {}
 
     public function index(Request $request)
     {
@@ -123,13 +123,15 @@ class GameController extends Controller
         $categories = Category::where('status', '=', 1)->orderBy('name')->get();
         $developers = Developer::where('status', '=', 1)->orderBy('name')->get();
         $publishers = Publisher::where('status', '=', 1)->orderBy('name')->get();
+        $platforms  = Platform::where('status', '=', 1)->orderBy('name')->get();
+        $genres     = Genre::where('status', '=', 1)->orderBy('name')->get();
 
         $statuses = [];
         foreach (config('game_config.statuses') as $key => $status) {
             $statuses[$key] = $status;
         }
 
-        return view('backend.games.create', compact('categories', 'developers', 'publishers', 'statuses'));
+        return view('backend.games.create', compact('categories', 'developers', 'publishers', 'platforms', 'genres', 'statuses'));
     }
 
     public function store(Request $request)
@@ -175,8 +177,6 @@ class GameController extends Controller
         ];
 
         $game_detail_field_rules = [
-            'genre'        => 'required',
-            'platform'     => 'required',
             'release_date' => 'required',
             'website'      => 'required|max:255',
             'age_rating'   => 'required',
@@ -186,9 +186,6 @@ class GameController extends Controller
             $detail_data[$detail_field] = $request->input($detail_field);
         }
 
-        $detail_data['genre']    = implode(', ', $request->genre);
-        $detail_data['platform'] = implode(', ', $request->platform);
-
         $validate_game_detail_fields = Validator::make($detail_data, $game_detail_field_rules);
 
         if ($validate_game_detail_fields->fails()) {
@@ -197,15 +194,37 @@ class GameController extends Controller
                              ->withInput();
         }
 
+        $game_platform_field_rules = [
+            'platform_id.*' => 'required'
+        ];
+
+        $platform_data = $request->input('platform_id');
+
+        $validate_game_platform_fields = Validator::make($platform_data, $game_platform_field_rules);
+
+        if ($validate_game_platform_fields->fails()) {
+            return redirect()->route('admin.create-game')
+                             ->withErrors($validate_game_platform_fields)
+                             ->withInput();
+        }
+
+        $game_genre_field_rules = [
+            'genre_id.*' => 'required'
+        ];
+
+        $genre_data = $request->input('genre_id');
+
+        $validate_game_genre_fields = Validator::make($genre_data, $game_genre_field_rules);
+
+        if ($validate_game_genre_fields->fails()) {
+            return redirect()->route('admin.create-game')
+                             ->withErrors($validate_game_genre_fields)
+                             ->withInput();
+        }
+
         $file_rules = [
             'cover_image' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
             'image1'      => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image2'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image3'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image4'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image5'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image6'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image7'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092'
         ];
 
         $validate_file = Validator::make($request->file(), $file_rules);
@@ -280,79 +299,21 @@ class GameController extends Controller
                              ->withInput();
         }
 
-        $path = public_path('uploads/games/') . Str::slug($request->name);
+        $image_path = public_path('uploads/games/') . Str::slug($request->name);
 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        if (!file_exists($image_path)) {
+            mkdir($image_path, 0777, true);
         }
 
-        $image              = $request->file('cover_image');
-        $coverImageName     = Str::slug($request->name) . '-cover.' . $request->cover_image->getClientOriginalExtension();
-        $cover_image_resize = Image::make($image->getRealPath());
-        $cover_image_resize->resize(230, 300);
-        $cover_image_resize->save($path . '/' . $coverImageName);
+        $cover_image    = $request->file('cover_image');
+        $coverImageName = Str::slug($request->name) . '-cover.' . $request->cover_image->getClientOriginalExtension();
+        Image::make($cover_image->getRealPath())->resize(230, 300)->save($image_path . '/' . $coverImageName);
         $game_data['cover_image'] = '/uploads/games/' . Str::slug($request->name) . '/' . $coverImageName;
 
-        $image        = $request->file('image1');
-        $imageName    = Str::slug($request->name) . '-1.' . $request->image1->getClientOriginalExtension();
-        $image_resize = Image::make($image->getRealPath());
-        $image_resize->resize(1920, 1080);
-        $image_resize->save($path . '/' . $imageName);
+        $image_1   = $request->file('image1');
+        $imageName = Str::slug($request->name) . '-1.' . $request->image1->getClientOriginalExtension();
+        Image::make($image_1->getRealPath())->resize(1920, 1080)->save($image_path . '/' . $imageName);
         $game_data['image1'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-
-        if ($request->hasFile('image2')) {
-            $image        = $request->file('image2');
-            $imageName    = Str::slug($request->name) . '-2.' . $request->image2->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $game_data['image2'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image3')) {
-            $image        = $request->file('image3');
-            $imageName    = Str::slug($request->name) . '-3.' . $request->image3->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $game_data['image3'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image4')) {
-            $image        = $request->file('image4');
-            $imageName    = Str::slug($request->name) . '-4.' . $request->image4->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $game_data['image4'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image5')) {
-            $image        = $request->file('image5');
-            $imageName    = Str::slug($request->name) . '-5.' . $request->image5->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $game_data['image5'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image6')) {
-            $image        = $request->file('image6');
-            $imageName    = Str::slug($request->name) . '-6.' . $request->image6->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $game_data['image6'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image7')) {
-            $image        = $request->file('image1');
-            $imageName    = Str::slug($request->name) . '-7.' . $request->image7->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $game_data['image7'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
 
         $game         = new Game($game_data);
         $game_details = new GameDetail($detail_data);
@@ -367,6 +328,73 @@ class GameController extends Controller
         $game->sys_req_min_id  = $sys_req_min->id;
         $game->sys_req_rec_id  = $sys_req_rec->id;
         $game->save();
+        $game->platforms()->sync($platform_data);
+        $game->genres()->sync($genre_data);
+
+        //if extra images comes from request then save image path and hash
+        if (isset($request->file()['path'])) {
+            $image_fields['path']       = $request->file()['path'];
+            $image_fields['image_hash'] = $request->input('image_hash');
+            $image_count                = count($image_fields['path']);
+
+            $image_path_field_rules = [
+                "path.*" => "required|image|mimes:jpeg,png,jpg,svg,webp|max:3092",
+            ];
+
+            $validate_image_path_field = Validator::make($image_fields['path'], $image_path_field_rules);
+
+            if ($validate_image_path_field->fails()) {
+                self::destroy($game->id);
+                return redirect()->route('admin.create-game')
+                                 ->withErrors($validate_image_path_field)
+                                 ->withInput();
+            }
+
+            $k = 2;
+
+            foreach ($image_fields['path'] as $temp_image) {
+                $imageName    = Str::slug($request->name) . '-' . $k . '.' . $temp_image->getClientOriginalExtension();
+                $image_resize = Image::make($temp_image->getRealPath());
+                $image_resize->resize(1920, 1080);
+                $image_resize->save($image_path . '/' . $imageName);
+
+                $image_data = [
+                    'game_id' => $game->id,
+                    'path'    => '/uploads/games/' . Str::slug($request->name) . '/' . $imageName,
+                ];
+
+                GameImage::create($image_data);
+                $k++;
+            }
+
+            $image_hash_field_rules = [
+                'image_hash.*' => 'required|max:255'
+            ];
+
+            $validate_image_hash_fields = Validator::make($image_fields['image_hash'], $image_hash_field_rules);
+
+            if ($validate_image_hash_fields->fails()) {
+                self::destroy($game->id);
+                return redirect()->route('admin.create-game')
+                                 ->withErrors($validate_image_hash_fields)
+                                 ->withInput();
+            }
+
+            $image_hash_data = [];
+
+            foreach ($image_fields['image_hash'] as $hash) {
+                $image_hash_data[] = $hash;
+            }
+
+            $last_added_images = GameImage::latest()->take($image_count)->get();
+            $i                 = 0;
+
+            foreach ($last_added_images as $last_image) {
+                $last_image->image_hash = $image_hash_data[$i];
+                $last_image->save();
+                $i++;
+            }
+        }
 
         //save video url and hash
         $video_fields['url']        = $request->input('url');
@@ -374,53 +402,52 @@ class GameController extends Controller
 
         $video_count = count($video_fields['url']);
 
+        $video_url_field_rules = [
+            "url.*" => "required|max:255",
+        ];
+
+        $validate_video_url_field = Validator::make($video_fields['url'], $video_url_field_rules);
+
+        if ($validate_video_url_field->fails()) {
+            self::destroy($game->id);
+            return redirect()->route('admin.create-game')
+                             ->withErrors($validate_video_url_field)
+                             ->withInput();
+        }
+
         foreach ($video_fields['url'] as $url) {
-            $video_url_field_rules = [
-                "url.*" => "required|max:255",
-            ];
-
-            $video_url_field_data     = $video_fields['url'];
-            $validate_video_url_field = Validator::make($video_url_field_data, $video_url_field_rules);
-
-            if ($validate_video_url_field->fails()) {
-                self::destroy($game->id);
-                return redirect()->route('admin.create-game')
-                                 ->withErrors($validate_video_url_field)
-                                 ->withInput();
-            }
-
             $video_data = [
                 'game_id' => $game->id,
                 'url'     => 'https://www.youtube.com/embed/' . $url
             ];
 
-            $game_video = new GameVideo($video_data);
-            $game_video->save();
+            GameVideo::create($video_data);
         }
 
+        $video_hash_field_rules = [
+            'video_hash.*' => 'required|max:255'
+        ];
+
+        $validate_video_hash_fields = Validator::make($video_fields['video_hash'], $video_hash_field_rules);
+
+        if ($validate_video_hash_fields->fails()) {
+            self::destroy($game->id);
+            return redirect()->route('admin.create-game')
+                             ->withErrors($validate_video_hash_fields)
+                             ->withInput();
+        }
+
+        $video_hash_data = [];
+
         foreach ($video_fields['video_hash'] as $hash) {
-            $video_hash_field_rules = [
-                'video_hash.*' => 'required|max:255'
-            ];
-
-            $video_hash_field_data      = $video_fields['video_hash'];
-            $validate_video_hash_fields = Validator::make($video_hash_field_data, $video_hash_field_rules);
-
-            if ($validate_video_hash_fields->fails()) {
-                self::destroy($game->id);
-                return redirect()->route('admin.create-game')
-                                 ->withErrors($validate_video_hash_fields)
-                                 ->withInput();
-            }
-
-            $video_data[] = $hash;
+            $video_hash_data[] = $hash;
         }
 
         $last_added_videos = GameVideo::latest()->take($video_count)->get();
         $i                 = 0;
 
         foreach ($last_added_videos as $last_video) {
-            $last_video->video_hash = $video_data[$i];
+            $last_video->video_hash = $video_hash_data[$i];
             $last_video->save();
             $i++;
         }
@@ -430,20 +457,50 @@ class GameController extends Controller
 
     public function edit($id)
     {
-        $game       = Game::with('videos')->findOrFail($id);
-        $categories = Category::where('status', '=', 1)->orderBy('name', 'asc')->get();
-        $developers = Developer::where('status', '=', 1)->orderBy('name', 'asc')->get();
-        $publishers = Publisher::where('status', '=', 1)->orderBy('name', 'asc')->get();
+        $game       = Game::with('videos', 'platforms')->findOrFail($id);
+        $categories = Category::where('status', '=', 1)->orderBy('name')->get();
+        $developers = Developer::where('status', '=', 1)->orderBy('name')->get();
+        $publishers = Publisher::where('status', '=', 1)->orderBy('name')->get();
+        $platforms  = Platform::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
+        $genres     = Genre::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
 
         $video_count = 1;
         $video_limit = config('game_config.video_count');
 
-        return view('backend.games.edit', compact('game', 'categories', 'developers', 'publishers', 'video_count', 'video_limit'));
+        $image_count = 1;
+        $image_limit = config('game_config.image_count');
+
+        return view(
+            'backend.games.edit',
+            compact(
+                'game',
+                'categories',
+                'developers',
+                'publishers',
+                'video_count',
+                'video_limit',
+                'image_count',
+                'image_limit',
+                'platforms',
+                'genres'
+            )
+        );
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $game_id)
     {
-        $game = Game::with('details', 'systemReqMin', 'systemReqRec', 'category', 'developer', 'publisher', 'videos')->findOrFail($id);
+        /**
+         * @var Game $game
+         */
+        $game = Game::with(
+            'details',
+            'systemReqMin',
+            'systemReqRec',
+            'category',
+            'developer',
+            'publisher',
+            'videos'
+        )->findOrFail($game_id);
 
         $game_fields = [
             'name',
@@ -469,7 +526,6 @@ class GameController extends Controller
             return redirect()->route('admin.edit-game', $game->id)->withErrors($status_message);
         }
 
-        //TODO: videoları ayrı bir tabloya kaydedip oradan al.
         $game_field_rules = [
             'name'         => 'required|max:255',
             'sub_title'    => 'required|max:255',
@@ -489,7 +545,7 @@ class GameController extends Controller
         $validate_game_fields = Validator::make($game_data, $game_field_rules);
 
         if ($validate_game_fields->fails()) {
-            return redirect()->route('admin.edit-game', $game->id)
+            return redirect()->route('admin.edit-game', $game_id)
                              ->withErrors($validate_game_fields)
                              ->withInput();
         }
@@ -501,8 +557,6 @@ class GameController extends Controller
         ];
 
         $game_detail_field_rules = [
-            'genre'        => 'required',
-            'platform'     => 'required',
             'release_date' => 'required',
             'website'      => 'required|max:255',
             'age_rating'   => 'required'
@@ -512,14 +566,39 @@ class GameController extends Controller
             $detail_data[$detail_field] = $request->input($detail_field);
         }
 
-        $detail_data['genre']    = implode(', ', $request->genre);
-        $detail_data['platform'] = implode(', ', $request->platform);
-
         $validate_game_detail_fields = Validator::make($detail_data, $game_detail_field_rules);
 
         if ($validate_game_detail_fields->fails()) {
-            return redirect()->route('admin.edit-game', $game->id)
+            return redirect()->route('admin.edit-game', $game_id)
                              ->withErrors($validate_game_detail_fields)
+                             ->withInput();
+        }
+
+        $game_platform_field_rules = [
+            'platform_id.*' => 'required'
+        ];
+
+        $platform_data = $request->input('platform_id');
+
+        $validate_game_platform_fields = Validator::make($platform_data, $game_platform_field_rules);
+
+        if ($validate_game_platform_fields->fails()) {
+            return redirect()->route('admin.edit-game', $game_id)
+                             ->withErrors($validate_game_platform_fields)
+                             ->withInput();
+        }
+
+        $game_genre_field_rules = [
+            'genre_id.*' => 'required'
+        ];
+
+        $genre_data = $request->input('genre_id');
+
+        $validate_game_genre_fields = Validator::make($genre_data, $game_genre_field_rules);
+
+        if ($validate_game_genre_fields->fails()) {
+            return redirect()->route('admin.edit-game', $game_id)
+                             ->withErrors($validate_game_genre_fields)
                              ->withInput();
         }
 
@@ -527,18 +606,12 @@ class GameController extends Controller
         $file_rules = [
             'cover_image' => 'image|mimes:jpeg,png,jpg,svg,webp|max:2048',
             'image1'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image2'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image3'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image4'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image5'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image6'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
-            'image7'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092'
         ];
 
         $validate_file = Validator::make($request->file(), $file_rules);
 
         if ($validate_file->fails()) {
-            return redirect()->route('admin.edit-game', $game->id)
+            return redirect()->route('admin.edit-game', $game_id)
                              ->withErrors($validate_file)
                              ->withInput();
         }
@@ -571,7 +644,7 @@ class GameController extends Controller
         $validate_sys_req_min_fields = Validator::make($sys_req_min_data, $sys_req_min_rules);
 
         if ($validate_sys_req_min_fields->fails()) {
-            return redirect()->route('admin.create-game')
+            return redirect()->route('admin.edit-game', $game_id)
                              ->withErrors($validate_sys_req_min_fields)
                              ->withInput();
         }
@@ -603,7 +676,7 @@ class GameController extends Controller
         $validate_sys_req_rec_fields = Validator::make($sys_req_rec_data, $sys_req_rec_rules);
 
         if ($validate_sys_req_rec_fields->fails()) {
-            return redirect()->route('admin.create-game')
+            return redirect()->route('admin.edit-game', $game_id)
                              ->withErrors($validate_sys_req_rec_fields)
                              ->withInput();
         }
@@ -612,7 +685,7 @@ class GameController extends Controller
         $file_data = [];
         $path      = public_path('uploads/games/') . Str::slug($request->name);
 
-        //if the game images are to be relocated, copies the old pictures to the new folder, renames them and deletes the old ones
+        //if the game images are to be relocated(if game name changes), copies the old pictures to the new folder, renames them and deletes the old ones
         if (!file_exists($path)) {
             $old_path = public_path('uploads/games/') . $game->slug;
             mkdir($path, 0777, true);
@@ -638,324 +711,93 @@ class GameController extends Controller
                 }
             }
 
-            if ($game->image2) {
-                $file_extension      = substr($game->image2, strpos($game->image2, '.'));
-                $imageName           = Str::slug($request->name) . '-2' . $file_extension;
-                $file_data['image2'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-2' . $file_extension, $path . '/' . Str::slug($request->name) . '-2' . $file_extension);
-                    unlink($path . '/' . $game->slug . '-2' . $file_extension);
-                }
-            }
-
-            if ($game->image3) {
-                $file_extension      = substr($game->image3, strpos($game->image3, '.'));
-                $imageName           = Str::slug($request->name) . '-3' . $file_extension;
-                $file_data['image3'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-3' . $file_extension, $path . '/' . Str::slug($request->name) . '-3' . $file_extension);
-                    unlink($path . '/' . $game->slug . '-3' . $file_extension);
-                }
-            }
-
-            if ($game->image4) {
-                $file_extension      = substr($game->image4, strpos($game->image4, '.'));
-                $imageName           = Str::slug($request->name) . '-4' . $file_extension;
-                $file_data['image4'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-4' . $file_extension, $path . '/' . Str::slug($request->name) . '-4' . $file_extension);
-                    unlink($path . '/' . $game->slug . '-4' . $file_extension);
-                }
-            }
-
-            if ($game->image5) {
-                $file_extension      = substr($game->image5, strpos($game->image5, '.'));
-                $imageName           = Str::slug($request->name) . '-5' . $file_extension;
-                $file_data['image5'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-5' . $file_extension, $path . '/' . Str::slug($request->name) . '-5' . $file_extension);
-                    unlink($path . '/' . $game->slug . '-5' . $file_extension);
-                }
-            }
-
-            if ($game->image6) {
-                $file_extension      = substr($game->image6, strpos($game->image6, '.'));
-                $imageName           = Str::slug($request->name) . '-6' . $file_extension;
-                $file_data['image6'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-6' . $file_extension, $path . '/' . Str::slug($request->name) . '-6' . $file_extension);
-                    unlink($old_path . '/' . $game->slug . '-6' . $file_extension);
-                }
-            }
-
-            if ($game->image7) {
-                $file_extension      = substr($game->image7, strpos($game->image7, '.'));
-                $imageName           = Str::slug($request->name) . '-7' . $file_extension;
-                $file_data['image7'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-7' . $file_extension, $path . '/' . Str::slug($request->name) . '-7' . $file_extension);
-                    unlink($path . '/' . $game->slug . '-7' . $file_extension);
-                }
-            }
-
             $this::deleteDirWithFiles($old_path);
         }
 
-        //TODO: resimleri ayrı bir tabloya kaydedip oradan al.
         if ($request->hasFile('cover_image')) {
             $image          = $request->file('cover_image');
             $coverImageName = Str::slug($request->name) . '-cover.' . $request->cover_image->getClientOriginalExtension();
-            $image_resize   = Image::make($image->getRealPath());
-            $image_resize->resize(230, 300);
-            $image_resize->save($path . '/' . $coverImageName);
+            Image::make($image->getRealPath())->resize(230, 300)->save($path . '/' . $coverImageName);
             $file_data['cover_image'] = '/uploads/games/' . Str::slug($request->name) . '/' . $coverImageName;
         }
 
         if ($request->hasFile('image1')) {
-            $image        = $request->file('image1');
-            $imageName    = Str::slug($request->name) . '-1.' . $request->image1->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
+            $image     = $request->file('image1');
+            $imageName = Str::slug($request->name) . '-1.' . $request->image1->getClientOriginalExtension();
+            Image::make($image->getRealPath())->resize(1920, 1080)->save($path . '/' . $imageName);
             $file_data['image1'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image2')) {
-            $image        = $request->file('image2');
-            $imageName    = Str::slug($request->name) . '-2.' . $request->image2->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $file_data['image2'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image3')) {
-            $image        = $request->file('image3');
-            $imageName    = Str::slug($request->name) . '-3.' . $request->image3->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $file_data['image3'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image4')) {
-            $image        = $request->file('image4');
-            $imageName    = Str::slug($request->name) . '-4.' . $request->image4->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $file_data['image4'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image5')) {
-            $image        = $request->file('image5');
-            $imageName    = Str::slug($request->name) . '-5.' . $request->image5->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $file_data['image5'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image6')) {
-            $image        = $request->file('image6');
-            $imageName    = Str::slug($request->name) . '-6.' . $request->image6->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $file_data['image6'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-        }
-
-        if ($request->hasFile('image7')) {
-            $image        = $request->file('image7');
-            $imageName    = Str::slug($request->name) . '-7.' . $request->image7->getClientOriginalExtension();
-            $image_resize = Image::make($image->getRealPath());
-            $image_resize->resize(1920, 1080);
-            $image_resize->save($path . '/' . $imageName);
-            $file_data['image7'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
         }
 
         $game->update($game_data);
         $game->update($file_data);
+
+        $game->platforms()->sync($platform_data);
+        $game->genres()->sync($genre_data);
+
         $game->details->update($detail_data);
         $game->systemReqMin->update($sys_req_min_data);
         $game->systemReqRec->update($sys_req_rec_data);
-        //$game->videos->update($video_data);
 
+        //update or create game images
+        $image_fields['path']       = $request->file('path');
+        $image_fields['image_hash'] = $request->input('image_hash');
+        $game_image_count           = $game->images->count();
+        $image_hash_order           = 0;
+        $image_hash_data            = [];
+
+        if ($image_fields['path'] && $image_fields['image_hash']) {
+            foreach ($image_fields['image_hash'] as $image_hash) {
+                $image_hash_data[] = $image_hash;
+            }
+
+            foreach ($image_fields['path'] as $image_path) {
+                $image_name = Str::slug($request->name) . '-' . $game_image_count + 2 . '.' . $image_path->getClientOriginalExtension();
+                Image::make($image_path->getRealPath())->resize(1920, 1080)->save($path . '/' . $image_name);
+
+                $image_data = [
+                    'game_id'    => $game->id,
+                    'path'       => '/uploads/games/' . Str::slug($request->name) . '/' . $image_name,
+                    'image_hash' => \Str::random(20)
+                ];
+
+                GameImage::updateOrCreate(
+                    [
+                        'game_id'    => $game->id,
+                        'image_hash' => $image_hash_data[$image_hash_order]
+                    ],
+                    $image_data
+                );
+                $game_image_count++;
+                $image_hash_order++;
+            }
+        }
+
+        //update or create game videos
         $video_fields['url']        = $request->input('url');
         $video_fields['video_hash'] = $request->input('video_hash');
+        $video_hash_data            = [];
+        $video_hash_order           = 0;
 
-        $video_count         = $game->videos->count();
-        $request_video_count = count($video_fields['url']);
-        $hash_data           = [];
-        $i                   = 0;
-
-        //check if request video count greater than game's video count in db
-        if ($request_video_count > $video_count) {
-            foreach ($video_fields['video_hash'] as $hash) {
-                $hash_data[] = $hash;
-            }
-
-            $video_hash_field_rules = [
-                "video_hash.*" => "required|max:255",
-            ];
-
-            $validate_video_hash_field = Validator::make($video_fields['video_hash'], $video_hash_field_rules);
-
-            if ($validate_video_hash_field->fails()) {
-                return redirect()->route('admin.edit-game', $game->id)
-                                 ->withErrors($validate_video_hash_field)
-                                 ->withInput();
-            }
-
-            $video_url_field_rules = [
-                "url.*" => "required|max:255",
-            ];
-
-            $validate_video_url_field = Validator::make($video_fields['url'], $video_url_field_rules);
-
-            if ($validate_video_url_field->fails()) {
-                return redirect()->route('admin.edit-game', $game->id)
-                                 ->withErrors($validate_video_url_field)
-                                 ->withInput();
+        if ($video_fields['url'] && $video_fields['video_hash']) {
+            foreach ($video_fields['video_hash'] as $video_hash) {
+                $video_hash_data[] = $video_hash;
             }
 
             foreach ($video_fields['url'] as $url) {
                 $video_data = [
+                    'game_id'    => $game->id,
                     'url'        => 'https://www.youtube.com/embed/' . $url,
-                    'video_hash' => Str::random(20)
+                    'video_hash' => \Str::random(20)
                 ];
 
                 GameVideo::updateOrCreate(
                     [
                         'game_id'    => $game->id,
-                        'video_hash' => $hash_data[$i],
+                        'video_hash' => $video_hash_data[$video_hash_order]
                     ],
                     $video_data
                 );
-
-                $i++;
-            }
-        } elseif ($request_video_count == $video_count) {
-            foreach ($video_fields['video_hash'] as $hash) {
-                $hash_data[] = $hash;
-            }
-
-            $video_hash_field_rules = [
-                "video_hash.*" => "required|max:255",
-            ];
-
-            $validate_video_hash_field = Validator::make($video_fields['video_hash'], $video_hash_field_rules);
-
-            if ($validate_video_hash_field->fails()) {
-                return redirect()->route('admin.edit-game', $game->id)
-                                 ->withErrors($validate_video_hash_field)
-                                 ->withInput();
-            }
-
-            $video_url_field_rules = [
-                "url.*" => "required|max:255",
-            ];
-
-            $validate_video_url_field = Validator::make($video_fields['url'], $video_url_field_rules);
-
-            if ($validate_video_url_field->fails()) {
-                return redirect()->route('admin.edit-game', $game->id)
-                                 ->withErrors($validate_video_url_field)
-                                 ->withInput();
-            }
-
-            $need_recreate = false;
-
-            foreach ($video_fields['url'] as $url) {
-                $video_data = [
-                    'url'        => 'https://www.youtube.com/embed/' . $url,
-                    'video_hash' => Str::random(20),
-                    'game_id'    => $game->id
-                ];
-
-                $game_video = GameVideo::where([
-                    ['game_id', '=', $game->id],
-                    ['video_hash', '=', $hash_data[$i]]
-                ])->first();
-
-                //if video_hash comes empty from request then delete old ones and create new instances
-                if ($game_video) {
-                    $game_video->update($video_data);
-                } else {
-                    $need_recreate = true;
-                }
-
-                $i++;
-            }
-
-            if ($need_recreate) {
-                $game_videos = $game->videos;
-
-                foreach ($game_videos as $video) {
-                    $video->delete();
-                }
-
-                foreach ($video_fields['url'] as $url) {
-                    $video_data = [
-                        'url'        => 'https://www.youtube.com/embed/' . $url,
-                        'video_hash' => Str::random(20),
-                        'game_id'    => $game->id
-                    ];
-
-                    GameVideo::create($video_data);
-                }
-            }
-        } else {
-            $video_count_diff     = $video_count - $request_video_count;
-            $videos_to_be_deleted = $game->videos()->latest()->take($video_count_diff)->get();
-
-            //delete videos from db
-            foreach ($videos_to_be_deleted as $deleted) {
-                $deleted->delete();
-            }
-
-            foreach ($video_fields['video_hash'] as $hash) {
-                $hash_data[] = $hash;
-            }
-
-            $video_hash_field_rules = [
-                "video_hash.*" => "required|max:255",
-            ];
-
-            $validate_video_hash_field = Validator::make($video_fields['video_hash'], $video_hash_field_rules);
-
-            if ($validate_video_hash_field->fails()) {
-                return redirect()->route('admin.edit-game', $game->id)
-                                 ->withErrors($validate_video_hash_field)
-                                 ->withInput();
-            }
-
-            $video_url_field_rules = [
-                "url.*" => "required|max:255",
-            ];
-
-            $validate_video_url_field = Validator::make($video_fields['url'], $video_url_field_rules);
-
-            if ($validate_video_url_field->fails()) {
-                return redirect()->route('admin.edit-game', $game->id)
-                                 ->withErrors($validate_video_url_field)
-                                 ->withInput();
-            }
-
-            //update current video requests
-            foreach ($video_fields['url'] as $url) {
-                $video_data = [
-                    'url'        => 'https://www.youtube.com/embed/' . $url,
-                    'video_hash' => $hash_data[$i]
-                ];
-
-                $game_video = GameVideo::where([
-                    ['game_id', '=', $game->id],
-                    ['video_hash', '=', $hash_data[$i]]
-                ])->first();
-
-                $game_video?->update($video_data);
-                $i++;
+                $video_hash_order++;
             }
         }
 
@@ -964,38 +806,26 @@ class GameController extends Controller
 
     public static function destroy($id)
     {
-        $game = Game::with('details', 'systemReqMin', 'systemReqRec', 'videos')->findOrFail($id);
+        /**
+         * @var Game $game
+         */
+        $game = Game::with('details', 'systemReqMin', 'systemReqRec', 'videos', 'images')->findOrFail($id);
 
         File::delete(public_path($game->cover_image));
         File::delete(public_path($game->image1));
 
-        if (File::exists(public_path($game->image2))) {
-            File::delete(public_path($game->image2));
-        }
-
-        if (File::exists(public_path($game->image3))) {
-            File::delete(public_path($game->image3));
-        }
-
-        if (File::exists(public_path($game->image4))) {
-            File::delete(public_path($game->image4));
-        }
-
-        if (File::exists(public_path($game->image5))) {
-            File::delete(public_path($game->image5));
-        }
-
-        if (File::exists(public_path($game->image6))) {
-            File::delete(public_path($game->image6));
-        }
-
-        if (File::exists(public_path($game->image7))) {
-            File::delete(public_path($game->image7));
+        foreach ($game->images as $image) {
+            if (File::exists(public_path($image->path))) {
+                File::delete(public_path($image->path));
+            }
+            $image->delete();
         }
 
         $path = public_path('uploads/games/') . Str::slug($game->name);
         array_map('unlink', glob("$path/*.*"));
-        rmdir(public_path('uploads/games/') . Str::slug($game->name));
+        if (File::exists($path) && is_dir($path)) {
+            rmdir($path);
+        }
 
         foreach ($game->videos as $video) {
             $video->delete();
@@ -1025,6 +855,62 @@ class GameController extends Controller
         } else {
             return [
                 'result' => false
+            ];
+        }
+    }
+
+    public function deleteSingleImage(Request $request)
+    {
+        /**
+         * @var Game      $game
+         * @var GameImage $image_to_be_deleted
+         */
+        if ($request->ajax()) {
+            $game                = Game::with('images')->find($request->game_id);
+            $image_to_be_deleted = $game->images->where('image_hash', '=', $request->image_hash)->first();
+
+            if (File::exists(public_path($image_to_be_deleted->path))) {
+                File::delete(public_path($image_to_be_deleted->path));
+            }
+
+            if ($image_to_be_deleted) {
+                $image_to_be_deleted->delete();
+            }
+
+            return [
+                'message' => 'Resim başarıyla silindi.',
+                'result'  => true
+            ];
+        } else {
+            return [
+                'message' => 'Resim silinirken hata oluştu.',
+                'result'  => false
+            ];
+        }
+    }
+
+    public function deleteGameVideo(Request $request)
+    {
+        /**
+         * @var Game      $game
+         * @var GameVideo $video_to_be_deleted
+         */
+        if ($request->ajax()) {
+            $game                = Game::with('videos')->find($request->game_id);
+            $video_to_be_deleted = $game->videos->where('video_hash', '=', $request->video_hash)->first();
+
+            if ($video_to_be_deleted) {
+                $video_to_be_deleted->delete();
+            }
+
+            return [
+                'message' => 'Video başarıyla silindi.',
+                'result'  => true
+            ];
+        } else {
+            return [
+                'message' => 'Video silinirken hata oluştu.',
+                'result'  => false
             ];
         }
     }

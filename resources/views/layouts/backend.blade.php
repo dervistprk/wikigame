@@ -9,15 +9,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title') - WikiGame</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->backend_favicon) }}"/>
-    <link href="{{ asset('backend/css/simple-datatables.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-4.3.1.css') }}">
     {{--<link href="{{ asset('backend/css/summernote-0.8.18-bs4.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/backend.css') }}" rel="stylesheet"/>
-    <script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/blitzer/jquery-ui.css">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"/>
     @yield('custom-css')
 </head>
 <body class="sb-nav-fixed">
@@ -31,7 +31,8 @@
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i> {{ \Auth::user()->name . ' ' . \Auth::user()->surname}}</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i> {{ \Auth::user()->name . ' ' . \Auth::user()->surname}}
+            </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
                     <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user-circle"></i> Profil</a>
@@ -52,34 +53,12 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <a class="nav-link @if(Request::segment(2) == 'yonetim') active @endif" href="{{ route('admin.dashboard') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Yönetim Paneli
-                    </a>
-                    <a class="nav-link @if(Request::segment(2) == 'kategoriler') active @endif" href="{{ route('admin.categories') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
-                        Kategoriler
-                    </a>
-                    <a class="nav-link @if(Request::segment(2) == 'oyunlar') active @endif" href="{{ route('admin.games') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-gamepad"></i></div>
-                        Oyunlar
-                    </a>
-                    <a class="nav-link @if(Request::segment(2) == 'gelistiriciler') active @endif" href="{{ route('admin.developers') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-calculator"></i></div>
-                        Geliştiriciler
-                    </a>
-                    <a class="nav-link @if(Request::segment(2) == 'dagiticilar') active @endif" href="{{ route('admin.publishers') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
-                        Dağıtıcılar
-                    </a>
-                    <a class="nav-link @if(Request::segment(2) == 'makaleler') active @endif" href="{{ route('admin.articles') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Makaleler
-                    </a>
-                    <a class="nav-link @if(Request::segment(2) == 'ayarlar') active @endif" href="{{ route('admin.settings') }}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
-                        Ayarlar
-                    </a>
+                    @foreach(config('backend.menus') as $menu)
+                        <a class="nav-link @if(Request::segment(2) == $menu['segment']) active @endif" href="{{ route('admin.' . $menu['route']) }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-{{ $menu['icon'] }}"></i></div>
+                            {{ $menu['title'] }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
             <div class="sb-sidenav-footer">
@@ -98,20 +77,19 @@
         </footer>
     </div>
 </div>
-<script src="{{ asset('backend/js/jquery-3.3.1-slim.js') }}"></script>
+{{--<script src="{{ asset('backend/js/jquery-3.3.1-slim.js') }}"></script>--}}
 <script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
 <script src="{{ asset('backend/js/popper-1.14.7.js') }}"></script>
 <script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}"></script>
 <script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>
+<script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="{{ asset('backend/js/scripts.js') }}"></script>
-<script src="{{ asset('backend/js/chart-2.8.0.js') }}"></script>
-<script src="{{ asset('backend/js/simple-datatables.js') }}"></script>
-<script src="{{ asset('backend/js/datatables-simple-demo.js') }}"></script>
 <script src="{{ asset('backend/js/summernote-0.8.18-bs4.js') }}"></script>
 <script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}"></script>
 <script src="{{ asset('js/datepicker-tr.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
    $(document).ready(function() {
       $(function() {
@@ -157,11 +135,16 @@
          'cursor': 'pointer'
       });
 
+      $('.select2').select2({
+         theme      : 'bootstrap-5',
+         placeholder: 'Lütfen Seçin',
+      });
+
       (function() {
          'use strict';
          window.addEventListener('load', function() {
             var forms      = document.getElementsByClassName('needs-validation');
-            var validation = Array.prototype.filter.call(forms, function(form) {
+            Array.prototype.filter.call(forms, function(form) {
                form.addEventListener('submit', function(event) {
                   if (form.checkValidity() === false) {
                      event.preventDefault();

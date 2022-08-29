@@ -25,10 +25,8 @@ class GameDetailFactory extends Factory
         $age_rating  = array_rand($age_ratings);
         $value       = $age_ratings[$age_rating];
         return [
-            'genre'        => $this->faker->word(),
             'age_rating'   => $value,
             'release_date' => $this->faker->date(),
-            'platform'     => $this->faker->colorName(),
             'website'      => $this->faker->url(),
         ];
     }

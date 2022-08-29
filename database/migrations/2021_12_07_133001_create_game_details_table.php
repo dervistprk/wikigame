@@ -15,10 +15,8 @@ class CreateGameDetailsTable extends Migration
     {
         Schema::create('game_details', function(Blueprint $table){
             $table->id();
-            $table->string('genre');
             $table->string('age_rating');
             $table->string('release_date');
-            $table->string('platform');
             $table->string('website');
             $table->timestamps();
         });

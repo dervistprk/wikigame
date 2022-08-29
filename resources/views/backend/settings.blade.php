@@ -70,21 +70,21 @@
                         <div class="col mt-2">
                             <label for="favicon" class="font-weight-bold col-form-label text-primary">Site Favicon</label>
                             @if(isset($settings->favicon))
-                                <img src="{{ $settings->favicon }}" alt="Site Favicon" title="Site Favicon" width="25" height="25">
+                                <img src="{{ $settings->favicon }}" alt="Site Favicon" title="Site Favicon">
                             @endif
                             <input type="file" name="favicon" id="favicon" class="form-control-file btn btn-primary btn-sm">
                         </div>
                         <div class="col mt-2">
                             <label for="logo" class="font-weight-bold col-form-label text-primary">Site Logo</label>
                             @if(isset($settings->logo))
-                                <img src="{{ $settings->logo }}" alt="Site Logo" title="Site Logo" class="mb-2" width="25" height="25">
+                                <img src="{{ $settings->logo }}" alt="Site Logo" title="Site Logo" class="mb-2">
                             @endif
                             <input type="file" name="logo" id="logo" class="form-control-file btn btn-primary btn-sm">
                         </div>
                         <div class="col mt-2">
                             <label for="backend_favicon" class="font-weight-bold col-form-label text-primary">Backend Favicon</label>
                             @if(isset($settings->backend_favicon))
-                                <img src="{{ $settings->backend_favicon }}" alt="Backend Favicon" title="Backend Favicon" width="25" height="25">
+                                <img src="{{ $settings->backend_favicon }}" alt="Backend Favicon" title="Backend Favicon">
                             @endif
                             <input type="file" name="backend_favicon" id="backend_favicon" class="form-control-file btn btn-primary btn-sm">
                         </div>
@@ -103,8 +103,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success btn-block">Kaydet</button>
-                <a href="{{route('admin.publishers')}}" class="btn btn-danger btn-block">Vazgeç</a>
+                <div class="form-group text-center mt-2">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Kaydet</button>
+                    <a href="{{route('admin.dashboard')}}" class="btn btn-danger"><i class="fa fa-backspace"></i> Vazgeç</a>
+                </div>
             </div>
         </form>
     </div>

@@ -29,6 +29,9 @@ class SettingFactory extends Factory
             'linkedin'         => 'https://www.linkedin.com/in/derviş-toprak-0698a81b7/',
             'youtube'          => 'https://www.youtube.com',
             'instagram'        => 'https://www.instagram.com/dervistprk',
+            'favicon'          => '/assets/favicon.png',
+            'logo'             => '/assets/logo.png',
+            'backend_favicon'  => '/assets/backend_favicon.png'
         ];
     }
 }
