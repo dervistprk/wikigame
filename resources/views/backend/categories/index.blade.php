@@ -69,14 +69,14 @@
                                     $title = 'Kategori';
                                     $target = $category;
                                     $route  = 'category';
-                                    $category->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu kategoriyi silerseniz, kategoriye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                    $category->games()->active()->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu kategoriyi silerseniz, kategoriye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($category->status == 0) alert-danger @endif">
                                     <td class="font-weight-bold">
                                         {{ $category->name }}
                                     </td>
                                     <td>{!! trim(strip_tags(Str::limit($category->description, '1000'))) !!}  </td>
-                                    <td class="font-weight-bold">{{ $category->games->count() }}</td>
+                                    <td class="font-weight-bold">{{ $category->games()->active()->count() }}</td>
                                     <td>
                                         @if($category->status == 1)
                                             <div class="mt-1">
@@ -101,7 +101,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="text-danger text-center">Aranan kriterlere uygun kategori bulunamadı.</div>
+                    <div class="text-danger text-center">Kategori bulunamadı.</div>
                 @endif
             </div>
         </div>

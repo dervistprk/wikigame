@@ -16,4 +16,9 @@ class Platform extends Model
     {
         return $this->belongsToMany(Game::class, 'platform_game');
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('status', 1);
+    }
 }

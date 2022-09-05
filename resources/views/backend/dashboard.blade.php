@@ -29,7 +29,7 @@
                 </div>
                 <div class="card-body collapse show" id="latest-games">
                     <div class="table-responsive">
-                        @if($games)
+                        @if($games->count() > 0)
                             <table class="table table-hover table-bordered">
                                 <thead class="thead-dark">
                                 <tr>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="card-body collapse show" id="latest-categories">
                     <div class="table-responsive">
-                        @if($categories)
+                        @if($categories->count() > 0)
                             <table class="table table-hover table-bordered">
                                 <thead class="thead-dark">
                                 <tr>
@@ -128,7 +128,7 @@
                         </div>
                         <div class="card-body collapse show" id="latest-developers">
                             <div class="table-responsive">
-                                @if($developers)
+                                @if($developers->count() > 0)
                                     <table class="table table-hover table-bordered">
                                         <thead class="thead-dark">
                                         <tr>
@@ -168,7 +168,7 @@
                         </div>
                         <div class="card-body collapse show" id="latest-publishers">
                             <div class="table-responsive">
-                                @if($publishers)
+                                @if($publishers->count() > 0)
                                     <table class="table table-hover table-bordered">
                                         <thead class="thead-dark">
                                         <tr>
@@ -208,7 +208,7 @@
                 </div>
                 <div class="card-body collapse show" id="latest-articles">
                     <div class="table-responsive">
-                        @if($articles)
+                        @if($articles->count() > 0)
                         <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                             <tr>

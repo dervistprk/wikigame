@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div>
-            <img src="{{ $developer->image }}" alt="developer_resmi" height="75" width="100" class="m-2" title="{{ $developer->name }}">
+            <img src="{{ $developer->image }}" alt="developer_resmi" height="75" width="100" class="img-fluid img-thumbnail m-2" title="{{ $developer->name }}">
             <h2 class="dev-header d-inline-block">{{ $developer->name }}</h2>
             <div class="game-info" style="padding: 10px; margin: 15px;">
                 <h4 class="game-subtitle">Geliştirici Bilgileri</h4>

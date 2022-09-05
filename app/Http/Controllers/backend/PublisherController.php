@@ -4,7 +4,6 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Publisher;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -69,7 +68,7 @@ class PublisherController extends Controller
         }
 
         $image_rules = [
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp,svg|max:2048'
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp,svg|max:3092'
         ];
 
         $validate_image = Validator::make($request->file(), $image_rules);
@@ -82,12 +81,12 @@ class PublisherController extends Controller
 
         $path = public_path('uploads/publishers/') . Str::slug($request->name);
 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true);
         }
 
         $image     = $request->file('image');
-        $imageName = Str::slug($request->input('name')) . '.' . $request->image->getClientOriginalExtension();
+        $imageName = Str::slug($request->input('name')) . '.' . $image->getClientOriginalExtension();
         Image::make($image->getRealPath())->resize(300, 220)->save($path . '/' . $imageName);
         $publisher_data['image'] = '/uploads/publishers/' . Str::slug($request->input('name')) . '/' . $imageName;
 
@@ -99,7 +98,8 @@ class PublisherController extends Controller
     public function edit($publisher_id)
     {
         $publisher = Publisher::findOrFail($publisher_id);
-        return view('backend.publishers.edit', compact('publisher'));
+        $title     = 'Dağıtıcı';
+        return view('backend.publishers.edit', compact('publisher', 'title'));
     }
 
     public function update(Request $request, $publisher_id)
@@ -122,6 +122,8 @@ class PublisherController extends Controller
             $publisher_data[$field] = $request->input($field);
         }
 
+        $publisher_data['slug'] = Str::slug($request->input('name'));
+
         $validate_publisher = Validator::make($publisher_data, $publisher_rules);
 
         if ($validate_publisher->fails()) {
@@ -131,7 +133,7 @@ class PublisherController extends Controller
         }
 
         $image_rules = [
-            'image' => 'image|mimes:jpg,jpeg,png,webp,svg|max:2048'
+            'image' => 'image|mimes:jpg,jpeg,png,webp,svg|max:3092'
         ];
 
         $validate_image = Validator::make($request->file(), $image_rules);
@@ -142,15 +144,35 @@ class PublisherController extends Controller
                              ->withInput();
         }
 
-        if ($request->hasFile('image')) {
-            $path = public_path('uploads/publishers/') . Str::slug($request->input('name'));
+        $path = public_path('uploads/publishers/') . Str::slug($request->input('name'));
 
-            if (!file_exists($path)) {
-                mkdir($path, 0777, true);
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true);
+
+            $old_path = public_path('uploads/publishers/') . $publisher->slug;
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::copyDirectory($old_path, $path);
             }
 
+            if ($publisher->image) {
+                $file_extension          = '.' . File::extension($publisher->image);
+                $imageName               = Str::slug($request->input('name')) . $file_extension;
+                $publisher_data['image'] = '/uploads/publishers/' . Str::slug($request->input('name')) . '/' . $imageName;
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $publisher->slug . $file_extension)) {
+                    rename($old_path . '/' . $publisher->slug . $file_extension, $path . '/' . Str::slug($request->input('name')) . $file_extension);
+                    File::delete($path . '/' . $publisher->slug . $file_extension);
+                }
+            }
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::deleteDirectory($old_path);
+            }
+        }
+
+        if ($request->hasFile('image')) {
             $image     = $request->file('image');
-            $imageName = Str::slug($request->input('name')) . '.' . $request->image->getClientOriginalExtension();
+            $imageName = Str::slug($request->input('name')) . '.' . $image->getClientOriginalExtension();
             Image::make($image->getRealPath())->resize(300, 220)->save($path . '/' . $imageName);
             $publisher_data['image'] = '/uploads/publishers/' . Str::slug($request->input('name')) . '/' . $imageName;
         }
@@ -180,9 +202,8 @@ class PublisherController extends Controller
             File::delete(public_path($publisher->image));
         }
 
-        if (File::exists($path) && is_dir($path)) {
-            array_map('unlink', glob("$path/*.*"));
-            rmdir(public_path('uploads/publishers/') . Str::slug($publisher->name));
+        if (File::exists($path) && File::isDirectory($path)) {
+            File::deleteDirectory($path);
         }
 
         $publisher->delete();

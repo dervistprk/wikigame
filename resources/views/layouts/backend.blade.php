@@ -18,6 +18,8 @@
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" rel="stylesheet"/>
     @yield('custom-css')
 </head>
 <body class="sb-nav-fixed">
@@ -90,6 +92,10 @@
 <script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}"></script>
 <script src="{{ asset('js/datepicker-tr.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/tr.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/themes/fa5/theme.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/locales/tr.js"></script>
 <script>
    $(document).ready(function() {
       $(function() {
@@ -138,12 +144,13 @@
       $('.select2').select2({
          theme      : 'bootstrap-5',
          placeholder: 'Lütfen Seçin',
+         language   : 'tr'
       });
 
       (function() {
          'use strict';
          window.addEventListener('load', function() {
-            var forms      = document.getElementsByClassName('needs-validation');
+            var forms = document.getElementsByClassName('needs-validation');
             Array.prototype.filter.call(forms, function(form) {
                form.addEventListener('submit', function(event) {
                   if (form.checkValidity() === false) {
@@ -155,6 +162,34 @@
             });
          }, false);
       })();
+
+      $('input[type="file"]').fileinput({
+         language                : 'tr',
+         showUpload              : false,
+         previewFileType         : 'any',
+         browseOnZoneClick       : true,
+         removeClass             : 'btn btn-danger',
+         previewZoomButtonClasses: {
+            close: 'btn btn-sm btn-outline-danger ms-1',
+         },
+         maxFileSize             : 3092,
+         allowedFileExtensions   : ['jpg', 'jpeg', 'webp', 'png', 'svg']
+      });
+
+      $(document).on('focus', '.upload-other-images', function() {
+         $(this).fileinput({
+            language                : 'tr',
+            showUpload              : false,
+            previewFileType         : 'any',
+            browseOnZoneClick       : true,
+            removeClass             : 'btn btn-danger',
+            previewZoomButtonClasses: {
+               close: 'btn btn-sm btn-outline-danger ms-1',
+            },
+            maxFileSize             : 3092,
+            allowedFileExtensions   : ['jpg', 'jpeg', 'webp', 'png', 'svg']
+         });
+      });
    });
 </script>
 @yield('custom-js')

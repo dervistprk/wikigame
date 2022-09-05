@@ -58,6 +58,38 @@
                 <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Kaydet</button>
                 <a href="{{route('admin.developers')}}" class="btn btn-danger"><i class="fa fa-backspace"></i> Vazgeç</a>
             </div>
+            @include('backend.modals.statusDialog')
         </form>
     </div>
+@endsection
+@section('custom-js')
+    <script type="text/javascript">
+       $('#status').change(function() {
+          var developer_status      = {{ $developer->status }};
+          var developer_games_count = {{ $developer->games->count() }};
+
+          if (developer_status == 1 && developer_games_count > 0 && $(this).val() == 0) {
+             $('#dialog-confirm').removeClass('d-none');
+             $('#dialog-confirm').dialog({
+                resizable  : false,
+                dialogClass: 'no-close',
+                height     : 'auto',
+                width      : 'auto',
+                draggable  : false,
+                modal      : true,
+                show       : true,
+                hide       : true,
+                buttons    : [
+                   {
+                      text   : 'Tamam',
+                      'class': 'btn btn-sm btn-primary',
+                      click  : function() {
+                         $(this).dialog('close');
+                      }
+                   }
+                ]
+             });
+          }
+       });
+    </script>
 @endsection

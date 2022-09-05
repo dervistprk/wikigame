@@ -5,13 +5,15 @@
         <form class="mt-2 needs-validation" method="post" novalidate action="{{route('admin.edit-category-post', [$category->id])}}">
             @if($errors->any())
                 <div class="row justify-content-center">
-                    <div class="alert alert-danger text-center alert-dismissible fade show">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
+                    <div class="col-sm-6">
+                        <div class="alert alert-danger text-center alert-dismissible fade show">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             @endif
@@ -55,6 +57,38 @@
                 <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Kaydet</button>
                 <a href="{{route('admin.categories')}}" class="btn btn-danger"><i class="fa fa-backspace"></i> Vazgeç</a>
             </div>
+            @include('backend.modals.statusDialog')
         </form>
     </div>
+@endsection
+@section('custom-js')
+    <script type="text/javascript">
+       $('#status').change(function() {
+          var category_status      = {{ $category->status }};
+          var category_games_count = {{ $category->games->count() }};
+
+          if (category_status == 1 && category_games_count > 0 && $(this).val() == 0) {
+             $('#dialog-confirm').removeClass('d-none');
+             $('#dialog-confirm').dialog({
+                resizable  : false,
+                dialogClass: 'no-close',
+                height     : 'auto',
+                width      : 'auto',
+                draggable  : false,
+                modal      : true,
+                show       : true,
+                hide       : true,
+                buttons    : [
+                   {
+                      text   : 'Tamam',
+                      'class': 'btn btn-sm btn-primary',
+                      click  : function() {
+                         $(this).dialog('close');
+                      }
+                   }
+                ]
+             });
+          }
+       });
+    </script>
 @endsection

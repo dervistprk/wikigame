@@ -4,7 +4,6 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -45,14 +44,13 @@ class ArticleController extends Controller
         $article_fields = [
             'title',
             'sub_title',
-            'writing',
             'status'
         ];
 
         $article_rules = [
             'title'     => 'required|min:5',
             'sub_title' => 'required|min:5',
-            'writing'   => 'required|min:10',
+            'writing'   => 'required|min:15',
             'status'    => 'required',
         ];
 
@@ -60,7 +58,8 @@ class ArticleController extends Controller
             $article_data[$field] = $request->input($field);
         }
 
-        $article_data['slug'] = Str::slug($request->input('title'));
+        $article_data['writing'] = strip_tags(trim($request->input('writing')));
+        $article_data['slug']    = Str::slug($request->input('title'));
 
         $validate_article = Validator::make($article_data, $article_rules);
 
@@ -69,6 +68,8 @@ class ArticleController extends Controller
                              ->withErrors($validate_article)
                              ->withInput();
         }
+
+        $article_data['writing'] = $request->input('writing');
 
         $image_rules = [
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:3092'
@@ -84,12 +85,12 @@ class ArticleController extends Controller
 
         $path = public_path('uploads/articles/') . Str::slug($request->input('title'));
 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true);
         }
 
         $image     = $request->file('image');
-        $imageName = Str::slug($request->input('title')) . '.' . $request->image->getClientOriginalExtension();
+        $imageName = Str::slug($request->input('title')) . '.' . $image->getClientOriginalExtension();
         Image::make($image->getRealPath())->resize(1920, 1080)->save($path . '/' . $imageName);
         $article_data['image'] = '/uploads/articles/' . Str::slug($request->input('title')) . '/' . $imageName;
 
@@ -109,7 +110,6 @@ class ArticleController extends Controller
         $article_fields = [
             'title',
             'sub_title',
-            'writing',
             'status'
         ];
 
@@ -124,7 +124,8 @@ class ArticleController extends Controller
             $article_data[$field] = $request->input($field);
         }
 
-        $article_data['slug'] = Str::slug($request->input('title'));
+        $article_data['writing'] = strip_tags(trim($request->input('writing')));
+        $article_data['slug']    = Str::slug($request->input('title'));
 
         $validate_article = Validator::make($article_data, $article_rules);
 
@@ -133,6 +134,8 @@ class ArticleController extends Controller
                              ->withErrors($validate_article)
                              ->withInput();
         }
+
+        $article_data['writing'] = $request->input('writing');
 
         $image_rules = [
             'image' => 'image|mimes:jpg,jpeg,png,webp|max:3092'
@@ -150,13 +153,33 @@ class ArticleController extends Controller
 
         $path = public_path('uploads/articles/') . Str::slug($request->input('title'));
 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true);
+
+            $old_path = public_path('uploads/articles/') . $article->slug;
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::copyDirectory($old_path, $path);
+            }
+
+            if ($article->image) {
+                $file_extension        = '.' . File::extension($article->image);
+                $imageName             = Str::slug($request->input('title')) . $file_extension;
+                $article_data['image'] = '/uploads/articles/' . Str::slug($request->input('title')) . '/' . $imageName;
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $article->slug . $file_extension)) {
+                    rename($old_path . '/' . $article->slug . $file_extension, $path . '/' . Str::slug($request->input('title')) . $file_extension);
+                    File::delete($path . '/' . $article->slug . $file_extension);
+                }
+            }
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::deleteDirectory($old_path);
+            }
         }
 
         if ($request->hasFile('image')) {
             $image     = $request->file('image');
-            $imageName = Str::slug($request->input('title')) . '.' . $request->image->getClientOriginalExtension();
+            $imageName = Str::slug($request->input('title')) . '.' . $image->getClientOriginalExtension();
             Image::make($image->getRealPath())->resize(1920, 1080)->save($path . '/' . $imageName);
             $article_data['image'] = '/uploads/articles/' . Str::slug($request->input('title')) . '/' . $imageName;
         }
@@ -175,9 +198,8 @@ class ArticleController extends Controller
             File::delete(public_path($article->image));
         }
 
-        if (File::exists($path) && is_dir($path)) {
-            array_map('unlink', glob("$path/*.*"));
-            rmdir($path);
+        if (File::exists($path) && File::isDirectory($path)) {
+            File::deleteDirectory($path);
         }
 
         $article->delete();

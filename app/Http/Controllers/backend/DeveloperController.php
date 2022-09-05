@@ -4,7 +4,6 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Developer;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -44,9 +43,7 @@ class DeveloperController extends Controller
     {
         $developer_fields = [
             'name',
-            'description',
             'status',
-            'image'
         ];
 
         $developer_rules = [
@@ -59,7 +56,8 @@ class DeveloperController extends Controller
             $developer_data[$field] = $request->input($field);
         }
 
-        $developer_data['slug'] = Str::slug($request->input('name'));
+        $developer_data['description'] = strip_tags(trim($request->input('description')));
+        $developer_data['slug']        = Str::slug($request->input('name'));
 
         $validate_developer = Validator::make($developer_data, $developer_rules);
 
@@ -69,8 +67,10 @@ class DeveloperController extends Controller
                              ->withInput();
         }
 
+        $developer_data['description'] = $request->input('description');
+
         $image_rules = [
-            'image' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048'
+            'image' => 'required|image|mimes:jpg,jpeg,png,svg|max:3092'
         ];
 
         $validate_image = Validator::make($request->file(), $image_rules);
@@ -83,12 +83,12 @@ class DeveloperController extends Controller
 
         $path = public_path('uploads/developers/') . Str::slug($request->input('name'));
 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true);
         }
 
         $image     = $request->file('image');
-        $imageName = Str::slug($request->input('name')) . '.' . $request->file('image')->getClientOriginalExtension();
+        $imageName = Str::slug($request->input('name')) . '.' . $image->getClientOriginalExtension();
         Image::make($image->getRealPath())->resize(300, 220)->save($path . '/' . $imageName);
         $developer_data['image'] = '/uploads/developers/' . Str::slug($request->input('name')) . '/' . $imageName;
 
@@ -100,7 +100,8 @@ class DeveloperController extends Controller
     public function edit($developer_id)
     {
         $developer = Developer::findOrFail($developer_id);
-        return view('backend.developers.edit', compact('developer'));
+        $title     = 'Geliştirici';
+        return view('backend.developers.edit', compact('developer', 'title'));
     }
 
     public function update(Request $request, $developer_id)
@@ -109,7 +110,6 @@ class DeveloperController extends Controller
 
         $developer_fields = [
             'name',
-            'description',
             'status',
         ];
 
@@ -123,7 +123,8 @@ class DeveloperController extends Controller
             $developer_data[$field] = $request->input($field);
         }
 
-        $developer_data['slug'] = Str::slug($request->input('name'));
+        $developer_data['description'] = strip_tags(trim($request->input('description')));
+        $developer_data['slug']        = Str::slug($request->input('name'));
 
         $validate_developer = Validator::make($developer_data, $developer_rules);
 
@@ -133,8 +134,10 @@ class DeveloperController extends Controller
                              ->withInput();
         }
 
+        $developer_data['description'] = $request->input('description');
+
         $image_rules = [
-            'image' => 'image|mimes:jpg,jpeg,png,svg|max:2048'
+            'image' => 'image|mimes:jpg,jpeg,png,svg|max:3092'
         ];
 
         $validate_image = Validator::make($request->file(), $image_rules);
@@ -147,13 +150,33 @@ class DeveloperController extends Controller
 
         $path = public_path('uploads/developers/') . Str::slug($request->input('name'));
 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true);
+
+            $old_path = public_path('uploads/developers/') . $developer->slug;
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::copyDirectory($old_path, $path);
+            }
+
+            if ($developer->image) {
+                $file_extension          = '.' . File::extension($developer->image);
+                $imageName               = Str::slug($request->input('name')) . $file_extension;
+                $developer_data['image'] = '/uploads/developers/' . Str::slug($request->input('name')) . '/' . $imageName;
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $developer->slug . $file_extension)) {
+                    rename($old_path . '/' . $developer->slug . $file_extension, $path . '/' . Str::slug($request->input('name')) . $file_extension);
+                    File::delete($path . '/' . $developer->slug . $file_extension);
+                }
+            }
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::deleteDirectory($old_path);
+            }
         }
 
         if ($request->hasFile('image')) {
             $image     = $request->file('image');
-            $imageName = Str::slug($request->input('name')) . '.' . $request->file('image')->getClientOriginalExtension();
+            $imageName = Str::slug($request->input('name')) . '.' . $image->getClientOriginalExtension();
             Image::make($image->getRealPath())->resize(300, 220)->save($path . '/' . $imageName);
             $developer_data['image'] = '/uploads/developers/' . Str::slug($request->input('name')) . '/' . $imageName;
         }
@@ -182,9 +205,8 @@ class DeveloperController extends Controller
             File::delete(public_path($developer->image));
         }
 
-        if (File::exists($path) && is_dir($path)) {
-            array_map('unlink', glob("$path/*.*"));
-            rmdir($path);
+        if (File::exists($path) && File::isDirectory($path)) {
+            File::deleteDirectory($path);
         }
 
         $developer->delete();

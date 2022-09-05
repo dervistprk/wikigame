@@ -435,7 +435,7 @@
              var image_count = $(this).val();
 
              for (var i = 1; i < image_count; i++) {
-                $('.other-images').append('<div class="form-group row"><label for="image' + (i + 1) + '" class="text-primary form-label font-weight-bold">Resim' + (i + 1) + '*</label><input type="file" class="form-control-file btn btn-primary btn-sm btn-block" id="image' + (i + 1) + '" name="path[]" required/><input type="hidden" name="image_hash[]" value="' + strRandom(20) + '"/><div class="invalid-feedback">Lütfen resim seçin.</div></div>');
+                $('.other-images').append('<div class="form-group row"><label for="image' + (i + 1) + '" class="text-primary form-label font-weight-bold">Resim' + (i + 1) + '*</label><input type="file" class="form-control-file btn btn-primary btn-sm btn-block upload-other-images" id="image' + (i + 1) + '" name="path[]" required/><input type="hidden" name="image_hash[]" value="' + strRandom(20) + '"/><div class="invalid-feedback">Lütfen resim seçin.</div></div>');
              }
           });
 

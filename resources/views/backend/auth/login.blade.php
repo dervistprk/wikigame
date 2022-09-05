@@ -41,18 +41,32 @@
                                         </button>
                                     </div>
                                 @endif
-                                <form method="post" action="{{ route('admin.login-post') }}">
+                                <form method="post" class="needs-validation" novalidate action="{{ route('admin.login-post') }}">
                                     @csrf
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" type="email" name="email" placeholder="E-Posta Adresinizi Giriniz" required/>
-                                        <label for="email">E-Posta</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <div class="form-floating flex-grow-1">
+                                            <input class="form-control" id="email" type="email" name="email" placeholder="E-Posta Adresinizi Giriniz" required/>
+                                            <label for="email">E-Posta</label>
+                                        </div>
                                     </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="password" type="password" name="password" placeholder="Şifre" required/>
-                                        <label for="password">Şifre</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <div class="form-floating flex-grow-1">
+                                            <input class="form-control" id="password" type="password" name="password" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" placeholder="Şifre" required/>
+                                            <label for="password">Şifre</label>
+                                        </div>
+                                        <span class="input-group-text" style="cursor: pointer" id="show-eye">
+                                             <i class="far fa-eye"></i>
+                                        </span>
+                                        <span class="input-group-text d-none" style="cursor: pointer" id="hide-eye">
+                                             <i class="far fa-eye-slash"></i>
+                                        </span>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary col-sm-4"><i class="fa fa-user-cog"></i> Giriş</button>
+                                        <button type="submit" class="btn btn-primary col-sm-4">
+                                            <i class="fa fa-user-cog"></i> Giriş
+                                        </button>
                                         <div class="col-sm-4 d-inline-block ms-2">
                                             <input type="checkbox" class="form-check-input form-check-inline" name="remember_token" id="remember"/>
                                             <label for="remember" class="form-check-label">Beni Hatırla</label>
@@ -71,5 +85,40 @@
 </div>
 <script src="{{ asset('backend/js/jquery-3.3.1-slim.js') }}"></script>
 <script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}"></script>
+<script type="text/javascript">
+   $(document).ready(function() {
+      (function() {
+         'use strict';
+         window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function(form) {
+               form.addEventListener('submit', function(event) {
+                  if (form.checkValidity() === false) {
+                     event.preventDefault();
+                     event.stopPropagation();
+                  }
+                  form.classList.add('was-validated');
+               }, false);
+            });
+         }, false);
+      })();
+
+      $('#show-eye').click(function() {
+         var input    = $('#password');
+         var hide_eye = $('#hide-eye');
+         $(this).addClass('d-none');
+         hide_eye.removeClass('d-none');
+         input.attr('type', 'text');
+      });
+
+      $('#hide-eye').click(function() {
+         var input    = $('#password');
+         var show_eye = $('#show-eye');
+         $(this).addClass('d-none');
+         show_eye.removeClass('d-none');
+         input.attr('type', 'password');
+      });
+   });
+</script>
 </body>
 </html>

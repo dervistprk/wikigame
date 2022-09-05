@@ -1,17 +1,19 @@
 <!-- Carousel wrapper -->
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+<div id="carouselExampleIndicators" class="carousel slide w-75" data-bs-ride="carousel" data-bs-interval="6000">
     <!-- Indicators -->
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><span></span></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         @for($i = 1; $i <= $game->images->count() + $game->videos->count(); $i++)
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $i }}" aria-label="Slide {{ $i + 1 }}"><span></span></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $i }}" aria-label="Slide {{ $i + 1 }}"></button>
         @endfor
     </div>
     <!-- Inner -->
     <div class="carousel-inner">
         @foreach($game->videos as $video)
-            <div id="game-video" class="carousel-item @if($loop->first) active @endif">
-                <iframe id="game-video-{{ $video_count }}" class="d-block w-100 img-fluid min-vh-100" src="{{ $video->url }}?enablejsapi=1" allowfullscreen></iframe>
+            <div id="game-video" class="carousel-item @if($loop->first) active @endif embed-responsive embed-responsive-16by9">
+                <div class="embed-responsive-item">
+                    <iframe id="game-video-{{ $video_count }}" class="d-block w-100 img-fluid" src="{{ $video->url }}?enablejsapi=1" allowfullscreen></iframe>
+                </div>
             </div>
             @php $video_count++; @endphp
         @endforeach
@@ -37,7 +39,6 @@
 @section('custom-js')
     <script type="text/javascript">
        $(document).ready(function() {
-          console.log(players);
           $('#carouselExampleIndicators').on('slide.bs.carousel', function(event) {
              if (players[event.from] !== undefined) {
                 players[event.from].pauseVideo();

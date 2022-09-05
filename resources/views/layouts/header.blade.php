@@ -21,7 +21,7 @@
                     @if(Auth::guest())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle categories-drop-down" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> Üyelik</a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
                                 <li>
                                     <a class="dropdown-item" href="{{ route('register-form') }}"><i class="fas fa-user"></i> Üye Ol</a>
                                 </li>
@@ -29,7 +29,7 @@
                                     <a class="dropdown-item" href="{{ route('login-form') }}"><i class="fas fa-door-open"></i> Giriş Yap</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('resend-verification') }}"><i class="fas fa-paper-plane"></i> Doğrulama Postası Gönder</a>
+                                    <a class="dropdown-item" href="{{ route('resend-verification') }}"><i class="fas fa-paper-plane"></i> Doğrulama Postası</a>
                                 </li>
                             </ul>
                         </li>
@@ -46,7 +46,7 @@
                             </ul>
                         </li>
                     @endif
-                    <div class="form-check form-switch me-2 mt-2">
+                    <div class="form-check form-switch me-3 mt-2">
                         <i class="fas fa-sun"></i>
                         <input type="checkbox" class="form-check-input" role="switch" id="darkSwitch">
                         <i class="fas fa-moon"></i>
@@ -62,7 +62,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent2">
-                <form class="form-inline" action="{{ route('search') }}" method="post">
+                <form class="form-inline" action="{{ route('search') }}" method="get">
                     @csrf
                     <div class="input-group w-100 m-1 ms-3 me-3">
                         <input class="form-control search-input" type="text" autocomplete="off" placeholder="Aramak İstediğiniz Oyun Adını Yazın" aria-label="Ara..." aria-describedby="btnNavbarSearch" name="search"/>
@@ -77,7 +77,7 @@
                             <a class="nav-link @if(Request::segment(2) == $category->slug) active @endif" href="{{ route('category', [$category->slug]) }}">{{ $category->name }}</a>
                         </li>
                     @endforeach
-                    <li class="nav-item">
+                    <li class="nav-item ms-3">
                         <a class="nav-link @if(Request::segment(1) == 'tum-oyunlar') active @endif" href="{{ route('all-games') }}"><i class="fa fa-gamepad"></i> Tüm Oyunlar</a>
                     </li>
                 </ul>

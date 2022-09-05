@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Setting;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManagerStatic as Image;
 use Validator;
 
@@ -37,9 +38,9 @@ class SettingController extends Controller
             'about_text'       => 'required|min:15',
             'meta_description' => 'required|min:5',
             'site_status'      => 'required',
-            'favicon'          => 'image|mimes:jpeg,png,jpg,ico,webp|max:500',
-            'logo'             => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-            'backend_favicon'  => 'image|mimes:jpeg,png,jpg,ico,webp|max:500'
+            'favicon'          => 'image|mimes:jpeg,png,jpg,ico,webp|max:3092',
+            'logo'             => 'image|mimes:jpeg,png,jpg,webp|max:3092',
+            'backend_favicon'  => 'image|mimes:jpeg,png,jpg,ico,webp|max:3092'
         ];
 
         foreach ($settings_fields as $field) {
@@ -56,8 +57,8 @@ class SettingController extends Controller
 
         $image_path = public_path('assets/');
 
-        if (!file_exists($image_path)) {
-            mkdir($image_path, 0777, true);
+        if (!File::exists($image_path)) {
+            File::makeDirectory($image_path, 0777, true);
         }
 
         if ($request->hasFile('favicon')) {

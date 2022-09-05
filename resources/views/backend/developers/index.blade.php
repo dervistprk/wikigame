@@ -69,7 +69,7 @@
                                     $title = 'Geliştirici';
                                     $target = $developer;
                                     $route  = 'developer';
-                                    $developer->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz, geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                    $developer->games()->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz, geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($developer->status == 0) alert-danger @endif">
                                     <td>
@@ -78,7 +78,7 @@
                                     <td class="font-weight-bold">
                                         {{ $developer->name }}
                                     </td>
-                                    <td class="font-weight-bold">{{ $developer->games->count() }}</td>
+                                    <td class="font-weight-bold">{{ $developer->games()->active()->count() }}</td>
                                     <td>
                                         @if($developer->status == 1)
                                             <div class="mt-1">
@@ -103,7 +103,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="text-danger text-center">Aranan kriterlere uygun geliştirici bulunamadı.</div>
+                    <div class="text-danger text-center">Geliştirici bulunamadı.</div>
                 @endif
             </div>
         </div>

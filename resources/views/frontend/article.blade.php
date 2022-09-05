@@ -10,7 +10,7 @@
                 <p>{!! $article->writing !!}</p>
             </div>
         </div>
-        @if(isset($random_articles))
+        @if($random_articles->count() > 0)
             <div class="container-fluid">
                 <h2 class="game-header text-center">Bunları da Okumak İsteyebilirsiniz</h2>
                 <div class="row mt-2 justify-content-center align-content-center">
@@ -36,7 +36,5 @@
                 Sistemde kayıtlı makale bulunamadı.
             </div>
         </div>
-
     @endif
-
 @endsection

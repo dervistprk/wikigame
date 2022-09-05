@@ -129,7 +129,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="text-danger text-center">Aranan kriterlere uygun oyun bulunamadı.</div>
+                    <div class="text-danger text-center">Oyun bulunamadı.</div>
                 @endif
                 @include('backend.modals.detailedGameSearch')
             </div>

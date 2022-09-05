@@ -16,4 +16,9 @@ class Genre extends Model
     {
         return $this->belongsToMany(Game::class, 'genre_game');
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('status', 1);
+    }
 }

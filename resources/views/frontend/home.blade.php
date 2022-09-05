@@ -11,7 +11,7 @@
             </div>
         @endif
         <h2 class="latest-header">Son Eklenen Oyunlar</h2>
-        @if(isset($latest_games))
+        @if($latest_games->count() > 0)
             @foreach($latest_games as $latest_game)
                 <div class="card-deck d-inline-block m-1" title="{{ $latest_game->name }}">
                     <div class="card">
@@ -26,13 +26,13 @@
                 </h4>
             @endif
         @else
-            <div class="alert alert-danger m-2">
+            <div class="alert alert-secondary text-center m-2">
                 Sistemde kayıtlı oyun bulunamadı.
             </div>
         @endif
         <hr>
         <h2 class="popular-header">Popüler Oyunlar</h2>
-        @if(isset($popular_games))
+        @if($popular_games->count() > 0)
             @foreach($popular_games as $popular_game)
                 <div class="card-deck d-inline-block m-1" title="{{ $popular_game->name }}">
                     <div class="card">
@@ -47,17 +47,17 @@
                 </h4>
             @endif
         @else
-            <div class="alert alert-danger m-2">
+            <div class="alert alert-secondary text-center m-2">
                 Sistemde kayıtlı oyun bulunamadı.
             </div>
         @endif
         <hr>
         <h2 class="popular-header">Son Eklenen Makaleler</h2>
-        @if(isset($latest_articles))
+        @if($latest_articles->count() > 0)
             @foreach($latest_articles as $latest_article)
                 <div class="card-deck d-inline-block m-1" title="{{ $latest_article->title }}">
                     <div class="card" style="max-width: 500px; max-height: 400px;">
-                        <a href="{{ route('game', [$latest_article->slug]) }}" class="stretched-link" data-toggle="tooltip" data-placement="top" title="{{ $latest_article->title }}"></a>
+                        <a href="{{ route('article', [$latest_article->slug]) }}" class="stretched-link" data-toggle="tooltip" data-placement="top" title="{{ $latest_article->title }}"></a>
                         <img class="card-img-top img-fluid lazyload" data-src="{{$latest_article->image}}" src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $latest_article->title }}" style="width: 500px; height: 300px" loading="lazy">
                         <div class="card-body">
                             <p class="card-text" style="font-size: 14px; font-family: 'Helvetica Neue', sans-serif">{{ $latest_article->sub_title }}</p>
@@ -71,17 +71,17 @@
                 </h4>
             @endif
         @else
-            <div class="alert alert-danger m-2">
+            <div class="alert alert-secondary text-center m-2">
                 Sistemde kayıtlı makale bulunamadı.
             </div>
         @endif
         <hr>
         <h2 class="popular-header">Popüler Makaleler</h2>
-        @if(isset($popular_articles))
+        @if($popular_articles->count() > 0)
             @foreach($popular_articles as $popular_article)
                 <div class="card-deck d-inline-block m-1" title="{{ $popular_article->title }}">
                     <div class="card" style="max-width: 500px; max-height: 400px;">
-                        <a href="{{ route('game', [$popular_article->slug]) }}" class="stretched-link" data-toggle="tooltip" data-placement="top" title="{{ $popular_article->title }}"></a>
+                        <a href="{{ route('article', [$popular_article->slug]) }}" class="stretched-link" data-toggle="tooltip" data-placement="top" title="{{ $popular_article->title }}"></a>
                         <img class="card-img-top img-fluid lazyload" data-src="{{$popular_article->image}}" src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $popular_article->title }}" style="width: 500px; height: 300px" loading="lazy">
                         <div class="card-body">
                             <p class="card-text" style="font-size: 14px; font-family: 'Helvetica Neue', sans-serif">{{ $popular_article->sub_title }}</p>
@@ -95,7 +95,7 @@
                 </h4>
             @endif
         @else
-            <div class="alert alert-danger m-2">
+            <div class="alert alert-secondary text-center m-2">
                 Sistemde kayıtlı makale bulunamadı.
             </div>
         @endif

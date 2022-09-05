@@ -103,7 +103,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="text-danger text-center">Aranan kriterlere uygun makale bulunamadı.</div>
+                    <div class="text-danger text-center">Makale bulunamadı.</div>
                 @endif
             </div>
         </div>

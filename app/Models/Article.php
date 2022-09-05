@@ -11,4 +11,9 @@ class Article extends Model
 
     protected $table   = 'articles';
     protected $guarded = [];
+
+    public function scopeActive($query)
+    {
+        $query->where('status', 1);
+    }
 }

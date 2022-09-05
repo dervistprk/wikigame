@@ -5,7 +5,7 @@
         <form class="mt-2 needs-validation" novalidate method="post" action="{{route('admin.edit-game-post', [$game->id])}}" enctype="multipart/form-data">
             @if($errors->any())
                 <div class="row justify-content-center">
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <div class="alert alert-danger alert-dismissible fade show">
                             @foreach($errors->all() as $error)
                                 <li>{!! $error !!}</li>
@@ -366,17 +366,15 @@
                                 @foreach($game->images as $image)
                                     <div class="form-group" id="image-input-{{ $image_count + 1 }}">
                                         <label for="image{{ $image_count + 1 }}" class="text-primary form-label font-weight-bold">Resim{{ $image_count + 1 }}*</label>
-                                        @if(!$loop->first)
-                                            <div class="col-sm-3 float-end">
-                                                <a class="btn btn-danger btn-sm text-white" data-toggle="modal" data-target="#delete-image-{{ $image_count + 1 }}"><i class="fa fa-trash-alt"></i> Sil</a>
-                                            </div>
-                                            @include('backend.modals.deleteImageConfirmation')
-                                        @endif
                                         <div class="row col">
                                             <input type="file" name="path[]" id="image{{ $image_count + 1 }}" class="form-control-file btn btn-primary btn-sm btn-block">
                                             <input type="hidden" name="image_hash[]" id="image-hash" value="{{ $image->image_hash }}"/>
                                         </div>
                                         <img src="{{ $image->path }}" alt="{{ $game->name }} Resim{{ $image_count + 1 }}" title="{{ $game->name }} Resim{{ $image_count + 1 }}" class="mt-1 rounded img-fluid img-thumbnail" width="500" height="300">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-danger btn-block btn-sm text-white" data-toggle="modal" data-target="#delete-image-{{ $image_count + 1 }}"><i class="fa fa-trash-alt"></i> Sil</a>
+                                        </div>
+                                        @include('backend.modals.deleteImageConfirmation')
                                     </div>
                                     @php $image_count++; @endphp
                                     @if(!$loop->last)
@@ -483,7 +481,7 @@
              var current_image_count = {{ $image_count }};
 
              for (var i = current_image_count; i < image_count; i++) {
-                $('.other-images').append('<div class="form-group row"><label for="image' + (i + 1) + '" class="text-primary form-label font-weight-bold">Resim' + (i + 1) + '*</label><input type="file" class="form-control-file btn btn-primary btn-sm btn-block" id="image' + (i + 1) + '" name="path[]" required/><input type="hidden" name="image_hash[]" value="' + strRandom(20) + '"/><div class="invalid-feedback">Lütfen resim seçin.</div></div>');
+                $('.other-images').append('<div class="form-group row"><label for="image' + (i + 1) + '" class="text-primary form-label font-weight-bold">Resim' + (i + 1) + '*</label><input type="file" class="form-control-file btn btn-primary btn-sm btn-block upload-other-images" id="image' + (i + 1) + '" name="path[]" required/><input type="hidden" name="image_hash[]" value="' + strRandom(20) + '"/><div class="invalid-feedback">Lütfen resim seçin.</div></div>');
              }
           });
 

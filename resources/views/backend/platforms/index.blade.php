@@ -97,7 +97,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="text-danger text-center">Aranan kriterlere uygun platform bulunamadı.</div>
+                    <div class="text-danger text-center">Platform bulunamadı.</div>
                 @endif
             </div>
         </div>
@@ -111,8 +111,6 @@
              $('.status-switch').change(function() {
                 var id    = $(this)[0].getAttribute('data-id');
                 var state = $(this).prop('checked');
-                var game_count =  parseInt({{ $platform->games->count() }});
-                console.log(game_count);
 
                 $.ajaxSetup({
                    headers: {
@@ -120,7 +118,7 @@
                    },
                 });
 
-                if (!state && game_count > 0) {
+                if (!state) {
                    $('#dialog-confirm').removeClass('d-none');
                    $('#dialog-confirm').dialog({
                       resizable  : false,

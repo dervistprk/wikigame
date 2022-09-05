@@ -96,7 +96,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="text-danger text-center">Aranan kriterlere uygun tür bulunamadı.</div>
+                    <div class="text-danger text-center">Tür bulunamadı.</div>
                 @endif
             </div>
         </div>

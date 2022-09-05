@@ -3,28 +3,28 @@
 @section('content')
     <div class="container">
         @if(isset($game))
-                <h2 class="game-header">{{$game->name}}</h2>
-                <div class="justify-content-center align-content-center d-flex h-100">
-                    @include('frontend.carousel')
+            <h2 class="game-header">{{$game->name}}</h2>
+            <div class="justify-content-center align-content-center d-flex h-100">
+                @include('frontend.carousel')
+            </div>
+            <div class="game-info mt-3 mb-3 p-3 rounded">
+                <h5 class="game-subtitle">{{$game->sub_title}}</h5>
+                <p>{!! $game->description !!}</p>
+            </div>
+            @include('frontend.game_details')
+            <div class="row mt-2">
+                <div class="col">
+                    <h3 class="sysreq-header">Minimum Sistem Gereksinimleri</h3>
+                    @include('frontend.system_requirements_minimum')
                 </div>
-                <div class="game-info mt-3 mb-3 p-3 rounded">
-                    <h5 class="game-subtitle">{{$game->sub_title}}</h5>
-                    <p>{!! $game->description !!}</p>
+                <div class="col">
+                    <h3 class="sysreq-header">Önerilen Sistem Gereksinimleri</h3>
+                    @include('frontend.system_requirements_recommended')
                 </div>
-                @include('frontend.game_details')
-                <div class="row mt-2">
-                    <div class="col">
-                        <h3 class="sysreq-header">Minimum Sistem Gereksinimleri</h3>
-                        @include('frontend.system_requirements_minimum')
-                    </div>
-                    <div class="col">
-                        <h3 class="sysreq-header">Önerilen Sistem Gereksinimleri</h3>
-                        @include('frontend.system_requirements_recommended')
-                    </div>
-                </div>
-            <div class="mt-2">
-                <h2 class="game-header text-center">{{ $game->category->name }} Kategorisinde Popüler</h2>
-                @if($other_games->count() > 0)
+            </div>
+            @if($other_games->count() > 0)
+                <div class="mt-2">
+                    <h2 class="game-header text-center">{{ $game->category->name }} Kategorisinde Popüler</h2>
                     @foreach($other_games as $other)
                         <div class="card-deck d-inline-block m-2" title="{{ $other->name }}">
                             <div class="card">
@@ -36,14 +36,10 @@
                             </div>
                         </div>
                     @endforeach
-                @else
-                    <div class="alert alert-secondary text-center">
-                        <p>{{ $game->category->name }} kategorisinde başka oyun bulunmamaktadır.</p>
-                    </div>
-                @endif
-            </div>
+                </div>
+            @endif
         @else
-            <div class="alert alert-danger m-2">
+            <div class="alert alert-secondary text-center m-2">
                 Sistemde kayıtlı oyun bulunamadı.
             </div>
         @endif
@@ -52,24 +48,26 @@
 
 @section('custom-js')
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#prev').on('click', function () {
-                $('#carouselBasicExample').carousel('prev');
-            });
-            $('#next').on('click', function () {
-                $('#carouselBasicExample').carousel('next');
-            });
-            $('#carouselBasicExample').carousel('pause');
-        });
+       $(document).ready(function() {
+          $('#prev').on('click', function() {
+             $('#carouselBasicExample').carousel('prev');
+          });
+          $('#next').on('click', function() {
+             $('#carouselBasicExample').carousel('next');
+          });
+          $('#carouselBasicExample').carousel('pause');
+       });
     </script>
 @endsection
 
 @section('redirect-js')
     <script type="text/javascript">
-        var uri = window.location.pathname;
-        if (uri == '/rastgele-oyun') {
-            window.location.replace('/oyun/{{ $game->slug }}');
-        }
+       var uri = window.location.pathname;
+       @if(isset($game))
+       if (uri == '/rastgele-oyun') {
+          window.location.replace('/oyun/{{ $game->slug }}');
+       }
+        @endif
     </script>
 @endsection
 

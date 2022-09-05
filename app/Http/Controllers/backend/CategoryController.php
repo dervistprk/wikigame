@@ -4,7 +4,6 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Validator;
@@ -40,10 +39,8 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        //TODO: editör validasyonu min:15 değeri düzelt.
         $category_fields = [
             'name',
-            'description',
             'status'
         ];
 
@@ -57,7 +54,8 @@ class CategoryController extends Controller
             $category_data[$field] = $request->input($field);
         }
 
-        $category_data['slug'] = Str::slug($request->input('title'));
+        $category_data['description'] = strip_tags($request->input('description'));
+        $category_data['slug']        = Str::slug($request->input('name'));
 
         $validate_category = Validator::make($category_data, $category_rules);
 
@@ -67,6 +65,8 @@ class CategoryController extends Controller
                              ->withInput();
         }
 
+        $category_data['description'] = $request->input('description');
+
         Category::create($category_data);
 
         return redirect()->route('admin.categories')->with('message', 'Kategori Başarıyla Oluşturuldu.');
@@ -75,14 +75,14 @@ class CategoryController extends Controller
     public function edit($category_id)
     {
         $category = Category::findOrFail($category_id);
-        return view('backend.categories.edit', compact('category'));
+        $title    = 'Kategori';
+        return view('backend.categories.edit', compact('category', 'title'));
     }
 
     public function update(Request $request, $category_id)
     {
         $category_fields = [
             'name',
-            'description',
             'status'
         ];
 
@@ -96,7 +96,8 @@ class CategoryController extends Controller
             $category_data[$field] = $request->input($field);
         }
 
-        $category_data['slug'] = Str::slug($request->input('title'));
+        $category_data['description'] = strip_tags(trim($request->input('description')));
+        $category_data['slug']        = Str::slug($request->input('name'));
 
         $validate_category = Validator::make($category_data, $category_rules);
 
@@ -106,7 +107,9 @@ class CategoryController extends Controller
                              ->withInput();
         }
 
-        $category = Category::findOrFail($category_id);
+        $category_data['description'] = $request->input('description');
+
+        $category = Category::with('games')->findOrFail($category_id);
         $category->update($category_data);
 
         return redirect()->route('admin.categories')->with('message', 'Kategori Bilgileri Başarıyla Güncellendi.');

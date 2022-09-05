@@ -16,4 +16,9 @@ class Developer extends Model
     {
         return $this->hasMany(Game::class, 'developer_id', 'id');
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('status', 1);
+    }
 }

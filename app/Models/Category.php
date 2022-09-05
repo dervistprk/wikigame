@@ -16,4 +16,9 @@ class Category extends Model
     {
         return $this->hasMany(Game::class, 'category_id', 'id');
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('status', 1);
+    }
 }

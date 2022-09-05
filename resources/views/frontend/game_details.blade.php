@@ -29,12 +29,12 @@
                                 </a>
                             </td>
                             <td>
-                                <img src="{{asset('assets/pegi_ratings/pegi_') . $game_details->age_rating . '.png'}}" class="img-fluid" alt="pegi_rating" width="30" height="30" title="{{ $game_details->age_rating }} yaş ve üzeri">
+                                <img src="{{asset('assets/pegi_ratings/pegi_') . $game->details->age_rating . '.png'}}" class="img-fluid" alt="pegi_rating" width="30" height="30" title="{{ $game->details->age_rating }} yaş ve üzeri">
                             </td>
-                            <td>{{ $game_details->platform }}</td>
-                            <td>{{ Carbon\Carbon::parse($game_details->release_date)->format('d/m/Y') }}</td>
+                            <td>{{ $game->details->platform }}</td>
+                            <td>{{ Carbon\Carbon::parse($game->details->release_date)->format('d/m/Y') }}</td>
                             <td>
-                                <a href="{{ $game_details->website }}" class="game-detail-links text-decoration-none" target="_blank">{{ $game->name }}</a>
+                                <a href="{{ $game->details->website }}" class="game-detail-links text-decoration-none" target="_blank">{{ $game->name }}</a>
                             </td>
                         </tr>
                         </tbody>

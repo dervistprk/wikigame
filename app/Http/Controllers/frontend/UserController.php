@@ -27,8 +27,8 @@ class UserController extends Controller
     public function registerPost(Request $request)
     {
         $request->validate([
-            'email'     => 'required|email|unique:users|max:254',
-            'user_name' => 'required|min:3|unique:users|max:254|regex:/^[\w-]*$/',
+            'email'     => 'required|email|unique:users|max:255',
+            'user_name' => 'required|min:3|unique:users|max:255|regex:/^[\w-]*$/',
             'password'  => [
                 'required',
                 'confirmed',
@@ -37,8 +37,8 @@ class UserController extends Controller
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
             ],
-            'name'      => 'required|max:254',
-            'surname'   => 'required|max:254',
+            'name'      => 'required|min:2|max:255',
+            'surname'   => 'required|min:2|:255',
             'birth_day' => 'required|date',
             'gender'    => 'required',
             'about'     => 'required|min:30'

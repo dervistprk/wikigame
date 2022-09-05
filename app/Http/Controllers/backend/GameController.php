@@ -12,7 +12,6 @@ use App\Models\GameVideo;
 use App\Models\Genre;
 use App\Models\Platform;
 use App\Models\Publisher;
-use App\Models\Setting;
 use App\Models\SystemRequirementsMin;
 use App\Models\SystemRequirementsRec;
 use Illuminate\Http\Request;
@@ -91,9 +90,9 @@ class GameController extends Controller
             return $q->where($relation_search);
         })->orderBy($sort_by, $sort_dir)->where($detailed_search)->paginate($per_page)->appends('per_page', $per_page);
 
-        $developers = Developer::where('status', '=', 1)->get();
-        $publishers = Publisher::where('status', '=', 1)->get();
-        $categories = Category::where('status', '=', 1)->get();
+        $developers = Developer::active()->get();
+        $publishers = Publisher::active()->get();
+        $categories = Category::active()->get();
 
         return view(
             'backend.games.index',
@@ -120,11 +119,11 @@ class GameController extends Controller
 
     public function create()
     {
-        $categories = Category::where('status', '=', 1)->orderBy('name')->get();
-        $developers = Developer::where('status', '=', 1)->orderBy('name')->get();
-        $publishers = Publisher::where('status', '=', 1)->orderBy('name')->get();
-        $platforms  = Platform::where('status', '=', 1)->orderBy('name')->get();
-        $genres     = Genre::where('status', '=', 1)->orderBy('name')->get();
+        $categories = Category::active()->orderBy('name')->get();
+        $developers = Developer::active()->orderBy('name')->get();
+        $publishers = Publisher::active()->orderBy('name')->get();
+        $platforms  = Platform::active()->orderBy('name')->get();
+        $genres     = Genre::active()->orderBy('name')->get();
 
         $statuses = [];
         foreach (config('game_config.statuses') as $key => $status) {
@@ -141,7 +140,6 @@ class GameController extends Controller
             'category_id',
             'developer_id',
             'publisher_id',
-            'description',
             'status',
         ];
 
@@ -159,8 +157,9 @@ class GameController extends Controller
             $game_data[$game_field] = $request->input($game_field);
         }
 
-        $game_data['sub_title'] = ucfirst($request->sub_title);
-        $game_data['slug']      = Str::slug($request->name);
+        $game_data['description'] = strip_tags($request->input('description'));
+        $game_data['sub_title']   = ucfirst($request->sub_title);
+        $game_data['slug']        = Str::slug($request->name);
 
         $validate_game_fields = Validator::make($game_data, $game_field_rules);
 
@@ -169,6 +168,8 @@ class GameController extends Controller
                              ->withErrors($validate_game_fields)
                              ->withInput();
         }
+
+        $game_data['description'] = $request->input('description');
 
         $game_detail_fields = [
             'release_date',
@@ -223,7 +224,7 @@ class GameController extends Controller
         }
 
         $file_rules = [
-            'cover_image' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:3092',
             'image1'      => 'required|image|mimes:jpeg,png,jpg,svg,webp|max:3092',
         ];
 
@@ -301,8 +302,8 @@ class GameController extends Controller
 
         $image_path = public_path('uploads/games/') . Str::slug($request->name);
 
-        if (!file_exists($image_path)) {
-            mkdir($image_path, 0777, true);
+        if (!File::exists($image_path)) {
+            File::makeDirectory($image_path, 0777, true);
         }
 
         $cover_image    = $request->file('cover_image');
@@ -458,11 +459,11 @@ class GameController extends Controller
     public function edit($id)
     {
         $game       = Game::with('videos', 'platforms')->findOrFail($id);
-        $categories = Category::where('status', '=', 1)->orderBy('name')->get();
-        $developers = Developer::where('status', '=', 1)->orderBy('name')->get();
-        $publishers = Publisher::where('status', '=', 1)->orderBy('name')->get();
-        $platforms  = Platform::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
-        $genres     = Genre::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
+        $categories = Category::active()->orderBy('name')->get();
+        $developers = Developer::active()->orderBy('name')->get();
+        $publishers = Publisher::active()->orderBy('name')->get();
+        $platforms  = Platform::active()->orderBy('name')->pluck('name', 'id');
+        $genres     = Genre::active()->orderBy('name')->pluck('name', 'id');
 
         $video_count = 1;
         $video_limit = config('game_config.video_count');
@@ -507,7 +508,6 @@ class GameController extends Controller
             'category_id',
             'developer_id',
             'publisher_id',
-            'description',
             'status',
         ];
 
@@ -539,8 +539,9 @@ class GameController extends Controller
             $game_data[$game_field] = $request->input($game_field);
         }
 
-        $game_data['sub_title'] = ucfirst($request->sub_title);
-        $game_data['slug']      = Str::slug($request->name);
+        $game_data['description'] = strip_tags($request->input('description'));
+        $game_data['sub_title']   = ucfirst($request->sub_title);
+        $game_data['slug']        = Str::slug($request->name);
 
         $validate_game_fields = Validator::make($game_data, $game_field_rules);
 
@@ -549,6 +550,8 @@ class GameController extends Controller
                              ->withErrors($validate_game_fields)
                              ->withInput();
         }
+
+        $game_data['description'] = $request->input('description');
 
         $game_detail_fields = [
             'release_date',
@@ -604,7 +607,7 @@ class GameController extends Controller
 
         //validate image files
         $file_rules = [
-            'cover_image' => 'image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'cover_image' => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
             'image1'      => 'image|mimes:jpeg,png,jpg,svg,webp|max:3092',
         ];
 
@@ -683,36 +686,58 @@ class GameController extends Controller
 
         //saving image files
         $file_data = [];
-        $path      = public_path('uploads/games/') . Str::slug($request->name);
+        $path      = public_path('uploads/games/') . Str::slug($request->input('name'));
 
         //if the game images are to be relocated(if game name changes), copies the old pictures to the new folder, renames them and deletes the old ones
-        if (!file_exists($path)) {
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0777, true);
+
             $old_path = public_path('uploads/games/') . $game->slug;
-            mkdir($path, 0777, true);
-            $this->customCopy($old_path, $path);
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::copyDirectory($old_path, $path);
+            }
 
             if ($game->cover_image) {
-                $file_extension           = substr($game->cover_image, strpos($game->cover_image, '.'));
+                $file_extension           = '.' . File::extension($game->cover_image);
                 $coverImageName           = Str::slug($request->name) . '-cover' . $file_extension;
-                $file_data['cover_image'] = '/uploads/games/' . Str::slug($request->name) . '/' . $coverImageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-cover' . $file_extension, $path . '/' . Str::slug($request->name) . '-cover' . $file_extension);
-                    unlink($path . '/' . $game->slug . '-cover' . $file_extension);
+                $file_data['cover_image'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $coverImageName;
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $game->slug . '-cover' . $file_extension)) {
+                    rename($old_path . '/' . $game->slug . '-cover' . $file_extension, $path . '/' . Str::slug($request->input('name')) . '-cover' . $file_extension);
+                    File::delete($path . '/' . $game->slug . '-cover' . $file_extension);
                 }
             }
 
             if ($game->image1) {
-                $file_extension      = substr($game->image1, strpos($game->image1, '.'));
-                $imageName           = Str::slug($request->name) . '-1' . $file_extension;
-                $file_data['image1'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                if (file_exists($old_path)) {
-                    rename($old_path . '/' . $game->slug . '-1' . $file_extension, $path . '/' . Str::slug($request->name) . '-1' . $file_extension);
-                    unlink($path . '/' . $game->slug . '-1' . $file_extension);
+                $file_extension      = '.' . File::extension($game->image1);
+                $imageName           = Str::slug($request->input('name')) . '-1' . $file_extension;
+                $file_data['image1'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $imageName;
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $game->slug . '-1' . $file_extension)) {
+                    rename($old_path . '/' . $game->slug . '-1' . $file_extension, $path . '/' . Str::slug($request->input('name')) . '-1' . $file_extension);
+                    File::delete($path . '/' . $game->slug . '-1' . $file_extension);
                 }
             }
 
-            $this::deleteDirWithFiles($old_path);
+            $image_counter = 2;
+            if ($game->images) {
+                foreach ($game->images as $image) {
+                    $file_extension     = '.' . File::extension($image->path);
+                    $imageName          = Str::slug($request->name) . '-' . $image_counter . $file_extension;
+                    $image_data['path'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
+                    if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $game->slug . '-' . $image_counter . $file_extension)) {
+                        rename($old_path . '/' . $game->slug . '-' . $image_counter . $file_extension, $path . '/' . Str::slug($request->name) . '-' . $image_counter . $file_extension);
+                        File::delete($path . '/' . $game->slug . '-' . $image_counter . $file_extension);
+                    }
+                    $image->update($image_data);
+                    $image_counter++;
+                }
+            }
+
+            if (File::exists($old_path) && File::isDirectory($old_path)) {
+                File::deleteDirectory($old_path);
+            }
         }
+
 
         if ($request->hasFile('cover_image')) {
             $image          = $request->file('cover_image');
@@ -822,9 +847,9 @@ class GameController extends Controller
         }
 
         $path = public_path('uploads/games/') . Str::slug($game->name);
-        array_map('unlink', glob("$path/*.*"));
-        if (File::exists($path) && is_dir($path)) {
-            rmdir($path);
+
+        if (File::exists($path) && File::isDirectory($path)) {
+            File::deleteDirectory($path);
         }
 
         foreach ($game->videos as $video) {
@@ -915,7 +940,7 @@ class GameController extends Controller
         }
     }
 
-    public function customCopy($source, $destination)
+    /*public function customCopy($source, $destination)
     {
         $dir = opendir($source);
 
@@ -929,9 +954,9 @@ class GameController extends Controller
             }
         }
         closedir($dir);
-    }
+    }*/
 
-    public static function deleteDirWithFiles($dir_path)
+    /*public static function deleteDirWithFiles($dir_path)
     {
         if (!is_dir($dir_path)) {
             throw new \InvalidArgumentException("$dir_path bir klasör değil.");
@@ -948,5 +973,5 @@ class GameController extends Controller
             }
         }
         rmdir($dir_path);
-    }
+    }*/
 }

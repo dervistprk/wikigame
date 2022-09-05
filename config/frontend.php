@@ -31,7 +31,7 @@ return [
         'category'            => ['method' => 'get', 'uri' => 'kategori/{id}', 'controller' => $home_controller, 'function' => 'category', 'middleware' => 'maintenance'],
         'articles'            => ['method' => 'get', 'uri' => 'makaleler', 'controller' => $article_controller, 'function' => 'articles', 'middleware' => 'maintenance'],
         'article'             => ['method' => 'get', 'uri' => 'makale/{id}', 'controller' => $article_controller, 'function' => 'article', 'middleware' => 'maintenance'],
-        'search'              => ['method' => 'get', 'uri' => 'arama', 'controller' => $home_controller, 'function' => 'search', 'middleware' => 'maintenance'],
+        'search'              => ['method' => 'get', 'uri' => 'arama', 'controller' => $home_controller, 'function' => 'search', 'middleware' => ['maintenance', 'remove_token']],
         'autocompleteSearch'  => ['method' => 'get', 'uri' => 'oto-arama', 'controller' => $home_controller, 'function' => 'autoComplete', 'middleware' => 'maintenance'],
         'register-form'       => ['method' => 'get', 'uri' => 'uye-ol', 'controller' => $user_controller, 'function' => 'registerForm', 'middleware' => ['maintenance', 'prevent_if_login']],
         'register-post'       => ['method' => 'post', 'uri' => 'uye-ol', 'controller' => $user_controller, 'function' => 'registerPost', 'middleware' => ['maintenance', 'prevent_if_login']],

@@ -16,4 +16,9 @@ class Publisher extends Model
     {
         return $this->hasMany(Game::class, 'publisher_id', 'id');
     }
+
+    public function scopeActive($query)
+    {
+        $query->where('status', 1);
+    }
 }

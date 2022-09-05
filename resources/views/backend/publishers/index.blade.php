@@ -69,16 +69,16 @@
                                     $title  = 'Dağıtıcı';
                                     $target = $publisher;
                                     $route  = 'publisher';
-                                    $publisher->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu dağıtıcıyı silerseniz, dağıtıcıya bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                    $publisher->games()->active()->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu dağıtıcıyı silerseniz, dağıtıcıya bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($publisher->status == 0) alert-danger @endif">
                                     <td>
-                                        <img src="{{ $publisher->image }}" alt="geliştirici resmi" class="img-fluid img-thumbnail" title="{{ $publisher->name }}" width="200" height="150">
+                                        <img src="{{ $publisher->image }}" alt="Dağıtıcı Resmi" class="img-fluid img-thumbnail" title="{{ $publisher->name }}" width="200" height="150">
                                     </td>
                                     <td class="font-weight-bold">
                                         {{ $publisher->name }}
                                     </td>
-                                    <td class="font-weight-bold">{{ $publisher->games->count() }}</td>
+                                    <td class="font-weight-bold">{{ $publisher->games()->active()->count() }}</td>
                                     <td>
                                         @if($publisher->status == 1)
                                             <div class="mt-1">
@@ -103,7 +103,7 @@
                         </table>
                     </div>
                 @else
-                    <div class="text-danger text-center">Aranan kriterlere uygun dağıtıcı bulunamadı.</div>
+                    <div class="text-danger text-center">Dağıtıcı bulunamadı.</div>
                 @endif
             </div>
         </div>

@@ -2,8 +2,8 @@
 @section('title', 'Tüm Oyunlar')
 @section('content')
     <div class="container">
-        <h2 class="game-header">Tüm Oyunlar</h2>
-        @if(isset($games))
+        @if($games->count() > 0)
+            <h2 class="game-header">Tüm Oyunlar</h2>
             @include('frontend.lists.games')
         @else
             <div class="alert alert-secondary text-center m-2">
