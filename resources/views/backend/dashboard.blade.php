@@ -38,6 +38,8 @@
                                     <th>Kategori</th>
                                     <th>Geliştirici</th>
                                     <th>Dağıtıcı</th>
+                                    <th>Platform</th>
+                                    <th>Tür</th>
                                     <th>Websitesi</th>
                                     <th>Çıkış Tarihi</th>
                                     <th>Yaş Sınırı</th>
@@ -60,6 +62,22 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('admin.edit-publisher', $game->publisher->id) }}" class="text-primary text-decoration-none" title="{{ $game->publisher->name }} Dağıtıcısı">{{ $game->publisher->name }}</a>
+                                        </td>
+                                        <td>
+                                            @php
+                                                $game_platforms = $game->platforms->pluck('name' ,'id')->toArray();
+                                            @endphp
+                                            @foreach($game_platforms as $platform_id => $platform)
+                                                <a href="{{ route('admin.edit-platform', $platform_id) }}" class="text-primary text-decoration-none">{{ $platform }}</a><br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @php
+                                                $game_genres = $game->genres->pluck('name' ,'id')->toArray();
+                                            @endphp
+                                            @foreach($game_genres as $genre_id => $genre)
+                                                <a href="{{ route('admin.edit-genre', $genre_id) }}" class="text-primary text-decoration-none">{{ $genre }}</a><br>
+                                            @endforeach
                                         </td>
                                         <td>
                                             <a href="{{ $game->details->website }}" class="text-primary text-decoration-none" target="_blank" title="{{ $game->name }} Resmi Websitesi">{{ $game->name }}</a>
@@ -209,30 +227,30 @@
                 <div class="card-body collapse show" id="latest-articles">
                     <div class="table-responsive">
                         @if($articles->count() > 0)
-                        <table class="table table-hover table-bordered">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>Makale Kapak Resmi</th>
-                                <th>Başlık</th>
-                                <th>Alt Başlık</th>
-                                <th>Okunma Sayısı</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($articles as $article)
+                            <table class="table table-hover table-bordered">
+                                <thead class="thead-dark">
                                 <tr>
-                                    <td>
-                                        <img src="{{ $article->image }}" alt="makale_resmi" height="200" width="300" class="img-fluid rounded img-thumbnail" title="{{ $article->title }}">
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.edit-article', $article->id) }}" class="text-primary text-decoration-none" title="{{ $article->title }}">{{ $article->title }}</a>
-                                    </td>
-                                    <td>{{ \Str::limit(strip_tags(str_replace('&nbsp;', ' ', $article->sub_title)), 500, '...') }}</td>
-                                    <td class="text-center">{{ $article->hit }}</td>
+                                    <th>Makale Kapak Resmi</th>
+                                    <th>Başlık</th>
+                                    <th>Alt Başlık</th>
+                                    <th>Okunma Sayısı</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @foreach($articles as $article)
+                                    <tr>
+                                        <td>
+                                            <img src="{{ $article->image }}" alt="makale_resmi" height="200" width="300" class="img-fluid rounded img-thumbnail" title="{{ $article->title }}">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.edit-article', $article->id) }}" class="text-primary text-decoration-none" title="{{ $article->title }}">{{ $article->title }}</a>
+                                        </td>
+                                        <td>{{ \Str::limit(strip_tags(str_replace('&nbsp;', ' ', $article->sub_title)), 500, '...') }}</td>
+                                        <td class="text-center">{{ $article->hit }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                         @else
                             <div class="text-center text-danger">
                                 Sistemde kayıtlı makale bulunamadı.

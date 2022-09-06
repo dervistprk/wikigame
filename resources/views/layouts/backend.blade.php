@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="robots" content="noindex,nofollow"/>
     <meta name="description" content="{{ $settings->meta_description }}"/>
-    <meta name="author" content="dervis"/>
+    <meta name="author" content="WikiGame"/>
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title') - WikiGame</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->backend_favicon) }}"/>
-    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-4.3.1.css') }}">
-    {{--<link href="{{ asset('backend/css/summernote-0.8.18-bs4.css') }}" rel="stylesheet">--}}
+    <link href="{{ asset('backend/css/bootstrap-4.3.1.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/backend.css') }}" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/blitzer/jquery-ui.css">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" rel="stylesheet"/>
+    <link href="{{ asset('backend/css/jquery-ui-blitzer.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('backend/css/toggle-bs4.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('backend/css/select2.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('backend/css/select2-bs5.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('backend/css/file-input.css') }}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous"/>
     @yield('custom-css')
 </head>
 <body class="sb-nav-fixed">
@@ -79,24 +79,23 @@
         </footer>
     </div>
 </div>
-{{--<script src="{{ asset('backend/js/jquery-3.3.1-slim.js') }}"></script>--}}
-<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
-<script src="{{ asset('backend/js/popper-1.14.7.js') }}"></script>
-<script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}"></script>
-<script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}"></script>
-<script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-<script src="{{ asset('backend/js/scripts.js') }}"></script>
-<script src="{{ asset('backend/js/summernote-0.8.18-bs4.js') }}"></script>
-<script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}"></script>
-<script src="{{ asset('js/datepicker-tr.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/tr.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/themes/fa5/theme.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/locales/tr.js"></script>
-<script>
+<script src="{{ asset('js/jquery-3.5.1.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/popper-1.14.7.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/font-awesome-5.15.3.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/jquery-ui.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/bs-toggle.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/select2.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/select2-tr.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/file-input.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/file-input-fa5.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/file-input-tr.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/scripts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/summernote-0.8.18-bs4.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/datepicker-tr.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
    $(document).ready(function() {
       $(function() {
          $('[data-toggle="tooltip"]').tooltip();

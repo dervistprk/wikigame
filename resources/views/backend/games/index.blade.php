@@ -28,11 +28,9 @@
                         <div class="m-2">
                             <label for="per-page" class="form-label">Öge Sayısı</label>
                             <select class="form-select" name="per_page" id="per-page">
-                                <option value="10" @if($per_page == 10) selected @endif>10</option>
-                                <option value="20" @if($per_page == 20) selected @endif>20</option>
-                                <option value="30" @if($per_page == 30) selected @endif>30</option>
-                                <option value="40" @if($per_page == 40) selected @endif>40</option>
-                                <option value="50" @if($per_page == 50) selected @endif>50</option>
+                                @foreach(config('backend.per_page') as $config_per_page)
+                                    <option value="{{ $config_per_page }}" @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="m-2">
@@ -63,11 +61,14 @@
                         <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                             <tr>
+                                <th class="sorter" data-column="id">ID</th>
                                 <th>Kapak Resmi</th>
                                 <th class="sorter" data-column="name">Adı</th>
                                 <th class="sorter" data-column="category_id">Kategori</th>
                                 <th class="sorter" data-column="developer_id">Geliştirici</th>
                                 <th class="sorter" data-column="publisher_id">Dağıtıcı</th>
+                                <th>Platform</th>
+                                <th>Tür</th>
                                 <th>Website</th>
                                 <th>Çıkış Tarihi</th>
                                 <th>Yaş Sınırı</th>
@@ -82,6 +83,9 @@
                                     $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($game->status == 0) alert-danger @endif">
+                                    <td class="font-weight-bold">
+                                        {{ $game->id }}
+                                    </td>
                                     <td>
                                         <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="img-fluid rounded img-thumbnail" width="120" height="150">
                                     </td>
@@ -96,6 +100,22 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('admin.edit-publisher', [$game->publisher->id]) }}" class="text-primary text-decoration-none">{{ $game->publisher->name }}</a>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $game_platforms = $game->platforms->pluck('name' ,'id')->toArray();
+                                        @endphp
+                                        @foreach($game_platforms as $platform_id => $platform)
+                                            <a href="{{ route('admin.edit-platform', $platform_id) }}" class="text-primary text-decoration-none">{{ $platform }}</a><br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @php
+                                            $game_genres = $game->genres->pluck('name' ,'id')->toArray();
+                                        @endphp
+                                        @foreach($game_genres as $genre_id => $genre)
+                                            <a href="{{ route('admin.edit-genre', $genre_id) }}" class="text-primary text-decoration-none">{{ $genre }}</a><br>
+                                        @endforeach
                                     </td>
                                     <td>
                                         <a href="{{ $game->details->website }}" class="text-primary text-decoration-none" target="_blank">{{ $game->name }}</a>
@@ -148,81 +168,81 @@
                 var id    = $(this)[0].getAttribute('data-id');
                 var state = $(this).prop('checked');
 
-                @foreach($games as $game)
-                    var game_id          = {{ $game->id }};
-                    var category_status  = {{ $game->category->status }};
-                    var developer_status = {{ $game->developer->status }};
-                    var publisher_status = {{ $game->publisher->status }};
+                 @foreach($games as $game)
+                var game_id          = {{ $game->id }};
+                var category_status  = {{ $game->category->status }};
+                var developer_status = {{ $game->developer->status }};
+                var publisher_status = {{ $game->publisher->status }};
 
-                    var initialize_dialog = function() {
-                       $('#dialog').dialog({
-                          resizable  : false,
-                          dialogClass: 'no-close',
-                          draggable  : false,
-                          height     : 'auto',
-                          width      : 'auto',
-                          modal      : true,
-                          show       : true,
-                          hide       : true,
-                          buttons    : [
-                             {
-                                text   : 'Tamam',
-                                'class': 'btn btn-sm btn-secondary',
-                                click  : function() {
-                                   $(this).dialog('close');
-                                   location.reload();
-                                }
-                             }
-                          ]
-                       });
-                    };
+                var initialize_dialog = function() {
+                   $('#dialog').dialog({
+                      resizable  : false,
+                      dialogClass: 'no-close',
+                      draggable  : false,
+                      height     : 'auto',
+                      width      : 'auto',
+                      modal      : true,
+                      show       : true,
+                      hide       : true,
+                      buttons    : [
+                         {
+                            text   : 'Tamam',
+                            'class': 'btn btn-sm btn-secondary',
+                            click  : function() {
+                               $(this).dialog('close');
+                               location.reload();
+                            }
+                         }
+                      ]
+                   });
+                };
 
-                    if (game_id == id) {
-                       if (category_status == 0) {
-                          initialize_dialog();
-                          $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">kategorisini</span> aktive edin.');
-                          $('#dialog').removeClass('d-none');
-                       } else if (developer_status == 0) {
-                          initialize_dialog();
-                          $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">geliştiricisini</span> aktive edin.');
-                          $('#dialog').removeClass('d-none');
-                       } else if (publisher_status == 0) {
-                          initialize_dialog();
-                          $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">dağıtıcısını</span> aktive edin.');
-                          $('#dialog').removeClass('d-none');
-                       } else {
-                          $.ajaxSetup({
-                             headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                             },
-                          });
+                if (game_id == id) {
+                   if (category_status == 0) {
+                      initialize_dialog();
+                      $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">kategorisini</span> aktive edin.');
+                      $('#dialog').removeClass('d-none');
+                   } else if (developer_status == 0) {
+                      initialize_dialog();
+                      $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">geliştiricisini</span> aktive edin.');
+                      $('#dialog').removeClass('d-none');
+                   } else if (publisher_status == 0) {
+                      initialize_dialog();
+                      $('.dialog-content').html('Oyunu aktive etmek için lütfen öncelikle <span class="text-primary font-weight-bold">dağıtıcısını</span> aktive edin.');
+                      $('#dialog').removeClass('d-none');
+                   } else {
+                      $.ajaxSetup({
+                         headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                         },
+                      });
 
-                          $.ajax({
-                             url     : "{{route('admin.switch-game-status') }}",
-                             type    : 'POST',
-                             dataType: 'json',
-                             data    : {
-                                state: state,
-                                id   : id,
-                             },
-                             success : function(response) {
-                                if (response.result) {
-                                   location.reload();
-                                }
-                             },
-                             error   : function(xhr, status, error) {
-                                console.log(xhr.responseText);
-                                console.log(status);
-                                console.log(error);
-                             },
-                          });
-                       }
-                    }
-                @endforeach
+                      $.ajax({
+                         url     : "{{route('admin.switch-game-status') }}",
+                         type    : 'POST',
+                         dataType: 'json',
+                         data    : {
+                            state: state,
+                            id   : id,
+                         },
+                         success : function(response) {
+                            if (response.result) {
+                               location.reload();
+                            }
+                         },
+                         error   : function(xhr, status, error) {
+                            console.log(xhr.responseText);
+                            console.log(status);
+                            console.log(error);
+                         },
+                      });
+                   }
+                }
+                 @endforeach
              });
 
              $('#detailed-search-form').submit(function() {
-                $('input').each(function(index, obj) {
+                $("form#detailed-search-form :input").each(function(index, obj){
                    if ($(obj).val() == '') {
                       $(obj).remove();
                    }
@@ -230,7 +250,7 @@
              });
 
              $('#query-form').submit(function() {
-                $('input').each(function(index, obj) {
+                $("form#query-form :input").each(function(index, obj){
                    if ($(obj).val() == '') {
                       $(obj).remove();
                    }

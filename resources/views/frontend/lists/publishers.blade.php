@@ -17,8 +17,7 @@
                     </div>
                 </div>
             @endforeach
-
-            <div class="m-1">{{ $publishers->links() }}</div>
+            <div class="m-1">{!! $publishers->links() !!}</div>
         @else
             <div class="alert alert-secondary text-center m-2">
                 Sistemde kayıtlı dağıtıcı bulunamadı.

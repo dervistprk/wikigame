@@ -17,8 +17,8 @@ class GenreGameSeeder extends Seeder
         $faker = Faker::create();
         for ($i = 0; $i < 10; $i++) {
             \DB::table('genre_game')->insert([
-                'game_id'     => $faker->numberBetween(1,10),
-                'genre_id' => $faker->numberBetween(1,5)
+                'game_id'  => $faker->numberBetween(1, 10),
+                'genre_id' => $faker->numberBetween(1, 5)
             ]);
         }
     }

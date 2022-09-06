@@ -13,7 +13,7 @@ class CreateSystemRequirementsMinTable extends Migration
      */
     public function up()
     {
-        Schema::create('system_requirements_min', function(Blueprint $table){
+        Schema::create('system_requirements_min', function(Blueprint $table) {
             $table->id();
             $table->string('cpu_min');
             $table->string('gpu_min');

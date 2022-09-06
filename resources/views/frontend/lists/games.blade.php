@@ -9,5 +9,5 @@
         </div>
     </div>
 @endforeach
-<div class="m-1">{{ $games->links() }}</div>
+<div class="m-1">{!! $games->links() !!}</div>
 

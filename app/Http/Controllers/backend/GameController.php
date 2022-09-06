@@ -26,6 +26,8 @@ class GameController extends Controller
 
     public function index(Request $request)
     {
+
+
         $per_page     = $request->get('per_page', 10);
         $quick_search = $request->get('quick_search');
 
@@ -37,6 +39,8 @@ class GameController extends Controller
         $release_date_max_query = $request->get('release_date_max_query');
         $release_date_min_query = $request->get('release_date_min_query');
         $status_query           = $request->get('status_query');
+        $platform_query         = $request->get('platform_query');
+        $genre_query            = $request->get('genre_query');
 
         $sort_by  = $request->get('sort_by', 'id');
         $sort_dir = $request->get('sort_dir', 'desc');
@@ -88,11 +92,17 @@ class GameController extends Controller
 
         $games = Game::whereHas('details', function($q) use ($relation_search) {
             return $q->where($relation_search);
+        })->whereHas('platforms', function($q) use ($platform_query) {
+            return $platform_query ? $q->whereIn('platform_id', $platform_query) : null;
+        })->whereHas('genres', function($q) use ($genre_query) {
+            return $genre_query ? $q->whereIn('genre_id', $genre_query) : null;
         })->orderBy($sort_by, $sort_dir)->where($detailed_search)->paginate($per_page)->appends('per_page', $per_page);
 
         $developers = Developer::active()->get();
         $publishers = Publisher::active()->get();
         $categories = Category::active()->get();
+        $platforms  = Platform::active()->get();
+        $genres     = Genre::active()->get();
 
         return view(
             'backend.games.index',
@@ -112,7 +122,11 @@ class GameController extends Controller
                 'release_date_max_query',
                 'status_query',
                 'sort_dir',
-                'sort_by'
+                'sort_by',
+                'platforms',
+                'genres',
+                'platform_query',
+                'genre_query'
             )
         );
     }
@@ -939,39 +953,4 @@ class GameController extends Controller
             ];
         }
     }
-
-    /*public function customCopy($source, $destination)
-    {
-        $dir = opendir($source);
-
-        while ($file = readdir($dir)) {
-            if (($file != '.') && ($file != '..')) {
-                if (is_dir($source . '/' . $file)) {
-                    $this->customCopy($source . '/' . $file, $destination . '/' . $file);
-                } else {
-                    copy($source . '/' . $file, $destination . '/' . $file);
-                }
-            }
-        }
-        closedir($dir);
-    }*/
-
-    /*public static function deleteDirWithFiles($dir_path)
-    {
-        if (!is_dir($dir_path)) {
-            throw new \InvalidArgumentException("$dir_path bir klasör değil.");
-        }
-        if (substr($dir_path, strlen($dir_path) - 1, 1) != '/') {
-            $dir_path .= '/';
-        }
-        $files = glob($dir_path . '*', GLOB_MARK);
-        foreach ($files as $file) {
-            if (is_dir($file)) {
-                self::deleteDirWithFiles($file);
-            } else {
-                unlink($file);
-            }
-        }
-        rmdir($dir_path);
-    }*/
 }

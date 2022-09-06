@@ -258,11 +258,14 @@
           });
        }
 
-       $('#password, #password_confirmation').on('keyup', function() {
-          if ($('#password').val() != $('#password_confirmation').val()) {
-             $('#password-confirmation-alert').removeClass('d-none');
-          } else
-             $('#password-confirmation-alert').addClass('d-none');
+       $('#password, #password_confirmation').on('change', function() {
+          if ($('#password_confirmation').val()) {
+             if ($('#password').val() != $('#password_confirmation').val()) {
+                $('#password-confirmation-alert').removeClass('d-none');
+             } else {
+                $('#password-confirmation-alert').addClass('d-none');
+             }
+          }
        });
     </script>
 @endsection

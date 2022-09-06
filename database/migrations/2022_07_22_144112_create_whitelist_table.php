@@ -13,7 +13,7 @@ class CreateWhitelistTable extends Migration
      */
     public function up()
     {
-        Schema::create('whitelist', function (Blueprint $table) {
+        Schema::create('whitelist', function(Blueprint $table) {
             $table->id();
             $table->string('ip');
             $table->timestamps();

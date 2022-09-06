@@ -33,7 +33,7 @@ class GoogleAuthService
 
         $existing_user = User::where('email', $user->getEmail())->first();
 
-        if($existing_user){
+        if ($existing_user) {
             auth()->login($existing_user, true);
             toastr()->success('Sisteme Google servisi ile giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
@@ -42,8 +42,8 @@ class GoogleAuthService
             $token    = Str::random(64);
             $simplify = trim(strtolower($user->user['given_name'] . $user->user['family_name']));
 
-            $search  = array('Ç','ç','Ğ','ğ','ı','İ','Ö','ö','Ş','ş','Ü','ü');
-            $replace = array('c','c','g','g','i','i','o','o','s','s','u','u');
+            $search  = array('Ç', 'ç', 'Ğ', 'ğ', 'ı', 'İ', 'Ö', 'ö', 'Ş', 'ş', 'Ü', 'ü');
+            $replace = array('c', 'c', 'g', 'g', 'i', 'i', 'o', 'o', 's', 's', 'u', 'u');
 
             $simplify = str_replace($search, $replace, $simplify);
             $social   = 'Google';
@@ -61,17 +61,17 @@ class GoogleAuthService
             $new_user->save();
 
             UserVerify::create([
-               'user_id' => $new_user->id,
-               'token'   => $token
+                'user_id' => $new_user->id,
+                'token'   => $token
             ]);
 
-            Mail::send('frontend.emails.userPassword', ['password' => $password, 'social' => $social], function($message) use($new_user){
+            Mail::send('frontend.emails.userPassword', ['password' => $password, 'social' => $social], function($message) use ($new_user) {
                 $message->to($new_user->email);
                 $message->subject('WikiGame Üyelik Bilgileriniz');
             });
 
             Auth::attempt(['email' => $new_user->email, 'password' => $password], true);
-            return redirect()->route('user-profile')->with('message', $social .' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="'. route('update-profile') .'" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.');
+            return redirect()->route('user-profile')->with('message', $social . ' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.');
         }
     }
 }

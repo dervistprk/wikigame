@@ -1,17 +1,39 @@
 body {
-    background-color: ghostwhite;
-    font-size: 14px;
+   background-color : ghostwhite;
+   font-size        : 14px;
 }
 
 .card {
-    background-color: #f8f9fa;
+   background-color : #f8f9fa;
 }
 
 input[type=file] {
-    width: 250px;
-    display: block;
+   width   : 250px;
+   display : block;
 }
 
 .no-close .ui-dialog-titlebar-close {
-    display: none;
+   display : none;
+}
+
+body::-webkit-scrollbar {
+   width : 14px; /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+   background : #212529; /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+   background-color : #555; /* color of the scroll thumb */
+   border-radius    : 20px; /* roundness of the scroll thumb */
+   border           : 3px solid #1a1e21; /* creates padding around scroll thumb */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+   background-color : #444;
+}
+
+body::-webkit-scrollbar-thumb:active {
+   background-color : #5c636a;
 }

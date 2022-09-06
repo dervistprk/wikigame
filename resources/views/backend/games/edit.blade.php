@@ -349,7 +349,7 @@
                             <div class="col-sm">
                                 <div class="form-group">
                                     <label for="cover_image" class="text-primary form-label font-weight-bold">Kapak Resmi*</label>
-                                    <div class="row col">
+                                    <div class="col">
                                         <input type="file" name="cover_image" id="cover_image" class="form-control-file btn btn-primary btn-sm btn-block">
                                     </div>
                                     <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="mt-1 rounded img-fluid img-thumbnail" width="175" height="225">
@@ -357,7 +357,7 @@
                                 <hr>
                                 <div class="form-group">
                                     <label for="image1" class="text-primary form-label font-weight-bold">Resim1*</label>
-                                    <div class="row col">
+                                    <div class="col">
                                         <input type="file" name="image1" id="image1" class="form-control-file btn btn-primary btn-sm btn-block">
                                     </div>
                                     <img src="{{ $game->image1 }}" alt="{{ $game->name }} Resim1" title="{{ $game->name }} Resim1" class="mt-1 rounded img-fluid img-thumbnail" width="500" height="300">
@@ -366,12 +366,14 @@
                                 @foreach($game->images as $image)
                                     <div class="form-group" id="image-input-{{ $image_count + 1 }}">
                                         <label for="image{{ $image_count + 1 }}" class="text-primary form-label font-weight-bold">Resim{{ $image_count + 1 }}*</label>
-                                        <div class="row col">
+                                        <div class="col">
                                             <input type="file" name="path[]" id="image{{ $image_count + 1 }}" class="form-control-file btn btn-primary btn-sm btn-block">
                                             <input type="hidden" name="image_hash[]" id="image-hash" value="{{ $image->image_hash }}"/>
                                         </div>
-                                        <img src="{{ $image->path }}" alt="{{ $game->name }} Resim{{ $image_count + 1 }}" title="{{ $game->name }} Resim{{ $image_count + 1 }}" class="mt-1 rounded img-fluid img-thumbnail" width="500" height="300">
                                         <div class="col-sm-12">
+                                            <img src="{{ $image->path }}" alt="{{ $game->name }} Resim{{ $image_count + 1 }}" title="{{ $game->name }} Resim{{ $image_count + 1 }}" class="mt-1 rounded img-fluid img-thumbnail" width="500" height="300">
+                                        </div>
+                                        <div class="col-sm-12 mt-2">
                                             <a class="btn btn-danger btn-block btn-sm text-white" data-toggle="modal" data-target="#delete-image-{{ $image_count + 1 }}"><i class="fa fa-trash-alt"></i> Sil</a>
                                         </div>
                                         @include('backend.modals.deleteImageConfirmation')
@@ -481,7 +483,7 @@
              var current_image_count = {{ $image_count }};
 
              for (var i = current_image_count; i < image_count; i++) {
-                $('.other-images').append('<div class="form-group row"><label for="image' + (i + 1) + '" class="text-primary form-label font-weight-bold">Resim' + (i + 1) + '*</label><input type="file" class="form-control-file btn btn-primary btn-sm btn-block upload-other-images" id="image' + (i + 1) + '" name="path[]" required/><input type="hidden" name="image_hash[]" value="' + strRandom(20) + '"/><div class="invalid-feedback">Lütfen resim seçin.</div></div>');
+                $('.other-images').append('<div class="form-group"><label for="image' + (i + 1) + '" class="text-primary form-label font-weight-bold">Resim' + (i + 1) + '*</label><input type="file" class="form-control-file btn btn-primary btn-sm btn-block upload-other-images" id="image' + (i + 1) + '" name="path[]" required/><input type="hidden" name="image_hash[]" value="' + strRandom(20) + '"/><div class="invalid-feedback">Lütfen resim seçin.</div></div>');
              }
           });
 

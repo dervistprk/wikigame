@@ -16,7 +16,7 @@ class UserVerifyFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'token' => Str::random(64),
+            'token'   => Str::random(64),
         ];
     }
 }

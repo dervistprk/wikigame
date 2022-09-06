@@ -1,4 +1,5 @@
 <?php
+
 return [
     'statuses' => [
         0 => 'Pasif',

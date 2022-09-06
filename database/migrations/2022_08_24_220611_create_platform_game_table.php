@@ -13,7 +13,7 @@ class CreatePlatformGameTable extends Migration
      */
     public function up()
     {
-        Schema::create('platform_game', function (Blueprint $table) {
+        Schema::create('platform_game', function(Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('game_id');
             $table->unsignedBigInteger('platform_id');

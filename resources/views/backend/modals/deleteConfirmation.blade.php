@@ -9,7 +9,9 @@
                 <div class="modal-body">
                     @csrf
                     @method('DELETE')
-                    <h6 class="text-secondary"><strong>{{ $target->name ?? $target->title }}</strong> ögesini silmek istediğinizden emin misiniz?</h6>
+                    <h6 class="text-secondary">
+                        <strong>{{ $target->name ?? $target->title }}</strong> ögesini silmek istediğinizden emin misiniz?
+                    </h6>
                     @if(isset($target->cover_image))
                         <img src="{{ $target->cover_image }}" alt="{{ $target->name }} Kapak Resmi" title="{{ $target->name }} Kapak Resmi" class="img-fluid img-thumbnail" width="150" height="200">
                     @elseif(isset($target->image))

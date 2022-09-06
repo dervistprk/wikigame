@@ -29,6 +29,5 @@ class DeveloperFactory extends Factory
             'description' => $this->faker->paragraph(5),
             'image'       => $this->faker->imageUrl(300, 220),
         ];
-
     }
 }

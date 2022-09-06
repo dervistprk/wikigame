@@ -30,8 +30,10 @@ class GameController extends Controller
         )->active()->where('slug', '=', $slug)->firstOrFail();
 
         $game_genres = $game->genres->pluck('name')->toArray();
-        $game_genres = implode(', ', $game_genres);
+        $game_genres = implode(' - ', $game_genres);
 
+        $game_platforms = $game->platforms->pluck('name')->toArray();
+        $game_platforms = implode(' - ', $game_platforms);
 
         $game->increment('hit');
         $video_count = 1;
@@ -41,7 +43,7 @@ class GameController extends Controller
             ['id', '!=', $game->id]
         ])->orderBy('hit', 'desc')->take(4)->get();
 
-        return view('frontend.game', compact('game', 'other_games', 'video_count', 'game_genres'));
+        return view('frontend.game', compact('game', 'other_games', 'video_count', 'game_genres', 'game_platforms'));
     }
 
     public function developers()

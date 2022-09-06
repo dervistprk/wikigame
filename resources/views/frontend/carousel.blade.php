@@ -10,10 +10,8 @@
     <!-- Inner -->
     <div class="carousel-inner">
         @foreach($game->videos as $video)
-            <div id="game-video" class="carousel-item @if($loop->first) active @endif embed-responsive embed-responsive-16by9">
-                <div class="embed-responsive-item">
-                    <iframe id="game-video-{{ $video_count }}" class="d-block w-100 img-fluid" src="{{ $video->url }}?enablejsapi=1" allowfullscreen></iframe>
-                </div>
+            <div id="game-video" class="carousel-item @if($loop->first) active @endif resp-container">
+                <iframe id="game-video-{{ $video_count }}" class="resp-iframe d-block w-100 img-fluid" src="{{ $video->url }}?enablejsapi=1" allow="encrypted-media" allowfullscreen></iframe>
             </div>
             @php $video_count++; @endphp
         @endforeach

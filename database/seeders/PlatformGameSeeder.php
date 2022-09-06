@@ -17,8 +17,8 @@ class PlatformGameSeeder extends Seeder
         $faker = Faker::create();
         for ($i = 0; $i < 10; $i++) {
             \DB::table('platform_game')->insert([
-                'game_id'     => $faker->numberBetween(1,10),
-                'platform_id' => $faker->numberBetween(1,5)
+                'game_id'     => $faker->numberBetween(1, 10),
+                'platform_id' => $faker->numberBetween(1, 5)
             ]);
         }
     }

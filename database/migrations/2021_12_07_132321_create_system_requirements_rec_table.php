@@ -13,7 +13,7 @@ class CreateSystemRequirementsRecTable extends Migration
      */
     public function up()
     {
-        Schema::create('system_requirements_rec', function(Blueprint $table){
+        Schema::create('system_requirements_rec', function(Blueprint $table) {
             $table->id();
             $table->string('cpu_rec');
             $table->string('gpu_rec');

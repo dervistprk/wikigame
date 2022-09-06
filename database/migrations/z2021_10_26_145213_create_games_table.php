@@ -13,7 +13,7 @@ class CreateGamesTable extends Migration
      */
     public function up()
     {
-        Schema::create('games', function(Blueprint $table){
+        Schema::create('games', function(Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->unsignedBigInteger('category_id')->nullable();
@@ -32,7 +32,7 @@ class CreateGamesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('games', function(Blueprint $table){
+        Schema::table('games', function(Blueprint $table) {
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('developer_id')->references('id')->on('developers')->onDelete('cascade');
             $table->foreign('publisher_id')->references('id')->on('publishers')->onDelete('cascade');

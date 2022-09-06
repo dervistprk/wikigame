@@ -2,18 +2,19 @@
 <html lang="tr">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     @yield('redirect-js')
     <meta name="description" content="{{ $settings->meta_description }}"/>
     <meta name="author" content="WikiGame"/>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title') - WikiGame</title>
     <link rel="icon" type="image/x-icon" href="{{ asset($settings->favicon) }}"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/dark-mode.css') }}">
+    <link href="{{ asset('css/bootstrap-5.1.3.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/dark-mode.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/blitzer/jquery-ui.css">
-    <link rel="stylesheet" href="{{ asset('css/cookie-sent-3.min.css') }}"/>
+    <link href="{{ asset('backend/css/jquery-ui-blitzer.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/cookie-sent-3.min.css') }}" rel="stylesheet"/>
     @yield('custom-css')
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KY0WRBH1EE"></script>
@@ -30,20 +31,20 @@
 @include('layouts.header')
 @yield('content')
 <button class="btn btn-warning rounded-circle" onclick="topFunction()" id="topBtn" data-toggle="tooltip" data-placement="top" title="En Üste Git">
-    <i class="fas fa-angle-up"></i></button>
+    <i class="fas fa-angle-up"></i>
+</button>
 @include('layouts.footer')
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="{{ asset('js/font-awesome-5.15.3.js') }}"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="{{ asset('js/scripts.js') }}"></script>
-<script src="{{ asset('js/dark-mode-switch.js') }}"></script>
-<script src="{{ asset('js/lazysizes.min.js') }}"></script>
-<script src="{{ asset('js/cookie-sent-3.min.js') }}"></script>
-<script src="{{ asset('js/datepicker-tr.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-@yield('custom-js')
-<script>
+<script src="{{ asset('js/jquery-3.6.1.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/bootstrap-5.1.3-bundle.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/font-awesome-5.15.3.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/jquery-ui.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/scripts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/dark-mode-switch.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/lazysizes.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/cookie-sent-3.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/datepicker-tr.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/typeahead.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
    window.cookieconsent.initialise({
       'palette' : {
          'popup' : {
@@ -108,18 +109,13 @@
 
    (function() {
       'use strict';
-
-      // Fetch all the forms we want to apply custom Bootstrap validation styles to
       var forms = document.querySelectorAll('.needs-validation');
-
-      // Loop over them and prevent submission
       Array.prototype.slice.call(forms).forEach(function(form) {
          form.addEventListener('submit', function(event) {
             if (!form.checkValidity()) {
                event.preventDefault();
                event.stopPropagation();
             }
-
             form.classList.add('was-validated');
          }, false);
       });

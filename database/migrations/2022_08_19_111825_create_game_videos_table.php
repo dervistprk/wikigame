@@ -13,7 +13,7 @@ class CreateGameVideosTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_videos', function (Blueprint $table) {
+        Schema::create('game_videos', function(Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('game_id');
             $table->string('video_hash')->nullable();

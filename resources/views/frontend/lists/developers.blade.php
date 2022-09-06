@@ -17,7 +17,7 @@
                     </div>
                 </div>
             @endforeach
-            <div class="m-1">{{ $developers->links() }}</div>
+            <div class="m-1">{!! $developers->links() !!}</div>
         @else
             <div class="alert alert-secondary text-center m-2">
                 Sistemde kayıtlı geliştirici bulunamadı.

@@ -14,7 +14,7 @@ class WhiteListFactory extends Factory
     public function definition()
     {
         return [
-            'ip'     => '127.0.0.1',
+            'ip' => '127.0.0.1',
         ];
     }
 }

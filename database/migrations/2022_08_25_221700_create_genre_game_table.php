@@ -13,7 +13,7 @@ class CreateGenreGameTable extends Migration
      */
     public function up()
     {
-        Schema::create('genre_game', function (Blueprint $table) {
+        Schema::create('genre_game', function(Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('game_id');
             $table->unsignedBigInteger('genre_id');

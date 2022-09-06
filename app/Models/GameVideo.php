@@ -9,7 +9,7 @@ class GameVideo extends Model
 {
     use HasFactory;
 
-    protected $table = 'game_videos';
+    protected $table   = 'game_videos';
     protected $guarded = [];
 
     public function game()

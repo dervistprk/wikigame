@@ -12,7 +12,7 @@ $auth_controller         = App\Http\Controllers\backend\AuthController::class;
 $setting_controller      = App\Http\Controllers\backend\SettingController::class;
 
 return [
-    'menus'  => [
+    'menus'    => [
         ['title' => 'Yönetim Paneli', 'segment' => 'yonetim', 'route' => 'dashboard', 'icon' => 'tachometer-alt'],
         ['title' => 'Kategoriler', 'segment' => 'kategoriler', 'route' => 'categories', 'icon' => 'bookmark'],
         ['title' => 'Oyunlar', 'segment' => 'oyunlar', 'route' => 'games', 'icon' => 'gamepad'],
@@ -23,7 +23,7 @@ return [
         ['title' => 'Makaleler', 'segment' => 'makaleler', 'route' => 'articles', 'icon' => 'book-open'],
         ['title' => 'Ayarlar', 'segment' => 'ayarlar', 'route' => 'settings', 'icon' => 'cog'],
     ],
-    'routes' => [
+    'routes'   => [
         //dashboard and settings
         'dashboard'                => ['method' => 'get', 'uri' => 'yonetim', 'controller' => $admin_controller, 'function' => 'dashboard', 'middleware' => ['white_list', 'isAdmin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
         'profile'                  => ['method' => 'get', 'uri' => 'profil', 'controller' => $admin_controller, 'function' => 'admin', 'middleware' => ['white_list', 'isAdmin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
@@ -102,5 +102,6 @@ return [
         //login
         'login'                    => ['method' => 'get', 'uri' => 'giris', 'controller' => $auth_controller, 'function' => 'login', 'middleware' => ['white_list', 'is_login_admin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
         'login-post'               => ['method' => 'post', 'uri' => 'giris', 'controller' => $auth_controller, 'function' => 'loginPost', 'middleware' => ['white_list', 'is_login_admin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
-    ]
+    ],
+    'per_page' => [10, 20, 30, 40, 50]
 ];

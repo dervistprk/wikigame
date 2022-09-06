@@ -20,7 +20,7 @@
                             <div class="form-group">
                                 <label for="status_query" class="col-form-label">Durum</label>
                                 <select class="form-select" name="status_query" id="status_query">
-                                    <option value="" selected hidden >Durum Seçin</option>
+                                    <option value="" selected hidden>Durum Seçin</option>
                                     <option value="0" @if(isset($status_query) && $status_query == 0) selected @endif>Pasif</option>
                                     <option value="1" @if(isset($status_query) && $status_query == 1) selected @endif>Aktif</option>
                                 </select>
@@ -72,18 +72,46 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label for="release_date_max_query" class="col-form-label">Çıkış Tarihi En Fazla</label>
-                            <input type="text" value="{{ $release_date_max_query }}" name="release_date_max_query" id="release_date_max_query" class="form-control date-picker" placeholder="Tarih Seçin">
+                            <div class="form-group">
+                                <label for="platform_query" class="col-form-label">Platform</label>
+                                <select class="form-select select2" name="platform_query[]" id="platform_query" multiple="multiple">
+                                    @foreach($platforms as $platform)
+                                        <option value="{{ $platform->id }}" @if(isset($platform_query)) @if(in_array($platform->id, $platform_query)) selected @endif @endif>{{ $platform->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="col">
-                            <label for="release_date_min_query" class="col-form-label">Çıkış Tarihi En Az</label>
-                            <input type="text" value="{{ $release_date_min_query }}" name="release_date_min_query" id="release_date_min_query" class="form-control date-picker" placeholder="Tarih Seçin">
+                            <div class="form-group">
+                                <label for="genre_query" class="col-form-label">Tür</label>
+                                <select class="form-select select2" name="genre_query[]" id="genre_query" multiple="multiple">
+                                    @foreach($genres as $genre)
+                                        <option value="{{ $genre->id }}"  @if(isset($genre_query)) @if(in_array($genre->id, $genre_query)) selected @endif @endif>{{ $genre->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="release_date_max_query" class="col-form-label">Çıkış Tarihi En Fazla</label>
+                                <input type="text" value="{{ $release_date_max_query }}" name="release_date_max_query" id="release_date_max_query" class="form-control date-picker" placeholder="Tarih Seçin">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="release_date_min_query" class="col-form-label">Çıkış Tarihi En Az</label>
+                                <input type="text" value="{{ $release_date_min_query }}" name="release_date_min_query" id="release_date_min_query" class="form-control date-picker" placeholder="Tarih Seçin">
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button type="submit" id="detailed-search-submit" class="btn btn-primary"><i class="fa fa-search"></i> Ara</button>
+                    <button type="submit" id="detailed-search-submit" class="btn btn-primary">
+                        <i class="fa fa-search"></i> Ara
+                    </button>
                 </div>
             </form>
         </div>

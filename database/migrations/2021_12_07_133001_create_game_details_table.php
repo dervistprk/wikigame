@@ -13,7 +13,7 @@ class CreateGameDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('game_details', function(Blueprint $table){
+        Schema::create('game_details', function(Blueprint $table) {
             $table->id();
             $table->string('age_rating');
             $table->string('release_date');

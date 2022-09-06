@@ -9,7 +9,7 @@ class GameImage extends Model
 {
     use HasFactory;
 
-    protected $table = 'game_images';
+    protected $table   = 'game_images';
     protected $guarded = [];
 
     public function game()

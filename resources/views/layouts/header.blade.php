@@ -64,7 +64,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent2">
                 <form class="form-inline" action="{{ route('search') }}" method="get">
                     @csrf
-                    <div class="input-group w-100 m-1 ms-3 me-3">
+                    <div class="input-group">
                         <input class="form-control search-input" type="text" autocomplete="off" placeholder="Aramak İstediğiniz Oyun Adını Yazın" aria-label="Ara..." aria-describedby="btnNavbarSearch" name="search"/>
                         <button class="btn btn-primary mr-sm-2" id="btnNavbarSearch" type="submit">
                             <i id="search-icon" class="fas fa-search"></i>

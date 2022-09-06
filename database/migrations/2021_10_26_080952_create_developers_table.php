@@ -13,7 +13,7 @@ class CreateDevelopersTable extends Migration
      */
     public function up()
     {
-        Schema::create('developers', function(Blueprint $table){
+        Schema::create('developers', function(Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug');

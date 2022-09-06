@@ -112,7 +112,9 @@ class HomeController extends Controller
     public function autoComplete(Request $request)
     {
         $query   = $request->get('query');
-        $results = \DB::table('games')->select('id', 'name', 'slug')->where('name', 'LIKE', '%' . $query . '%')->orderBy('name')->get();
+        $results = \DB::table('games')->select('id', 'name', 'slug')
+                      ->where('name', 'LIKE', '%' . $query . '%')
+                      ->where('status', '=', 1)->orderBy('name')->get();
         return response()->json($results);
     }
 }

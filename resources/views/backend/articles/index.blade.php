@@ -28,11 +28,9 @@
                         <div class="m-2">
                             <label for="per-page" class="form-label">Öge Sayısı</label>
                             <select class="form-select" name="per_page" id="per-page">
-                                <option value="10" @if($per_page == 10) selected @endif>10</option>
-                                <option value="20" @if($per_page == 20) selected @endif>20</option>
-                                <option value="30" @if($per_page == 30) selected @endif>30</option>
-                                <option value="40" @if($per_page == 40) selected @endif>40</option>
-                                <option value="50" @if($per_page == 50) selected @endif>50</option>
+                                @foreach(config('backend.per_page') as $config_per_page)
+                                    <option value="{{ $config_per_page }}" @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="m-2">
@@ -57,6 +55,7 @@
                         <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
                             <tr>
+                                <th class="sorter" data-column="id">ID</th>
                                 <th>Makale Kapak Resmi</th>
                                 <th class="sorter" data-column="title">Başlık</th>
                                 <th>Alt Başlık</th>
@@ -72,6 +71,9 @@
                                     $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($article->status == 0) alert-danger @endif">
+                                    <td class="font-weight-bold">
+                                        {{ $article->id }}
+                                    </td>
                                     <td>
                                         <img src="{{ $article->image }}" alt="{{ $article->title }}" title="{{ $article->title }}" class="img-fluid rounded img-thumbnail" width="500" height="300">
                                     </td>

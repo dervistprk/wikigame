@@ -10,5 +10,5 @@
         </div>
     </div>
 @endforeach
-<div class="m-1">{{ $articles->links() }}</div>
+<div class="m-1">{!! $articles->links() !!}</div>
 

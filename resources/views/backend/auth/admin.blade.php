@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <div class="col-sm">
                         <div class="form-group">
-                            <label for="email" class="text-primary font-weight-bold">E-Posta (*)</label>
+                            <label for="email" class="text-primary font-weight-bold">E-Posta *</label>
                             <input type="text" name="email" id="email" class="form-control" value="{{$admin->email}}" readonly style="cursor: not-allowed">
                         </div>
                         <div class="form-group">
@@ -53,7 +53,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <label for="password_confirmation" class="text-info font-weight-bold">Yeni Şifre Tekrarı *</label>
+                                <label for="password_confirmation" class="text-primary font-weight-bold">Yeni Şifre Tekrarı *</label>
                                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" autocomplete="new-password" placeholder="Şifre Tekrarını Girin" required/>
                                 <div class="invalid-feedback">
                                     Lütfen yeni şifrenizi tekrar girin.

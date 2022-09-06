@@ -10,8 +10,8 @@ class User extends Authenticatable
 {
     use HasFactory;
 
-    protected $table    = 'users';
-    protected $guarded  = [];
+    protected $table   = 'users';
+    protected $guarded = [];
 
     protected $hidden = [
         'password',

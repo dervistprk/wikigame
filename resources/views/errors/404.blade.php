@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('title', 'Sayfa Bulunamadı')
 @section('content')
     <div class="container">

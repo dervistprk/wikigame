@@ -83,7 +83,7 @@
         </main>
     </div>
 </div>
-<script src="{{ asset('backend/js/jquery-3.3.1-slim.js') }}"></script>
+<script src="{{ asset('js/jquery-3.6.1.js') }}"></script>
 <script src="{{ asset('backend/js/bootstrap-4.3.1.js') }}"></script>
 <script type="text/javascript">
    $(document).ready(function() {

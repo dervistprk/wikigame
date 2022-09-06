@@ -27,7 +27,7 @@ class RemoveTokenFromUrl
      * Remove and make redirection.
      *
      * @param Request $request
-     * @param  string $parameter
+     * @param string  $parameter
      *
      * @return \Illuminate\Http\RedirectResponse
      */

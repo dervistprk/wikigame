@@ -6,28 +6,28 @@
 @import "../node_modules/rfs/scss";
 
 h1 {
-  @include font-size(3rem);
+  @include font-size(3.5rem);
   font-weight: 500;
 }
 
 h2 {
-  @include font-size(2.6rem);
+  @include font-size(3rem);
   font-weight: 400;
 }
 
 h3 {
-  @include font-size(2.2rem);
+  @include font-size(2.5rem);
   font-weight: 300;
 }
 
 h4 {
-  @include font-size(1.8rem);
+  @include font-size(2rem);
   font-weight: 200;
 }
 
 h5 {
-  @include font-size(1.4rem);
-  font-weight: 125;
+  @include font-size(1.5rem);
+  font-weight: 150;
 }
 
 h6 {
@@ -55,3 +55,18 @@ p {
   @include padding(3rem);
 }
 
+thead {
+  @include font-size(1rem);
+}
+
+tbody {
+  @include font-size(0.8rem);
+}
+
+.card-header {
+  @include font-size(1rem);
+}
+
+.card-body {
+  @include font-size(0.8rem);
+}

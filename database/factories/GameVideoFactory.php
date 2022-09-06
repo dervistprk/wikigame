@@ -25,7 +25,7 @@ class GameVideoFactory extends Factory
         $faker = \Faker\Factory::create();
         $faker->addProvider(new Youtube($faker));
         return [
-            'game_id'    => $this->faker->numberBetween(1,10),
+            'game_id'    => $this->faker->numberBetween(1, 10),
             'video_hash' => \Str::random(20),
             'url'        => $faker->youtubeEmbedUri()
         ];
