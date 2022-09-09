@@ -25,21 +25,29 @@
                 @csrf
                 <h2 class="text-center dev-header mt-1">Giriş Yap</h2>
                 <div class="justify-content-center align-items-center col-sm-8 offset-sm-2">
-                    <div class="mb-3">
-                        <label for="email" class="font-weight-bold">E-Posta</label>
+                    <label for="email" class="font-weight-bold">E-Posta</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" value="{{ old('email') }}" required/>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="font-weight-bold">Şifre</label>
+                    <label for="password" class="font-weight-bold">Şifre</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi Girin" required/>
+                        <span class="input-group-text" style="cursor: pointer" id="show-eye">
+                            <i class="far fa-eye"></i>
+                         </span>
+                        <span class="input-group-text d-none" style="cursor: pointer" id="hide-eye">
+                            <i class="far fa-eye-slash"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="col text-center m-2">
                     <button type="submit" class="btn btn-success btn-register col-sm-3">
-                        <i class="fas fa-door-open"></i> Giriş Yap
+                        <i class="fas fa-sign-in-alt"></i> Giriş Yap
                     </button>
                     <div class="col-sm-3 d-inline-block">
-                        <input type="checkbox" class="form-check-inline form-check-input" name="remember_token" id="remember"/>
+                        <input type="checkbox" class="form-check-input" name="remember_token" id="remember"/>
                         <label for="remember" class="form-check-label">Beni Hatırla</label>
                     </div>
                 </div>
@@ -67,7 +75,6 @@
         </form>
     </div>
 @endsection
-
 @section('custom-js')
     <script type="text/javascript">
        $('#login-form input').blur(function() {
@@ -76,6 +83,22 @@
           } else {
              $(this).removeClass('alert-danger');
           }
+       });
+
+       $('#show-eye').click(function() {
+          var input    = $(this).siblings($('input[type=\'password\']'));
+          var hide_eye = $(this).siblings($('#hide_eye'));
+          $(this).addClass('d-none');
+          hide_eye.removeClass('d-none');
+          input.attr('type', 'text');
+       });
+
+       $('#hide-eye').click(function() {
+          var input    = $(this).siblings($('input[type=\'text\']'));
+          var show_eye = $(this).siblings($('#show_eye'));
+          $(this).addClass('d-none');
+          show_eye.removeClass('d-none');
+          input.attr('type', 'password');
        });
     </script>
 @endsection

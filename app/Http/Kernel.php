@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
         'is_login_admin'   => \App\Http\Middleware\isLoginAdmin::class,
         'prevent_if_login' => \App\Http\Middleware\PreventIfLogin::class,
         'remove_token'     => \App\Http\Middleware\RemoveTokenFromUrl::class,
+        'is_banned'        => \App\Http\Middleware\isBanned::class,
     ];
 }

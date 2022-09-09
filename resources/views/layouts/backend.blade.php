@@ -43,7 +43,7 @@
                     <hr class="dropdown-divider"/>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fas fa-door-closed"></i> Çıkış</a>
+                    <a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
                 </li>
             </ul>
         </li>

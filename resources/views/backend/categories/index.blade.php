@@ -15,7 +15,7 @@
             </div>
         @endif
         <div class="m-2">
-            <a href="{{route('admin.create-category')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Kategori Ekle</a>
+            <a href="{{ route('admin.create-category') }}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Kategori Ekle</a>
         </div>
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
@@ -78,7 +78,9 @@
                                         {{ $category->name }}
                                     </td>
                                     <td>{!! trim(strip_tags(Str::limit($category->description, '1000'))) !!}  </td>
-                                    <td class="font-weight-bold">{{ $category->games()->active()->count() }}</td>
+                                    <td class="font-weight-bold">
+                                        {{ $category->games()->active()->count() }}
+                                    </td>
                                     <td>
                                         @if($category->status == 1)
                                             <div class="mt-1">
@@ -89,7 +91,7 @@
                                             <a href="{{ route('admin.edit-category', [$category->id]) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Düzenle"><i class="fas fa-pen"></i></a>
                                         </div>
                                         <div class="mt-1">
-                                            <a href="#" data-id="{{ $category->id }}" class="btn btn-danger btn-sm delete" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}" data-tooltip="tooltip" data-placement="top" title="Sil"><i class="fas fa-trash"></i></a>
+                                            <a href="#" data-id="{{ $category->id }}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}" data-tooltip="tooltip" data-placement="top" title="Sil"><i class="fas fa-trash"></i></a>
                                         </div>
                                         <div class="mt-1">
                                             <input type="checkbox" data-id="{{ $category->id }}" class="status-switch" name="status" @if($category->status == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">

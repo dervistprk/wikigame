@@ -15,7 +15,7 @@
             </div>
         @endif
         <div class="m-2">
-            <a href="{{route('admin.create-game')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Oyun Ekle</a>
+            <a href="{{ route('admin.create-game') }}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Oyun Ekle</a>
         </div>
         <div class="card mb-4 m-2 shadow text-secondary">
             <div class="card-header font-weight-bold">

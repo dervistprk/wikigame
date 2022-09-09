@@ -15,7 +15,7 @@
             </div>
         @endif
         <div class="m-2">
-            <a href="{{route('admin.create-platform')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Platform Ekle</a>
+            <a href="{{ route('admin.create-platform') }}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Platform Ekle</a>
         </div>
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
@@ -78,16 +78,16 @@
                                         {{ $platform->name }}
                                     </td>
                                     <td class="font-weight-bold">
-                                        {{ $platform->games->count() }}
+                                        {{ $platform->games()->active()->count() }}
                                     </td>
                                     <td>
-                                        <div class="mt-1">
+                                        <div class="d-inline-block">
                                             <a href="{{ route('admin.edit-platform', $platform->id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Düzenle"><i class="fas fa-pen"></i></a>
                                         </div>
-                                        <div class="mt-1">
+                                        <div class="d-inline-block">
                                             <a href="#" data-id="{{ $platform->id }}" class="btn btn-danger btn-sm delete" data-toggle="modal" data-target="#delete{{ $target->slug }}Modal_{{ $target->id }}" data-tooltip="tooltip" data-placement="top" title="Sil"><i class="fas fa-trash"></i></a>
                                         </div>
-                                        <div class="mt-1">
+                                        <div class="d-inline-block">
                                             <input type="checkbox" data-id="{{ $platform->id }}" class="status-switch" name="status" @if($platform->status == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
                                         </div>
                                     </td>

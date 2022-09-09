@@ -15,7 +15,7 @@
             </div>
         @endif
         <div class="m-2">
-            <a href="{{route('admin.create-article')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Makale Ekle</a>
+            <a href="{{ route('admin.create-article') }}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus"></i> Makale Ekle</a>
         </div>
         <div class="card mb-4 shadow">
             <div class="card-header font-weight-bold text-secondary">

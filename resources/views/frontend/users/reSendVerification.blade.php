@@ -48,7 +48,7 @@
                 </div>
                 <div class="text-center m-2">
                     <button type="submit" class="btn btn-success me-2 btn-register">
-                        <i class="fa fa-paper-plane"></i> Gönder
+                        <i class="fa fa-envelope"></i> Gönder
                     </button>
                 </div>
             </div>

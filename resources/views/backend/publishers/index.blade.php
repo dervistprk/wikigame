@@ -15,7 +15,7 @@
             </div>
         @endif
         <div class="m-2">
-            <a href="{{route('admin.create-publisher')}}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus" style="margin-top: 3px;"></i> Dağıtıcı Ekle</a>
+            <a href="{{ route('admin.create-publisher') }}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus" style="margin-top: 3px;"></i> Dağıtıcı Ekle</a>
         </div>
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
@@ -80,7 +80,9 @@
                                     <td class="font-weight-bold">
                                         {{ $publisher->name }}
                                     </td>
-                                    <td class="font-weight-bold">{{ $publisher->games()->active()->count() }}</td>
+                                    <td class="font-weight-bold">
+                                        {{ $publisher->games()->active()->count() }}
+                                    </td>
                                     <td>
                                         @if($publisher->status == 1)
                                             <div class="mt-1">

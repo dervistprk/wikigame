@@ -197,6 +197,7 @@ return [
         'user_name'        => 'Kullanıcı adı',
         'email'            => 'E-Posta',
         'current_password' => 'Mevcut şifre',
+        'ban_reason'       => 'Yasak sebebi',
     ],
 
 ];

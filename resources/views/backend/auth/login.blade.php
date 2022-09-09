@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary col-sm-4">
-                                            <i class="fa fa-user-cog"></i> Giriş
+                                            <i class="fa fa-sign-in-alt"></i> Giriş
                                         </button>
                                         <div class="col-sm-4 d-inline-block ms-2">
                                             <input type="checkbox" class="form-check-input form-check-inline" name="remember_token" id="remember"/>

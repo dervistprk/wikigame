@@ -1,15 +1,16 @@
 <?php
 
-$admin_controller        = App\Http\Controllers\backend\AdminController::class;
-$backend_game_controller = App\Http\Controllers\backend\GameController::class;
-$platform_controller     = App\Http\Controllers\backend\PlatformController::class;
-$genre_controller        = App\Http\Controllers\backend\GenreController::class;
-$category_controller     = App\Http\Controllers\backend\CategoryController::class;
-$developer_controller    = App\Http\Controllers\backend\DeveloperController::class;
-$publisher_controller    = App\Http\Controllers\backend\PublisherController::class;
-$article_controller      = App\Http\Controllers\backend\ArticleController::class;
-$auth_controller         = App\Http\Controllers\backend\AuthController::class;
-$setting_controller      = App\Http\Controllers\backend\SettingController::class;
+$admin_controller          = App\Http\Controllers\backend\AdminController::class;
+$backend_game_controller   = App\Http\Controllers\backend\GameController::class;
+$platform_controller       = App\Http\Controllers\backend\PlatformController::class;
+$genre_controller          = App\Http\Controllers\backend\GenreController::class;
+$category_controller       = App\Http\Controllers\backend\CategoryController::class;
+$developer_controller      = App\Http\Controllers\backend\DeveloperController::class;
+$publisher_controller      = App\Http\Controllers\backend\PublisherController::class;
+$article_controller        = App\Http\Controllers\backend\ArticleController::class;
+$auth_controller           = App\Http\Controllers\backend\AuthController::class;
+$setting_controller        = App\Http\Controllers\backend\SettingController::class;
+$user_operation_controller = App\Http\Controllers\backend\UserOperationController::class;
 
 return [
     'menus'    => [
@@ -21,6 +22,7 @@ return [
         ['title' => 'Türler', 'segment' => 'turler', 'route' => 'genres', 'icon' => 'list'],
         ['title' => 'Platformlar', 'segment' => 'platformlar', 'route' => 'platforms', 'icon' => 'laptop'],
         ['title' => 'Makaleler', 'segment' => 'makaleler', 'route' => 'articles', 'icon' => 'book-open'],
+        ['title' => 'Kullanıcı İşlemleri', 'segment' => 'kullanici-islemleri', 'route' => 'user-operations', 'icon' => 'user-friends'],
         ['title' => 'Ayarlar', 'segment' => 'ayarlar', 'route' => 'settings', 'icon' => 'cog'],
     ],
     'routes'   => [
@@ -102,6 +104,11 @@ return [
         //login
         'login'                    => ['method' => 'get', 'uri' => 'giris', 'controller' => $auth_controller, 'function' => 'login', 'middleware' => ['white_list', 'is_login_admin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
         'login-post'               => ['method' => 'post', 'uri' => 'giris', 'controller' => $auth_controller, 'function' => 'loginPost', 'middleware' => ['white_list', 'is_login_admin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
+
+        //user-operations
+        'user-operations'          => ['method' => 'get', 'uri' => 'kullanici-islemleri', 'controller' => $user_operation_controller, 'function' => 'index', 'middleware' => ['white_list', 'isAdmin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
+        'ban-user'                 => ['method' => 'post', 'uri' => 'kullanici-yasakla', 'controller' => $user_operation_controller, 'function' => 'banUser', 'middleware' => ['white_list', 'isAdmin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
+        'remove-user-ban'          => ['method' => 'post', 'uri' => 'kullanici-yasak-kaldir', 'controller' => $user_operation_controller, 'function' => 'removeBan', 'middleware' => ['white_list', 'isAdmin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
     ],
     'per_page' => [10, 20, 30, 40, 50]
 ];

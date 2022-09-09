@@ -48,11 +48,11 @@
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                             <input type="password" name="password" class="form-control" id="password" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" placeholder="Şifre Girin" autocomplete="new-password" required/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye-1">
-                                    <i class="far fa-eye"></i>
+                                   <i class="far fa-eye"></i>
                                 </span>
                             <span class="input-group-text d-none" style="cursor: pointer" id="hide-eye-1">
-                                    <i class="far fa-eye-slash"></i>
-                                </span>
+                                   <i class="far fa-eye-slash"></i>
+                            </span>
                         </div>
                         <span class="small form-text text-muted"> Şifreniz :
                                 <ul>
@@ -91,7 +91,6 @@
                     <div class="col">
                         <label for="surname" class="form-label fw-bold">Soyad</label>
                         <input type="text" name="surname" class="form-control" id="surname" minlength="2" maxlength="255" value="{{ old('surname') }}" required/>
-
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -120,16 +119,17 @@
                         <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
                         <textarea class="form-control" name="about" id="user_about_text" rows="7" minlength="30" maxlength="500" placeholder="Hakkınızda tanıtıcı kısa bir yazı yazın." onkeyup="countChar(this)" required>{{ old('about') }}</textarea>
                     </div>
-                    <small id="emailHelp" class="form-text text-muted d-inline-block">En az 30 karakter uzunluğunda olmalıdır.</small>
+                    <small class="form-text text-muted d-inline-block">En az 30 karakter uzunluğunda olmalıdır.</small>
                     <span id="charNum" class="text-muted d-inline-block float-end">500</span>
                 </div>
                 <hr>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="agreement_confirmation" required/>
-                    <label class="form-label" for="agreement_confirmation"><a href="" class="game-detail-links text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModalLong">Kullanıcı sözleşmesini</a> okudum ve kabul ediyorum.</label>
+                    <label class="form-label" for="agreement_confirmation"><a href="" class="game-detail-links text-decoration-none" data-bs-toggle="modal" data-bs-target="#user-agreement-modal">Kullanıcı sözleşmesini</a> okudum ve kabul ediyorum.</label>
                 </div>
                 <div class="text-center m-2">
-                    <button type="submit" class="btn btn-success me-2 btn-register"><i class="fa fa-user"></i> Üye Ol
+                    <button type="submit" class="btn btn-success me-2 btn-register">
+                        <i class="fa fa-user-plus"></i> Üye Ol
                     </button>
                     <button type="reset" class="btn btn-danger"><i class="fa fa-undo"></i> Sıfırla</button>
                 </div>
@@ -155,45 +155,9 @@
                 </div>
             </div>
         </form>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-body" id="exampleModalLongTitle">Site Kuralları</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-body">
-                        <p>
-                            Lütfen aşağıda belirtilen kuralları dikkatle okuyunuz.<br>
-                            Kuralları okumamanızdan kaynaklı bir sorunda WikiGame herhangi bir sorumluluk kabul etmemektedir.
-                        </p>
-                        <hr>
-                        <ul>
-                            <li>E-posta adresimin site veritabanı tarafından kaydedilmesini kabul ediyorum.</li>
-                            <li>Doğum tarihi, cinsiyet gibi özel bilgilerimin kaydedilmesini kabul ediyorum.</li>
-                            <li>Küfür, argo vb. kötü sözleri kullanmayacağımı kabul ediyorum.</li>
-                            <li>Moderatörlerle tartışmaya girmeyeceğimi, hakkımda verdikleri kararlara saygı duyacağımı kabul ediyorum.</li>
-                            <li>Diğer kullanıcılara saygısızlık yapmayacağımı kabul ediyorum.</li>
-                            <li>Diğer kullanıcılarla din, siyaset, ırkçılık gibi konularda tartışma çıkarmayacağımı kabul ediyorum</li>
-                            <li>Özel oyun haberleri gibi önemli gelişmelerde Wikigame'den e-posta almak istediğimi kabul ediyorum.</li>
-                        </ul>
-                        <hr>
-                        <p>
-                            Yukarıda yazılı kurallardan herhangi birine uymadığım takdirde siteden
-                            <span class="text-warning">geçici</span> veya
-                            <span class="text-danger">kalıcı</span> olarak yasaklanabileceğimi kabul ediyorum.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('frontend.modals.userAgreement')
     </div>
 @endsection
-
 @section('custom-js')
     <script type="text/javascript">
        $('#register-form input').blur(function() {

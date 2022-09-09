@@ -27,6 +27,10 @@ class CreateUsersTable extends Migration
             $table->boolean('is_admin')->default(0);
             $table->integer('comment_count')->default(0);
             $table->boolean('is_email_verified')->default(0);
+            $table->boolean('is_banned')->default(0);
+            $table->text('ban_reason')->nullable();
+            $table->string('banned_by')->nullable();
+            $table->timestamp('banned_at')->nullable();
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
             $table->string('github_id')->nullable();

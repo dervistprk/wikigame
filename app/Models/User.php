@@ -27,4 +27,14 @@ class User extends Authenticatable
     {
         return $this->is_admin;
     }
+
+    public function isBanned()
+    {
+        return $this->is_banned;
+    }
+
+    public function isVerified()
+    {
+        return $this->is_email_verified;
+    }
 }

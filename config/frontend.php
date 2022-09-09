@@ -37,9 +37,9 @@ return [
         'register-post'      => ['method' => 'post', 'uri' => 'uye-ol', 'controller' => $user_controller, 'function' => 'registerPost', 'middleware' => ['maintenance', 'prevent_if_login']],
         'login-form'         => ['method' => 'get', 'uri' => 'giris', 'controller' => $user_controller, 'function' => 'loginForm', 'middleware' => ['maintenance', 'prevent_if_login']],
         'login-post'         => ['method' => 'post', 'uri' => 'giris', 'controller' => $user_controller, 'function' => 'loginPost', 'middleware' => ['maintenance', 'prevent_if_login']],
-        'redirect-google'    => ['method' => 'get', 'uri' => 'redirect-google', 'controller' => $google_service, 'function' => 'redirectToGoogle', 'middleware' => ['maintenance', 'prevent_if_login']],
-        'handle-google'      => ['method' => 'get', 'uri' => 'callback-google', 'controller' => $google_service, 'function' => 'handleGoogleCallback', 'middleware' => ['maintenance', 'prevent_if_login']],
 
+        'redirect-google'   => ['method' => 'get', 'uri' => 'redirect-google', 'controller' => $google_service, 'function' => 'redirectToGoogle', 'middleware' => ['maintenance', 'prevent_if_login']],
+        'handle-google'     => ['method' => 'get', 'uri' => 'callback-google', 'controller' => $google_service, 'function' => 'handleGoogleCallback', 'middleware' => ['maintenance', 'prevent_if_login']],
         'redirect-facebook' => ['method' => 'post', 'uri' => 'redirect-facebook', 'controller' => $facebook_service, 'function' => 'redirectToFacebook', 'middleware' => ['maintenance', 'prevent_if_login']],
         'handle-facebook'   => ['method' => 'post', 'uri' => 'callback-facebook', 'controller' => $facebook_service, 'function' => 'handleFacebookCallback', 'middleware' => ['maintenance', 'prevent_if_login']],
         'redirect-github'   => ['method' => 'post', 'uri' => 'redirect-github', 'controller' => $github_service, 'function' => 'redirectToGithub', 'middleware' => ['maintenance', 'prevent_if_login']],
@@ -47,10 +47,10 @@ return [
         'redirect-linkedin' => ['method' => 'post', 'uri' => 'redirect-linkedin', 'controller' => $linkedin_service, 'function' => 'redirectToLinkedin', 'middleware' => ['maintenance', 'prevent_if_login']],
         'handle-linkedin'   => ['method' => 'post', 'uri' => 'callback-linkedin', 'controller' => $linkedin_service, 'function' => 'handleLinkedinCallback', 'middleware' => ['maintenance', 'prevent_if_login']],
 
-        'user-profile'        => ['method' => 'get', 'uri' => 'profil', 'controller' => $user_controller, 'function' => 'userProfile', 'middleware' => ['maintenance', 'is_login_user', 'is_verify_email']],
+        'user-profile'        => ['method' => 'get', 'uri' => 'profil', 'controller' => $user_controller, 'function' => 'userProfile', 'middleware' => ['maintenance', 'is_login_user', 'is_banned', 'is_verify_email']],
         'update-profile'      => ['method' => 'any', 'uri' => 'profil-guncelle', 'controller' => $user_controller, 'function' => 'updateProfile', 'middleware' => ['maintenance', 'is_login_user', 'is_verify_email']],
         'user-logout'         => ['method' => 'get', 'uri' => 'cikis', 'controller' => $user_controller, 'function' => 'logout', 'middleware' => ['maintenance', 'is_login_user', 'is_verify_email']],
-        'resend-verification' => ['method' => 'any', 'uri' => 'mail-gonder', 'controller' => $user_controller, 'function' => 'resendVerification', 'middleware' => 'maintenance'],
-        'user-verify'         => ['method' => 'get', 'uri' => 'profil/dogrula/{token}', 'controller' => $user_controller, 'function' => 'verifyAccount', 'middleware' => 'maintenance'],
+        'resend-verification' => ['method' => 'any', 'uri' => 'mail-gonder', 'controller' => $user_controller, 'function' => 'resendVerification', 'middleware' => ['maintenance', 'prevent_if_login']],
+        'user-verify'         => ['method' => 'get', 'uri' => 'profil/dogrula/{token}', 'controller' => $user_controller, 'function' => 'verifyAccount', 'middleware' => ['maintenance', 'is_banned', 'prevent_if_login']],
     ]
 ];

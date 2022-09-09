@@ -41,7 +41,7 @@ class UserController extends Controller
             'surname'   => 'required|min:2|:255',
             'birth_day' => 'required|date',
             'gender'    => 'required',
-            'about'     => 'required|min:30'
+            'about'     => 'required|min:30|max:500'
         ]);
 
         $user_field = [
@@ -86,7 +86,11 @@ class UserController extends Controller
             $password_check = $user ? Hash::check($request->password, $user->password) : null;
 
             if ($user && $password_check) {
-                if (!$user->is_email_verified) {
+                if ($user->isBanned()) {
+                    return redirect()->route('resend-verification')->with('message', 'Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.');
+                }
+
+                if (!$user->isVerified()) {
                     UserVerify::updateOrCreate(
                         [
                             'user_id' => $user->id,
@@ -101,14 +105,14 @@ class UserController extends Controller
                         $message->subject('WikiGame Doğrulama E-Postası');
                     });
                     toastr()->success('Doğrulama e-postası tekrar gönderildi.', 'Başarılı');
-                    return redirect()->route('login-form')->with('message', 'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol ediniz.');
+                    return redirect()->route('login-form')->with('message', 'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol edin.');
                 } else {
                     toastr()->warning('E-posta daha önce doğrulanmış.', 'Uyarı');
                     return redirect()->route('login-form')->with('message', 'Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.');
                 }
             } else {
                 toastr()->error('E-posta veya şifre yanlış.', 'Hata');
-                return redirect()->route('resend-verification')->with('message', 'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyiniz.');
+                return redirect()->route('resend-verification')->with('message', 'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyin.');
             }
         }
 
@@ -125,9 +129,9 @@ class UserController extends Controller
         $remember = $request->input('remember_token');
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember ? true : false)) {
-            toastr()->success('Sisteme başarıyla giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         }
+
         return redirect()->route('login-form')->withErrors('E-Posta Adresi veya Şifre Hatalı')->withInput();
     }
 
@@ -159,7 +163,7 @@ class UserController extends Controller
                 'surname'   => 'required|max:254',
                 'birth_day' => 'required|date',
                 'gender'    => 'required',
-                'about'     => 'required|min:30'
+                'about'     => 'required|min:30|max:500'
             ]);
 
             $user_field = [
@@ -205,12 +209,12 @@ class UserController extends Controller
     {
         $verifyUser = UserVerify::where('token', $token)->first();
 
-        $message = 'Üzgünüz, girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyiniz.';
+        $message = 'Üzgünüz, girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyin.';
 
         if (!is_null($verifyUser)) {
             $user = $verifyUser->user;
 
-            if (!$user->is_email_verified) {
+            if (!$user->isVerified()) {
                 $verifyUser->user->is_email_verified = 1;
                 $verifyUser->user->save();
                 $message = "E-posta adresi başarıyla doğrulandı. Sisteme giriş yapabilirsiniz.";
