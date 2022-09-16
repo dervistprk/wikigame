@@ -22,7 +22,6 @@ class isBanned
             Auth::logout();
             return redirect()->route('login-form')->with('message', 'Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.');
         }
-        toastr()->success('Başarıyla giriş yaptınız', 'Başarılı');
         return $next($request);
     }
 }
