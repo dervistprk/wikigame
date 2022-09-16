@@ -132,6 +132,24 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories')->with('message', 'Kategori Başarıyla Silindi.');
     }
 
+    public function multipleDestroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $categories = Category::with('games')->whereIn('id', $request->post('ids'))->get();
+
+            foreach ($categories as $category) {
+                if ($category->games->count() > 0) {
+                    foreach ($category->games as $c_game) {
+                        GameController::destroy($c_game->id);
+                    }
+                }
+                $category->delete();
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function switchStatus(Request $request)
     {
         /**

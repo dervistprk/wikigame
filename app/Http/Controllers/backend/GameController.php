@@ -26,8 +26,6 @@ class GameController extends Controller
 
     public function index(Request $request)
     {
-
-
         $per_page     = $request->get('per_page', 10);
         $quick_search = $request->get('quick_search');
 
@@ -878,6 +876,42 @@ class GameController extends Controller
         return redirect()->route('admin.games')->with('message', 'Oyun Başarıyla Silindi.');
     }
 
+    public function multipleDestroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $games = Game::whereIn('id', $request->post('ids'))->get();
+
+            foreach ($games as $game) {
+                File::delete(public_path($game->cover_image));
+                File::delete(public_path($game->image1));
+
+                foreach ($game->images as $image) {
+                    if (File::exists(public_path($image->path))) {
+                        File::delete(public_path($image->path));
+                    }
+                    $image->delete();
+                }
+
+                $path = public_path('uploads/games/') . Str::slug($game->name);
+
+                if (File::exists($path) && File::isDirectory($path)) {
+                    File::deleteDirectory($path);
+                }
+
+                foreach ($game->videos as $video) {
+                    $video->delete();
+                }
+
+                $game->details->delete();
+                $game->systemReqMin->delete();
+                $game->systemReqRec->delete();
+                $game->delete();
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function switchStatus(Request $request)
     {
         $game             = Game::findOrFail($request->id);
@@ -888,14 +922,9 @@ class GameController extends Controller
         if ($category_status == 1 && $developer_status == 1 && $publisher_status == 1) {
             $game->status = $request->state == 'true' ? 1 : 0;
             $game->save();
-            return [
-                'result' => true
-            ];
-        } else {
-            return [
-                'result' => false
-            ];
+            return true;
         }
+        return false;
     }
 
     public function deleteSingleImage(Request $request)
@@ -916,16 +945,9 @@ class GameController extends Controller
                 $image_to_be_deleted->delete();
             }
 
-            return [
-                'message' => 'Resim başarıyla silindi.',
-                'result'  => true
-            ];
-        } else {
-            return [
-                'message' => 'Resim silinirken hata oluştu.',
-                'result'  => false
-            ];
+            return true;
         }
+        return false;
     }
 
     public function deleteGameVideo(Request $request)
@@ -942,15 +964,8 @@ class GameController extends Controller
                 $video_to_be_deleted->delete();
             }
 
-            return [
-                'message' => 'Video başarıyla silindi.',
-                'result'  => true
-            ];
-        } else {
-            return [
-                'message' => 'Video silinirken hata oluştu.',
-                'result'  => false
-            ];
+            return true;
         }
+        return false;
     }
 }

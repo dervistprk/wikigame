@@ -137,6 +137,24 @@ class GenreController extends Controller
         return redirect()->route('admin.genres')->with('message', 'Tür Başarıyla Silindi.');
     }
 
+    public function multipleDestroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $genres = Genre::with('games')->whereIn('id', $request->post('ids'))->get();
+
+            foreach ($genres as $genre) {
+                if ($genre->games->count() > 0) {
+                    foreach ($genre->games as $g_game) {
+                        GameController::destroy($g_game->id);
+                    }
+                }
+                $genre->delete();
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function switchStatus(Request $request)
     {
         /**

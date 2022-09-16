@@ -137,6 +137,24 @@ class PlatformController extends Controller
         return redirect()->route('admin.platforms')->with('message', 'Platform Başarıyla Silindi.');
     }
 
+    public function multipleDestroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $platforms = Platform::with('games')->whereIn('id', $request->post('ids'))->get();
+
+            foreach ($platforms as $platform) {
+                if ($platform->games->count() > 0) {
+                    foreach ($platform->games as $p_game) {
+                        GameController::destroy($p_game->id);
+                    }
+                }
+                $platform->delete();
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function switchStatus(Request $request)
     {
         /**

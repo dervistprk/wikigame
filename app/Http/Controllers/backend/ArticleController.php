@@ -216,4 +216,27 @@ class ArticleController extends Controller
         }
         return false;
     }
+
+    public function multipleDestroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $articles = Article::whereIn('id', $request->post('ids'))->get();
+
+            foreach ($articles as $article) {
+                $path = public_path('uploads/articles/') . Str::slug($article->name);
+
+                if (File::exists(public_path($article->image))) {
+                    File::delete(public_path($article->image));
+                }
+
+                if (File::exists($path) && File::isDirectory($path)) {
+                    File::deleteDirectory($path);
+                }
+
+                $article->delete();
+            }
+            return true;
+        }
+        return false;
+    }
 }

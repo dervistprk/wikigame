@@ -143,7 +143,8 @@
       $('.select2').select2({
          theme      : 'bootstrap-5',
          placeholder: 'Lütfen Seçin',
-         language   : 'tr'
+         language   : 'tr',
+         width: '100%'
       });
 
       (function() {

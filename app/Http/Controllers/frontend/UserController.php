@@ -36,6 +36,7 @@ class UserController extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
+                'max:255'
             ],
             'name'      => 'required|min:2|max:255',
             'surname'   => 'required|min:2|:255',
@@ -128,7 +129,8 @@ class UserController extends Controller
     {
         $remember = $request->input('remember_token');
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember ? true : false)) {
+        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember ? true : false)) {
+            toastr()->success('Başarıyla giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         }
 
@@ -186,6 +188,8 @@ class UserController extends Controller
                         'regex:/[a-z]/',
                         'regex:/[A-Z]/',
                         'regex:/[0-9]/',
+                        'max:255',
+                        'different:current_password'
                     ],
                 ]);
 

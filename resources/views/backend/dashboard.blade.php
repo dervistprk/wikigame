@@ -47,7 +47,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($games as $game)
-                                    <tr>
+                                    <tr @if($game->status == 0) class="alert-danger" @endif>
                                         <td>
                                             <img src="{{ $game->cover_image }}" alt="kapak_resmi" title="{{ $game->name }}" class="img-fluid rounded img-thumbnail" width="120" height="150">
                                         </td>
@@ -68,7 +68,8 @@
                                                 $game_platforms = $game->platforms->pluck('name' ,'id')->toArray();
                                             @endphp
                                             @foreach($game_platforms as $platform_id => $platform)
-                                                <a href="{{ route('admin.edit-platform', $platform_id) }}" class="text-primary text-decoration-none">{{ $platform }}</a><br>
+                                                <a href="{{ route('admin.edit-platform', $platform_id) }}" class="text-primary text-decoration-none">{{ $platform }}</a>
+                                                <br>
                                             @endforeach
                                         </td>
                                         <td>
@@ -76,7 +77,8 @@
                                                 $game_genres = $game->genres->pluck('name' ,'id')->toArray();
                                             @endphp
                                             @foreach($game_genres as $genre_id => $genre)
-                                                <a href="{{ route('admin.edit-genre', $genre_id) }}" class="text-primary text-decoration-none">{{ $genre }}</a><br>
+                                                <a href="{{ route('admin.edit-genre', $genre_id) }}" class="text-primary text-decoration-none">{{ $genre }}</a>
+                                                <br>
                                             @endforeach
                                         </td>
                                         <td>
@@ -116,7 +118,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($categories as $category)
-                                    <tr>
+                                    <tr @if($category->status == 0) class="alert-danger" @endif>
                                         <td>
                                             <a href="{{ route('admin.edit-category', $category->id) }}" class="text-primary text-decoration-none" title="{{ $category->name }} Kategorisi">{{ $category->name }}</a>
                                         </td>
@@ -157,7 +159,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($developers as $developer)
-                                            <tr>
+                                            <tr @if($developer->status == 0) class="alert-danger" @endif>
                                                 <td>
                                                     <img src="{{ $developer->image }}" alt="developer_resmi" height="100" width="130" class="img-fluid rounded img-thumbnail" title="{{ $developer->name }}">
                                                 </td>
@@ -197,7 +199,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($publishers as $publisher)
-                                            <tr>
+                                            <tr @if($publisher->status == 0) class="alert-danger" @endif>
                                                 <td>
                                                     <img src="{{ $publisher->image }}" alt="developer_resmi" height="100" width="130" class="img-fluid rounded img-thumbnail" title="{{ $publisher->name }}">
                                                 </td>
@@ -212,6 +214,81 @@
                                 @else
                                     <div class="text-center text-danger">
                                         Sistemde kayıtlı dağıtıcı bulunamadı.
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card mb-4 shadow">
+                        <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-platforms" role="button" aria-expanded="true" aria-controls="latest-platforms">
+                            <i class="fas fa-laptop"></i>
+                            Son Eklenen Platformlar
+                            <span class="float-end">Toplam {{ $platform_count }} Platform</span>
+                        </div>
+                        <div class="card-body collapse show" id="latest-platforms">
+                            <div class="table-responsive">
+                                @if($platforms->count() > 0)
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th>Adı</th>
+                                            <th>Oyun Sayısı</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($platforms as $platform)
+                                            <tr @if($platform->status == 0) class="alert-danger" @endif>
+                                                <td>
+                                                    <a href="{{ route('admin.edit-platform', $platform->id) }}" class="text-primary text-decoration-none" title="{{ $platform->name }}">{{ $platform->name }}</a>
+                                                </td>
+                                                <td class="text-center">{{ $platform->games->count() }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <div class="text-center text-danger">
+                                        Sistemde kayıtlı platform bulunamadı.
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card mb-4 shadow">
+                        <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-genres" role="button" aria-expanded="true" aria-controls="latest-genres">
+                            <i class="fas fa-newspaper"></i>
+                            Son Eklenen Türler <span class="float-end">Toplam {{$genre_count}} Tür</span>
+                        </div>
+                        <div class="card-body collapse show" id="latest-genres">
+                            <div class="table-responsive">
+                                @if($genres->count() > 0)
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th>Adı</th>
+                                            <th>Oyun Sayısı</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($genres as $genre)
+                                            <tr @if($genre->status == 0) class="alert-danger" @endif>
+                                                <td>
+                                                    <a href="{{ route('admin.edit-genre', $genre->id) }}" class="text-primary text-decoration-none" title="{{ $genre->name }}">{{ $genre->name }}</a>
+                                                </td>
+                                                <td class="text-center">{{ $genre->games->count() }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <div class="text-center text-danger">
+                                        Sistemde kayıtlı tür bulunamadı.
                                     </div>
                                 @endif
                             </div>
@@ -238,7 +315,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($articles as $article)
-                                    <tr>
+                                    <tr @if($article->status == 0) class="alert-danger" @endif>
                                         <td>
                                             <img src="{{ $article->image }}" alt="makale_resmi" height="200" width="300" class="img-fluid rounded img-thumbnail" title="{{ $article->title }}">
                                         </td>

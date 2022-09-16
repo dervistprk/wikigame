@@ -44,7 +44,8 @@
                         </div>
                         <div class="m-2 mt-4">
                             <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none" data-toggle="tooltip" data-placement="top" title="Temizle">
-                                <i class="fa fa-undo"></i></button>
+                                <i class="fas fa-undo"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -54,23 +55,28 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
-                            <tr>
-                                <th class="sorter" data-column="id">ID</th>
-                                <th>Geliştirici Logosu</th>
-                                <th class="sorter" data-column="name">Adı</th>
-                                <th>Oyun Sayısı</th>
-                                <th>İşlemler</th>
-                            </tr>
+                                <tr>
+                                    <th><input type="checkbox" class="form-check" id="check-all"></th>
+                                    <th class="sorter" data-column="id">ID</th>
+                                    <th>Geliştirici Logosu</th>
+                                    <th class="sorter" data-column="name">Adı</th>
+                                    <th>Oyun Sayısı</th>
+                                    <th>İşlemler</th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($developers as $developer)
                                 @php
-                                    $title = 'Geliştirici';
+                                    $title  = 'Geliştirici';
+                                    $plural = 'geliştiricileri';
                                     $target = $developer;
                                     $route  = 'developer';
-                                    $developer->games()->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz, geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                    $developer->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz, geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($developer->status == 0) alert-danger @endif">
+                                    <td>
+                                        <input type="checkbox" class="form-check delete-check" data-id="{{ $developer->id }}">
+                                    </td>
                                     <td class="font-weight-bold">
                                         {{ $developer->id }}
                                     </td>
@@ -103,8 +109,12 @@
                                 @include('backend.modals.deleteConfirmation')
                             @endforeach
                             @include('backend.modals.statusDialog')
+                            @include('backend.modals.multipleDelete')
                             </tbody>
                         </table>
+                        <div class="row col-sm-2 justify-content-center" id="multiple-destroy-overlay" data-toggle="tooltip" data-placement="top" title="Silinecek öge seçin">
+                            <a class="btn btn-danger btn-sm text-white" id="multiple-destroy" data-toggle="modal" data-target="#delete-multiple-modal"><i class="fas fa-trash-alt"></i> Seçilenleri Sil</a>
+                        </div>
                     </div>
                 @else
                     <div class="text-danger text-center">Geliştirici bulunamadı.</div>
@@ -117,16 +127,16 @@
 @section('custom-js')
     <script type="text/javascript">
        $(document).ready(function() {
+          $.ajaxSetup({
+             headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+          });
+
           $(function() {
              $('.status-switch').change(function() {
                 var id    = $(this)[0].getAttribute('data-id');
                 var state = $(this).prop('checked');
-
-                $.ajaxSetup({
-                   headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                   },
-                });
 
                 if (!state) {
                    $('#dialog-confirm').removeClass('d-none');
@@ -175,7 +185,7 @@
                    });
                 } else {
                    $.ajax({
-                      url     : "{{route('admin.switch-developer-status') }}",
+                      url     : "{{ route('admin.switch-developer-status') }}",
                       type    : 'POST',
                       dataType: 'json',
                       data    : {
@@ -238,6 +248,83 @@
                 $('input[name="sort_dir"]').val(dir);
 
                 $('#query-form').submit();
+             });
+          });
+
+          var delete_array = [];
+          $('#multiple-destroy').addClass('disabled');
+          $('#multiple-destroy').css('pointer-events', 'none');
+
+          $('#check-all').click(function() {
+             $('.delete-check').prop('checked', this.checked);
+             if ($(this).is(':checked')) {
+                $('.delete-check').each(function() {
+                   delete_array.push($(this).attr('data-id'));
+                });
+                delete_array = delete_array.filter(function(element, index, self) {
+                   return index === self.indexOf(element);
+                });
+                $('#multiple-destroy').removeClass('disabled');
+                $('#multiple-destroy').css('pointer-events', 'auto');
+                $('#multiple-destroy-overlay').tooltip('disable');
+             } else {
+                delete_array.splice(0, delete_array.length);
+                $('#multiple-destroy').addClass('disabled');
+                $('#multiple-destroy').css('pointer-events', 'none');
+                $('#multiple-destroy-overlay').tooltip('enable');
+             }
+          });
+
+          $('.delete-check').change(function() {
+             if ($(this).is(':checked')) {
+                delete_array.push($(this).attr('data-id'));
+             } else {
+                var found;
+                var remove_item = $(this).attr('data-id');
+                while ((found = $.inArray(remove_item, delete_array)) !== -1) {
+                   delete_array.splice(found, 1);
+                }
+             }
+
+             if ($('.delete-check:checked').length == $('.delete-check').length) {
+                $('#check-all').prop('checked', true);
+             } else {
+                $('#check-all').prop('checked', false);
+             }
+
+             if (delete_array.length === 0) {
+                $('#multiple-destroy').addClass('disabled');
+                $('#multiple-destroy').css('pointer-events', 'none');
+                $('#multiple-destroy-overlay').tooltip('enable');
+             } else {
+                $('#multiple-destroy').removeClass('disabled');
+                $('#multiple-destroy').css('pointer-events', 'auto');
+                $('#multiple-destroy-overlay').tooltip('disable');
+             }
+          });
+
+          $('#multiple-destroy-button').click(function() {
+             $.ajax({
+                url     : "{{ route('admin.delete-multiple-developer') }}",
+                type    : 'POST',
+                dataType: 'json',
+                data    : {
+                   ids: delete_array,
+                },
+                beforeSend: function() {
+                   $('#delete-loading-icon').removeClass('d-none');
+                },
+                success : function() {
+                   $('#multiple-delete-message').removeClass('d-none');
+                   setTimeout(function() {
+                      $(location).prop('href', '{{ route('admin.developers') }}');
+                   }, 2000);
+                },
+                error   : function(xhr, status, error) {
+                   console.log(xhr.responseText);
+                   console.log(status);
+                   console.log(error);
+                },
              });
           });
        });

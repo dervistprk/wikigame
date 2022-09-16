@@ -349,33 +349,26 @@
                             <div class="col-sm">
                                 <div class="form-group">
                                     <label for="cover_image" class="text-primary form-label font-weight-bold">Kapak Resmi*</label>
-                                    <div class="col">
-                                        <input type="file" name="cover_image" id="cover_image" class="form-control-file btn btn-primary btn-sm btn-block">
-                                    </div>
+                                    <input type="file" name="cover_image" id="cover_image" class="form-control-file btn btn-primary btn-sm btn-block">
                                     <img src="{{ $game->cover_image }}" alt="{{ $game->name }} Kapak Resmi" title="{{ $game->name }} Kapak Resmi" class="mt-1 rounded img-fluid img-thumbnail" width="175" height="225">
+                                    <a class="btn btn-primary btn-block btn-sm mt-2" href="{{ $game->cover_image }}" target="_blank"><i class="fas fa-eye"></i> Görüntüle</a>
                                 </div>
                                 <hr>
                                 <div class="form-group">
                                     <label for="image1" class="text-primary form-label font-weight-bold">Resim1*</label>
-                                    <div class="col">
-                                        <input type="file" name="image1" id="image1" class="form-control-file btn btn-primary btn-sm btn-block">
-                                    </div>
+                                    <input type="file" name="image1" id="image1" class="form-control-file btn btn-primary btn-sm btn-block">
                                     <img src="{{ $game->image1 }}" alt="{{ $game->name }} Resim1" title="{{ $game->name }} Resim1" class="mt-1 rounded img-fluid img-thumbnail" width="500" height="300">
+                                    <a class="btn btn-primary btn-block btn-sm mt-2" href="{{ $game->image1 }}" target="_blank"><i class="fas fa-eye"></i> Görüntüle</a>
                                 </div>
                                 <hr>
                                 @foreach($game->images as $image)
                                     <div class="form-group" id="image-input-{{ $image_count + 1 }}">
                                         <label for="image{{ $image_count + 1 }}" class="text-primary form-label font-weight-bold">Resim{{ $image_count + 1 }}*</label>
-                                        <div class="col">
-                                            <input type="file" name="path[]" id="image{{ $image_count + 1 }}" class="form-control-file btn btn-primary btn-sm btn-block">
-                                            <input type="hidden" name="image_hash[]" id="image-hash" value="{{ $image->image_hash }}"/>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <img src="{{ $image->path }}" alt="{{ $game->name }} Resim{{ $image_count + 1 }}" title="{{ $game->name }} Resim{{ $image_count + 1 }}" class="mt-1 rounded img-fluid img-thumbnail" width="500" height="300">
-                                        </div>
-                                        <div class="col-sm-12 mt-2">
-                                            <a class="btn btn-danger btn-block btn-sm text-white" data-toggle="modal" data-target="#delete-image-{{ $image_count + 1 }}"><i class="fa fa-trash-alt"></i> Sil</a>
-                                        </div>
+                                        <input type="file" name="path[]" id="image{{ $image_count + 1 }}" class="form-control-file btn btn-primary btn-sm btn-block">
+                                        <input type="hidden" name="image_hash[]" id="image-hash" value="{{ $image->image_hash }}"/>
+                                        <img src="{{ $image->path }}" alt="{{ $game->name }} Resim{{ $image_count + 1 }}" title="{{ $game->name }} Resim{{ $image_count + 1 }}" class="mt-1 rounded img-fluid img-thumbnail" width="500" height="300">
+                                        <a class="btn btn-primary btn-block btn-sm mt-2" href="{{ $image->path }}" target="_blank"><i class="fas fa-eye"></i> Görüntüle</a>
+                                        <a class="btn btn-danger btn-block btn-sm text-white mt-2" data-toggle="modal" data-target="#delete-image-{{ $image_count + 1 }}"><i class="fas fa-trash-alt"></i> Sil</a>
                                         @include('backend.modals.deleteImageConfirmation')
                                     </div>
                                     @php $image_count++; @endphp
@@ -408,10 +401,6 @@
                                 @foreach($game->videos as $video)
                                     <div class="form-group" id="video-input-{{ $video_count }}">
                                         <label for="url{{ $video_count }}" class="text-primary form-label font-weight-bold">Video{{ $video_count }}*</label>
-                                        @if(!$loop->first)
-                                            <a class="btn btn-danger btn-sm text-white float-end mb-2" data-toggle="modal" data-target="#delete-video-{{ $video_count }}"><i class="fa fa-trash-alt"></i> Sil</a>
-                                            @include('backend.modals.deleteVideoConfirmation')
-                                        @endif
                                         <div class="input-group mb-2">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">https://www.youtube.com/embed/</div>
@@ -428,6 +417,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if(!$loop->first)
+                                        <a class="btn btn-danger btn-sm btn-block text-white" data-toggle="modal" data-target="#delete-video-{{ $video_count }}"><i class="fa fa-trash-alt"></i> Sil</a>
+                                        @include('backend.modals.deleteVideoConfirmation')
+                                    @endif
                                     @php $video_count++; @endphp
                                     @if(!$loop->last)
                                         <div id="hr-div">
@@ -499,17 +492,16 @@
                 beforeSend: function() {
                    $('.delete-image-btn').find('.fa-trash-alt').removeClass('fa-trash-alt').addClass('fa-spinner fa-spin');
                 },
-                success   : function(response) {
-                   if (response.result) {
-                      alert(response.message);
+                success   : function() {
+                   $('.image-delete-response').removeClass('d-none');
+                   setTimeout(function() {
                       location.reload();
-                   } else {
-                      alert(response.message);
-                      location.reload();
-                   }
+                   }, 2000);
                 },
-                error     : function(jqXHR, textStatus, errorThrown) {
-                   console.log(textStatus, errorThrown);
+                error     : function(xhr, status, error) {
+                   console.log(xhr.responseText);
+                   console.log(status);
+                   console.log(error);
                 }
              });
           });
@@ -527,14 +519,11 @@
                 beforeSend: function() {
                    $('.delete-video-btn').find('.fa-trash-alt').removeClass('fa-trash-alt').addClass('fa-spinner fa-spin');
                 },
-                success   : function(response) {
-                   if (response.result) {
-                      alert(response.message);
+                success   : function() {
+                   $('.video-delete-response').removeClass('d-none');
+                   setTimeout(function() {
                       location.reload();
-                   } else {
-                      alert(response.message);
-                      location.reload();
-                   }
+                   }, 2000);
                 },
                 error     : function(jqXHR, textStatus, errorThrown) {
                    console.log(textStatus, errorThrown);

@@ -233,4 +233,33 @@ class PublisherController extends Controller
         }
         return false;
     }
+
+    public function multipleDestroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $publishers = Publisher::with('games')->whereIn('id', $request->post('ids'))->get();
+
+            foreach ($publishers as $publisher) {
+                $path = public_path('uploads/publishers/') . Str::slug($publisher->name);
+
+                if ($publisher->games->count() > 0) {
+                    foreach ($publisher->games as $p_game) {
+                        GameController::destroy($p_game->id);
+                    }
+                }
+
+                if (File::exists(public_path($publisher->image))) {
+                    File::delete(public_path($publisher->image));
+                }
+
+                if (File::exists($path) && File::isDirectory($path)) {
+                    File::deleteDirectory($path);
+                }
+
+                $publisher->delete();
+            }
+            return true;
+        }
+        return false;
+    }
 }

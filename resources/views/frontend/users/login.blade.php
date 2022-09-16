@@ -51,28 +51,35 @@
                         <label for="remember" class="form-check-label">Beni Hatırla</label>
                     </div>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="google-btn-overlay">
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="agreement_confirmation"/>
+                        <label class="form-label" for="agreement_confirmation"><a href="" class="game-detail-links text-decoration-none" data-bs-toggle="modal" data-bs-target="#user-agreement-modal">Kullanıcı sözleşmesini</a> okudum ve kabul ediyorum.</label>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 mx-auto text-center" id="google-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-danger m-2" id="google-btn" href="{{ route('redirect-google') }}">
                         <i class="fab fa-google"></i> Google ile Giriş Yap
                     </a>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay">
+                <div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}">
                         <i class="fab fa-facebook"></i> Facebook ile Giriş Yap
                     </a>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay">
+                <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-secondary m-2" id="github-btn" href="{{ route('redirect-github') }}">
                         <i class="fab fa-github"></i> Github ile Giriş Yap
                     </a>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="linkedin-btn-overlay">
+                <div class="d-grid gap-2 mx-auto text-center" id="linkedin-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-primary m-2" id="linkedin-btn" href="{{ route('redirect-linkedin') }}">
                         <i class="fab fa-linkedin"></i> LinkedIn ile Giriş Yap
                     </a>
                 </div>
             </div>
         </form>
+        @include('frontend.modals.userAgreement')
     </div>
 @endsection
 @section('custom-js')
@@ -82,6 +89,25 @@
              $(this).addClass('alert-danger');
           } else {
              $(this).removeClass('alert-danger');
+          }
+       });
+
+       var social_btn         = $('#google-btn, #facebook-btn, #github-btn, #linkedin-btn');
+       var social_btn_overlay = $('#google-btn-overlay, #facebook-btn-overlay, #github-btn-overlay, #linkedin-btn-overlay');
+
+       social_btn.addClass('disabled');
+       social_btn.css('pointer-events', 'none');
+
+       $('#agreement_confirmation').change(function() {
+          var is_checked = $('#agreement_confirmation')[0].checked;
+          if (is_checked) {
+             social_btn.removeClass('disabled');
+             social_btn.css('pointer-events', 'auto');
+             social_btn_overlay.tooltip('disable');
+          } else {
+             social_btn.addClass('disabled');
+             social_btn.css('pointer-events', 'none');
+             social_btn_overlay.tooltip('enable');
           }
        });
 

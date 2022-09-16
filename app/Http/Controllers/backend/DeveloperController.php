@@ -213,6 +213,35 @@ class DeveloperController extends Controller
         return redirect()->route('admin.developers')->with('message', 'Geliştirici Başarıyla Silindi.');
     }
 
+    public function multipleDestroy(Request $request)
+    {
+        if ($request->ajax()) {
+            $developers = Developer::with('games')->whereIn('id', $request->post('ids'))->get();
+
+            foreach ($developers as $developer) {
+                $path = public_path('uploads/developers/') . Str::slug($developer->name);
+
+                if ($developer->games->count() > 0) {
+                    foreach ($developer->games as $d_game) {
+                        GameController::destroy($d_game->id);
+                    }
+                }
+
+                if (File::exists(public_path($developer->image))) {
+                    File::delete(public_path($developer->image));
+                }
+
+                if (File::exists($path) && File::isDirectory($path)) {
+                    File::deleteDirectory($path);
+                }
+
+                $developer->delete();
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function switchStatus(Request $request)
     {
         /**

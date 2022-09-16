@@ -167,7 +167,7 @@ return [
         'description'      => 'Açıklama',
         'status'           => 'Durum',
         'image'            => 'Resim',
-        'subtitle'         => 'Altbaşlık',
+        'sub_title'        => 'Altbaşlık',
         'category'         => 'Kategori',
         'developer'        => 'Geliştirici',
         'publisher'        => 'Dağıtıcı',

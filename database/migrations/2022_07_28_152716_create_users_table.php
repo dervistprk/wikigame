@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->string('gender')->nullable();
             $table->text('about')->nullable();
             $table->boolean('is_admin')->default(0);
-            $table->integer('comment_count')->default(0);
             $table->boolean('is_email_verified')->default(0);
             $table->boolean('is_banned')->default(0);
             $table->text('ban_reason')->nullable();
@@ -35,6 +34,7 @@ class CreateUsersTable extends Migration
             $table->string('facebook_id')->nullable();
             $table->string('github_id')->nullable();
             $table->string('linkedin_id')->nullable();
+            $table->timestamp('password_change_time')->nullable();
             $table->string('remember_token')->nullable();
             $table->timestamps();
         });

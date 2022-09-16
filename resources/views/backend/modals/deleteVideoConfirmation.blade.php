@@ -14,6 +14,9 @@
                         <iframe src="{{ $video->url }}" class="mt-2 rounded" allowfullscreen></iframe>
                     </div>
                 </div>
+                <div class="alert alert-success video-delete-response d-none mt-2">
+                    Video başarıyla silindi. Lütfen bekleyin. <i class="fas fa-spinner fa-spin"></i>
+                </div>
             </div>
             <div class="alert d-none" id="response-message"></div>
             <div class="modal-footer">

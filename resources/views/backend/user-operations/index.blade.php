@@ -205,12 +205,9 @@
                 data    : {
                    user_id: user_id,
                 },
-                beforeSend : function() {
-
-                },
                 success : function() {
                    $('.user-ban-remove-message').removeClass('d-none');
-                   setTimeout(function () {
+                   setTimeout(function() {
                       location.reload();
                    }, 2000);
                 },
