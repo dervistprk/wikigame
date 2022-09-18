@@ -62,6 +62,11 @@ class Game extends Model
         return $this->belongsToMany(Genre::class, 'genre_game');
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
     public function scopeActive($query)
     {
         $query->where('status', 1);

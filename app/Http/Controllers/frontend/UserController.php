@@ -230,6 +230,11 @@ class UserController extends Controller
         return redirect()->route('login-form')->with('message', $message);
     }
 
+    public function comment(Request $request)
+    {
+
+    }
+
     public function logout()
     {
         Session::flush();

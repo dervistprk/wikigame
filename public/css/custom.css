@@ -198,6 +198,16 @@ links
    color : darkblue;
 }
 
+.register-login-link {
+   transition : 0.3s;
+   color      : #dc3545;
+}
+
+.register-login-link:hover {
+   color : #6a1a21;
+}
+
+
 /*
 selection
  */

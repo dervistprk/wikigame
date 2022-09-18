@@ -20,7 +20,7 @@
             @csrf
             <div class="card shadow">
                 <div class="card-header font-weight-bold text-secondary">
-                    <i class="fas fa-calculator"></i>
+                    <i class="fas fa-code"></i>
                     Geliştirici Bilgileri <span class="float-end text-secondary">* Zorunlu Alanlar</span>
                 </div>
                 <div class="card-body">

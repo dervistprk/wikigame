@@ -19,7 +19,7 @@
         </div>
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
-                <i class="fas fa-calculator"></i>
+                <i class="fas fa-code"></i>
                 Kayıtlı Geliştiriciler
                 <div class="float-end">
                     <form class="form-inline" id="query-form" method="get" action="{{ route('admin.developers') }}">

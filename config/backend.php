@@ -17,7 +17,7 @@ return [
         ['title' => 'Yönetim Paneli', 'segment' => 'yonetim', 'route' => 'dashboard', 'icon' => 'tachometer-alt'],
         ['title' => 'Kategoriler', 'segment' => 'kategoriler', 'route' => 'categories', 'icon' => 'bookmark'],
         ['title' => 'Oyunlar', 'segment' => 'oyunlar', 'route' => 'games', 'icon' => 'gamepad'],
-        ['title' => 'Geliştiriciler', 'segment' => 'gelistiriciler', 'route' => 'developers', 'icon' => 'calculator'],
+        ['title' => 'Geliştiriciler', 'segment' => 'gelistiriciler', 'route' => 'developers', 'icon' => 'code'],
         ['title' => 'Dağıtıcılar', 'segment' => 'dagiticilar', 'route' => 'publishers', 'icon' => 'newspaper'],
         ['title' => 'Türler', 'segment' => 'turler', 'route' => 'genres', 'icon' => 'list'],
         ['title' => 'Platformlar', 'segment' => 'platformlar', 'route' => 'platforms', 'icon' => 'laptop'],

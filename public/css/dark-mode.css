@@ -106,8 +106,17 @@ links
 }
 
 [data-theme="dark"] .game-detail-links:hover {
-   color : yellow !important;
+   color : #ffff00 !important;
 }
+
+[data-theme="dark"] .register-login-link {
+   color : #6610f2 !important;
+}
+
+[data-theme="dark"] .register-login-link:hover {
+   color : #dc3545 !important;
+}
+
 
 /*
 headers

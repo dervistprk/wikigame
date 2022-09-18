@@ -16,4 +16,9 @@ class Article extends Model
     {
         $query->where('status', 1);
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }

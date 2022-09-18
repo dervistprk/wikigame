@@ -142,7 +142,7 @@
                 <div class="col-sm-6">
                     <div class="card mb-4 shadow">
                         <div class="card-header font-weight-bold text-secondary" data-toggle="collapse" href="#latest-developers" role="button" aria-expanded="true" aria-controls="latest-developers">
-                            <i class="fas fa-calculator"></i>
+                            <i class="fas fa-code"></i>
                             Son Eklenen Geliştiriciler
                             <span class="float-end">Toplam {{$developers_count}} Geliştirici</span>
                         </div>
