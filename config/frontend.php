@@ -22,7 +22,7 @@ return [
         'home'               => ['method' => 'get', 'uri' => '/', 'controller' => $home_controller, 'function' => 'home', 'middleware' => 'maintenance'],
         'all-games'          => ['method' => 'get', 'uri' => 'tum-oyunlar', 'controller' => $game_controller, 'function' => 'list', 'middleware' => 'maintenance'],
         'random-game'        => ['method' => 'get', 'uri' => 'rastgele-oyun', 'controller' => $home_controller, 'function' => 'randomGame', 'middleware' => 'maintenance'],
-        'game'               => ['method' => 'get', 'uri' => 'oyun/{id}', 'controller' => $game_controller, 'function' => 'gameDetails', 'middleware' => 'maintenance'],
+        'game'               => ['method' => 'get', 'uri' => 'oyun/{slug}', 'controller' => $game_controller, 'function' => 'gameDetails', 'middleware' => 'maintenance'],
         'developers'         => ['method' => 'get', 'uri' => 'gelistiriciler', 'controller' => $game_controller, 'function' => 'developers', 'middleware' => 'maintenance'],
         'developer'          => ['method' => 'get', 'uri' => 'gelistirici/{id}', 'controller' => $game_controller, 'function' => 'developer', 'middleware' => 'maintenance'],
         'publishers'         => ['method' => 'get', 'uri' => 'dagiticilar', 'controller' => $game_controller, 'function' => 'publishers', 'middleware' => 'maintenance'],
@@ -47,10 +47,13 @@ return [
         'redirect-linkedin' => ['method' => 'post', 'uri' => 'redirect-linkedin', 'controller' => $linkedin_service, 'function' => 'redirectToLinkedin', 'middleware' => ['maintenance', 'prevent_if_login']],
         'handle-linkedin'   => ['method' => 'post', 'uri' => 'callback-linkedin', 'controller' => $linkedin_service, 'function' => 'handleLinkedinCallback', 'middleware' => ['maintenance', 'prevent_if_login']],
 
-        'user-profile'        => ['method' => 'get', 'uri' => 'profil', 'controller' => $user_controller, 'function' => 'userProfile', 'middleware' => ['maintenance', 'is_login_user', 'is_banned', 'is_verify_email']],
-        'update-profile'      => ['method' => 'any', 'uri' => 'profil-guncelle', 'controller' => $user_controller, 'function' => 'updateProfile', 'middleware' => ['maintenance', 'is_login_user', 'is_verify_email']],
-        'user-logout'         => ['method' => 'get', 'uri' => 'cikis', 'controller' => $user_controller, 'function' => 'logout', 'middleware' => ['maintenance', 'is_login_user', 'is_verify_email']],
-        'resend-verification' => ['method' => 'any', 'uri' => 'mail-gonder', 'controller' => $user_controller, 'function' => 'resendVerification', 'middleware' => ['maintenance', 'prevent_if_login']],
-        'user-verify'         => ['method' => 'get', 'uri' => 'profil/dogrula/{token}', 'controller' => $user_controller, 'function' => 'verifyAccount', 'middleware' => ['maintenance', 'is_banned', 'prevent_if_login']],
+        'user-profile'            => ['method' => 'get', 'uri' => 'profil', 'controller' => $user_controller, 'function' => 'userProfile', 'middleware' => ['maintenance', 'is_login_user', 'is_banned', 'is_verify_email']],
+        'update-profile'          => ['method' => 'any', 'uri' => 'profil-guncelle', 'controller' => $user_controller, 'function' => 'updateProfile', 'middleware' => ['maintenance', 'is_login_user', 'is_verify_email']],
+        'user-logout'             => ['method' => 'get', 'uri' => 'cikis', 'controller' => $user_controller, 'function' => 'logout', 'middleware' => ['maintenance', 'is_login_user', 'is_verify_email']],
+        'resend-verification'     => ['method' => 'any', 'uri' => 'mail-gonder', 'controller' => $user_controller, 'function' => 'resendVerification', 'middleware' => ['maintenance', 'prevent_if_login']],
+        'user-verify'             => ['method' => 'get', 'uri' => 'profil/dogrula/{token}', 'controller' => $user_controller, 'function' => 'verifyAccount', 'middleware' => ['maintenance', 'is_banned', 'prevent_if_login']],
+        'user-make-game-comment'  => ['method' => 'post', 'uri' => 'yorum-yap/{commentable_id}', 'controller' => $user_controller, 'function' => 'makeGameComment', 'middleware' => ['maintenance', 'is_banned']],
+        'user-edit-game-comment'  => ['method' => 'post', 'uri' => 'yorum-duzenle/{commentable_id}/{comment_id}', 'controller' => $user_controller, 'function' => 'editGameComment', 'middleware' => ['maintenance', 'is_banned']],
+        'user-reply-game-comment' => ['method' => 'post', 'uri' => 'yorum-yanitla/{commentable_id}/{parent_comment_id}', 'controller' => $user_controller, 'function' => 'replyGameComment', 'middleware' => ['maintenance', 'is_banned']],
     ]
 ];

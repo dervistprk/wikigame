@@ -1,4 +1,4 @@
-<div class="card sys-req-min-card">
+<div class="card game-info">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered">

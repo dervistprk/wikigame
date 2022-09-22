@@ -120,6 +120,9 @@
                                                 <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#remove-user-ban-modal-{{ $user->id }}" data-tooltip="tooltip" data-placement="top" title="Yasak Kaldır"><i class="fas fa-user-check"></i></a>
                                             </div>
                                         @endif
+                                        <div class="d-inline-block">
+                                            <a href="{{ route('admin.user-comments', $user->id) }}" class="btn btn-sm btn-primary" data-tooltip="tooltip" data-placement="top" title="Kullanıcı Yorumları"><i class="fas fa-comment"></i></a>
+                                        </div>
                                     </td>
                                 </tr>
                                 @include('backend.modals.userBanModal')
@@ -174,8 +177,8 @@
              }
 
              $('.sorter').css({'cursor': 'pointer'}).hover(
-               function() { $(this).css('color', 'green'); },
-               function() { $(this).css('color', 'white'); },
+                 function() { $(this).css('color', 'green'); },
+                 function() { $(this).css('color', 'white'); },
              ).click(function() {
                 var column = $(this).attr('data-column');
                 var dir    = "{{ $sort_dir }}";
@@ -215,7 +218,7 @@
                    console.log(xhr.responseText);
                    console.log(status);
                    console.log(error);
-                }
+                },
              });
           });
        });

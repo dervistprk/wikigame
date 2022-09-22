@@ -8,7 +8,7 @@
             </h2>
             @foreach($developers as $developer)
                 <div class="card-deck d-inline-block m-2" title="{{ $developer->name }}">
-                    <div class="card">
+                    <div class="card content-cards">
                         <img class="card-img-top img-fluid img-thumbnail lazyload" data-src="{{ $developer->image }}" src="{{ asset('assets/preview-image-big.png') }}" alt="{{ $developer->name }}" title="{{ $developer->name }}" width="300" height="220" loading="lazy">
                         <div class="card-body">
                             <h6 class="card-title">{{ $developer->name }}</h6>

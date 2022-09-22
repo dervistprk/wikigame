@@ -18,6 +18,6 @@
         @if($settings->footer_text)
             {{ $settings->footer_text }}
         @endif
-        <span class="text-center d-block">© {{ \Carbon\Carbon::now()->format('Y') }} WikiGame</span>
+        <span class="text-center d-block">© {{ Carbon\Carbon::now()->format('Y') }} WikiGame</span>
     </div>
 </footer>

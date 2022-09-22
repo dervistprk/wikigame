@@ -67,6 +67,11 @@ class Game extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function parentComments()
+    {
+        return $this->hasMany(Comment::class, 'commentable_id', 'id')->whereNull('parent_id')->where('is_verified', 1);
+    }
+
     public function scopeActive($query)
     {
         $query->where('status', 1);

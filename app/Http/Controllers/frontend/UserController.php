@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Setting;
+use App\Models\Comment;
+use App\Models\Game;
 use App\Models\WhiteList;
 use Hash;
 use Illuminate\Http\Request;
@@ -17,7 +17,9 @@ use Mail;
 
 class UserController extends Controller
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function registerForm()
     {
@@ -230,9 +232,64 @@ class UserController extends Controller
         return redirect()->route('login-form')->with('message', $message);
     }
 
-    public function comment(Request $request)
+    public function makeGameComment(Request $request, $game_id)
     {
+        $game = Game::findOrFail($game_id);
 
+        $request->validate([
+            'comment' => 'required|min:30'
+        ]);
+
+        $comment = new Comment();
+        $comment->commentable()->associate($game);
+        $comment->user()->associate(Auth::user());
+        $comment->body = $request->input('comment');
+
+        if (Auth::user()->isAdmin()) {
+            $comment->is_verified = 1;
+            $game->comments()->save($comment);
+            toastr()->success('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            return redirect()->route('game', $game->slug);
+        }
+
+        $game->comments()->save($comment);
+        toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
+
+        //TODO: yorum yayınlanmadan önce yönetici onayına gitsin, kullanıcıya bir bildirim gönderilsin. (eğer yorumu yapan yönetici değilse)
+        return redirect()->route('game', $game->slug);
+    }
+
+    public function editGameComment(Request $request, $game_id, $comment_id)
+    {
+        $game    = Game::find($game_id);
+        $comment = $game->comments()->findOrFail($comment_id);
+
+        //TODO: yorum düzenlemeden önce yönetici onayına gitsin, kullanıcıya bir bildirim gönderilsin.
+        $comment->update(['body' => $request->input('edit_comment')]);
+        toastr()->success('Yorum başarıyla kaydedildi.', 'Başarılı');
+
+        return redirect()->route('game', $game->slug);
+    }
+
+    public function replyGameComment(Request $request, $game_id, $parent_comment_id)
+    {
+        //TODO: yönetici onayına gönder, onaydan sonra cevap yazılan kullanıcıya da bildirim gönder.
+        $game                = Game::find($game_id);
+        $parent_comment_user = Comment::find($parent_comment_id)->user;
+        $reply_comment_user  = Auth::user();
+        $sub_comment         = new Comment();
+        $sub_comment->commentable()->associate($game);
+        $sub_comment->user()->associate(Auth::user());
+        $sub_comment->body      = $request->input('reply_comment');
+        $sub_comment->parent_id = $parent_comment_id;
+        $game->comments()->save($sub_comment);
+        toastr()->success('Yorum başarıyla kaydedildi.', 'Başarılı');
+
+        return redirect()->route('game', $game->slug);
+    }
+
+    public function makeArticleComment(Request $request)
+    {
     }
 
     public function logout()

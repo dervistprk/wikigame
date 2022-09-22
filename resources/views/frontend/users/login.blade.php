@@ -25,12 +25,12 @@
                 @csrf
                 <h2 class="text-center dev-header mt-1">Giriş Yap</h2>
                 <div class="justify-content-center align-items-center col-sm-8 offset-sm-2">
-                    <label for="email" class="font-weight-bold">E-Posta</label>
+                    <label for="email" class="fw-bold">E-Posta</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" value="{{ old('email') }}" required/>
                     </div>
-                    <label for="password" class="font-weight-bold">Şifre</label>
+                    <label for="password" class="fw-bold">Şifre</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi Girin" required/>

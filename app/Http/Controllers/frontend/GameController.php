@@ -26,7 +26,9 @@ class GameController extends Controller
             'developer',
             'publisher',
             'platforms',
-            'genres'
+            'genres',
+            'comments',
+            'parentComments'
         )->active()->where('slug', '=', $slug)->firstOrFail();
 
         $game_genres = $game->genres->pluck('name')->toArray();
@@ -70,5 +72,10 @@ class GameController extends Controller
         $publisher = Publisher::active()->where('slug', '=', $slug)->firstOrFail();
         $games     = $publisher->games()->active()->paginate(12);
         return view('frontend.publisher', compact('publisher', 'games'));
+    }
+
+    public function gameComments()
+    {
+
     }
 }

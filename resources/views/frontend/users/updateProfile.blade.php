@@ -16,7 +16,7 @@
                 </div>
             @endif
             @csrf
-            <div class="btn-group h-100 d-flex align-items-center justify-content-center mt-2" role="group">
+            <div class="btn-group h-100 d-flex align-items-center justify-content-center m-2" role="group">
                 <a type="button" class="btn btn-primary btn-lg active" href=" {{route('update-profile')}}" style="pointer-events: none">Bilgilerim</a>
                 <a type="button" class="btn btn-danger btn-lg" href="#">Favorilerim</a>
                 <a type="button" class="btn btn-info btn-lg" href="#">Yorumlarım</a>

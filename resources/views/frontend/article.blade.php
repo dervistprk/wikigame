@@ -17,7 +17,7 @@
                     @foreach($random_articles as $random_article)
                         <div class="col-sm-3">
                             <div class="card-deck d-inline-block" title="{{ $random_article->title }}">
-                                <div class="card">
+                                <div class="card content-cards">
                                     <img class="card-img-top img-fluid lazyload" data-src="{{$random_article->image}}" src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $random_article->title }}" title="{{ $random_article->title }}" width="400" height="250" loading="lazy">
                                     <div class="card-body">
                                         <h6 class="card-title">{{ $random_article->title }}</h6>

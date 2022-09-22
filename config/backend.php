@@ -109,6 +109,9 @@ return [
         'user-operations'           => ['method' => 'get', 'uri' => 'kullanici-islemleri', 'controller' => $user_operation_controller, 'function' => 'index', 'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'], 'group_name' => 'admin.', 'prefix' => 'admin'],
         'ban-user'                  => ['method' => 'post', 'uri' => 'kullanici-yasakla', 'controller' => $user_operation_controller, 'function' => 'banUser', 'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'], 'group_name' => 'admin.', 'prefix' => 'admin'],
         'remove-user-ban'           => ['method' => 'post', 'uri' => 'kullanici-yasak-kaldir', 'controller' => $user_operation_controller, 'function' => 'removeBan', 'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'], 'group_name' => 'admin.', 'prefix' => 'admin'],
+        'user-comments'             => ['method' => 'get', 'uri' => 'kullanici-yorumlari/{user_id}', 'controller' => $user_operation_controller, 'function' => 'userComments', 'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'], 'group_name' => 'admin.', 'prefix' => 'admin'],
+        'edit-user-comment'         => ['method' => 'post', 'uri' => 'yorum-duzenle/{comment_id}', 'controller' => $user_operation_controller, 'function' => 'editUserComment', 'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'], 'group_name' => 'admin.', 'prefix' => 'admin'],
+        'verify-user-comment'       => ['method' => 'post', 'uri' => 'yorum-onayla', 'controller' => $user_operation_controller, 'function' => 'verifyUserComment', 'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'], 'group_name' => 'admin.', 'prefix' => 'admin'],
 
         //logout
         'logout'                    => ['method' => 'get', 'uri' => 'cikis', 'controller' => $auth_controller, 'function' => 'logout', 'middleware' => ['white_list', 'isAdmin'], 'group_name' => 'admin.', 'prefix' => 'admin'],
