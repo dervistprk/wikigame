@@ -8,7 +8,10 @@ use App\Models\Articles;
 use App\Models\Comment;
 use App\Models\Game;
 use App\Models\User;
+use App\Notifications\CommentDeleted;
 use App\Notifications\CommentVerified;
+use App\Notifications\SubCommentDeleted;
+use App\Notifications\SubCommentVerified;
 use Illuminate\Http\Request;
 
 class UserOperationController extends Controller
@@ -118,7 +121,6 @@ class UserOperationController extends Controller
             $comment              = Comment::findOrFail($request->id);
             $comment->is_verified = $request->state == 'true' ? 1 : 0;
             $comment->save();
-
             $user = $comment->user;
 
             if ($comment->commentable_type == 'App\Models\Game') {
@@ -127,7 +129,37 @@ class UserOperationController extends Controller
                 $content = Article::findOrFail($comment->commentable_id);
             }
 
+            if ($comment->parent) {
+                $parent_comment_user = $comment->parent->user;
+                $parent_comment_user->notify(new SubCommentVerified($comment, $content));
+            }
+
             $user->notify(new CommentVerified($comment, $content));
+            return true;
+        }
+        return false;
+    }
+
+    public function deleteUserComment(Request $request)
+    {
+        if ($request->ajax()) {
+            $comment = Comment::findOrFail($request->id);
+            $user    = $comment->user;
+
+            if ($comment->commentable_type == 'App\Models\Game') {
+                $content = Game::findOrFail($comment->commentable_id);
+            } else {
+                $content = Article::findOrFail($comment->commentable_id);
+            }
+
+            if ($comment->parent) {
+                $parent_comment_user = $comment->parent->user;
+                $parent_comment_user->notify(new SubCommentDeleted($comment, $content));
+            }
+
+            $user->notify(new CommentDeleted($comment, $content));
+
+            $comment->delete();
             return true;
         }
         return false;

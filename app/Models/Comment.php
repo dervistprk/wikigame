@@ -22,6 +22,11 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function parent()
+    {
+        return $this->hasOne(Comment::class, 'id', 'parent_id');
+    }
+
     public function replies()
     {
         return $this->hasMany(Comment::class, 'parent_id')->where('is_verified', 1);

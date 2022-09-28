@@ -5,9 +5,8 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\HtmlString;
 
-class CommentVerified extends Notification
+class SubCommentVerified extends Notification
 {
     use Queueable;
 
@@ -42,7 +41,7 @@ class CommentVerified extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return MailMessage
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
@@ -51,19 +50,18 @@ class CommentVerified extends Notification
         if ($this->comment->is_verified == 0) {
             return (new MailMessage())
                 ->error()
-                ->subject('Yorum Reddedildi')
+                ->subject('Yorum Cevabı Kaldırıldı')
                 ->greeting('Merhaba.')
-                ->line('Yapmış olduğunuz yorum kurallarımız gereği reddedilmiştir. Lütfen site kurallarını dikkatli bir şekilde okuyup, yorumunuzu bu kurallar çerçevesinde yapın.')
-                ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
-                ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
+                ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
+                ->line('Rahatsız olduğunuz herhangi bir şey olduğunda bizimle iletişime geçebilirsiniz.')
                 ->action('İçeriğe gitmek için tıklayın', $url)
                 ->line('Wikigame ekibi olarak teşekkür ederiz.');
         }
 
         return (new MailMessage())
-            ->subject('Yorum Yayınlandı')
+            ->subject('Yorum Cevaplandı')
             ->greeting('Merhaba.')
-            ->line('Yapmış olduğunuz yorum yayına alınmıştır.')
+            ->line('Yapmış olduğunuz yoruma bir cevap yazıldı.')
             ->action('İçeriğe gitmek için tıklayın', $url)
             ->line('Wikigame ekibi olarak teşekkür ederiz.');
     }

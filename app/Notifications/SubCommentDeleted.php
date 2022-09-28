@@ -7,7 +7,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class CommentVerified extends Notification
+class SubCommentDeleted extends Notification
 {
     use Queueable;
 
@@ -42,28 +42,19 @@ class CommentVerified extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return MailMessage
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
-
-        if ($this->comment->is_verified == 0) {
-            return (new MailMessage())
-                ->error()
-                ->subject('Yorum Reddedildi')
-                ->greeting('Merhaba.')
-                ->line('Yapmış olduğunuz yorum kurallarımız gereği reddedilmiştir. Lütfen site kurallarını dikkatli bir şekilde okuyup, yorumunuzu bu kurallar çerçevesinde yapın.')
-                ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
-                ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-                ->action('İçeriğe gitmek için tıklayın', $url)
-                ->line('Wikigame ekibi olarak teşekkür ederiz.');
-        }
-
         return (new MailMessage())
-            ->subject('Yorum Yayınlandı')
+            ->error()
+            ->subject('Yorum Cevabı Silindi')
             ->greeting('Merhaba.')
-            ->line('Yapmış olduğunuz yorum yayına alınmıştır.')
+            ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
+            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+            ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
+            ->line('Rahatsız olduğunuz herhangi bir şey olduğunda bizimle iletişime geçebilirsiniz.')
             ->action('İçeriğe gitmek için tıklayın', $url)
             ->line('Wikigame ekibi olarak teşekkür ederiz.');
     }

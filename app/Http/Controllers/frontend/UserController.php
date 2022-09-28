@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Game;
 use App\Models\WhiteList;
+use App\Notifications\CommentVerified;
+use App\Notifications\SubCommentDeleted;
+use App\Notifications\SubCommentVerified;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +32,7 @@ class UserController extends Controller
 
     public function registerPost(Request $request)
     {
+        //TODO: üyelik onay maillerini notification mail olarak düzenle.
         $request->validate([
             'email'     => 'required|email|unique:users|max:255',
             'user_name' => 'required|min:3|unique:users|max:255|regex:/^[\w-]*$/',
@@ -254,26 +259,41 @@ class UserController extends Controller
 
         $game->comments()->save($comment);
         toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
-
-        //TODO: yorum yayınlanmadan önce yönetici onayına gitsin, kullanıcıya bir bildirim gönderilsin. (eğer yorumu yapan yönetici değilse)
         return redirect()->route('game', $game->slug);
     }
 
     public function editGameComment(Request $request, $game_id, $comment_id)
     {
+        $request->validate([
+            'edit_comment' => 'required|min:30'
+        ]);
+
         $game    = Game::find($game_id);
         $comment = $game->comments()->findOrFail($comment_id);
 
-        //TODO: yorum düzenlemeden önce yönetici onayına gitsin, kullanıcıya bir bildirim gönderilsin.
-        $comment->update(['body' => $request->input('edit_comment')]);
-        toastr()->success('Yorum başarıyla kaydedildi.', 'Başarılı');
+        if (Auth::user()->isAdmin()) {
+            $comment->update([
+                'body' => $request->input('edit_comment')
+            ]);
+            toastr()->success('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            return redirect()->route('game', $game->slug);
+        }
 
+        $comment->update([
+            'body'        => $request->input('edit_comment'),
+            'is_verified' => 0
+        ]);
+
+        toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
         return redirect()->route('game', $game->slug);
     }
 
     public function replyGameComment(Request $request, $game_id, $parent_comment_id)
     {
-        //TODO: yönetici onayına gönder, onaydan sonra cevap yazılan kullanıcıya da bildirim gönder.
+        $request->validate([
+            'reply_comment' => 'required|min:30'
+        ]);
+
         $game                = Game::find($game_id);
         $parent_comment_user = Comment::find($parent_comment_id)->user;
         $reply_comment_user  = Auth::user();
@@ -282,9 +302,24 @@ class UserController extends Controller
         $sub_comment->user()->associate(Auth::user());
         $sub_comment->body      = $request->input('reply_comment');
         $sub_comment->parent_id = $parent_comment_id;
-        $game->comments()->save($sub_comment);
-        toastr()->success('Yorum başarıyla kaydedildi.', 'Başarılı');
 
+        if (Auth::user()->isAdmin()) {
+            if ($sub_comment->commentable_type == 'App\Models\Game') {
+                $content = Game::findOrFail($sub_comment->commentable_id);
+            } else {
+                $content = Article::findOrFail($sub_comment->commentable_id);
+            }
+
+            $sub_comment->is_verified = 1;
+            $game->comments()->save($sub_comment);
+            $parent_comment_user->notify(new SubCommentVerified($sub_comment, $content));
+            $reply_comment_user->notify(new CommentVerified($sub_comment, $content));
+            toastr()->success('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            return redirect()->route('game', $game->slug);
+        }
+
+        $game->comments()->save($sub_comment);
+        toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
         return redirect()->route('game', $game->slug);
     }
 

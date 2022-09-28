@@ -15,9 +15,9 @@
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/jquery-ui-blitzer.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/cookie-sent-3.min.css') }}" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/ui/trumbowyg.min.css" integrity="sha512-K87nr2SCEng5Nrdwkb6d6crKqDAl4tJn/BD17YCXH0hu2swuNMqSV6S8hTBZ/39h+0pDpW/tbQKq9zua8WiZTA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css" integrity="sha512-ZVJ2H8aNqbzloKqMTPKqbgoRW8DXq4tDQhnWwG/uocwbwQjQmhp1LVh69j1e9uveC3lW7Dei2BGjyo1Tq8IHvw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/ui/trumbowyg.emoji.min.css" integrity="sha512-iE+NA+i8IqPfRFNWpyhtuf5J6MVJxRFD9fopri96sn5e3epH9LKnANGerPHIjZcIsjbq7kqXIhrnqtMlzNGpvw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/ui/trumbowyg.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/ui/trumbowyg.emoji.min.css" rel="stylesheet"/>
     @yield('custom-css')
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KY0WRBH1EE"></script>
@@ -47,10 +47,10 @@
 <script src="{{ asset('js/cookie-sent-3.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/datepicker-tr.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/typeahead.js') }}" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/trumbowyg.min.js" integrity="sha512-mBsoM2hTemSjQ1ETLDLBYvw6WP9QV8giiD33UeL2Fzk/baq/AibWjI75B36emDB6Td6AAHlysP4S/XbMdN+kSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/langs/tr.min.js" integrity="sha512-SysH9TbVmzlYAKIvJJcHAwQtT5TznKnZSC9/hZqew8gSmmnCW4tTvdIEjQRfc3W7fYhrKRnpegQpxzD+ti6Yng==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js" integrity="sha512-wyeD6Aca6BA4SSpbhB6ohjxYu/msHVzYjiRqjm1gqluF6V09kjr28wnZ1jFxkabX2x0/GBdeGStjoeH9Fr1l6w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/trumbowyg.giphy.min.js" integrity="sha512-NbqTgW+76nDcWRoGWnxMmJu3uDEbg0DJVIwhdBfDd/rIxa/NY/BXkcx4EsEG9p496PMt1L/Gykz5062LVZDjjA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/trumbowyg.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/langs/tr.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/trumbowyg.giphy.min.js" type="text/javascript"></script>
 <script type="text/javascript">
    window.cookieconsent.initialise({
       'palette' : {
@@ -115,11 +115,10 @@
    });
 
    $('.comment-text').trumbowyg({
-      btns                    : [
-         ['undo', 'redo'], // Only supported in Blink browsers
+      btns             : [
+         ['undo', 'redo'],
          ['formatting'],
          ['strong', 'em', 'del'],
-         ['superscript', 'subscript'],
          ['link'],
          ['unorderedList', 'orderedList'],
          ['horizontalRule'],
@@ -128,15 +127,15 @@
          ['giphy'],
          ['fullscreen'],
       ],
-      plugins: {
+      plugins          : {
          giphy: {
             apiKey: '3K2ElrEpAV2QMVV6NjiRLagpY5sS69ae',
             rating: 'pg',
-         }
+         },
       },
-      lang                    : 'tr',
-      resetCss                : true,
-      defaultLinkTarget       : '_blank',
+      lang             : 'tr',
+      resetCss         : true,
+      defaultLinkTarget: '_blank',
    });
 
    (function() {

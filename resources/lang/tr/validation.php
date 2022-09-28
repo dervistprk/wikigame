@@ -198,6 +198,9 @@ return [
         'email'            => 'E-Posta',
         'current_password' => 'Mevcut şifre',
         'ban_reason'       => 'Yasak sebebi',
+        'comment'          => 'Yorum',
+        'edit_comment'     => 'Düzenlenen yorum',
+        'reply_comment'    => 'Yorum cevabı',
     ],
 
 ];

@@ -2,6 +2,18 @@
 @section('title', isset($game->name) ? $game->name : 'Kayıtlı Oyun Bulunamadı')
 @section('content')
     <div class="container">
+        @if($errors->any())
+            <div class="row justify-content-center">
+                <div class="col-sm-6">
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        @foreach($errors->all() as $error)
+                            <li>{!! $error !!}</li>
+                        @endforeach
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
         @if(isset($game))
             <h2 class="game-header">{{ $game->name }}</h2>
             <div class="justify-content-center align-content-center d-flex h-100">
@@ -53,8 +65,8 @@
                                     <label for="comment" class="form-label fw-bold">Yorum Yaz</label>
                                     <textarea class="form-control comment-text" name="comment" id="comment" rows="5" placeholder="Yorum giriniz" minlength="30" required></textarea>
                                 </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-sm btn-warning float-end">Gönder</button>
+                                <div class="mb-3 submit-comment-layout">
+                                    <button type="submit" class="btn btn-sm btn-warning float-end submit-comment">Gönder</button>
                                 </div>
                             </form>
                         </div>
@@ -158,6 +170,42 @@
                 $(this).parents('.edit-form').next('.comment-body').fadeIn(600);
              });
           }
+
+          $('.submit-comment').on('click', function(e) {
+             var comment_length = stripTags($('#comment').val()).trim().length;
+             if (comment_length < 30) {
+                $('.min-char-alert').remove();
+                e.preventDefault();
+                $('.submit-comment-layout').append('<div class="alert alert-danger col-sm-6 float-start min-char-alert">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                $('.min-char-alert').effect('shake');
+             }
+          });
+
+          $('.submit-edit').on('click', function(e) {
+             var comment_length = stripTags($(this).parents('.edit-comment-layout').prev('.edit-text-layout').find('.edit-comment-text').val()).trim().length;
+             if (comment_length < 30) {
+                $(this).siblings('.min-char-alert-edit').remove();
+                e.preventDefault();
+                $(this).parents('.edit-comment-layout').append('<div class="alert alert-danger col-sm-9 float-start min-char-alert-edit">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                $(this).siblings('.min-char-alert-edit').effect('shake');
+             }
+          });
+
+          $('.submit-reply').on('click', function(e) {
+             var comment_length = stripTags($(this).parents('.reply-comment-layout').prev('.reply-text-layout').find('.reply-comment-text').val()).trim().length;
+             if (comment_length < 30) {
+                $(this).siblings('.min-char-alert-reply').remove();
+                e.preventDefault();
+                $(this).parents('.reply-comment-layout').append('<div class="alert alert-danger col-sm-9 float-start min-char-alert-reply">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                $(this).siblings('.min-char-alert-reply').effect('shake');
+             }
+          });
+
+          function stripTags(html) {
+             var tmp       = document.createElement('DIV');
+             tmp.innerHTML = html;
+             return tmp.textContent || tmp.innerText;
+          }
        });
     </script>
 @endsection
@@ -165,10 +213,10 @@
     <script type="text/javascript">
        var uri = window.location.pathname;
        @if(isset($game))
-       if (uri == '/rastgele-oyun') {
-          window.location.replace('/oyun/{{ $game->slug }}');
-       }
-        @endif
+           if (uri == '/rastgele-oyun') {
+              window.location.replace('/oyun/{{ $game->slug }}');
+           }
+       @endif
     </script>
 @endsection
 

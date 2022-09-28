@@ -4,7 +4,7 @@
         @php
             $user = \App\Models\User::find($comment->user_id);
         @endphp
-        <h6 class="fw-bold mb-1 d-inline-block">{{ $user->name . ' ' . $user->surname }}</h6>
+        <h6 class="fw-bold mb-1 d-inline-block">{{ $user->name . ' ' . $user->surname }} | <i>{{ $user->user_name }}</i></h6>
         @if($user->isAdmin())
             <span class="badge bg-secondary d-inline-block me-2 ms-2">Yönetici</span>
         @endif
@@ -13,7 +13,7 @@
                 <a href="#!" class="link-muted comment-action-links edit-comment-button" data-toggle="tooltip" data-bs-placement="top" title="Yorumu Düzenle"><i class="fas fa-pencil-alt ms-2"></i></a>
                 <a href="#!" class="link-muted comment-action-links" data-toggle="tooltip" data-bs-placement="top" title="Yorumu Sil"><i class="fas fa-trash-alt ms-2"></i></a>
             @endif
-            @if(Auth::user()->id != $user->id || Auth::user()->isAdmin())
+            @if(Auth::user()->id != $user->id)
                 <a href="#!" class="link-muted comment-action-links reply-comment-button" data-toggle="tooltip" data-bs-placement="top" title="Yanıtla"><i class="fas fa-reply ms-2"></i></a>
             @endif
             <a href="#!" class="link-muted comment-action-links" data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğen"><i class="fas fa-heart ms-2"></i></a>
@@ -30,12 +30,12 @@
                 </button>
                 <form method="post" action="{{ route('user-edit-game-comment', [$game->id, $comment->id]) }}">
                     @csrf
-                    <div class="mb-3">
+                    <div class="mb-3 edit-text-layout">
                         <label for="edit-comment" class="form-label fw-bold">Yorum Düzenle</label>
-                        <textarea class="form-control comment-text" name="edit_comment" id="edit-comment" minlength="30" required>{!! $comment->body !!}</textarea>
+                        <textarea class="form-control comment-text edit-comment-text" name="edit_comment" id="edit-comment" minlength="30" required>{!! $comment->body !!}</textarea>
                     </div>
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-sm btn-primary float-end">Kaydet</button>
+                    <div class="mb-3 edit-comment-layout">
+                        <button type="submit" class="btn btn-sm btn-primary float-end submit-edit">Kaydet</button>
                     </div>
                 </form>
             </div>
@@ -55,13 +55,12 @@
                 </button>
                 <form method="post" action="{{ route('user-reply-game-comment', [$game->id, $comment->id]) }}">
                     @csrf
-                    <div class="mb-3">
+                    <div class="mb-3 reply-text-layout">
                         <label for="reply-comment" class="form-label fw-bold">Cevap Yaz</label>
-                        <textarea class="form-control comment-text" name="reply_comment" id="reply-comment" minlength="30" required></textarea>
+                        <textarea class="form-control comment-text reply-comment-text" name="reply_comment" id="reply-comment" minlength="30" required></textarea>
                     </div>
-                    <input type="hidden" name="comment_id" value="{{ $comment->id }}"/>
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-sm btn-primary float-end">Yanıtla</button>
+                    <div class="mb-3 reply-comment-layout">
+                        <button type="submit" class="btn btn-sm btn-primary float-end submit-reply">Yanıtla</button>
                     </div>
                 </form>
             </div>

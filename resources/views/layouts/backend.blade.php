@@ -18,8 +18,10 @@
     <link href="{{ asset('backend/css/select2.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/select2-bs5.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/file-input.css') }}" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/ui/trumbowyg.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/ui/trumbowyg.emoji.min.css" rel="stylesheet"/>
     @yield('custom-css')
 </head>
 <body class="sb-nav-fixed">
@@ -92,9 +94,11 @@
 <script src="{{ asset('backend/js/file-input-fa5.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/js/file-input-tr.js') }}" type="text/javascript"></script>
 <script src="{{ asset('backend/js/scripts.js') }}" type="text/javascript"></script>
-<script src="{{ asset('backend/js/summernote-0.8.18-bs4.js') }}" type="text/javascript"></script>
-<script src="{{ asset('backend/js/summernote-0.8.18-tr.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/datepicker-tr.js') }}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/trumbowyg.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/langs/tr.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/trumbowyg.giphy.min.js" type="text/javascript"></script>
 <script type="text/javascript">
    $(document).ready(function() {
       $(function() {
@@ -102,30 +106,17 @@
          $('[data-tooltip="tooltip"]').tooltip();
       });
 
-      $('textarea').summernote({
-           toolbar    : [
-              ['style'],
-              ['fontsize'],
-              ['style', ['bold', 'italic', 'underline', 'clear']],
-              ['font', ['strikethrough', 'superscript', 'subscript']],
-              ['fontname'],
-              ['color'],
-              ['para', ['ul', 'ol', 'paragraph']],
-              ['height', ['height']],
-              ['insert', ['picture', 'hr', 'video']],
-              ['table', ['table']],
-              ['codeview', ['codeview']],
-              ['link', ['link']],
-              ['actions', ['undo', 'redo', 'fullscreen']],
-           ],
-           fontSizes  : ['7', '8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '26', '28', '30', '32', '34', '36', '48'],
-           height     : 400,
-           focus      : false,
-           placeholder: 'Açıklama Giriniz',
-           dialogsFade: true,
-           lang       : 'tr-TR'
-        }
-      );
+      $('textarea').trumbowyg({
+         plugins          : {
+            giphy: {
+               apiKey: '3K2ElrEpAV2QMVV6NjiRLagpY5sS69ae',
+               rating: 'pg',
+            },
+         },
+         lang             : 'tr',
+         resetCss         : true,
+         defaultLinkTarget: '_blank',
+      });
 
       $('.date-picker').datepicker({
          changeMonth: true,
@@ -133,18 +124,18 @@
          showAnim   : 'slideDown',
          dateFormat : 'yy-mm-dd',
          yearRange  : '1900:' + new Date().getFullYear(),
-         maxDate    : '+0D'
+         maxDate    : '+0D',
       });
 
       $('.date-picker').attr('readonly', true).css({
-         'cursor': 'pointer'
+         'cursor': 'pointer',
       });
 
       $('.select2').select2({
          theme      : 'bootstrap-5',
          placeholder: 'Lütfen Seçin',
          language   : 'tr',
-         width: '100%'
+         width      : '100%',
       });
 
       (function() {
@@ -173,7 +164,7 @@
             close: 'btn btn-sm btn-outline-danger ms-1',
          },
          maxFileSize             : 3092,
-         allowedFileExtensions   : ['jpg', 'jpeg', 'webp', 'png', 'svg']
+         allowedFileExtensions   : ['jpg', 'jpeg', 'webp', 'png', 'svg'],
       });
 
       $(document).on('focus', '.upload-other-images', function() {
@@ -187,7 +178,7 @@
                close: 'btn btn-sm btn-outline-danger ms-1',
             },
             maxFileSize             : 3092,
-            allowedFileExtensions   : ['jpg', 'jpeg', 'webp', 'png', 'svg']
+            allowedFileExtensions   : ['jpg', 'jpeg', 'webp', 'png', 'svg'],
          });
       });
    });

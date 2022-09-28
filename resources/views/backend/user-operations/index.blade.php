@@ -30,7 +30,7 @@
         @endif
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
-                <i class="fas fa-newspaper"></i>
+                <i class="fas fa-user-friends"></i>
                 Kayıtlı Kullanıcılar
                 <div class="float-end">
                     <form class="form-inline" id="query-form" method="get" action="{{ route('admin.user-operations') }}">
@@ -121,7 +121,7 @@
                                             </div>
                                         @endif
                                         <div class="d-inline-block">
-                                            <a href="{{ route('admin.user-comments', $user->id) }}" class="btn btn-sm btn-primary" data-tooltip="tooltip" data-placement="top" title="Kullanıcı Yorumları"><i class="fas fa-comment"></i></a>
+                                            <a href="{{ route('admin.user-comments', $user->id) }}" class="btn btn-sm btn-primary" data-tooltip="tooltip" data-placement="top" title="Kullanıcı Yorumları"><i class="fas fa-comments"></i></a>
                                         </div>
                                     </td>
                                 </tr>

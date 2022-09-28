@@ -16,8 +16,8 @@
         @endif
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
-                <i class="fas fa-laptop"></i>
-                Kullanıcı Yorumları <span class="font-weight-bolder">[{{ $user->name . ' ' . $user->surname }}]</span>
+                <i class="fas fa-comments"></i>
+                Kullanıcı Yorumları <span class="font-weight-bolder">[{{ $user->name . ' ' . $user->surname }}] [{{ $user->email }}]</span>
                 <div class="float-end">
                     <form class="form-inline" id="query-form" method="get" action="{{ route('admin.user-comments', $user->id) }}">
                         <input type="hidden" name="sort_by"/>
@@ -72,7 +72,7 @@
                                         @endphp
                                         {{ $content->name ?: $content->title }}
                                     </td>
-                                    <td class="font-weight-bold">
+                                    <td>
                                         {!! $comment->body !!}
                                     </td>
                                     <td>
@@ -85,9 +85,15 @@
                                         <div class="d-inline-block">
                                             <input type="checkbox" data-id="{{ $comment->id }}" class="status-switch" name="status" @if($comment->is_verified == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
                                         </div>
+                                        <div class="d-inline-block">
+                                            <a class="btn btn-sm btn-danger text-white" data-toggle="modal" data-target="#delete-comment-{{ $comment->id }}-modal" data-tooltip="tooltip" data-placement="top" title="Yorumu Sil">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 @include('backend.modals.userCommentEdit')
+                                @include('backend.modals.deleteCommentConfirmation')
                             @endforeach
                             </tbody>
                         </table>
@@ -102,81 +108,108 @@
 @endsection
 @section('custom-js')
     <script type="text/javascript">
-        $(document).ready(function() {
-           $.ajaxSetup({
-              headers: {
-                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-              },
-           });
+       $(document).ready(function() {
+          $.ajaxSetup({
+             headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+             },
+          });
 
-           $('.status-switch').change(function() {
-              var id    = $(this)[0].getAttribute('data-id');
-              var state = $(this).prop('checked');
+          $('.status-switch').change(function() {
+             var id    = $(this).attr('data-id');
+             var state = $(this).prop('checked');
 
-              $.ajax({
-                 url     : "{{ route('admin.verify-user-comment') }}",
-                 type    : 'POST',
-                 dataType: 'json',
-                 data    : {
-                    state: state,
-                    id   : id,
-                 },
-                 success : function() {
-                    location.reload();
-                 },
-                 error   : function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                    console.log(status);
-                    console.log(error);
-                 },
-              });
-           });
+             $.ajax({
+                url     : "{{ route('admin.verify-user-comment') }}",
+                type    : 'POST',
+                dataType: 'json',
+                data    : {
+                   state: state,
+                   id   : id,
+                },
+                success : function() {
+                   location.reload();
+                },
+                error   : function(xhr, status, error) {
+                   console.log(xhr.responseText);
+                   console.log(status);
+                   console.log(error);
+                },
+             });
+          });
 
-           $('#query-form').submit(function() {
-              $('input').each(function(index, obj) {
-                 if ($(obj).val() == '') {
-                    $(obj).remove();
-                 }
-              });
-           });
+          $('.delete-comment').on('click', function() {
+             var id = $(this).attr('data-id');
 
-           $('#per-page').change(function() {
-              $('#query-form').submit();
-           });
+             $.ajax({
+                url       : "{{ route('admin.delete-user-comment') }}",
+                type      : 'POST',
+                dataType  : 'json',
+                data      : {
+                   id: id,
+                },
+                beforeSend: function() {
+                   $('.delete-icon').removeClass('fa-trash').addClass('fa-spinner fa-spin');
+                },
+                success   : function() {
+                   $('.comment-delete-success').fadeIn();
+                   setTimeout(function() {
+                      window.location.reload();
+                   }, 2500);
+                },
+                error     : function(xhr, status, error) {
+                   console.log(xhr.responseText);
+                   console.log(status);
+                   console.log(error);
+                },
+             });
+          });
 
-           $('#reset-parameters').click(function() {
-              window.location.href = "{{ route('admin.user-comments', $user->id) }}";
-           });
+          $('#query-form').submit(function() {
+             $('input').each(function(index, obj) {
+                if ($(obj).val() == '') {
+                   $(obj).remove();
+                }
+             });
+          });
 
-           var url = window.location.href;
-           if (url.includes('?')) {
-              $('#reset-parameters').removeClass('d-none');
-           } else {
-              $('#reset-parameters').addClass('d-none');
-           }
+          $('#per-page').change(function() {
+             $('#query-form').submit();
+          });
 
-           var urlParams   = new URLSearchParams(window.location.search);
-           var sort_column = urlParams.get('sort_by');
-           var sort_dir    = urlParams.get('sort_dir');
+          $('#reset-parameters').click(function() {
+             window.location.href = "{{ route('admin.user-comments', $user->id) }}";
+          });
 
-           if (sort_dir == 'asc') {
-              $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
-           } else {
-              $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
-           }
+          var url = window.location.href;
+          if (url.includes('?')) {
+             $('#reset-parameters').removeClass('d-none');
+          } else {
+             $('#reset-parameters').addClass('d-none');
+          }
 
-           $('.sorter').css({'cursor': 'pointer'}).hover(
-               function() { $(this).css('color', 'green'); },
-               function() { $(this).css('color', 'white'); },
-           ).click(function() {
-              var column = $(this).attr('data-column');
-              var dir    = "{{ $sort_dir }}";
+          var urlParams   = new URLSearchParams(window.location.search);
+          var sort_column = urlParams.get('sort_by');
+          var sort_dir    = urlParams.get('sort_dir');
 
-              $('input[name="sort_by"]').val(column);
-              $('input[name="sort_dir"]').val(dir);
+          if (sort_dir == 'asc') {
+             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
+          } else {
+             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
+          }
 
-              $('#query-form').submit();
-           });
-        });
+          $('.sorter').css({'cursor': 'pointer'}).hover(
+              function() { $(this).css('color', 'green'); },
+              function() { $(this).css('color', 'white'); },
+          ).click(function() {
+             var column = $(this).attr('data-column');
+             var dir    = "{{ $sort_dir }}";
+
+             $('input[name="sort_by"]').val(column);
+             $('input[name="sort_dir"]').val(dir);
+
+             $('#query-form').submit();
+          });
+       });
     </script>
 @endsection

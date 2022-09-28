@@ -4,7 +4,7 @@
         @php
             $reply_user = \App\Models\User::find($reply->user_id);
         @endphp
-        <h6 class="fw-bold mb-1 d-inline-block">{{ $reply_user->name . ' ' . $reply_user->surname }}</h6>
+        <h6 class="fw-bold mb-1 d-inline-block">{{ $reply_user->name . ' ' . $reply_user->surname }} | <i>{{ $reply_user->user_name }}</i></h6>
         @if($reply_user->isAdmin())
             <span class="badge bg-secondary d-inline-block me-2 ms-2">Yönetici</span>
         @endif
