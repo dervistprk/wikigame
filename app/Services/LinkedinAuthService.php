@@ -4,16 +4,16 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserVerify;
+use App\Notifications\UserRegisteredWithSocial;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Mail;
 use Socialite;
 
 class LinkedinAuthService
 {
     /**
-     * Create a redirect method to linkedIn api.
+     * Create a redirect method to LinkedIn api.
      */
     public function redirectToLinkedin()
     {
@@ -21,7 +21,7 @@ class LinkedinAuthService
     }
 
     /**
-     * Return a callback method from linkedIn api.
+     * Return a callback method from LinkedIn api.
      */
     public function handleLinkedinCallback()
     {
@@ -40,8 +40,7 @@ class LinkedinAuthService
         } else {
             $password = Str::random(10);
             $token    = $user->token;
-
-            $social = 'LinkedIn';
+            $social   = 'LinkedIn';
 
             $simplify = trim(strtolower($user->first_name . $user->last_name));
             $search   = array('Ç', 'ç', 'Ğ', 'ğ', 'ı', 'İ', 'Ö', 'ö', 'Ş', 'ş', 'Ü', 'ü');
@@ -65,10 +64,7 @@ class LinkedinAuthService
                 'token'   => $token
             ]);
 
-            Mail::send('frontend.emails.userPassword', ['password' => $password, 'social' => $social], function($message) use ($new_user) {
-                $message->to($new_user->email);
-                $message->subject('WikiGame Üyelik Bilgileriniz');
-            });
+            $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $social));
 
             Auth::attempt(['email' => $new_user->email, 'password' => $password], true);
             return redirect()->route('user-profile')->with('message', $social . ' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.');

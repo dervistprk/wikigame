@@ -3,26 +3,25 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class SubCommentDeleted extends Notification
+class UserBanned extends Notification
 {
     use Queueable;
 
-    protected $comment;
-    protected $content;
+    protected $user;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($comment, $content)
+    public function __construct($user)
     {
-        $this->comment = $comment;
-        $this->content = $content;
+        $this->user = $user;
     }
 
     /**
@@ -46,16 +45,14 @@ class SubCommentDeleted extends Notification
      */
     public function toMail($notifiable)
     {
-        $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
-        return (new MailMessage())
+        return (new MailMessage)
             ->error()
-            ->subject('Yorum Cevabı Silindi')
-            ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
-            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
-            ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')
-            ->action('İçeriğe gitmek için tıklayın', $url)
+            ->subject('Hesap Yasaklandı')
+            ->greeting('Merhaba ' . $this->user->name . ' ' . $this->user->surname)
+            ->line('Sitemizde bulunan hesabınız kalıcı olarak yasaklanmıştır.')
+            ->line(new HtmlString('<h4>Yasaklanma Sebebi</h4>'))
+            ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->user->ban_reason . '</div>'))
+            ->line('Yasaklanma kararının yanlış olduğunu düşünüyorsanız bizimle iletişime geçebilirsiniz.')
             ->line('Wikigame ekibi olarak teşekkür ederiz.');
     }
 

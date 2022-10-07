@@ -17,7 +17,8 @@
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
                 <i class="fas fa-comments"></i>
-                Kullanıcı Yorumları <span class="font-weight-bolder">[{{ $user->name . ' ' . $user->surname }}] [{{ $user->email }}]</span>
+                Kullanıcı Yorumları
+                <span class="font-weight-bolder">[{{ $user->name . ' ' . $user->surname }}] [<i>{{ $user->email }}</i>]</span>
                 <div class="float-end">
                     <form class="form-inline" id="query-form" method="get" action="{{ route('admin.user-comments', $user->id) }}">
                         <input type="hidden" name="sort_by"/>
@@ -61,40 +62,42 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($comments as $comment)
-                                <tr class="@if($comment->is_verified == 0) alert-danger @endif">
-                                    <td class="font-weight-bold">
-                                        {{ $comment->id }}
-                                    </td>
-                                    <td class="font-weight-bold">
-                                        @php
-                                            $content = $comment->commentable_type::findOrFail($comment->commentable_id);
-                                        @endphp
-                                        {{ $content->name ?: $content->title }}
-                                    </td>
-                                    <td>
-                                        {!! $comment->body !!}
-                                    </td>
-                                    <td>
-                                        {{ $comment->likes }}
-                                    </td>
-                                    <td>
-                                        <div class="d-inline-block">
-                                            <a class="btn btn-sm btn-primary text-white" data-toggle="modal" data-target="#user-comment-edit-modal-{{ $comment->id }}" data-tooltip="tooltip" data-placement="top" title="Yorumu Düzenle"><i class="fas fa-pen"></i></a>
-                                        </div>
-                                        <div class="d-inline-block">
-                                            <input type="checkbox" data-id="{{ $comment->id }}" class="status-switch" name="status" @if($comment->is_verified == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
-                                        </div>
-                                        <div class="d-inline-block">
-                                            <a class="btn btn-sm btn-danger text-white" data-toggle="modal" data-target="#delete-comment-{{ $comment->id }}-modal" data-tooltip="tooltip" data-placement="top" title="Yorumu Sil">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @include('backend.modals.userCommentEdit')
-                                @include('backend.modals.deleteCommentConfirmation')
-                            @endforeach
+                                @foreach($comments as $comment)
+                                    <tr class="@if($comment->is_verified == 0) alert-danger @endif">
+                                        <td class="font-weight-bold">
+                                            {{ $comment->id }}
+                                        </td>
+                                        <td class="font-weight-bold">
+                                            @php
+                                                $content = $comment->commentable_type::findOrFail($comment->commentable_id);
+                                            @endphp
+                                            {{ $content->name ?: $content->title }}
+                                        </td>
+                                        <td>
+                                            {!! $comment->body !!}
+                                        </td>
+                                        <td>
+                                            {{ $comment->likes }}
+                                        </td>
+                                        <td>
+                                            <div class="d-inline-block mt-2">
+                                                <a href="{{ route('admin.edit-user-comment', $comment->id) }}" class="btn btn-sm btn-primary text-white" data-toggle="tooltip" data-placement="top" title="Yorumu Düzenle"><i class="fas fa-pen"></i></a>
+                                            </div>
+                                            <div class="d-inline-block mt-2">
+                                                <input type="checkbox" data-id="{{ $comment->id }}" class="status-switch" name="status" @if($comment->is_verified == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
+                                            </div>
+                                            <div class="d-inline-block mt-2">
+                                                <a class="btn btn-sm btn-danger text-white" data-toggle="modal" data-target="#delete-comment-{{ $comment->id }}-modal" data-tooltip="tooltip" data-placement="top" title="Yorumu Sil">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @include('backend.modals.deleteCommentConfirmation')
+                                @endforeach
+                                <div id="dialog-user-banned" class="d-none" title="Yasaklı Kullanıcı">
+                                    <i class="fas fa-exclamation-triangle" style="color: red"></i> Yasaklı kullanıcıların yorumları aktive edilemez!
+                                </div>
                             </tbody>
                         </table>
                     </div>
@@ -127,8 +130,34 @@
                    state: state,
                    id   : id,
                 },
-                success : function() {
-                   location.reload();
+                success : function(response) {
+                   if (response.error) {
+                      $('#dialog-user-banned').removeClass('d-none');
+                      $('#dialog-user-banned').dialog({
+                         resizable  : false,
+                         dialogClass: 'no-close',
+                         height     : 'auto',
+                         width      : 'auto',
+                         draggable  : false,
+                         modal      : true,
+                         show       : true,
+                         hide       : true,
+                         buttons    : [
+                            {
+                               text   : 'Tamam',
+                               'class': 'btn btn-sm btn-secondary',
+                               click  : function() {
+                                  $(this).dialog('close');
+                                  setTimeout(function() {
+                                     location.reload();
+                                  }, 750);
+                               },
+                            },
+                         ],
+                      });
+                   } else {
+                      location.reload();
+                   }
                 },
                 error   : function(xhr, status, error) {
                    console.log(xhr.responseText);

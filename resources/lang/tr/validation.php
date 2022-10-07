@@ -201,6 +201,7 @@ return [
         'comment'          => 'Yorum',
         'edit_comment'     => 'Düzenlenen yorum',
         'reply_comment'    => 'Yorum cevabı',
+        'body'             => 'Yorum içeriği',
     ],
 
 ];

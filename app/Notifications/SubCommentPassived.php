@@ -3,11 +3,12 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class SubCommentDeleted extends Notification
+class SubCommentPassived extends Notification
 {
     use Queueable;
 
@@ -49,9 +50,9 @@ class SubCommentDeleted extends Notification
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
         return (new MailMessage())
             ->error()
-            ->subject('Yorum Cevabı Silindi')
-            ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
+            ->subject('Yorum Cevabı Yayından Kaldırıldı')
+            ->greeting('Merhaba.')
+            ->line('Cevap vermiş olduğunuz bir yorum kaldırıldığı için cevabınız da kaldırıldı.')
             ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
             ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')

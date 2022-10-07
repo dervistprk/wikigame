@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserVerify;
+use App\Notifications\UserRegisteredWithSocial;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -13,7 +14,7 @@ use Socialite;
 class GithubAuthService
 {
     /**
-     * Create a redirect method to github api.
+     * Create a redirect method to GitHub api.
      */
     public function redirectToGithub()
     {
@@ -21,7 +22,7 @@ class GithubAuthService
     }
 
     /**
-     * Return a callback method from github api.
+     * Return a callback method from GitHub api.
      */
 
     public function handleGithubCallback()
@@ -40,7 +41,7 @@ class GithubAuthService
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);
-            $token    = Str::random(64);
+            $token    = $user->token;
 
             $name_array = explode(' ', $user->getName());
             $surname    = $name_array[count($name_array) - 1];
@@ -71,10 +72,7 @@ class GithubAuthService
                 'token'   => $token
             ]);
 
-            Mail::send('frontend.emails.userPassword', ['password' => $password, 'social' => $social], function($message) use ($new_user) {
-                $message->to($new_user->email);
-                $message->subject('WikiGame Üyelik Bilgileriniz');
-            });
+            $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $social));
 
             Auth::attempt(['email' => $new_user->email, 'password' => $password], true);
             return redirect()->route('user-profile')->with('message', $social . ' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.');

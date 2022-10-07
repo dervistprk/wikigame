@@ -74,5 +74,6 @@ class Kernel extends HttpKernel
         'remove_token'             => \App\Http\Middleware\RemoveTokenFromUrl::class,
         'is_banned'                => \App\Http\Middleware\isBanned::class,
         'change_password_reminder' => \App\Http\Middleware\ChangePasswordReminder::class,
+        'is_banned_not_login'      => \App\Http\Middleware\IsBannedNotLogin::class,
     ];
 }

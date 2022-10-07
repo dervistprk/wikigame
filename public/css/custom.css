@@ -351,11 +351,8 @@ Pagination
 }
 
 /*
- summernote editor
+ custom twitter button
  */
-.note-editable {
-    transition: 0.3s;
-    background-color: #ffffff !important;
-    color: black !important;
+.btn.btn-twitter-custom:hover {
+    color: #ffffff;
 }
-

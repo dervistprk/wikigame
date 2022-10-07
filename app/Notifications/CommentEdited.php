@@ -3,26 +3,29 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class SubCommentDeleted extends Notification
+class CommentEdited extends Notification
 {
     use Queueable;
 
     protected $comment;
     protected $content;
+    protected $comment_old_body;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($comment, $content)
+    public function __construct($comment, $content, $comment_old_body)
     {
-        $this->comment = $comment;
-        $this->content = $content;
+        $this->comment          = $comment;
+        $this->content          = $content;
+        $this->comment_old_body = $comment_old_body;
     }
 
     /**
@@ -48,13 +51,13 @@ class SubCommentDeleted extends Notification
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
         return (new MailMessage())
-            ->error()
-            ->subject('Yorum Cevabı Silindi')
+            ->subject('Yorum Düzenlendi')
             ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
-            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+            ->line('Yapmış olduğunuz yorum yönetici tarafından düzenlenmiştir.')
+            ->line(new HtmlString('<h4>Eski Yorum İçeriği</h4>'))
+            ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment_old_body . '</div>'))
+            ->line(new HtmlString('<h4>Yeni Yorum İçeriği</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')
             ->action('İçeriğe gitmek için tıklayın', $url)
             ->line('Wikigame ekibi olarak teşekkür ederiz.');
     }

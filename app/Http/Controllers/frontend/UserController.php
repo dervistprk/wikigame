@@ -8,8 +8,8 @@ use App\Models\Comment;
 use App\Models\Game;
 use App\Models\WhiteList;
 use App\Notifications\CommentVerified;
-use App\Notifications\SubCommentDeleted;
 use App\Notifications\SubCommentVerified;
+use App\Notifications\UserConfirmation;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,6 @@ use Session;
 use App\Models\User;
 use App\Models\UserVerify;
 use Illuminate\Support\Str;
-use Mail;
 
 class UserController extends Controller
 {
@@ -32,7 +31,8 @@ class UserController extends Controller
 
     public function registerPost(Request $request)
     {
-        //TODO: üyelik onay maillerini notification mail olarak düzenle.
+        //TODO: üyelik onay maillerini notification mail olarak düzenle.(üye olma, tekrar onay maili gönderme vs.)
+        //TODO: twitter ile giriş yapabilme ve üye olabilmeyi ekle.
         $request->validate([
             'email'     => 'required|email|unique:users|max:255',
             'user_name' => 'required|min:3|unique:users|max:255|regex:/^[\w-]*$/',
@@ -77,10 +77,7 @@ class UserController extends Controller
             'token'   => $token
         ]);
 
-        Mail::send('frontend.emails.verificationMail', ['token' => $token], function($message) use ($request) {
-            $message->to($request->email);
-            $message->subject('WikiGame Doğrulama E-Postası');
-        });
+        $user->notify(new UserConfirmation($user, $token));
 
         return redirect()->route('login-form')->with('message', 'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.<br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen <a class="link-primary text-decoration-none" href="' . route('resend-verification') . '">tıklayın</a>.');
     }
@@ -108,10 +105,8 @@ class UserController extends Controller
                         ]
                     );
 
-                    Mail::send('frontend.emails.verificationMail', ['token' => $token], function($message) use ($request) {
-                        $message->to($request->email);
-                        $message->subject('WikiGame Doğrulama E-Postası');
-                    });
+                    $user->notify(new UserConfirmation($user, $token));
+
                     toastr()->success('Doğrulama e-postası tekrar gönderildi.', 'Başarılı');
                     return redirect()->route('login-form')->with('message', 'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol edin.');
                 } else {
@@ -216,9 +211,12 @@ class UserController extends Controller
         return view('frontend.users.updateProfile', compact('user'));
     }
 
-    public function verifyAccount($token)
+    public function verifyAccount($user_id, $token)
     {
-        $verifyUser = UserVerify::where('token', $token)->first();
+        $verifyUser = UserVerify::where([
+            ['user_id', '=', $user_id],
+            ['token', '=', $token]
+        ])->first();
 
         $message = 'Üzgünüz, girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyin.';
 
@@ -322,6 +320,8 @@ class UserController extends Controller
         toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
         return redirect()->route('game', $game->slug);
     }
+
+    //TODO: frontend yorum silme ve beğenme fonksiyonlarını hazırla.
 
     public function makeArticleComment(Request $request)
     {

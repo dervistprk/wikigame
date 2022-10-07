@@ -51,16 +51,16 @@ class SubCommentVerified extends Notification
             return (new MailMessage())
                 ->error()
                 ->subject('Yorum Cevabı Kaldırıldı')
-                ->greeting('Merhaba.')
+                ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
                 ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
-                ->line('Rahatsız olduğunuz herhangi bir şey olduğunda bizimle iletişime geçebilirsiniz.')
+                ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')
                 ->action('İçeriğe gitmek için tıklayın', $url)
                 ->line('Wikigame ekibi olarak teşekkür ederiz.');
         }
 
         return (new MailMessage())
             ->subject('Yorum Cevaplandı')
-            ->greeting('Merhaba.')
+            ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
             ->line('Yapmış olduğunuz yoruma bir cevap yazıldı.')
             ->action('İçeriğe gitmek için tıklayın', $url)
             ->line('Wikigame ekibi olarak teşekkür ederiz.');

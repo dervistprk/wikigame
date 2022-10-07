@@ -107,25 +107,24 @@
                                     <td>
                                         @if(!$user->isBanned())
                                             @if($user->isAdmin())
-                                                <div class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Yöneticiler Yasaklanamaz">
+                                                <div class="d-inline-block mt-2" data-toggle="tooltip" data-placement="top" title="Yöneticiler Yasaklanamaz">
                                                     <a href="#" class="btn btn-sm btn-danger disabled"><i class="fas fa-user-slash"></i></a>
                                                 </div>
                                             @else
-                                                <div class="d-inline-block">
-                                                    <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#user-ban-modal-{{ $user->id }}" data-tooltip="tooltip" data-placement="top" title="Yasakla"><i class="fas fa-user-slash"></i></a>
+                                                <div class="d-inline-block mt-2">
+                                                    <a href="{{ route('admin.ban-user', $user->id) }}" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Yasakla"><i class="fas fa-user-slash"></i></a>
                                                 </div>
                                             @endif
                                         @else
-                                            <div class="d-inline-block">
+                                            <div class="d-inline-block mt-2">
                                                 <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#remove-user-ban-modal-{{ $user->id }}" data-tooltip="tooltip" data-placement="top" title="Yasak Kaldır"><i class="fas fa-user-check"></i></a>
                                             </div>
                                         @endif
-                                        <div class="d-inline-block">
+                                        <div class="d-inline-block mt-2">
                                             <a href="{{ route('admin.user-comments', $user->id) }}" class="btn btn-sm btn-primary" data-tooltip="tooltip" data-placement="top" title="Kullanıcı Yorumları"><i class="fas fa-comments"></i></a>
                                         </div>
                                     </td>
                                 </tr>
-                                @include('backend.modals.userBanModal')
                                 @include('backend.modals.removeUserBan')
                             @endforeach
                             </tbody>

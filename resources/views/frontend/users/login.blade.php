@@ -62,11 +62,11 @@
                         <i class="fab fa-google"></i> Google ile Giriş Yap
                     </a>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                {{--<div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}">
                         <i class="fab fa-facebook"></i> Facebook ile Giriş Yap
                     </a>
-                </div>
+                </div>--}}
                 <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-secondary m-2" id="github-btn" href="{{ route('redirect-github') }}">
                         <i class="fab fa-github"></i> Github ile Giriş Yap
@@ -77,6 +77,11 @@
                         <i class="fab fa-linkedin"></i> LinkedIn ile Giriş Yap
                     </a>
                 </div>
+                {{--<div class="d-grid gap-2 mx-auto text-center" id="twitter-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                    <a class="btn btn-outline-info btn-twitter-custom m-2" id="twitter-btn" href="{{ route('redirect-twitter') }}">
+                        <i class="fab fa-twitter"></i> Twitter ile Giriş Yap
+                    </a>
+                </div>--}}
             </div>
         </form>
         @include('frontend.modals.userAgreement')
@@ -92,8 +97,9 @@
           }
        });
 
-       var social_btn         = $('#google-btn, #facebook-btn, #github-btn, #linkedin-btn');
-       var social_btn_overlay = $('#google-btn-overlay, #facebook-btn-overlay, #github-btn-overlay, #linkedin-btn-overlay');
+       var social_btn         = $('#google-btn, #facebook-btn, #github-btn, #linkedin-btn, #twitter-btn');
+       var social_btn_overlay = $(
+           '#google-btn-overlay, #facebook-btn-overlay, #github-btn-overlay, #linkedin-btn-overlay, #twitter-btn-overlay');
 
        social_btn.addClass('disabled');
        social_btn.css('pointer-events', 'none');

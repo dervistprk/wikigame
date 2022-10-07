@@ -4,15 +4,20 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\Articles;
 use App\Models\Comment;
 use App\Models\Game;
 use App\Models\User;
 use App\Notifications\CommentDeleted;
+use App\Notifications\CommentEdited;
 use App\Notifications\CommentVerified;
 use App\Notifications\SubCommentDeleted;
 use App\Notifications\SubCommentVerified;
+use App\Notifications\UserBanned;
+use App\Notifications\UserBanRemoved;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Validator;
 
 class UserOperationController extends Controller
 {
@@ -42,33 +47,58 @@ class UserOperationController extends Controller
         return view('backend.user-operations.index', compact('per_page', 'quick_search', 'sort_by', 'sort_dir', 'users'));
     }
 
-    public function banUser(Request $request)
+    public function banUser(Request $request, $user_id)
     {
-        $user = User::find($request->input('user_id'));
+        $user = User::find($user_id);
 
-        $data = [
-            'ban_reason' => strip_tags(trim($request->input('ban_reason')))
-        ];
+        if ($request->isMethod('post')) {
+            $user_data = [
+                'ban_reason' => strip_tags(trim($request->input('ban_reason')))
+            ];
 
-        $rules = [
-            'ban_reason' => 'required|min:30'
-        ];
+            $user_rules = [
+                'ban_reason' => 'required|min:30'
+            ];
 
-        $validate_user_ban = \Validator::make($data, $rules);
+            $validate_user_ban = Validator::make($user_data, $user_rules);
 
-        if ($validate_user_ban->fails()) {
-            return redirect()->route('admin.user-operations')
-                             ->withErrors($validate_user_ban)
-                             ->withInput();
+            if ($validate_user_ban->fails()) {
+                return redirect()->route('admin.ban-user', $user_id)
+                                 ->withErrors($validate_user_ban)
+                                 ->withInput();
+            }
+
+            $user->update([
+                'is_banned'  => 1,
+                'ban_reason' => $request->input('ban_reason'),
+                'banned_by'  => Auth::user()->name . ' ' . Auth::user()->surname,
+                'banned_at'  => Carbon::now()
+            ]);
+
+            if ($user->comments) {
+                foreach ($user->comments as $comment) {
+                    if ($comment->commentable_type == 'App\Models\Game') {
+                        $content = Game::findOrFail($comment->commentable_id);
+                    } else {
+                        $content = Article::findOrFail($comment->commentable_id);
+                    }
+
+                    if ($comment->replies) {
+                        foreach ($comment->replies as $reply) {
+                            $reply->update(['is_verified' => 0]);
+                            $reply->user->notify(new CommentVerified($reply, $content));
+                        }
+                    }
+
+                    $comment->update(['is_verified' => 0]);
+                }
+            }
+
+            $user->notify(new UserBanned($user));
+
+            return redirect()->route('admin.user-operations')->with('message', 'Kullanıcı Kalıcı Olarak Yasaklandı.');
         }
-
-        $user->update([
-            'is_banned'  => 1,
-            'ban_reason' => $request->input('ban_reason'),
-            'banned_by'  => \Auth::user()->name . ' ' . \Auth::user()->surname,
-            'banned_at'  => \Carbon\Carbon::now()
-        ]);
-        return redirect()->route('admin.user-operations')->with('message', 'Kullanıcı Kalıcı Olarak Yasaklandı.');
+        return view('backend.user-operations.ban_user', compact('user'));
     }
 
     public function removeBan(Request $request)
@@ -81,6 +111,7 @@ class UserOperationController extends Controller
                 'banned_by'  => null,
                 'banned_at'  => null
             ]);
+            $user->notify(new UserBanRemoved($user));
             return true;
         }
         return false;
@@ -110,18 +141,37 @@ class UserOperationController extends Controller
     public function editUserComment(Request $request, $comment_id)
     {
         $comment = Comment::findOrFail($comment_id);
-        $comment->update(['body' => $request->input('comment_body')]);
 
-        return redirect()->route('admin.user-comments', $comment->user_id)->with('message', 'Kullanıcı Yorumu Başarıyla Düzenlendi.');
-    }
+        if ($request->isMethod('post')) {
+            $comment_fields = [
+                'is_verified'
+            ];
 
-    public function verifyUserComment(Request $request)
-    {
-        if ($request->ajax()) {
-            $comment              = Comment::findOrFail($request->id);
-            $comment->is_verified = $request->state == 'true' ? 1 : 0;
-            $comment->save();
-            $user = $comment->user;
+            $comment_rules = [
+                'body'        => 'required|min:30',
+                'is_verified' => 'required'
+            ];
+
+            foreach ($comment_fields as $field) {
+                $comment_data[$field] = $request->input($field);
+            }
+
+            $comment_data['body'] = strip_tags(trim($request->input('body')));
+
+            $validate_comment = Validator::make($comment_data, $comment_rules);
+
+            if ($validate_comment->fails()) {
+                return redirect()->route('admin.edit-user-comment', $comment_id)
+                                 ->withErrors($validate_comment)
+                                 ->withInput();
+            }
+
+            $comment_data['body'] = $request->input('body');
+
+            $comment_old_body   = $comment->body;
+            $comment_old_status = $comment->is_verified;
+
+            $comment->update($comment_data);
 
             if ($comment->commentable_type == 'App\Models\Game') {
                 $content = Game::findOrFail($comment->commentable_id);
@@ -129,13 +179,45 @@ class UserOperationController extends Controller
                 $content = Article::findOrFail($comment->commentable_id);
             }
 
-            if ($comment->parent) {
-                $parent_comment_user = $comment->parent->user;
-                $parent_comment_user->notify(new SubCommentVerified($comment, $content));
+            if ($comment->is_verified != $comment_old_status) {
+                $comment->user->notify(new CommentVerified($comment, $content));
             }
 
-            $user->notify(new CommentVerified($comment, $content));
-            return true;
+            $comment->user->notify(new CommentEdited($comment, $content, $comment_old_body));
+
+            return redirect()->route('admin.user-comments', $comment->user_id)->with('message', 'Kullanıcı Yorumu Başarıyla Düzenlendi.');
+        }
+
+        return view('backend.user-operations.edit_user_comment', compact('comment'));
+    }
+
+    public function verifyUserComment(Request $request)
+    {
+        if ($request->ajax()) {
+            $comment              = Comment::findOrFail($request->id);
+
+            if ($comment->user->is_banned == 0) {
+                $comment->is_verified = $request->state == 'true' ? 1 : 0;
+                $comment->save();
+
+                if ($comment->commentable_type == 'App\Models\Game') {
+                    $content = Game::findOrFail($comment->commentable_id);
+                } else {
+                    $content = Article::findOrFail($comment->commentable_id);
+                }
+
+                if ($comment->parent) {
+                    $parent_comment_user = $comment->parent->user;
+                    $parent_comment_user->notify(new SubCommentVerified($comment, $content));
+                }
+
+                $comment->user->notify(new CommentVerified($comment, $content));
+                return true;
+            } else {
+                return [
+                    'error' => true
+                ];
+            }
         }
         return false;
     }

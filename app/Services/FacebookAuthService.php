@@ -4,10 +4,10 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserVerify;
+use App\Notifications\UserRegisteredWithSocial;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Support\Str;
-use Mail;
 use Socialite;
 
 class FacebookAuthService
@@ -70,10 +70,7 @@ class FacebookAuthService
                 'token'   => $token
             ]);
 
-            Mail::send('frontend.emails.userPassword', ['password' => $password, 'social' => $social], function($message) use ($new_user) {
-                $message->to($new_user->email);
-                $message->subject('WikiGame Üyelik Bilgileriniz');
-            });
+            $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $social));
 
             Auth::attempt(['email' => $new_user->email, 'password' => $password], true);
             return redirect()->route('user-profile')->with('message', $social . ' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.');
