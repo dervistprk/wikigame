@@ -194,9 +194,9 @@ class UserOperationController extends Controller
     public function verifyUserComment(Request $request)
     {
         if ($request->ajax()) {
-            $comment              = Comment::findOrFail($request->id);
+            $comment = Comment::findOrFail($request->id);
 
-            if ($comment->user->is_banned == 0) {
+            if (!$comment->user->isBanned()) {
                 $comment->is_verified = $request->state == 'true' ? 1 : 0;
                 $comment->save();
 
@@ -207,8 +207,13 @@ class UserOperationController extends Controller
                 }
 
                 if ($comment->parent) {
-                    $parent_comment_user = $comment->parent->user;
-                    $parent_comment_user->notify(new SubCommentVerified($comment, $content));
+                    $comment->parent->user->notify(new SubCommentVerified($comment, $content));
+                }
+
+                if ($comment->subParent) {
+                    if ($comment->subParent->user != $comment->parent->user) {
+                        $comment->subParent->user->notify(new SubCommentVerified($comment, $content));
+                    }
                 }
 
                 $comment->user->notify(new CommentVerified($comment, $content));

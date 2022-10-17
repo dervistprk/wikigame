@@ -28,6 +28,7 @@ class GoogleAuthService
         try {
             $user = Socialite::driver('google')->user();
         } catch (\Exception $e) {
+            flash()->addError('Google ile giriş hatası', 'Hata');
             return redirect()->route('login-form')->withErrors('Google ile giriş yaparken bir sorun oluştu. Lütfen tekrar deneyin.');
         }
 
@@ -35,7 +36,7 @@ class GoogleAuthService
 
         if ($existing_user) {
             auth()->login($existing_user, true);
-            toastr()->success('Sisteme Google servisi ile giriş yaptınız', 'Başarılı');
+            flash()->addSuccess('Sisteme Google servisi ile giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);

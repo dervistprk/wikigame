@@ -7,22 +7,24 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class SubCommentVerified extends Notification
+class CommentLiked extends Notification
 {
     use Queueable;
 
     protected $comment;
     protected $content;
+    protected $liked_user;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($comment, $content)
+    public function __construct($comment, $content, $liked_user)
     {
-        $this->comment = $comment;
-        $this->content = $content;
+        $this->comment    = $comment;
+        $this->content    = $content;
+        $this->liked_user = $liked_user;
     }
 
     /**
@@ -47,26 +49,14 @@ class SubCommentVerified extends Notification
     public function toMail($notifiable)
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
-
-        if ($this->comment->is_verified == 0) {
-            return (new MailMessage())
-                ->error()
-                ->subject('Yorum Cevabı Kaldırıldı')
-                ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-                ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
-                ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')
-                ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
-                ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-                ->action('İçeriğe gitmek için tıklayın', $url)
-                ->line('Wikigame ekibi olarak teşekkür ederiz.');
-        }
-
         return (new MailMessage())
-            ->subject('Yorum Cevaplandı')
+            ->success()
+            ->subject('Yorum Beğenildi')
             ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yoruma bir cevap yazıldı.')
+            ->line('Yapmış olduğunuz yoruma beğeni gelmiştir.')
             ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
+            ->line(new HtmlString('Yorumu beğenen kullanıcımız: <strong>'. $this->liked_user->name . ' ' . $this->liked_user->surname .' ['. $this->liked_user->user_name . ']</strong>'))
             ->action('İçeriğe gitmek için tıklayın', $url)
             ->line('Wikigame ekibi olarak teşekkür ederiz.');
     }

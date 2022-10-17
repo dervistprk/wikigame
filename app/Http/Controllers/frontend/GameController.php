@@ -36,6 +36,7 @@ class GameController extends Controller
 
         $game_platforms = $game->platforms->pluck('name')->toArray();
         $game_platforms = implode(' - ', $game_platforms);
+        //TODO: yorumlar için daha fazla yükle(load more button) şeklinde sayfalama yap.
 
         $game->increment('hit');
         $video_count = 1;

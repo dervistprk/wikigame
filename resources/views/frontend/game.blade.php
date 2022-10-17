@@ -169,6 +169,110 @@
                 $(this).parents('.edit-form').fadeOut(300);
                 $(this).parents('.edit-form').next('.comment-body').fadeIn(600);
              });
+
+             $('.delete-comment-button').on('click', function() {
+                var confirm_text = 'Yorumu Silmek İstediğinizden Emin misiniz?';
+                if (confirm(confirm_text)) {
+                   var comment_div;
+                   var current_comment = $(this);
+                   var comment_id      = current_comment.attr('data-id');
+                   $.ajax({
+                      url       : "{{ route('user-delete-game-comment') }}",
+                      type      : 'POST',
+                      data      : {
+                         comment_id: comment_id,
+                      },
+                      headers   : {
+                         'X-CSRF-TOKEN': $('input[name="_token"]').val(),
+                      },
+                      beforeSend: function() {
+                         flasher.info('Yorum Siliniyor Lütfen Bekleyin <i class="fas fa-spin fa-spinner"></i>', 'Yükleniyor');
+                      },
+                      success   : function(response) {
+                         if (response.is_sub_comment) {
+                            comment_div = $(current_comment).parents('.subcomment-layout');
+                         } else {
+                            comment_div = $(current_comment).parents('.parent-comment-layout');
+                         }
+                         $(comment_div).fadeOut('normal', function() {
+                            $(this).remove();
+                         });
+                         flasher.success(response.flasher_message, 'Başarılı');
+                         if (response.reload) {
+                            setTimeout(function() {
+                               location.reload();
+                            }, 2500);
+                         }
+                      },
+                      error     : function(xhr, status, error) {
+                         flasher.error('Yorum Silinirken Hata Oluştu', 'Hata');
+                         console.log(xhr.responseText);
+                         console.log(status);
+                         console.log(error);
+                      },
+                   });
+                }
+             });
+
+             $('.like-comment-button').on('click', function() {
+                var current_comment = $(this);
+                var comment_id      = current_comment.attr('data-id');
+                $.ajax({
+                   url       : "{{ route('user-like-game-comment') }}",
+                   type      : 'POST',
+                   data      : {
+                      comment_id: comment_id,
+                   },
+                   headers   : {
+                      'X-CSRF-TOKEN': $('input[name="_token"]').val(),
+                   },
+                   beforeSend: function() {
+                      flasher.info('Lütfen Bekleyin <i class="fas fa-spin fa-spinner"></i>', 'Yükleniyor');
+                   },
+                   success   : function() {
+                      flasher.success('Yorum Başarıyla Beğenildi', 'Başarılı');
+                      setTimeout(function() {
+                         location.reload();
+                      }, 3000);
+                   },
+                   error     : function(xhr, status, error) {
+                      flasher.error('Yorum Beğenilirken Hata Oluştu', 'Hata');
+                      console.log(xhr.responseText);
+                      console.log(status);
+                      console.log(error);
+                   },
+                });
+             });
+
+             $('.dislike-comment-button').on('click', function() {
+                var current_comment = $(this);
+                var comment_id      = current_comment.attr('data-id');
+                $.ajax({
+                   url       : "{{ route('user-dislike-game-comment') }}",
+                   type      : 'POST',
+                   data      : {
+                      comment_id: comment_id,
+                   },
+                   headers   : {
+                      'X-CSRF-TOKEN': $('input[name="_token"]').val(),
+                   },
+                   beforeSend: function() {
+                      flasher.info('Lütfen Bekleyin <i class="fas fa-spin fa-spinner"></i>', 'Yükleniyor');
+                   },
+                   success   : function() {
+                      flasher.success('Yorum Başarıyla Eksilendi', 'Başarılı');
+                      setTimeout(function() {
+                         location.reload();
+                      }, 3000);
+                   },
+                   error     : function(xhr, status, error) {
+                      flasher.error('Yorum Eksilenirken Hata Oluştu', 'Hata');
+                      console.log(xhr.responseText);
+                      console.log(status);
+                      console.log(error);
+                   },
+                });
+             });
           }
 
           $('.submit-comment').on('click', function(e) {
@@ -176,27 +280,32 @@
              if (comment_length < 30) {
                 $('.min-char-alert').remove();
                 e.preventDefault();
-                $('.submit-comment-layout').append('<div class="alert alert-danger col-sm-6 float-start min-char-alert">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                $('.submit-comment-layout').append(
+                    '<div class="alert alert-danger col-sm-6 float-start min-char-alert">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
                 $('.min-char-alert').effect('shake');
              }
           });
 
           $('.submit-edit').on('click', function(e) {
-             var comment_length = stripTags($(this).parents('.edit-comment-layout').prev('.edit-text-layout').find('.edit-comment-text').val()).trim().length;
+             var comment_length = stripTags($(this).parents('.edit-comment-layout').prev('.edit-text-layout').find(
+                 '.edit-comment-text').val()).trim().length;
              if (comment_length < 30) {
                 $(this).siblings('.min-char-alert-edit').remove();
                 e.preventDefault();
-                $(this).parents('.edit-comment-layout').append('<div class="alert alert-danger col-sm-9 float-start min-char-alert-edit">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                $(this).parents('.edit-comment-layout').append(
+                    '<div class="alert alert-danger col-sm-9 float-start min-char-alert-edit">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
                 $(this).siblings('.min-char-alert-edit').effect('shake');
              }
           });
 
           $('.submit-reply').on('click', function(e) {
-             var comment_length = stripTags($(this).parents('.reply-comment-layout').prev('.reply-text-layout').find('.reply-comment-text').val()).trim().length;
+             var comment_length = stripTags($(this).parents('.reply-comment-layout').prev('.reply-text-layout').find(
+                 '.reply-comment-text').val()).trim().length;
              if (comment_length < 30) {
                 $(this).siblings('.min-char-alert-reply').remove();
                 e.preventDefault();
-                $(this).parents('.reply-comment-layout').append('<div class="alert alert-danger col-sm-9 float-start min-char-alert-reply">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                $(this).parents('.reply-comment-layout').append(
+                    '<div class="alert alert-danger col-sm-9 float-start min-char-alert-reply">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
                 $(this).siblings('.min-char-alert-reply').effect('shake');
              }
           });
@@ -213,10 +322,10 @@
     <script type="text/javascript">
        var uri = window.location.pathname;
        @if(isset($game))
-           if (uri == '/rastgele-oyun') {
-              window.location.replace('/oyun/{{ $game->slug }}');
-           }
-       @endif
+       if (uri == '/rastgele-oyun') {
+          window.location.replace('/oyun/{{ $game->slug }}');
+       }
+        @endif
     </script>
 @endsection
 

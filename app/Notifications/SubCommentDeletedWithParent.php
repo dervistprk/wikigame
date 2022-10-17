@@ -7,7 +7,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class SubCommentVerified extends Notification
+class SubCommentDeletedWithParent extends Notification
 {
     use Queueable;
 
@@ -47,24 +47,11 @@ class SubCommentVerified extends Notification
     public function toMail($notifiable)
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
-
-        if ($this->comment->is_verified == 0) {
-            return (new MailMessage())
-                ->error()
-                ->subject('Yorum Cevabı Kaldırıldı')
-                ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-                ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
-                ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')
-                ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
-                ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-                ->action('İçeriğe gitmek için tıklayın', $url)
-                ->line('Wikigame ekibi olarak teşekkür ederiz.');
-        }
-
         return (new MailMessage())
-            ->subject('Yorum Cevaplandı')
-            ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yoruma bir cevap yazıldı.')
+            ->error()
+            ->subject('Cevap Silindi')
+            ->greeting('Merhaba.')
+            ->line('Vermiş olduğunuz bir cevap, ilgili yorum silindiğinden dolayı silinmiştir.')
             ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
             ->action('İçeriğe gitmek için tıklayın', $url)

@@ -27,6 +27,11 @@ class Comment extends Model
         return $this->hasOne(Comment::class, 'id', 'parent_id');
     }
 
+    public function subParent()
+    {
+        return $this->hasOne(Comment::class, 'id', 'sub_parent_id');
+    }
+
     public function replies()
     {
         return $this->hasMany(Comment::class, 'parent_id')->where('is_verified', 1);
@@ -35,5 +40,15 @@ class Comment extends Model
     public function waitingConfirmation()
     {
         return $this->hasMany(Comment::class, 'parent_id')->where('is_verified', 0);
+    }
+
+    public function likedUsers()
+    {
+        return $this->hasMany(CommentLike::class, 'comment_id', 'id');
+    }
+
+    public function dislikedUsers()
+    {
+        return $this->hasMany(CommentDislike::class, 'comment_id', 'id');
     }
 }

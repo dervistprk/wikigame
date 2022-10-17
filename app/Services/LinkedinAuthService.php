@@ -28,6 +28,7 @@ class LinkedinAuthService
         try {
             $user = Socialite::driver('linkedin')->user();
         } catch (\Exception $e) {
+            flash()->addError('LinkedIn ile giriş hatası', 'Hata');
             return redirect()->route('login-form')->withErrors('LinkedIn ile giriş yaparken bir sorun oluştu. Lütfen tekrar deneyin.');
         }
 
@@ -35,7 +36,7 @@ class LinkedinAuthService
 
         if ($existing_user) {
             auth()->login($existing_user, true);
-            toastr()->success('Sisteme LinkedIn servisi ile giriş yaptınız', 'Başarılı');
+            flash()->addSuccess('Sisteme LinkedIn servisi ile giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);

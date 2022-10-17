@@ -81,7 +81,7 @@ return [
     */
 
     //'locale' => 'en',
-    'locale' => 'tr',
+    'locale'   => 'tr',
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +174,7 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Flasher\Laravel\FlasherServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -239,6 +240,7 @@ return [
         'View'         => Illuminate\Support\Facades\View::class,
         'Image'        => Intervention\Image\Facades\Image::class,
         'Socialite'    => Laravel\Socialite\Facades\Socialite::class,
+        'Flasher'      => Flasher\Laravel\Facade\Flasher::class,
     ],
 
 ];

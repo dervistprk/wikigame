@@ -30,6 +30,7 @@ class GithubAuthService
         try {
             $user = Socialite::driver('github')->user();
         } catch (\Exception $e) {
+            flash()->addError('Github ile giriş hatası', 'Hata');
             return redirect()->route('login-form')->withErrors('Github ile giriş yaparken bir sorun oluştu. Lütfen tekrar deneyin.');
         }
 
@@ -37,7 +38,7 @@ class GithubAuthService
 
         if ($existing_user) {
             auth()->login($existing_user, true);
-            toastr()->success('Sisteme Github servisi ile giriş yaptınız', 'Başarılı');
+            flash()->addSuccess('Sisteme Github servisi ile giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);

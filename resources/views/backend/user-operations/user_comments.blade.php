@@ -178,9 +178,11 @@
                    id: id,
                 },
                 beforeSend: function() {
+                   $('.comment-delete-waiting').fadeIn();
                    $('.delete-icon').removeClass('fa-trash').addClass('fa-spinner fa-spin');
                 },
                 success   : function() {
+                   $('.comment-delete-waiting').fadeOut();
                    $('.comment-delete-success').fadeIn();
                    setTimeout(function() {
                       window.location.reload();

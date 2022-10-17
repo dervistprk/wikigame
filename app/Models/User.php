@@ -48,4 +48,14 @@ class User extends Authenticatable
     {
         return $this->morphOne(Comment::class, 'commentable')->ofMany('likes', 'max');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(CommentLike::class, 'user_id', 'id');
+    }
+
+    public function dislikes()
+    {
+        return $this->hasMany(CommentDislike::class, 'user_id', 'id');
+    }
 }

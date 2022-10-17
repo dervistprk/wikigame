@@ -17,10 +17,12 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->integer('parent_id')->unsigned()->nullable();
+            $table->integer('sub_parent_id')->unsigned()->nullable();
             $table->morphs('commentable');
             $table->text('body');
             $table->boolean('is_verified')->default(0);
             $table->bigInteger('likes')->default(0);
+            $table->bigInteger('dislikes')->default(0);
             $table->timestamps();
         });
     }

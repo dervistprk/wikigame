@@ -28,6 +28,7 @@ class FacebookAuthService
         try {
             $user = Socialite::driver('facebook')->user();
         } catch (\Exception $e) {
+            flash()->addError('Facebook ile giriş hatası', 'Hata');
             return redirect()->route('login-form')->withErrors('Facebook ile giriş yaparken bir sorun oluştu. Lütfen tekrar deneyin.');
         }
 
@@ -35,7 +36,7 @@ class FacebookAuthService
 
         if ($existing_user) {
             auth()->login($existing_user, true);
-            toastr()->success('Sisteme Facebook servisi ile giriş yaptınız', 'Başarılı');
+            flash()->addSuccess('Sisteme Facebook servisi ile giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);

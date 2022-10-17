@@ -5,9 +5,16 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\CommentDislike;
+use App\Models\CommentLike;
 use App\Models\Game;
 use App\Models\WhiteList;
+use App\Notifications\CommentDeleted;
+use App\Notifications\CommentDisliked;
+use App\Notifications\CommentLiked;
 use App\Notifications\CommentVerified;
+use App\Notifications\SubCommentDeleted;
+use App\Notifications\SubCommentDeletedWithParent;
 use App\Notifications\SubCommentVerified;
 use App\Notifications\UserConfirmation;
 use Hash;
@@ -31,7 +38,6 @@ class UserController extends Controller
 
     public function registerPost(Request $request)
     {
-        //TODO: üyelik onay maillerini notification mail olarak düzenle.(üye olma, tekrar onay maili gönderme vs.)
         //TODO: twitter ile giriş yapabilme ve üye olabilmeyi ekle.
         $request->validate([
             'email'     => 'required|email|unique:users|max:255',
@@ -107,14 +113,14 @@ class UserController extends Controller
 
                     $user->notify(new UserConfirmation($user, $token));
 
-                    toastr()->success('Doğrulama e-postası tekrar gönderildi.', 'Başarılı');
+                    flash()->addSuccess('Doğrulama e-postası tekrar gönderildi.', 'Başarılı');
                     return redirect()->route('login-form')->with('message', 'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol edin.');
                 } else {
-                    toastr()->warning('E-posta daha önce doğrulanmış.', 'Uyarı');
+                    flash()->warning('E-posta daha önce doğrulanmış.', 'Uyarı');
                     return redirect()->route('login-form')->with('message', 'Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.');
                 }
             } else {
-                toastr()->error('E-posta veya şifre yanlış.', 'Hata');
+                flash()->error('E-posta veya şifre yanlış.', 'Hata');
                 return redirect()->route('resend-verification')->with('message', 'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyin.');
             }
         }
@@ -131,8 +137,8 @@ class UserController extends Controller
     {
         $remember = $request->input('remember_token');
 
-        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember ? true : false)) {
-            toastr()->success('Başarıyla giriş yaptınız', 'Başarılı');
+        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], (bool)$remember)) {
+            flash()->addSuccess('Başarıyla giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         }
 
@@ -204,7 +210,7 @@ class UserController extends Controller
 
             User::where('id', $user->id)->update($user_data);
 
-            toastr()->success('Profil Bilgileri Başarıyla Güncellendi.', 'Başarılı');
+            flash()->addSuccess('Profil Bilgileri Başarıyla Güncellendi.', 'Başarılı');
             return redirect()->route('user-profile');
         }
 
@@ -251,12 +257,12 @@ class UserController extends Controller
         if (Auth::user()->isAdmin()) {
             $comment->is_verified = 1;
             $game->comments()->save($comment);
-            toastr()->success('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            flash()->addSuccess('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
             return redirect()->route('game', $game->slug);
         }
 
         $game->comments()->save($comment);
-        toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
+        flash()->addWarning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
         return redirect()->route('game', $game->slug);
     }
 
@@ -273,7 +279,7 @@ class UserController extends Controller
             $comment->update([
                 'body' => $request->input('edit_comment')
             ]);
-            toastr()->success('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            flash()->addSuccess('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
             return redirect()->route('game', $game->slug);
         }
 
@@ -282,11 +288,11 @@ class UserController extends Controller
             'is_verified' => 0
         ]);
 
-        toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
+        flash()->addWarning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
         return redirect()->route('game', $game->slug);
     }
 
-    public function replyGameComment(Request $request, $game_id, $parent_comment_id)
+    public function replyGameComment(Request $request, $game_id, $parent_comment_id, $sub_comment_id = null)
     {
         $request->validate([
             'reply_comment' => 'required|min:30'
@@ -300,6 +306,7 @@ class UserController extends Controller
         $sub_comment->user()->associate(Auth::user());
         $sub_comment->body      = $request->input('reply_comment');
         $sub_comment->parent_id = $parent_comment_id;
+        $sub_comment_user = $sub_comment_id ? Comment::find($sub_comment_id)->user : null;
 
         if (Auth::user()->isAdmin()) {
             if ($sub_comment->commentable_type == 'App\Models\Game') {
@@ -307,21 +314,141 @@ class UserController extends Controller
             } else {
                 $content = Article::findOrFail($sub_comment->commentable_id);
             }
-
             $sub_comment->is_verified = 1;
             $game->comments()->save($sub_comment);
-            $parent_comment_user->notify(new SubCommentVerified($sub_comment, $content));
+
+            if ($sub_comment_user) {
+                $sub_comment_user->notify(new SubCommentVerified($sub_comment, $content));
+            }
+
+            if ($parent_comment_user != $reply_comment_user) {
+                $parent_comment_user->notify(new SubCommentVerified($sub_comment, $content));
+            }
+
             $reply_comment_user->notify(new CommentVerified($sub_comment, $content));
-            toastr()->success('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            flash()->addSuccess('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
             return redirect()->route('game', $game->slug);
         }
 
         $game->comments()->save($sub_comment);
-        toastr()->warning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
+        flash()->addWarning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
         return redirect()->route('game', $game->slug);
     }
 
     //TODO: frontend yorum silme ve beğenme fonksiyonlarını hazırla.
+
+    public function likeComment(Request $request)
+    {
+        if ($request->ajax()) {
+            $comment     = Comment::find($request->post('comment_id'));
+            $logged_user = Auth::user();
+
+            if ($comment->commentable_type == 'App\Models\Game') {
+                $content = Game::findOrFail($comment->commentable_id);
+            } else {
+                $content = Article::findOrFail($comment->commentable_id);
+            }
+
+            foreach ($logged_user->dislikes as $dislike) {
+                if ($dislike->comment == $comment) {
+                    $dislike->comment->delete();
+                    $comment->decrement('dislikes');
+                }
+            }
+
+            CommentLike::create([
+                'user_id'    => $logged_user->id,
+                'comment_id' => $comment->id
+            ]);
+
+            $comment->increment('likes');
+            $comment->user->notify(new CommentLiked($comment, $content, $logged_user));
+            return true;
+        }
+        return false;
+    }
+
+    public function dislikeComment(Request $request)
+    {
+        if ($request->ajax()) {
+            $comment     = Comment::find($request->post('comment_id'));
+            $logged_user = Auth::user();
+
+            if ($comment->commentable_type == 'App\Models\Game') {
+                $content = Game::findOrFail($comment->commentable_id);
+            } else {
+                $content = Article::findOrFail($comment->commentable_id);
+            }
+
+            foreach ($logged_user->likes as $like) {
+                if ($like->comment == $comment) {
+                    $like->delete();
+                    $comment->decrement('likes');
+                }
+            }
+
+            CommentDislike::create([
+                'user_id'    => $logged_user->id,
+                'comment_id' => $comment->id
+            ]);
+
+            $comment->increment('dislikes');
+            $comment->user->notify(new CommentDisliked($comment, $content, $logged_user));
+            return true;
+        }
+        return false;
+    }
+
+    public function deleteComment(Request $request)
+    {
+        if ($request->ajax()) {
+            $comment = Comment::find($request->post('comment_id'));
+
+            if ($comment->commentable_type == 'App\Models\Game') {
+                $content = Game::findOrFail($comment->commentable_id);
+            } else {
+                $content = Article::findOrFail($comment->commentable_id);
+            }
+
+            $is_sub_comment  = (bool)$comment->parent;
+            $flasher_message = 'Yorum başarıyla silindi';
+
+            if ($comment->replies->count() > 0) {
+                foreach ($comment->replies as $reply) {
+                    $reply->delete();
+                    $reply->user->notify(new SubCommentDeletedWithParent($comment, $content));
+                }
+                $flasher_message = 'Yorum ve cevapları başarıyla silindi';
+            }
+
+            $comment->delete();
+
+            if (Auth::user()->id != $comment->user_id) {
+                $comment->user->notify(new CommentDeleted($comment, $content));
+
+                if ($comment->parent) {
+                    $comment->parent->user->notify(new SubCommentDeleted($comment, $content));
+                }
+            }
+
+            if ($content->comments->count() == 0) {
+                return [
+                    'reload'          => true,
+                    'result'          => true,
+                    'is_sub_comment'  => $is_sub_comment,
+                    'flasher_message' => $flasher_message
+                ];
+            } else {
+                return [
+                    'reload'          => false,
+                    'result'          => true,
+                    'is_sub_comment'  => $is_sub_comment,
+                    'flasher_message' => $flasher_message
+                ];
+            }
+        }
+        return false;
+    }
 
     public function makeArticleComment(Request $request)
     {

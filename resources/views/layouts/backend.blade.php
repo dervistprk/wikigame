@@ -107,6 +107,22 @@
       });
 
       $('textarea').trumbowyg({
+         btns: [
+            ['viewHTML'],
+            ['undo', 'redo'],
+            ['formatting'],
+            ['strong', 'em', 'del'],
+            ['superscript', 'subscript'],
+            ['link'],
+            ['insertImage'],
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+            ['unorderedList', 'orderedList'],
+            ['horizontalRule'],
+            ['emoji'],
+            ['giphy'],
+            ['removeformat'],
+            ['fullscreen']
+         ],
          plugins          : {
             giphy: {
                apiKey: '3K2ElrEpAV2QMVV6NjiRLagpY5sS69ae',

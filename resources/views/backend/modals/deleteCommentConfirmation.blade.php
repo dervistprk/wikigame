@@ -12,6 +12,9 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-sm-6">
+                        <div class="alert alert-warning comment-delete-waiting" style="display: none">
+                            Yorum siliniyor. Lütfen bekleyin. <i class="fas fa-spin fa-spinner"></i>
+                        </div>
                         <div class="alert alert-success comment-delete-success" style="display: none">
                             Yorum başarıyla silindi. Lütfen bekleyin. <i class="fas fa-spin fa-spinner"></i>
                         </div>

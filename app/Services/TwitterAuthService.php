@@ -29,6 +29,7 @@ class TwitterAuthService
         /*try {
             $user = Socialite::driver('twitter')->user();
         } catch (\Exception $e) {
+            flash()->addError('Twitter ile giriş hatası', 'Hata');
             return redirect()->route('login-form')->withErrors('Twitter ile giriş yaparken bir sorun oluştu. Lütfen tekrar deneyin.');
         }
 
@@ -36,7 +37,7 @@ class TwitterAuthService
 
         if ($existing_user) {
             auth()->login($existing_user, true);
-            toastr()->success('Sisteme twitter servisi ile giriş yaptınız', 'Başarılı');
+            flash()->addSuccess('Sisteme Twitter servisi ile giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);
