@@ -9,7 +9,9 @@ use App\Models\Publisher;
 
 class GameController extends Controller
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function list()
     {
@@ -31,12 +33,21 @@ class GameController extends Controller
             'parentComments'
         )->active()->where('slug', '=', $slug)->firstOrFail();
 
-        $game_genres = $game->genres->pluck('name')->toArray();
-        $game_genres = implode(' - ', $game_genres);
+        $parent_comments = $game->parentComments()->paginate(5, ['*'], 'yorumlar');
+        $game_genres     = $game->genres->pluck('name')->toArray();
+        $game_genres     = implode(' - ', $game_genres);
 
-        $game_platforms = $game->platforms->pluck('name')->toArray();
-        $game_platforms = implode(' - ', $game_platforms);
-        //TODO: yorumlar için daha fazla yükle(load more button) şeklinde sayfalama yap.
+        $game_platforms  = $game->platforms->pluck('name')->toArray();
+        $game_platforms  = implode(' - ', $game_platforms);
+        $comment_replies = [];
+
+        if ($parent_comments) {
+            foreach ($parent_comments as $parent_comment) {
+                foreach ($parent_comment->replies as $reply) {
+                    $comment_replies[$parent_comment->id][] = $reply;
+                }
+            }
+        }
 
         $game->increment('hit');
         $video_count = 1;
@@ -46,7 +57,18 @@ class GameController extends Controller
             ['id', '!=', $game->id]
         ])->orderBy('hit', 'desc')->take(4)->get();
 
-        return view('frontend.game', compact('game', 'other_games', 'video_count', 'game_genres', 'game_platforms'));
+        return view(
+            'frontend.game',
+            compact(
+                'game',
+                'other_games',
+                'video_count',
+                'game_genres',
+                'game_platforms',
+                'parent_comments',
+                'comment_replies'
+            )
+        );
     }
 
     public function developers()
@@ -77,6 +99,5 @@ class GameController extends Controller
 
     public function gameComments()
     {
-
     }
 }

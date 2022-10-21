@@ -68,6 +68,7 @@ class LinkedinAuthService
             $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $social));
 
             Auth::attempt(['email' => $new_user->email, 'password' => $password], true);
+            flash()->addSuccess('Sisteme LinkedIn servisi ile üye oldunuz', 'Başarılı');
             return redirect()->route('user-profile')->with('message', $social . ' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.');
         }
     }
