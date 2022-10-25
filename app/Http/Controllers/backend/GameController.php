@@ -714,8 +714,13 @@ class GameController extends Controller
                 $file_extension           = '.' . File::extension($game->cover_image);
                 $coverImageName           = Str::slug($request->name) . '-cover' . $file_extension;
                 $file_data['cover_image'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $coverImageName;
-                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $game->slug . '-cover' . $file_extension)) {
-                    rename($old_path . '/' . $game->slug . '-cover' . $file_extension, $path . '/' . Str::slug($request->input('name')) . '-cover' . $file_extension);
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
+                        $old_path . '/' . $game->slug . '-cover' . $file_extension
+                    )) {
+                    rename(
+                        $old_path . '/' . $game->slug . '-cover' . $file_extension,
+                        $path . '/' . Str::slug($request->input('name')) . '-cover' . $file_extension
+                    );
                     File::delete($path . '/' . $game->slug . '-cover' . $file_extension);
                 }
             }
@@ -724,8 +729,13 @@ class GameController extends Controller
                 $file_extension      = '.' . File::extension($game->image1);
                 $imageName           = Str::slug($request->input('name')) . '-1' . $file_extension;
                 $file_data['image1'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $imageName;
-                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $game->slug . '-1' . $file_extension)) {
-                    rename($old_path . '/' . $game->slug . '-1' . $file_extension, $path . '/' . Str::slug($request->input('name')) . '-1' . $file_extension);
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
+                        $old_path . '/' . $game->slug . '-1' . $file_extension
+                    )) {
+                    rename(
+                        $old_path . '/' . $game->slug . '-1' . $file_extension,
+                        $path . '/' . Str::slug($request->input('name')) . '-1' . $file_extension
+                    );
                     File::delete($path . '/' . $game->slug . '-1' . $file_extension);
                 }
             }
@@ -736,8 +746,13 @@ class GameController extends Controller
                     $file_extension     = '.' . File::extension($image->path);
                     $imageName          = Str::slug($request->name) . '-' . $image_counter . $file_extension;
                     $image_data['path'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
-                    if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $game->slug . '-' . $image_counter . $file_extension)) {
-                        rename($old_path . '/' . $game->slug . '-' . $image_counter . $file_extension, $path . '/' . Str::slug($request->name) . '-' . $image_counter . $file_extension);
+                    if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
+                            $old_path . '/' . $game->slug . '-' . $image_counter . $file_extension
+                        )) {
+                        rename(
+                            $old_path . '/' . $game->slug . '-' . $image_counter . $file_extension,
+                            $path . '/' . Str::slug($request->name) . '-' . $image_counter . $file_extension
+                        );
                         File::delete($path . '/' . $game->slug . '-' . $image_counter . $file_extension);
                     }
                     $image->update($image_data);
@@ -930,7 +945,7 @@ class GameController extends Controller
     public function deleteSingleImage(Request $request)
     {
         /**
-         * @var Game      $game
+         * @var Game $game
          * @var GameImage $image_to_be_deleted
          */
         if ($request->ajax()) {
@@ -953,7 +968,7 @@ class GameController extends Controller
     public function deleteGameVideo(Request $request)
     {
         /**
-         * @var Game      $game
+         * @var Game $game
          * @var GameVideo $video_to_be_deleted
          */
         if ($request->ajax()) {

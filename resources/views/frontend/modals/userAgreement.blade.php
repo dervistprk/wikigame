@@ -1,4 +1,5 @@
-<div class="modal fade" id="user-agreement-modal" tabindex="-1" aria-labelledby="user-agreement-modal" aria-hidden="true">
+<div class="modal fade" id="user-agreement-modal" tabindex="-1" aria-labelledby="user-agreement-modal"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">

@@ -56,7 +56,11 @@ class CommentLiked extends Notification
             ->line('Yapmış olduğunuz yoruma beğeni gelmiştir.')
             ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->line(new HtmlString('Yorumu beğenen kullanıcımız: <strong>'. $this->liked_user->name . ' ' . $this->liked_user->surname .' ['. $this->liked_user->user_name . ']</strong>'))
+            ->line(
+                new HtmlString(
+                    'Yorumu beğenen kullanıcımız: <strong>' . $this->liked_user->name . ' ' . $this->liked_user->surname . ' [' . $this->liked_user->user_name . ']</strong>'
+                )
+            )
             ->action('İçeriğe gitmek için tıklayın', $url)
             ->line('Wikigame ekibi olarak teşekkür ederiz.');
     }

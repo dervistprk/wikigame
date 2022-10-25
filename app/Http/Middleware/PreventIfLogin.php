@@ -2,22 +2,26 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PreventIfLogin
 {
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param Request $request
+     * @param Closure(Request): (Response|RedirectResponse) $next
      *
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
-        if (\Auth::check()) {
+        if (Auth::check()) {
+            flash()->addError('Sayfa Erişilemez!', 'Hata');
             return redirect()->route('home')->with('message', 'Lütfen öncelikle mevcut oturumdan çıkış yapınız.');
         }
         return $next($request);

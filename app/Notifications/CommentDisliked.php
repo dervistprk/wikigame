@@ -22,8 +22,8 @@ class CommentDisliked extends Notification
      */
     public function __construct($comment, $content, $disliked_user)
     {
-        $this->comment    = $comment;
-        $this->content    = $content;
+        $this->comment       = $comment;
+        $this->content       = $content;
         $this->disliked_user = $disliked_user;
     }
 
@@ -56,7 +56,11 @@ class CommentDisliked extends Notification
             ->line('Yapmış olduğunuz bir yorum beğenilmemiştir.')
             ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->line(new HtmlString('Yorumu beğenmeyen kullanıcımız: <strong>'. $this->disliked_user->name . ' ' . $this->disliked_user->surname .' ['. $this->disliked_user->user_name . ']</strong>'))
+            ->line(
+                new HtmlString(
+                    'Yorumu beğenmeyen kullanıcımız: <strong>' . $this->disliked_user->name . ' ' . $this->disliked_user->surname . ' [' . $this->disliked_user->user_name . ']</strong>'
+                )
+            )
             ->action('İçeriğe gitmek için tıklayın', $url)
             ->line('Wikigame ekibi olarak teşekkür ederiz.');
     }

@@ -15,7 +15,8 @@
             </div>
         @endif
         <div class="m-2">
-            <a href="{{ route('admin.create-developer') }}" class="btn btn-sm btn-success" title="Ekle"><i class="fas fa-plus" style="margin-top: 3px;"></i> Geliştirici Ekle</a>
+            <a href="{{ route('admin.create-developer') }}" class="btn btn-sm btn-success" title="Ekle"><i
+                        class="fas fa-plus" style="margin-top: 3px;"></i> Geliştirici Ekle</a>
         </div>
         <div class="card mb-4 m-2 shadow">
             <div class="card-header font-weight-bold text-secondary">
@@ -29,21 +30,24 @@
                             <label for="per-page" class="form-label">Öge Sayısı</label>
                             <select class="form-select" name="per_page" id="per-page">
                                 @foreach(config('backend.per_page') as $config_per_page)
-                                    <option value="{{ $config_per_page }}" @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
+                                    <option value="{{ $config_per_page }}"
+                                            @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="m-2">
                             <label for="quick-search">Hızlı Ara</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" value="{{ $quick_search ?? null }}" name="quick_search" id="quick-search" placeholder="Kategori Ara"/>
+                                <input type="text" class="form-control" value="{{ $quick_search ?? null }}"
+                                       name="quick_search" id="quick-search" placeholder="Kategori Ara"/>
                                 <button class="btn btn-primary btn-sm mr-sm-2" id="btnNavbarSearch" type="submit">
                                     <i id="search-icon" class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="m-2 mt-4">
-                            <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none" data-toggle="tooltip" data-placement="top" title="Temizle">
+                            <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none"
+                                    data-toggle="tooltip" data-placement="top" title="Temizle">
                                 <i class="fas fa-undo"></i>
                             </button>
                         </div>
@@ -55,14 +59,14 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <thead class="thead-dark">
-                                <tr>
-                                    <th><input type="checkbox" class="form-check" id="check-all"></th>
-                                    <th class="sorter" data-column="id">ID</th>
-                                    <th>Geliştirici Logosu</th>
-                                    <th class="sorter" data-column="name">Adı</th>
-                                    <th>Oyun Sayısı</th>
-                                    <th>İşlemler</th>
-                                </tr>
+                            <tr>
+                                <th><input type="checkbox" class="form-check" id="check-all"></th>
+                                <th class="sorter" data-column="id">ID</th>
+                                <th>Geliştirici Logosu</th>
+                                <th class="sorter" data-column="name">Adı</th>
+                                <th>Oyun Sayısı</th>
+                                <th>İşlemler</th>
+                            </tr>
                             </thead>
                             <tbody>
                             @foreach($developers as $developer)
@@ -71,17 +75,22 @@
                                     $plural = 'geliştiricileri';
                                     $target = $developer;
                                     $route  = 'developer';
-                                    $developer->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz, geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                    $developer->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center">
+                                    <i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz,
+                                     geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($developer->status == 0) alert-danger @endif">
                                     <td>
-                                        <input type="checkbox" class="form-check delete-check" data-id="{{ $developer->id }}">
+                                        <input type="checkbox" class="form-check delete-check"
+                                               data-id="{{ $developer->id }}">
                                     </td>
                                     <td class="font-weight-bold">
                                         {{ $developer->id }}
                                     </td>
                                     <td>
-                                        <img src="{{ $developer->image }}" alt="geliştirici resmi" title="{{ $developer->name }}" class="img-fluid rounded img-thumbnail" width="200" height="150">
+                                        <img src="{{ $developer->image }}" alt="geliştirici resmi"
+                                             title="{{ $developer->name }}" class="img-fluid rounded img-thumbnail"
+                                             width="200" height="150">
                                     </td>
                                     <td class="font-weight-bold">
                                         {{ $developer->name }}
@@ -92,17 +101,28 @@
                                     <td>
                                         @if($developer->status == 1)
                                             <div class="mt-1">
-                                                <a target="_blank" href="{{ route('developer', [$developer->slug]) }}" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Görüntüle"><i class="fas fa-eye"></i></a>
+                                                <a target="_blank" href="{{ route('developer', [$developer->slug]) }}"
+                                                   class="btn btn-sm btn-success" data-toggle="tooltip"
+                                                   data-placement="top" title="Görüntüle"><i class="fas fa-eye"></i></a>
                                             </div>
                                         @endif
                                         <div class="mt-1">
-                                            <a href="{{ route('admin.edit-developer', [$developer->id]) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Düzenle"><i class="fas fa-pen"></i></a>
+                                            <a href="{{ route('admin.edit-developer', [$developer->id]) }}"
+                                               class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top"
+                                               title="Düzenle"><i class="fas fa-pen"></i></a>
                                         </div>
                                         <div class="mt-1">
-                                            <a href="#" data-id="{{ $developer->id }}" class="btn btn-sm btn-danger delete" data-toggle="modal" data-target="#delete{{$target->slug}}Modal_{{$target->id}}" data-tooltip="tooltip" data-placement="top" title="Sil"><i class="fas fa-trash"></i></a>
+                                            <a href="#" data-id="{{ $developer->id }}"
+                                               class="btn btn-sm btn-danger delete" data-toggle="modal"
+                                               data-target="#delete{{$target->slug}}Modal_{{$target->id}}"
+                                               data-tooltip="tooltip" data-placement="top" title="Sil"><i
+                                                        class="fas fa-trash"></i></a>
                                         </div>
                                         <div class="mt-1">
-                                            <input type="checkbox" data-id="{{ $developer->id }}" class="status-switch" name="status" @if($developer->status == 1) checked @endif data-toggle="toggle" data-on="Aktif" data-size="sm" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
+                                            <input type="checkbox" data-id="{{ $developer->id }}" class="status-switch"
+                                                   name="status" @if($developer->status == 1) checked
+                                                   @endif data-toggle="toggle" data-on="Aktif" data-size="sm"
+                                                   data-off="Pasif" data-onstyle="success" data-offstyle="danger">
                                         </div>
                                     </td>
                                 </tr>
@@ -112,8 +132,10 @@
                             @include('backend.modals.multipleDelete')
                             </tbody>
                         </table>
-                        <div class="row col-sm-2 justify-content-center" id="multiple-destroy-overlay" data-toggle="tooltip" data-placement="top" title="Silinecek öge seçin">
-                            <a class="btn btn-danger btn-sm text-white" id="multiple-destroy" data-toggle="modal" data-target="#delete-multiple-modal"><i class="fas fa-trash-alt"></i> Seçilenleri Sil</a>
+                        <div class="row col-sm-2 justify-content-center" id="multiple-destroy-overlay"
+                             data-toggle="tooltip" data-placement="top" title="Silinecek öge seçin">
+                            <a class="btn btn-danger btn-sm text-white" id="multiple-destroy" data-toggle="modal"
+                               data-target="#delete-multiple-modal"><i class="fas fa-trash-alt"></i> Seçilenleri Sil</a>
                         </div>
                     </div>
                 @else
@@ -238,8 +260,12 @@
              }
 
              $('.sorter').css({'cursor': 'pointer'}).hover(
-               function() { $(this).css('color', 'green'); },
-               function() { $(this).css('color', 'white'); },
+                function() {
+                   $(this).css('color', 'green');
+                },
+                function() {
+                   $(this).css('color', 'white');
+                },
              ).click(function() {
                 var column = $(this).attr('data-column');
                 var dir    = "{{ $sort_dir }}";
@@ -305,22 +331,22 @@
 
           $('#multiple-destroy-button').click(function() {
              $.ajax({
-                url     : "{{ route('admin.delete-multiple-developer') }}",
-                type    : 'POST',
-                dataType: 'json',
-                data    : {
+                url       : "{{ route('admin.delete-multiple-developer') }}",
+                type      : 'POST',
+                dataType  : 'json',
+                data      : {
                    ids: delete_array,
                 },
                 beforeSend: function() {
                    $('#delete-loading-icon').removeClass('d-none');
                 },
-                success : function() {
+                success   : function() {
                    $('#multiple-delete-message').removeClass('d-none');
                    setTimeout(function() {
                       $(location).prop('href', '{{ route('admin.developers') }}');
                    }, 2000);
                 },
-                error   : function(xhr, status, error) {
+                error     : function(xhr, status, error) {
                    console.log(xhr.responseText);
                    console.log(status);
                    console.log(error);

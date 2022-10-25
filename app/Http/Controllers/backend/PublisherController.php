@@ -159,8 +159,13 @@ class PublisherController extends Controller
                 $file_extension          = '.' . File::extension($publisher->image);
                 $imageName               = Str::slug($request->input('name')) . $file_extension;
                 $publisher_data['image'] = '/uploads/publishers/' . Str::slug($request->input('name')) . '/' . $imageName;
-                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $publisher->slug . $file_extension)) {
-                    rename($old_path . '/' . $publisher->slug . $file_extension, $path . '/' . Str::slug($request->input('name')) . $file_extension);
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
+                        $old_path . '/' . $publisher->slug . $file_extension
+                    )) {
+                    rename(
+                        $old_path . '/' . $publisher->slug . $file_extension,
+                        $path . '/' . Str::slug($request->input('name')) . $file_extension
+                    );
                     File::delete($path . '/' . $publisher->slug . $file_extension);
                 }
             }

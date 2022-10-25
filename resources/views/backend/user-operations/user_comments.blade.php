@@ -20,28 +20,32 @@
                 Kullanıcı Yorumları
                 <span class="font-weight-bolder">[{{ $user->name . ' ' . $user->surname }}] [<i>{{ $user->email }}</i>]</span>
                 <div class="float-end">
-                    <form class="form-inline" id="query-form" method="get" action="{{ route('admin.user-comments', $user->id) }}">
+                    <form class="form-inline" id="query-form" method="get"
+                          action="{{ route('admin.user-comments', $user->id) }}">
                         <input type="hidden" name="sort_by"/>
                         <input type="hidden" name="sort_dir"/>
                         <div class="m-2">
                             <label for="per-page" class="form-label">Öge Sayısı</label>
                             <select class="form-select" name="per_page" id="per-page">
                                 @foreach(config('backend.per_page') as $config_per_page)
-                                    <option value="{{ $config_per_page }}" @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
+                                    <option value="{{ $config_per_page }}"
+                                            @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="m-2">
                             <label for="quick-search">Hızlı Ara</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" value="{{ $quick_search ?? null }}" name="quick_search" id="quick-search" placeholder="Yorum Ara"/>
+                                <input type="text" class="form-control" value="{{ $quick_search ?? null }}"
+                                       name="quick_search" id="quick-search" placeholder="Yorum Ara"/>
                                 <button class="btn btn-primary mr-sm-2" id="btnNavbarSearch" type="submit">
                                     <i id="search-icon" class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="m-2 mt-4">
-                            <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none" data-toggle="tooltip" data-placement="top" title="Temizle">
+                            <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none"
+                                    data-toggle="tooltip" data-placement="top" title="Temizle">
                                 <i class="fas fa-undo"></i>
                             </button>
                         </div>
@@ -84,13 +88,21 @@
                                     </td>
                                     <td>
                                         <div class="d-inline-block mt-2">
-                                            <a href="{{ route('admin.edit-user-comment', $comment->id) }}" class="btn btn-sm btn-primary text-white" data-toggle="tooltip" data-placement="top" title="Yorumu Düzenle"><i class="fas fa-pen"></i></a>
+                                            <a href="{{ route('admin.edit-user-comment', $comment->id) }}"
+                                               class="btn btn-sm btn-primary text-white" data-toggle="tooltip"
+                                               data-placement="top" title="Yorumu Düzenle"><i
+                                                        class="fas fa-pen"></i></a>
                                         </div>
                                         <div class="d-inline-block mt-2">
-                                            <input type="checkbox" data-id="{{ $comment->id }}" class="status-switch" name="status" @if($comment->is_verified == 1) checked @endif data-toggle="toggle" data-size="sm" data-on="Aktif" data-off="Pasif" data-onstyle="success" data-offstyle="danger">
+                                            <input type="checkbox" data-id="{{ $comment->id }}" class="status-switch"
+                                                   name="status" @if($comment->is_verified == 1) checked
+                                                   @endif data-toggle="toggle" data-size="sm" data-on="Aktif"
+                                                   data-off="Pasif" data-onstyle="success" data-offstyle="danger">
                                         </div>
                                         <div class="d-inline-block mt-2">
-                                            <a class="btn btn-sm btn-danger text-white" data-toggle="modal" data-target="#delete-comment-{{ $comment->id }}-modal" data-tooltip="tooltip" data-placement="top" title="Yorumu Sil">
+                                            <a class="btn btn-sm btn-danger text-white" data-toggle="modal"
+                                               data-target="#delete-comment-{{ $comment->id }}-modal"
+                                               data-tooltip="tooltip" data-placement="top" title="Yorumu Sil">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </div>
@@ -99,7 +111,8 @@
                                 @include('backend.modals.deleteCommentConfirmation')
                             @endforeach
                             <div id="dialog-user-banned" class="d-none" title="Yasaklı Kullanıcı">
-                                <i class="fas fa-exclamation-triangle" style="color: red"></i> Yasaklı kullanıcıların yorumları aktive edilemez!
+                                <i class="fas fa-exclamation-triangle"
+                                   style="color: red"></i> Yasaklı kullanıcıların yorumları aktive edilemez!
                             </div>
                             </tbody>
                         </table>
@@ -114,143 +127,143 @@
 @endsection
 @section('custom-js')
     <script type="text/javascript">
-        $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+       $(document).ready(function() {
+          $.ajaxSetup({
+             headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+             },
+          });
+
+          $('.status-switch').change(function() {
+             var id    = $(this).attr('data-id');
+             var state = $(this).prop('checked');
+
+             $.ajax({
+                url       : "{{ route('admin.verify-user-comment') }}",
+                type      : 'POST',
+                dataType  : 'json',
+                data      : {
+                   state: state,
+                   id   : id,
                 },
-            });
-
-            $('.status-switch').change(function () {
-                var id    = $(this).attr('data-id');
-                var state = $(this).prop('checked');
-
-                $.ajax({
-                    url       : "{{ route('admin.verify-user-comment') }}",
-                    type      : 'POST',
-                    dataType  : 'json',
-                    data      : {
-                        state: state,
-                        id   : id,
-                    },
-                    beforeSend: function () {
-                        $('.state-change-waiting').html('<div class="row justify-content-center"><div class="col-sm-6"><div class="alert alert-info m-2 text-center">Lütfen Bekleyin <i class="fas fa-spinner fa-spin"></i></div></div></div>');
-                    },
-                    success   : function (response) {
-                        if (response.error) {
-                            $('#dialog-user-banned').removeClass('d-none');
-                            $('#dialog-user-banned').dialog({
-                                resizable  : false,
-                                dialogClass: 'no-close',
-                                height     : 'auto',
-                                width      : 'auto',
-                                draggable  : false,
-                                modal      : true,
-                                show       : true,
-                                hide       : true,
-                                buttons    : [
-                                    {
-                                        text   : 'Tamam',
-                                        'class': 'btn btn-sm btn-secondary',
-                                        click  : function () {
-                                            $(this).dialog('close');
-                                            setTimeout(function () {
-                                                location.reload();
-                                            }, 750);
-                                        },
-                                    },
-                                ],
-                            });
-                        } else {
-                            location.reload();
-                        }
-                    },
-                    error     : function (xhr, status, error) {
-                        console.log(xhr.responseText);
-                        console.log(status);
-                        console.log(error);
-                    },
-                });
-            });
-
-            $('.delete-comment').on('click', function () {
-                var id = $(this).attr('data-id');
-
-                $.ajax({
-                    url       : "{{ route('admin.delete-user-comment') }}",
-                    type      : 'POST',
-                    dataType  : 'json',
-                    data      : {
-                        id: id,
-                    },
-                    beforeSend: function () {
-                        $('.comment-delete-waiting').fadeIn();
-                        $('.delete-icon').removeClass('fa-trash').addClass('fa-spinner fa-spin');
-                    },
-                    success   : function () {
-                        $('.comment-delete-waiting').fadeOut();
-                        $('.comment-delete-success').fadeIn();
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 2500);
-                    },
-                    error     : function (xhr, status, error) {
-                        console.log(xhr.responseText);
-                        console.log(status);
-                        console.log(error);
-                    },
-                });
-            });
-
-            $('#query-form').submit(function () {
-                $('input').each(function (index, obj) {
-                    if ($(obj).val() == '') {
-                        $(obj).remove();
-                    }
-                });
-            });
-
-            $('#per-page').change(function () {
-                $('#query-form').submit();
-            });
-
-            $('#reset-parameters').click(function () {
-                window.location.href = "{{ route('admin.user-comments', $user->id) }}";
-            });
-
-            var url = window.location.href;
-            if (url.includes('?')) {
-                $('#reset-parameters').removeClass('d-none');
-            } else {
-                $('#reset-parameters').addClass('d-none');
-            }
-
-            var urlParams   = new URLSearchParams(window.location.search);
-            var sort_column = urlParams.get('sort_by');
-            var sort_dir    = urlParams.get('sort_dir');
-
-            if (sort_dir == 'asc') {
-                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
-            } else {
-                $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
-            }
-
-            $('.sorter').css({'cursor': 'pointer'}).hover(
-                function () {
-                    $(this).css('color', 'green');
+                beforeSend: function() {
+                   $('.state-change-waiting').html('<div class="row justify-content-center"><div class="col-sm-6"><div class="alert alert-info m-2 text-center">Lütfen Bekleyin <i class="fas fa-spinner fa-spin"></i></div></div></div>');
                 },
-                function () {
-                    $(this).css('color', 'white');
+                success   : function(response) {
+                   if (response.error) {
+                      $('#dialog-user-banned').removeClass('d-none');
+                      $('#dialog-user-banned').dialog({
+                         resizable  : false,
+                         dialogClass: 'no-close',
+                         height     : 'auto',
+                         width      : 'auto',
+                         draggable  : false,
+                         modal      : true,
+                         show       : true,
+                         hide       : true,
+                         buttons    : [
+                            {
+                               text   : 'Tamam',
+                               'class': 'btn btn-sm btn-secondary',
+                               click  : function() {
+                                  $(this).dialog('close');
+                                  setTimeout(function() {
+                                     location.reload();
+                                  }, 750);
+                               },
+                            },
+                         ],
+                      });
+                   } else {
+                      location.reload();
+                   }
                 },
-            ).click(function () {
-                var column = $(this).attr('data-column');
-                var dir    = "{{ $sort_dir }}";
+                error     : function(xhr, status, error) {
+                   console.log(xhr.responseText);
+                   console.log(status);
+                   console.log(error);
+                },
+             });
+          });
 
-                $('input[name="sort_by"]').val(column);
-                $('input[name="sort_dir"]').val(dir);
+          $('.delete-comment').on('click', function() {
+             var id = $(this).attr('data-id');
 
-                $('#query-form').submit();
-            });
-        });
+             $.ajax({
+                url       : "{{ route('admin.delete-user-comment') }}",
+                type      : 'POST',
+                dataType  : 'json',
+                data      : {
+                   id: id,
+                },
+                beforeSend: function() {
+                   $('.comment-delete-waiting').fadeIn();
+                   $('.delete-icon').removeClass('fa-trash').addClass('fa-spinner fa-spin');
+                },
+                success   : function() {
+                   $('.comment-delete-waiting').fadeOut();
+                   $('.comment-delete-success').fadeIn();
+                   setTimeout(function() {
+                      window.location.reload();
+                   }, 2500);
+                },
+                error     : function(xhr, status, error) {
+                   console.log(xhr.responseText);
+                   console.log(status);
+                   console.log(error);
+                },
+             });
+          });
+
+          $('#query-form').submit(function() {
+             $('input').each(function(index, obj) {
+                if ($(obj).val() == '') {
+                   $(obj).remove();
+                }
+             });
+          });
+
+          $('#per-page').change(function() {
+             $('#query-form').submit();
+          });
+
+          $('#reset-parameters').click(function() {
+             window.location.href = "{{ route('admin.user-comments', $user->id) }}";
+          });
+
+          var url = window.location.href;
+          if (url.includes('?')) {
+             $('#reset-parameters').removeClass('d-none');
+          } else {
+             $('#reset-parameters').addClass('d-none');
+          }
+
+          var urlParams   = new URLSearchParams(window.location.search);
+          var sort_column = urlParams.get('sort_by');
+          var sort_dir    = urlParams.get('sort_dir');
+
+          if (sort_dir == 'asc') {
+             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-down"></i>');
+          } else {
+             $('[data-column=\'' + sort_column + '\']').append('&nbsp;<i class="fa fa-arrow-up"></i>');
+          }
+
+          $('.sorter').css({'cursor': 'pointer'}).hover(
+             function() {
+                $(this).css('color', 'green');
+             },
+             function() {
+                $(this).css('color', 'white');
+             },
+          ).click(function() {
+             var column = $(this).attr('data-column');
+             var dir    = "{{ $sort_dir }}";
+
+             $('input[name="sort_by"]').val(column);
+             $('input[name="sort_dir"]').val(dir);
+
+             $('#query-form').submit();
+          });
+       });
     </script>
 @endsection

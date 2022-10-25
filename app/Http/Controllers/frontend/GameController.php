@@ -9,9 +9,7 @@ use App\Models\Publisher;
 
 class GameController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function list()
     {
@@ -95,9 +93,5 @@ class GameController extends Controller
         $publisher = Publisher::active()->where('slug', '=', $slug)->firstOrFail();
         $games     = $publisher->games()->active()->paginate(12);
         return view('frontend.publisher', compact('publisher', 'games'));
-    }
-
-    public function gameComments()
-    {
     }
 }

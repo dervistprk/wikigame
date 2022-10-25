@@ -1,4 +1,5 @@
-<div class="modal fade" id="delete-multiple-modal" tabindex="-1" role="dialog" aria-labelledby="delete-multiple-modal-lable" aria-hidden="true">
+<div class="modal fade" id="delete-multiple-modal" tabindex="-1" role="dialog"
+     aria-labelledby="delete-multiple-modal-lable" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -27,7 +28,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-danger" id="multiple-destroy-button"><i class="fas fa-spinner fa-spin d-none" id="delete-loading-icon"></i> Sil</button>
+                <button type="button" class="btn btn-danger" id="multiple-destroy-button"><i
+                            class="fas fa-spinner fa-spin d-none" id="delete-loading-icon"></i> Sil
+                </button>
             </div>
         </div>
     </div>

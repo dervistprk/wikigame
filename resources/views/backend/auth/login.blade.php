@@ -41,19 +41,24 @@
                                         </button>
                                     </div>
                                 @endif
-                                <form method="post" class="needs-validation" novalidate action="{{ route('admin.login-post') }}">
+                                <form method="post" class="needs-validation" novalidate
+                                      action="{{ route('admin.login-post') }}">
                                     @csrf
                                     <div class="input-group mb-3">
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                         <div class="form-floating flex-grow-1">
-                                            <input class="form-control" id="email" type="email" name="email" placeholder="E-Posta Adresinizi Giriniz" required/>
+                                            <input class="form-control" id="email" type="email" name="email"
+                                                   placeholder="E-Posta Adresinizi Giriniz" required/>
                                             <label for="email">E-Posta</label>
                                         </div>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                         <div class="form-floating flex-grow-1">
-                                            <input class="form-control" id="password" type="password" name="password" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" placeholder="Şifre" required/>
+                                            <input class="form-control" id="password" type="password" name="password"
+                                                   minlength="6" maxlength="255"
+                                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" placeholder="Şifre"
+                                                   required/>
                                             <label for="password">Şifre</label>
                                         </div>
                                         <span class="input-group-text" style="cursor: pointer" id="show-eye">
@@ -68,7 +73,8 @@
                                             <i class="fa fa-sign-in-alt"></i> Giriş
                                         </button>
                                         <div class="col-sm-4 d-inline-block ms-2">
-                                            <input type="checkbox" class="form-check-input form-check-inline" name="remember_token" id="remember"/>
+                                            <input type="checkbox" class="form-check-input form-check-inline"
+                                                   name="remember_token" id="remember"/>
                                             <label for="remember" class="form-check-label">Beni Hatırla</label>
                                         </div>
                                     </div>

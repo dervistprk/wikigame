@@ -15,15 +15,19 @@
     <link href="{{ asset('backend/css/jquery-ui-blitzer.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/cookie-sent-3.min.css') }}" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/ui/trumbowyg.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/ui/trumbowyg.emoji.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css"
+          rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/ui/trumbowyg.emoji.min.css"
+          rel="stylesheet"/>
     @yield('custom-css')
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KY0WRBH1EE"></script>
     <script>
        window.dataLayer = window.dataLayer || [];
 
-       function gtag() {dataLayer.push(arguments);}
+       function gtag() {
+          dataLayer.push(arguments);
+       }
 
        gtag('js', new Date());
        gtag('config', 'G-KY0WRBH1EE');
@@ -32,7 +36,8 @@
 <body>
 @include('layouts.header')
 @yield('content')
-<button class="btn btn-warning rounded-circle" onclick="topFunction()" id="topBtn" data-toggle="tooltip" data-placement="top" title="En Üste Git">
+<button class="btn btn-warning rounded-circle" onclick="topFunction()" id="topBtn" data-toggle="tooltip"
+        data-placement="top" title="En Üste Git">
     <i class="fas fa-angle-up"></i>
 </button>
 @include('layouts.footer')
@@ -48,14 +53,16 @@
 <script src="{{ asset('js/typeahead.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/trumbowyg.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/langs/tr.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/trumbowyg.giphy.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js"
+        type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/trumbowyg.giphy.min.js"
+        type="text/javascript"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@flasher/flasher@1.1.1/dist/flasher.min.js"></script>
 <script type="text/javascript">
    window.cookieconsent.initialise({
       'palette' : {
          'popup' : {
-            'background': '#000',
+            'background': '#000000',
          },
          'button': {
             'background': '#f1d600',

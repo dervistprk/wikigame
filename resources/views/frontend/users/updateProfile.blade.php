@@ -2,7 +2,8 @@
 @section('title', 'Profil Güncelle')
 @section('content')
     <div class="container d-flex align-items-center justify-content-center">
-        <form class="game-info rounded col-sm-10 mt-2 needs-validation" novalidate action="{{ route('update-profile') }}" method="post" id="update-profile-form">
+        <form class="game-info rounded col-sm-10 mt-2 needs-validation" novalidate
+              action="{{ route('update-profile') }}" method="post" id="update-profile-form">
             @if($errors->any())
                 <div class="row justify-content-center">
                     <div class="col-sm-6">
@@ -17,7 +18,8 @@
             @endif
             @csrf
             <div class="btn-group h-100 d-flex align-items-center justify-content-center m-2" role="group">
-                <a type="button" class="btn btn-primary btn-lg active" href=" {{route('update-profile')}}" style="pointer-events: none">Bilgilerim</a>
+                <a type="button" class="btn btn-primary btn-lg active" href=" {{route('update-profile')}}"
+                   style="pointer-events: none">Bilgilerim</a>
                 <a type="button" class="btn btn-danger btn-lg" href="#">Favorilerim</a>
                 <a type="button" class="btn btn-info btn-lg" href="#">Yorumlarım</a>
             </div>
@@ -28,14 +30,18 @@
                         <label for="email" class="form-label fw-bold">E-Posta</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{ $user->email }}" readonly style="cursor: not-allowed"/>
+                            <input type="email" name="email" class="form-control" id="email"
+                                   aria-describedby="emailHelp" value="{{ $user->email }}" readonly
+                                   style="cursor: not-allowed"/>
                         </div>
                     </div>
                     <div class="col">
                         <label for="user_name" class="form-label fw-bold">Kullanıcı Adı</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
-                            <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Kullanıcı Adı Girin" value="{{ $user->user_name }}" minlength="3" maxlength="255" pattern="[\x00-\x7F]+" readonly style="cursor: not-allowed"/>
+                            <input type="text" name="user_name" class="form-control" id="user_name"
+                                   placeholder="Kullanıcı Adı Girin" value="{{ $user->user_name }}" minlength="3"
+                                   maxlength="255" pattern="[\x00-\x7F]+" readonly style="cursor: not-allowed"/>
                         </div>
                     </div>
                 </div>
@@ -44,7 +50,9 @@
                         <label for="current_password" class="form-label fw-bold">Mevcut Şifre (*)</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Mevcut Şifrenizi Girin" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"/>
+                            <input type="password" name="current_password" id="current_password" class="form-control"
+                                   placeholder="Mevcut Şifrenizi Girin" minlength="6" maxlength="255"
+                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye-1">
                                     <i class="far fa-eye"></i>
                                 </span>
@@ -57,7 +65,9 @@
                         <label for="password" class="form-label fw-bold">Yeni Şifre (*)</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="password" id="password" class="form-control pr-password" placeholder="Yeni Şifrenizi Girin" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"/>
+                            <input type="password" name="password" id="password" class="form-control pr-password"
+                                   placeholder="Yeni Şifrenizi Girin" minlength="6" maxlength="255"
+                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye-2">
                                 <i class="far fa-eye"></i>
                             </span>
@@ -78,7 +88,9 @@
                         <label for="password_confirmation" class="form-label fw-bold">Yeni Şifre Tekrarı (*)</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Yeni Şifre Tekrarını Girin" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"/>
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                   class="form-control" placeholder="Yeni Şifre Tekrarını Girin" minlength="6"
+                                   maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye-3">
                                 <i class="far fa-eye"></i>
                             </span>
@@ -97,12 +109,14 @@
                 <div class="row">
                     <div class="col">
                         <label for="name" class="form-label fw-bold">Ad</label>
-                        <input type="text" name="name" class="form-control" id="name" value="{{ $user->name }}" minlength="2" maxlength="255" required/>
+                        <input type="text" name="name" class="form-control" id="name" value="{{ $user->name }}"
+                               minlength="2" maxlength="255" required/>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="surname" class="form-label fw-bold">Soyad</label>
-                            <input type="text" name="surname" class="form-control" id="surname" value="{{ $user->surname }}" minlength="2" maxlength="255" required/>
+                            <input type="text" name="surname" class="form-control" id="surname"
+                                   value="{{ $user->surname }}" minlength="2" maxlength="255" required/>
                         </div>
                     </div>
                 </div>
@@ -112,7 +126,8 @@
                             <label for="birth_day" class="form-label fw-bold">Doğum Tarihi</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                <input type="text" name="birth_day" class="form-control date-picker" id="birth_day" value="{{ date('Y-m-d', strtotime($user->birth_day)) }}" required/>
+                                <input type="text" name="birth_day" class="form-control date-picker" id="birth_day"
+                                       value="{{ date('Y-m-d', strtotime($user->birth_day)) }}" required/>
                             </div>
                         </div>
                     </div>
@@ -132,9 +147,12 @@
                     <label for="user_about_text" class="form-label fw-bold">Hakkımda</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fa fa-info-circle"></i></span>
-                        <textarea class="form-control" name="about" id="user_about_text" rows="7" minlength="30" maxlength="500" placeholder="Hakkınızda tanıtıcı kısa bir yazı yazın." onkeyup="countChar(this)" required>{{ $user->about }}</textarea>
+                        <textarea class="form-control" name="about" id="user_about_text" rows="7" minlength="30"
+                                  maxlength="500" placeholder="Hakkınızda tanıtıcı kısa bir yazı yazın."
+                                  onkeyup="countChar(this)" required>{{ $user->about }}</textarea>
                     </div>
-                    <small id="emailHelp" class="form-text text-muted d-inline-block">En az 30 karakter uzunluğunda olmalıdır.</small>
+                    <small id="emailHelp"
+                           class="form-text text-muted d-inline-block">En az 30 karakter uzunluğunda olmalıdır.</small>
                     <span id="charNum" class="text-muted d-inline-block float-end"></span>
                 </div>
                 <hr>

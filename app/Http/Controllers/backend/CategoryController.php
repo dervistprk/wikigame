@@ -29,7 +29,10 @@ class CategoryController extends Controller
         $categories = Category::with('games')->where('name', 'LIKE', '%' . $quick_search . '%')
                               ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
 
-        return view('backend.categories.index', compact('categories', 'per_page', 'quick_search', 'sort_dir', 'sort_by'));
+        return view(
+            'backend.categories.index',
+            compact('categories', 'per_page', 'quick_search', 'sort_dir', 'sort_by')
+        );
     }
 
     public function create()

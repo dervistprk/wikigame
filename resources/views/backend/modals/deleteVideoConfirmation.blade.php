@@ -1,4 +1,5 @@
-<div class="modal fade" id="delete-video-{{ $video_count }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="delete-video-{{ $video_count }}" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -21,7 +22,8 @@
             <div class="alert d-none" id="response-message"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-danger delete-video-btn"><i class="fa fa-trash-alt"></i> Sil</button>
+                <button type="button" class="btn btn-danger delete-video-btn"><i class="fa fa-trash-alt"></i> Sil
+                </button>
                 <input type="hidden" id="video-hash-modal" value="{{ $video->video_hash }}"/>
             </div>
         </div>

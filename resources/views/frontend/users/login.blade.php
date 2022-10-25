@@ -11,7 +11,8 @@
                                 @foreach($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
                         </div>
                     </div>
@@ -28,12 +29,14 @@
                     <label for="email" class="fw-bold">E-Posta</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" value="{{ old('email') }}" required/>
+                        <input type="email" name="email" class="form-control" id="email"
+                               placeholder="Email Adresinizi Girin" value="{{ old('email') }}" required/>
                     </div>
                     <label for="password" class="fw-bold">Şifre</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi Girin" required/>
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="Şifrenizi Girin" required/>
                         <span class="input-group-text" style="cursor: pointer" id="show-eye">
                             <i class="far fa-eye"></i>
                          </span>
@@ -54,31 +57,41 @@
                 <div class="col-sm-6 offset-sm-3">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="agreement_confirmation"/>
-                        <label class="form-label" for="agreement_confirmation"><a href="" class="game-detail-links text-decoration-none" data-bs-toggle="modal" data-bs-target="#user-agreement-modal">Kullanıcı sözleşmesini</a> okudum ve kabul ediyorum.</label>
+                        <label class="form-label" for="agreement_confirmation">
+                            <a href="" class="game-detail-links text-decoration-none" data-bs-toggle="modal"
+                               data-bs-target="#user-agreement-modal">Kullanıcı sözleşmesini
+                            </a> okudum ve kabul ediyorum.
+                        </label>
                     </div>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="google-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                <div class="d-grid gap-2 mx-auto text-center" id="google-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-danger m-2" id="google-btn" href="{{ route('redirect-google') }}">
                         <i class="fab fa-google"></i> Google ile Giriş Yap
                     </a>
                 </div>
-                {{--<div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                {{--<div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}">
                         <i class="fab fa-facebook"></i> Facebook ile Giriş Yap
                     </a>
                 </div>--}}
-                <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-secondary m-2" id="github-btn" href="{{ route('redirect-github') }}">
                         <i class="fab fa-github"></i> Github ile Giriş Yap
                     </a>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="linkedin-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                <div class="d-grid gap-2 mx-auto text-center" id="linkedin-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-primary m-2" id="linkedin-btn" href="{{ route('redirect-linkedin') }}">
                         <i class="fab fa-linkedin"></i> LinkedIn ile Giriş Yap
                     </a>
                 </div>
-                {{--<div class="d-grid gap-2 mx-auto text-center" id="twitter-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
-                    <a class="btn btn-outline-info btn-twitter-custom m-2" id="twitter-btn" href="{{ route('redirect-twitter') }}">
+                {{--<div class="d-grid gap-2 mx-auto text-center" id="twitter-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                    <a class="btn btn-outline-info btn-twitter-custom m-2" id="twitter-btn"
+                       href="{{ route('redirect-twitter') }}">
                         <i class="fab fa-twitter"></i> Twitter ile Giriş Yap
                     </a>
                 </div>--}}
@@ -99,7 +112,7 @@
 
        var social_btn         = $('#google-btn, #facebook-btn, #github-btn, #linkedin-btn, #twitter-btn');
        var social_btn_overlay = $(
-           '#google-btn-overlay, #facebook-btn-overlay, #github-btn-overlay, #linkedin-btn-overlay, #twitter-btn-overlay');
+          '#google-btn-overlay, #facebook-btn-overlay, #github-btn-overlay, #linkedin-btn-overlay, #twitter-btn-overlay');
 
        social_btn.addClass('disabled');
        social_btn.css('pointer-events', 'none');

@@ -1,4 +1,5 @@
-<div class="modal fade" id="delete{{ $target->slug }}Modal_{{ $target->id }}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="delete{{ $target->slug }}ModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete{{ $target->slug }}Modal_{{ $target->id }}" data-backdrop="static" tabindex="-1"
+     role="dialog" aria-labelledby="delete{{ $target->slug }}ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,12 +11,17 @@
                     @csrf
                     @method('DELETE')
                     <h6 class="text-secondary">
-                        <strong>{{ $target->name ?? $target->title }}</strong> ögesini silmek istediğinizden emin misiniz?
+                        <strong>{{ $target->name ?? $target->title }}</strong> ögesini silmek istediğinizden emin
+                                                                               misiniz?
                     </h6>
                     @if(isset($target->cover_image))
-                        <img src="{{ $target->cover_image }}" alt="{{ $target->name }} Kapak Resmi" title="{{ $target->name }} Kapak Resmi" class="img-fluid img-thumbnail" width="150" height="200">
+                        <img src="{{ $target->cover_image }}" alt="{{ $target->name }} Kapak Resmi"
+                             title="{{ $target->name }} Kapak Resmi" class="img-fluid img-thumbnail" width="150"
+                             height="200">
                     @elseif(isset($target->image))
-                        <img src="{{ $target->image }}" alt="{{ $target->name ?? $target->title }}" title="{{ $target->name ?? $target->title }} Kapak Resmi" class="img-fluid img-thumbnail" width="200" height="150">
+                        <img src="{{ $target->image }}" alt="{{ $target->name ?? $target->title }}"
+                             title="{{ $target->name ?? $target->title }} Kapak Resmi" class="img-fluid img-thumbnail"
+                             width="200" height="150">
                     @endif
                     <h6>{!! $delete_warning_message !!}</h6>
                 </div>

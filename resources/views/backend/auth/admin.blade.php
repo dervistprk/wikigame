@@ -39,13 +39,16 @@
                     <div class="col-sm">
                         <div class="form-group">
                             <label for="email" class="text-primary font-weight-bold">E-Posta *</label>
-                            <input type="text" name="email" id="email" class="form-control" value="{{$admin->email}}" readonly style="cursor: not-allowed">
+                            <input type="text" name="email" id="email" class="form-control" value="{{$admin->email}}"
+                                   readonly style="cursor: not-allowed">
                         </div>
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="current_password" class="text-primary font-weight-bold">Mevcut Şifre *</label>
-                                    <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Mevcut Şifrenizi Girin" required/>
+                                    <label for="current_password"
+                                           class="text-primary font-weight-bold">Mevcut Şifre *</label>
+                                    <input type="password" name="current_password" id="current_password"
+                                           class="form-control" placeholder="Mevcut Şifrenizi Girin" required/>
                                     <div class="invalid-feedback">
                                         Lütfen mevcut şifrenizi girin.
                                     </div>
@@ -54,7 +57,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="password" class="text-primary font-weight-bold">Yeni Şifre *</label>
-                                    <input type="password" name="password" class="form-control" id="password" placeholder="Şifre Girin" autocomplete="new-password" required/>
+                                    <input type="password" name="password" class="form-control" id="password"
+                                           placeholder="Şifre Girin" autocomplete="new-password" required/>
                                     <div class="invalid-feedback">
                                         Lütfen yeni şifrenizi girin.
                                     </div>
@@ -70,8 +74,11 @@
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label for="password_confirmation" class="text-primary font-weight-bold">Yeni Şifre Tekrarı *</label>
-                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" autocomplete="new-password" placeholder="Şifre Tekrarını Girin" required/>
+                                    <label for="password_confirmation"
+                                           class="text-primary font-weight-bold">Yeni Şifre Tekrarı *</label>
+                                    <input type="password" class="form-control" id="password_confirmation"
+                                           name="password_confirmation" autocomplete="new-password"
+                                           placeholder="Şifre Tekrarını Girin" required/>
                                     <div class="alert alert-danger d-none mt-2" id="password-confirmation-alert">
                                         Şifre tekrarları eşleşmiyor.
                                     </div>

@@ -51,7 +51,9 @@ class CommentDeleted extends Notification
             ->error()
             ->subject('Yorum Silindi')
             ->greeting('Merhaba.')
-            ->line('Yapmış olduğunuz yorum kurallarımız gereği silinmiştir. Lütfen site kurallarını dikkatli bir şekilde okuyup, yorumunuzu bu kurallar çerçevesinde yapın.')
+            ->line(
+                'Yapmış olduğunuz yorum kurallarımız gereği silinmiştir. Lütfen site kurallarını dikkatli bir şekilde okuyup, yorumunuzu bu kurallar çerçevesinde yapın.'
+            )
             ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
             ->action('İçeriğe gitmek için tıklayın', $url)

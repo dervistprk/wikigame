@@ -27,14 +27,18 @@
                     <div class="col-sm">
                         <div class="form-group">
                             <label for="name" class="text-primary form-label font-weight-bold">Adı*</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Kategori Adını Giriniz" value="{{ old('name') }}" required>
+                            <input type="text" class="form-control" id="name" name="name"
+                                   placeholder="Kategori Adını Giriniz" value="{{ old('name') }}" required>
                             <div class="invalid-feedback">
                                 Lütfen kategori adı girin.
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="description" class="text-primary form-label font-weight-bold">Kategori Açıklaması*</label>
-                            <textarea class="form-control" id="description" name="description" rows="5" placeholder="Kategori Açıklaması Giriniz" required>{{ old('description') }}</textarea>
+                            <label for="description"
+                                   class="text-primary form-label font-weight-bold">Kategori Açıklaması*</label>
+                            <textarea class="form-control" id="description" name="description" rows="5"
+                                      placeholder="Kategori Açıklaması Giriniz"
+                                      required>{{ old('description') }}</textarea>
                             <div class="invalid-feedback">
                                 Lütfen kategori açıklaması girin.
                             </div>
@@ -42,7 +46,8 @@
                         <div class="form-row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label for="status" class="text-primary col-form-label col-form-label font-weight-bold">Durum*</label>
+                                    <label for="status"
+                                           class="text-primary col-form-label col-form-label font-weight-bold">Durum*</label>
                                     <select class="form-select" id="status" name="status" required>
                                         <option value="0">Pasif</option>
                                         <option value="1">Aktif</option>
@@ -58,7 +63,8 @@
             </div>
             <div class="form-group mt-3 text-center">
                 <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Kaydet</button>
-                <a href="{{route('admin.categories')}}" class="btn btn-danger"><i class="fa fa-backspace"></i> Vazgeç</a>
+                <a href="{{route('admin.categories')}}" class="btn btn-danger"><i
+                            class="fa fa-backspace"></i> Vazgeç</a>
             </div>
         </form>
     </div>

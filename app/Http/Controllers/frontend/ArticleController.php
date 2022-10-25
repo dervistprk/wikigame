@@ -4,9 +4,6 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\Category;
-use App\Models\Setting;
-use Cache;
 
 class ArticleController extends Controller
 {

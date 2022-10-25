@@ -2,24 +2,29 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class isLoginUser
 {
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param Request $request
+     * @param Closure(Request): (Response|RedirectResponse) $next
      *
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
-        if (\Auth::check()) {
+        if (Auth::check()) {
             return $next($request);
         }
+
+        flash()->addError('Sayfa Erişilemez!', 'Hata');
         return redirect()->route('login-form')->with('message', 'Gitmek istediğiniz sayfayı görebilmek için giriş yapmanız gerekmektedir.');
     }
 }

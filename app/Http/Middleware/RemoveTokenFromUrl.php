@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RemoveTokenFromUrl
@@ -27,11 +28,11 @@ class RemoveTokenFromUrl
      * Remove and make redirection.
      *
      * @param Request $request
-     * @param string  $parameter
+     * @param string $parameter
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function removeFromQueryAndRedirect(Request $request, string $parameter)
+    public function removeFromQueryAndRedirect(Request $request, string $parameter): RedirectResponse
     {
         $request->query->remove($parameter);
         return redirect()->to($request->fullUrlWithQuery([]));

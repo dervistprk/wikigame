@@ -3,7 +3,8 @@
         @php $socials = ['facebook', 'twitter', 'github', 'linkedin', 'youtube', 'instagram'] @endphp
         @foreach($socials as $social)
             @if($settings->$social != null)
-                <div class="text-center d-inline-block" data-toggle="tooltip" data-placement="top" title="{{ ucfirst($social )}} Adresimiz">
+                <div class="text-center d-inline-block" data-toggle="tooltip" data-placement="top"
+                     title="{{ ucfirst($social )}} Adresimiz">
                     <a href="{{ $settings->$social }}" target="_blank" class="text-decoration-none">
                         <span class="fa-stack fa-lg">
                             <i class="fas fa-circle fa-stack-2x"></i>

@@ -19,22 +19,29 @@
                         <tr>
                             <td>{{ $game_genres }}</td>
                             <td>
-                                <a href="{{ route('developer', [$game->developer->slug]) }}" class="game-detail-links text-decoration-none" target="_blank" title="{{ $game->developer->name }}">
+                                <a href="{{ route('developer', [$game->developer->slug]) }}"
+                                   class="game-detail-links text-decoration-none" target="_blank"
+                                   title="{{ $game->developer->name }}">
                                     {{ $game->developer->name }}
                                 </a>
                             </td>
                             <td>
-                                <a href="{{ route('publisher', [$game->publisher->slug]) }}" class="game-detail-links text-decoration-none" target="_blank" title="{{ $game->publisher->name }}">
+                                <a href="{{ route('publisher', [$game->publisher->slug]) }}"
+                                   class="game-detail-links text-decoration-none" target="_blank"
+                                   title="{{ $game->publisher->name }}">
                                     {{ $game->publisher->name }}
                                 </a>
                             </td>
                             <td>
-                                <img src="{{asset('assets/pegi_ratings/pegi_') . $game->details->age_rating . '.png'}}" class="img-fluid" alt="pegi_rating" width="30" height="30" title="{{ $game->details->age_rating }} yaş ve üzeri">
+                                <img src="{{asset('assets/pegi_ratings/pegi_') . $game->details->age_rating . '.png'}}"
+                                     class="img-fluid" alt="pegi_rating" width="30" height="30"
+                                     title="{{ $game->details->age_rating }} yaş ve üzeri">
                             </td>
                             <td>{{ $game_platforms }}</td>
                             <td>{{ Carbon\Carbon::parse($game->details->release_date)->format('d/m/Y') }}</td>
                             <td>
-                                <a href="{{ $game->details->website }}" class="game-detail-links text-decoration-none" target="_blank">{{ $game->name }}</a>
+                                <a href="{{ $game->details->website }}" class="game-detail-links text-decoration-none"
+                                   target="_blank">{{ $game->name }}</a>
                             </td>
                         </tr>
                         </tbody>

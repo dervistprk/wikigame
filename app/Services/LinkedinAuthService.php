@@ -35,8 +35,9 @@ class LinkedinAuthService
         $existing_user = User::where('email', $user->getEmail())->first();
 
         if ($existing_user) {
-            auth()->login($existing_user, true);
-            flash()->addSuccess('Sisteme LinkedIn servisi ile giriş yaptınız', 'Başarılı');
+            Auth::login($existing_user, true);
+            flash()->addSuccess('Hoşgeldiniz sayın ' . Auth::user()->name . ' ' . Auth::user()->surname, 'Hoşgeldiniz');
+            flash()->addInfo('Sisteme LinkedIn servisi ile giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);

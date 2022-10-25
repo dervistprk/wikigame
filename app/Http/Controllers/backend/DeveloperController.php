@@ -31,7 +31,10 @@ class DeveloperController extends Controller
         $developers = Developer::with('games')->where('name', 'LIKE', '%' . $quick_search . '%')
                                ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
 
-        return view('backend.developers.index', compact('developers', 'per_page', 'quick_search', 'sort_by', 'sort_dir'));
+        return view(
+            'backend.developers.index',
+            compact('developers', 'per_page', 'quick_search', 'sort_by', 'sort_dir')
+        );
     }
 
     public function create()
@@ -162,9 +165,16 @@ class DeveloperController extends Controller
             if ($developer->image) {
                 $file_extension          = '.' . File::extension($developer->image);
                 $imageName               = Str::slug($request->input('name')) . $file_extension;
-                $developer_data['image'] = '/uploads/developers/' . Str::slug($request->input('name')) . '/' . $imageName;
-                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $developer->slug . $file_extension)) {
-                    rename($old_path . '/' . $developer->slug . $file_extension, $path . '/' . Str::slug($request->input('name')) . $file_extension);
+                $developer_data['image'] = '/uploads/developers/' . Str::slug(
+                        $request->input('name')
+                    ) . '/' . $imageName;
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
+                        $old_path . '/' . $developer->slug . $file_extension
+                    )) {
+                    rename(
+                        $old_path . '/' . $developer->slug . $file_extension,
+                        $path . '/' . Str::slug($request->input('name')) . $file_extension
+                    );
                     File::delete($path . '/' . $developer->slug . $file_extension);
                 }
             }

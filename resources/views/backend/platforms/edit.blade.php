@@ -2,7 +2,8 @@
 @section('title', 'Platform Düzenle')
 @section('content')
     <div class="container">
-        <form class="mt-2 needs-validation" novalidate method="post" action="{{route('admin.edit-platform-post', $platform->id)}}">
+        <form class="mt-2 needs-validation" novalidate method="post"
+              action="{{route('admin.edit-platform-post', $platform->id)}}">
             @if($errors->any())
                 <div class="row justify-content-center">
                     <div class="col-sm-6">
@@ -27,7 +28,8 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="text-primary form-label font-weight-bold">Adı*</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Platform Adını Giriniz" value="{{ $platform->name }}" required>
+                            <input type="text" class="form-control" id="name" name="name"
+                                   placeholder="Platform Adını Giriniz" value="{{ $platform->name }}" required>
                             <div class="invalid-feedback">
                                 Lütfen platform adı girin.
                             </div>
@@ -35,11 +37,13 @@
                         <div class="form-row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label for="status" class="text-primary col-form-label col-form-label font-weight-bold">Durum*</label>
+                                    <label for="status"
+                                           class="text-primary col-form-label col-form-label font-weight-bold">Durum*</label>
                                     <select class="form-select" id="status" name="status" required>
                                         <option value="" hidden>Durum Seçiniz</option>
                                         @foreach($statuses as $key => $status)
-                                            <option value="{{ $key }}" @if($platform->status == $key) selected="selected" @endif>{{ $status }}</option>
+                                            <option value="{{ $key }}"
+                                                    @if($platform->status == $key) selected="selected" @endif>{{ $status }}</option>
                                         @endforeach
                                     </select>
                                     <div class="invalid-feedback">

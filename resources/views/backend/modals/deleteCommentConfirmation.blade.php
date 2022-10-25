@@ -1,4 +1,5 @@
-<div class="modal fade" id="delete-comment-{{ $comment->id }}-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="delete-comment-{{ $comment->id }}-modal" aria-hidden="true">
+<div class="modal fade" id="delete-comment-{{ $comment->id }}-modal" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="delete-comment-{{ $comment->id }}-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -23,7 +24,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-danger delete-comment" data-id="{{ $comment->id }}"><i class="fas fa-trash"></i> Sil</button>
+                <button type="button" class="btn btn-danger delete-comment" data-id="{{ $comment->id }}"><i
+                            class="fas fa-trash"></i> Sil
+                </button>
             </div>
         </div>
     </div>

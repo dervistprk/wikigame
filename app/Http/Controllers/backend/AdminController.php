@@ -86,7 +86,9 @@ class AdminController extends Controller
         $admin = \Auth::user();
 
         if (!Hash::check($request->current_password, $admin->password)) {
-            return redirect()->route('admin.profile')->withErrors('Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.');
+            return redirect()->route('admin.profile')->withErrors(
+                'Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.'
+            );
         }
 
         $admin->email                = $request->email;

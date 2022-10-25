@@ -2,7 +2,8 @@
 @section('title', 'Doğrulama E-Posta\'sı Gönder')
 @section('content')
     <div class="container d-flex align-items-center justify-content-center">
-        <form class="game-info rounded mt-2 needs-validation col-sm-8" novalidate action="{{ route('resend-verification') }}" method="post" id="resend-email-form">
+        <form class="game-info rounded mt-2 needs-validation col-sm-8" novalidate
+              action="{{ route('resend-verification') }}" method="post" id="resend-email-form">
             <div class="m-4">
                 @if($errors->any())
                     <div class="row justify-content-center">
@@ -11,7 +12,8 @@
                                 @foreach($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
                         </div>
                     </div>
@@ -29,14 +31,17 @@
                         <label for="email" class="fw-bold form-label">E-Posta</label>
                         <div class="input-group mt-2">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" name="email" class="form-control" id="email" placeholder="E-Posta Adresinizi Girin" value="{{ old('email') }}" required/>
+                            <input type="email" name="email" class="form-control" id="email"
+                                   placeholder="E-Posta Adresinizi Girin" value="{{ old('email') }}" required/>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="fw-bold form-label">Şifre</label>
                         <div class="input-group mt-2">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" class="form-control" id="password" name="password" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" placeholder="Şifrenizi Girin" required/>
+                            <input type="password" class="form-control" id="password" name="password" minlength="6"
+                                   maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"
+                                   placeholder="Şifrenizi Girin" required/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye">
                                 <i class="far fa-eye"></i>
                             </span>

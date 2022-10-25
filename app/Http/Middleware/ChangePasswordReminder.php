@@ -5,17 +5,19 @@ namespace App\Http\Middleware;
 use Auth;
 use Carbon\Carbon;
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ChangePasswordReminder
 {
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param Request $request
+     * @param Closure(Request): (Response|RedirectResponse) $next
      *
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
@@ -24,6 +26,7 @@ class ChangePasswordReminder
         $difference           = $password_change_time->diffInMonths($now);
 
         if ($difference > 3) {
+            flash()->addWarning('Şifre Süresi Doldu', 'Dikkat');
             return redirect()->route('admin.profile')->with('message', 'Şifrenizin süresi doldu. Lütfen şifrenizi değiştirin.');
         }
 

@@ -2,7 +2,8 @@
 @section('title', 'Üye Ol')
 @section('content')
     <div class="container d-flex align-items-center justify-content-center">
-        <form class="game-info rounded col-sm-8 mt-2 needs-validation" novalidate action="{{ route('register-post') }}" method="post" id="register-form">
+        <form class="game-info rounded col-sm-8 mt-2 needs-validation" novalidate action="{{ route('register-post') }}"
+              method="post" id="register-form">
             @if($errors->any())
                 <div class="row justify-content-center">
                     <div class="col-sm-6">
@@ -23,7 +24,9 @@
                         <label for="email" class="form-label fw-bold">E-Posta</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" name="email" class="form-control" id="email" placeholder="Email Adresinizi Girin" aria-describedby="emailHelp" value="{{ old('email') }}" required/>
+                            <input type="email" name="email" class="form-control" id="email"
+                                   placeholder="Email Adresinizi Girin" aria-describedby="emailHelp"
+                                   value="{{ old('email') }}" required/>
                         </div>
                         <small id="emailHelp" class="form-text text-muted">
                             <ul>
@@ -36,9 +39,13 @@
                         <label for="user_name" class="form-label fw-bold">Kullanıcı Adı</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
-                            <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Kullanıcı Adı Girin" aria-describedby="user_name_help" value="{{ old('user_name') }}" minlength="3" maxlength="255" pattern="[\x00-\x7F]+" required/>
+                            <input type="text" name="user_name" class="form-control" id="user_name"
+                                   placeholder="Kullanıcı Adı Girin" aria-describedby="user_name_help"
+                                   value="{{ old('user_name') }}" minlength="3" maxlength="255" pattern="[\x00-\x7F]+"
+                                   required/>
                         </div>
-                        <small id="user_name_help" class="form-text text-muted">Lütfen Türkçe karakter kullanmayınız.</small>
+                        <small id="user_name_help"
+                               class="form-text text-muted">Lütfen Türkçe karakter kullanmayınız.</small>
                     </div>
                 </div>
                 <div class="row">
@@ -46,7 +53,9 @@
                         <label for="password" class="form-label fw-bold">Şifre</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" name="password" class="form-control" id="password" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" placeholder="Şifre Girin" autocomplete="new-password" required/>
+                            <input type="password" name="password" class="form-control" id="password" minlength="6"
+                                   maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" placeholder="Şifre Girin"
+                                   autocomplete="new-password" required/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye-1">
                                    <i class="far fa-eye"></i>
                                 </span>
@@ -67,7 +76,10 @@
                         <label for="password_confirmation" class="form-label fw-bold">Şifre Tekrarı</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" minlength="6" maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" autocomplete="new-password" placeholder="Şifre Tekrarını Girin" required/>
+                            <input type="password" class="form-control" id="password_confirmation"
+                                   name="password_confirmation" minlength="6" maxlength="255"
+                                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*" autocomplete="new-password"
+                                   placeholder="Şifre Tekrarını Girin" required/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye-2">
                                     <i class="far fa-eye"></i>
                             </span>
@@ -85,12 +97,14 @@
                 <div class="row">
                     <div class="col">
                         <label for="name" class="form-label fw-bold">Ad</label>
-                        <input type="text" name="name" class="form-control" id="name" minlength="2" maxlength="255" value="{{ old('name') }}" required/>
+                        <input type="text" name="name" class="form-control" id="name" minlength="2" maxlength="255"
+                               value="{{ old('name') }}" required/>
 
                     </div>
                     <div class="col">
                         <label for="surname" class="form-label fw-bold">Soyad</label>
-                        <input type="text" name="surname" class="form-control" id="surname" minlength="2" maxlength="255" value="{{ old('surname') }}" required/>
+                        <input type="text" name="surname" class="form-control" id="surname" minlength="2"
+                               maxlength="255" value="{{ old('surname') }}" required/>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -98,7 +112,8 @@
                         <label for="birth_day" class="form-label fw-bold">Doğum Tarihi</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                            <input type="text" name="birth_day" class="form-control date-picker" id="birth_day" value="{{ old('birth_day') }}" required/>
+                            <input type="text" name="birth_day" class="form-control date-picker" id="birth_day"
+                                   value="{{ old('birth_day') }}" required/>
                         </div>
                     </div>
                     <div class="col">
@@ -117,7 +132,9 @@
                     <label for="user_about_text" class="form-label fw-bold">Hakkımda</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
-                        <textarea class="form-control" name="about" id="user_about_text" rows="7" minlength="30" maxlength="500" placeholder="Hakkınızda tanıtıcı kısa bir yazı yazın." onkeyup="countChar(this)" required>{{ old('about') }}</textarea>
+                        <textarea class="form-control" name="about" id="user_about_text" rows="7" minlength="30"
+                                  maxlength="500" placeholder="Hakkınızda tanıtıcı kısa bir yazı yazın."
+                                  onkeyup="countChar(this)" required>{{ old('about') }}</textarea>
                     </div>
                     <small class="form-text text-muted d-inline-block">En az 30 karakter uzunluğunda olmalıdır.</small>
                     <span id="charNum" class="text-muted d-inline-block float-end">500</span>
@@ -125,7 +142,11 @@
                 <hr>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="agreement_confirmation" required/>
-                    <label class="form-label" for="agreement_confirmation"><a href="" class="game-detail-links text-decoration-none" data-bs-toggle="modal" data-bs-target="#user-agreement-modal">Kullanıcı sözleşmesini</a> okudum ve kabul ediyorum.</label>
+                    <label class="form-label" for="agreement_confirmation">
+                        <a href="" class="game-detail-links text-decoration-none" data-bs-toggle="modal"
+                           data-bs-target="#user-agreement-modal">Kullanıcı sözleşmesini
+                        </a> okudum ve kabul ediyorum.
+                    </label>
                 </div>
                 <div class="text-center m-2">
                     <button type="submit" class="btn btn-success me-2 btn-register">
@@ -133,28 +154,34 @@
                     </button>
                     <button type="reset" class="btn btn-danger"><i class="fa fa-undo"></i> Sıfırla</button>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="google-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                <div class="d-grid gap-2 mx-auto text-center" id="google-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-danger m-2" id="google-btn" href="{{ route('redirect-google') }}">
                         <i class="fab fa-google"></i> Google ile Üye Ol
                     </a>
                 </div>
-                {{--<div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                {{--<div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}">
                         <i class="fab fa-facebook"></i> Facebook ile Üye Ol
                     </a>
                 </div>--}}
-                <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-secondary m-2" id="github-btn" href="{{ route('redirect-github') }}">
                         <i class="fab fa-github"></i> Github ile Üye Ol
                     </a>
                 </div>
-                <div class="d-grid gap-2 mx-auto text-center" id="linkedin-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                <div class="d-grid gap-2 mx-auto text-center" id="linkedin-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
                     <a class="btn btn-outline-primary m-2" id="linkedin-btn" href="{{ route('redirect-linkedin') }}">
                         <i class="fab fa-linkedin"></i> LinkedIn ile Üye Ol
                     </a>
                 </div>
-                {{--<div class="d-grid gap-2 mx-auto text-center" id="twitter-btn-overlay" data-toggle="tooltip" data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
-                    <a class="btn btn-outline-info btn-twitter-custom m-2" id="twitter-btn" href="{{ route('redirect-twitter') }}">
+                {{--<div class="d-grid gap-2 mx-auto text-center" id="twitter-btn-overlay" data-toggle="tooltip"
+                     data-placement="top" title="Lütfen kullanıcı sözleşmesini kabul edin">
+                    <a class="btn btn-outline-info btn-twitter-custom m-2" id="twitter-btn"
+                       href="{{ route('redirect-twitter') }}">
                         <i class="fab fa-twitter"></i> Twitter ile Üye Ol
                     </a>
                 </div>--}}

@@ -9,7 +9,9 @@
             @foreach($publishers as $publisher)
                 <div class="card-deck d-inline-block m-2" title="{{ $publisher->name }}">
                     <div class="card content-cards">
-                        <img class="card-img-top img-fluid img-thumbnail lazyload" data-src="{{ $publisher->image }}" src="{{ asset('assets/preview-image-big.png') }}" alt="{{ $publisher->name }}" title="{{ $publisher->name }}" width="300" height="220" loading="lazy">
+                        <img class="card-img-top img-fluid img-thumbnail lazyload" data-src="{{ $publisher->image }}"
+                             src="{{ asset('assets/preview-image-big.png') }}" alt="{{ $publisher->name }}"
+                             title="{{ $publisher->name }}" width="300" height="220" loading="lazy">
                         <div class="card-body">
                             <h6 class="card-title">{{ $publisher->name }}</h6>
                             <a href="{{ route('publisher', [$publisher->slug]) }}" class="stretched-link"></a>

@@ -12,7 +12,8 @@
                         </div>
                         @if($popular_articles->count() > 0)
                             @foreach($popular_articles as $popular_article)
-                                <a href="{{ route('article', $popular_article->slug) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <a href="{{ route('article', $popular_article->slug) }}"
+                                   class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-1 w-75">{{ $popular_article->title }}</h6>
                                         <small>{{ \Carbon\Carbon::parse($popular_article->created_at)->diffForHumans() }}</small>
@@ -29,7 +30,8 @@
                         </div>
                         @if($random_articles->count() > 0)
                             @foreach($random_articles as $random_article)
-                                <a href="{{ route('article', $random_article->slug) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <a href="{{ route('article', $random_article->slug) }}"
+                                   class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-1 w-75">{{ $random_article->title }}</h6>
                                         <small>{{ \Carbon\Carbon::parse($random_article->created_at)->diffForHumans() }}</small>

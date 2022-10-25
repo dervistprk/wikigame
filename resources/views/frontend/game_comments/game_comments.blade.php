@@ -28,7 +28,7 @@
                    data-bs-placement="top" title="Yorumu Düzenle"><i class="fas fa-pencil-alt ms-2"></i></a>
                 <a href="#!" class="link-muted comment-action-links delete-comment-button" data-id="{{ $comment->id }}"
                    data-toggle="tooltip" data-bs-placement="top" title="Yorumu Sil"><i
-                        class="fas fa-trash-alt ms-2"></i></a>
+                            class="fas fa-trash-alt ms-2"></i></a>
             @endif
             @if(Auth::user()->id != $user->id)
                 <a href="#!" class="link-muted comment-action-links reply-comment-button" data-toggle="tooltip"
@@ -42,20 +42,20 @@
                 <a href="#!" class="link-muted comment-action-links dislike-comment-button" data-id="{{ $comment->id }}"
                    data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğenme"
                    @if($disabled_dislike_button) style="pointer-events: none" @endif><i
-                        class="fas fa-thumbs-down ms-2"></i></a>
+                            class="fas fa-thumbs-down ms-2"></i></a>
                 @if($comment->dislikes > 0)
                     <span class="badge bg-danger rounded-pill dislike-count">{{ $comment->dislikes }}</span>
                 @endif
             @else
                 <a href="#!" class="link-muted comment-action-links like-comment-button" data-id="{{ $comment->id }}"
                    data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğen" style="pointer-events: none"><i
-                        class="fas fa-thumbs-up ms-2"></i></a>
+                            class="fas fa-thumbs-up ms-2"></i></a>
                 @if($comment->likes > 0)
                     <span class="badge bg-primary rounded-pill like-count">{{ $comment->likes }}</span>
                 @endif
                 <a href="#!" class="link-muted comment-action-links dislike-comment-button" data-id="{{ $comment->id }}"
                    data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğenme" style="pointer-events: none"><i
-                        class="fas fa-thumbs-down ms-2"></i></a>
+                            class="fas fa-thumbs-down ms-2"></i></a>
                 @if($comment->dislikes > 0)
                     <span class="badge bg-danger rounded-pill dislike-count">{{ $comment->dislikes }}</span>
                 @endif
@@ -63,13 +63,13 @@
         @else
             <a href="#!" class="link-muted comment-action-links like-comment-button" data-id="{{ $comment->id }}"
                data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğen" style="pointer-events: none"><i
-                    class="fas fa-thumbs-up ms-2"></i></a>
+                        class="fas fa-thumbs-up ms-2"></i></a>
             @if($comment->likes > 0)
                 <span class="badge bg-primary rounded-pill like-count">{{ $comment->likes }}</span>
             @endif
             <a href="#!" class="link-muted comment-action-links dislike-comment-button" data-id="{{ $comment->id }}"
                data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğenme" style="pointer-events: none"><i
-                    class="fas fa-thumbs-down ms-2"></i></a>
+                        class="fas fa-thumbs-down ms-2"></i></a>
             @if($comment->dislikes > 0)
                 <span class="badge bg-danger rounded-pill dislike-count">{{ $comment->dislikes }}</span>
             @endif

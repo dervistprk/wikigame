@@ -17,7 +17,7 @@ class AuthController extends Controller
     {
         $remember = $request->input('remember_token');
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $remember ? true : false)) {
+        if (Auth::attempt(['email' => $request->post('email'), 'password' => $request->post('password')], (bool)$remember)) {
             return redirect()->route('admin.dashboard');
         }
         return redirect()->route('admin.login')->withErrors('E-Posta Adresi veya Şifre Hatalı')->withInput();

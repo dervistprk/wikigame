@@ -13,14 +13,17 @@
             @foreach($latest_games as $latest_game)
                 <div class="card-deck d-inline-block m-1" title="{{ $latest_game->name }}">
                     <div class="card content-cards">
-                        <a href="{{ route('game', [$latest_game->slug]) }}" class="stretched-link" data-toggle="tooltip" data-bs-placement="top" title="{{ $latest_game->name }}"></a>
-                        <img class="card-img-top img-fluid" src="{{$latest_game->cover_image}}" alt="{{ $latest_game->name }}">
+                        <a href="{{ route('game', [$latest_game->slug]) }}" class="stretched-link" data-toggle="tooltip"
+                           data-bs-placement="top" title="{{ $latest_game->name }}"></a>
+                        <img class="card-img-top img-fluid" src="{{$latest_game->cover_image}}"
+                             alt="{{ $latest_game->name }}">
                     </div>
                 </div>
             @endforeach
             @if($latest_games->count() >= 8)
                 <h4 class="text-center m-2">
-                    <a href="{{ route('all-games') }}" class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
+                    <a href="{{ route('all-games') }}"
+                       class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
                 </h4>
             @endif
         @else
@@ -34,14 +37,18 @@
             @foreach($popular_games as $popular_game)
                 <div class="card-deck d-inline-block m-1" title="{{ $popular_game->name }}">
                     <div class="card content-cards">
-                        <a href="{{ route('game', [$popular_game->slug]) }}" class="stretched-link" data-toggle="tooltip" data-bs-placement="top" title="{{ $popular_game->name }}"></a>
-                        <img class="card-img-top img-fluid lazyload" data-src="{{$popular_game->cover_image}}" src="{{ asset('assets/preview-image-game.png') }}" alt="{{ $popular_game->name }}" loading="lazy">
+                        <a href="{{ route('game', [$popular_game->slug]) }}" class="stretched-link"
+                           data-toggle="tooltip" data-bs-placement="top" title="{{ $popular_game->name }}"></a>
+                        <img class="card-img-top img-fluid lazyload" data-src="{{$popular_game->cover_image}}"
+                             src="{{ asset('assets/preview-image-game.png') }}" alt="{{ $popular_game->name }}"
+                             loading="lazy">
                     </div>
                 </div>
             @endforeach
             @if($popular_games->count() >= 8)
                 <h4 class="text-center m-2">
-                    <a href="{{ route('all-games') }}" class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
+                    <a href="{{ route('all-games') }}"
+                       class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
                 </h4>
             @endif
         @else
@@ -55,17 +62,22 @@
             @foreach($latest_articles as $latest_article)
                 <div class="card-deck d-inline-block m-1" title="{{ $latest_article->title }}">
                     <div class="card content-cards" style="max-width: 500px; max-height: 400px;">
-                        <a href="{{ route('article', [$latest_article->slug]) }}" class="stretched-link" data-toggle="tooltip" data-bs-placement="top" title="{{ $latest_article->title }}"></a>
-                        <img class="card-img-top img-fluid lazyload" data-src="{{$latest_article->image}}" src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $latest_article->title }}" style="width: 500px; height: 300px" loading="lazy">
+                        <a href="{{ route('article', [$latest_article->slug]) }}" class="stretched-link"
+                           data-toggle="tooltip" data-bs-placement="top" title="{{ $latest_article->title }}"></a>
+                        <img class="card-img-top img-fluid lazyload" data-src="{{$latest_article->image}}"
+                             src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $latest_article->title }}"
+                             style="width: 500px; height: 300px" loading="lazy">
                         <div class="card-body">
-                            <p class="card-text" style="font-size: 14px; font-family: 'Helvetica Neue', sans-serif">{{ $latest_article->sub_title }}</p>
+                            <p class="card-text"
+                               style="font-size: 14px; font-family: 'Helvetica Neue', sans-serif">{{ $latest_article->sub_title }}</p>
                         </div>
                     </div>
                 </div>
             @endforeach
             @if($latest_articles->count() >= 4)
                 <h4 class="text-center m-2">
-                    <a href="{{ route('articles') }}" class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
+                    <a href="{{ route('articles') }}"
+                       class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
                 </h4>
             @endif
         @else
@@ -79,17 +91,22 @@
             @foreach($popular_articles as $popular_article)
                 <div class="card-deck d-inline-block m-1" title="{{ $popular_article->title }}">
                     <div class="card content-cards" style="max-width: 500px; max-height: 400px;">
-                        <a href="{{ route('article', [$popular_article->slug]) }}" class="stretched-link" data-toggle="tooltip" data-bs-placement="top" title="{{ $popular_article->title }}"></a>
-                        <img class="card-img-top img-fluid lazyload" data-src="{{$popular_article->image}}" src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $popular_article->title }}" style="width: 500px; height: 300px" loading="lazy">
+                        <a href="{{ route('article', [$popular_article->slug]) }}" class="stretched-link"
+                           data-toggle="tooltip" data-bs-placement="top" title="{{ $popular_article->title }}"></a>
+                        <img class="card-img-top img-fluid lazyload" data-src="{{$popular_article->image}}"
+                             src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $popular_article->title }}"
+                             style="width: 500px; height: 300px" loading="lazy">
                         <div class="card-body">
-                            <p class="card-text" style="font-size: 14px; font-family: 'Helvetica Neue', sans-serif">{{ $popular_article->sub_title }}</p>
+                            <p class="card-text"
+                               style="font-size: 14px; font-family: 'Helvetica Neue', sans-serif">{{ $popular_article->sub_title }}</p>
                         </div>
                     </div>
                 </div>
             @endforeach
             @if($popular_articles->count() >= 4)
                 <h4 class="text-center m-2">
-                    <a href="{{ route('articles') }}" class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
+                    <a href="{{ route('articles') }}"
+                       class="text-decoration-none dev-header hover-underline-animation">Tümünü Gör</a>
                 </h4>
             @endif
         @else

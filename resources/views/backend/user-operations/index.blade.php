@@ -33,28 +33,32 @@
                 <i class="fas fa-user-friends"></i>
                 Kayıtlı Kullanıcılar
                 <div class="float-end">
-                    <form class="form-inline" id="query-form" method="get" action="{{ route('admin.user-operations') }}">
+                    <form class="form-inline" id="query-form" method="get"
+                          action="{{ route('admin.user-operations') }}">
                         <input type="hidden" name="sort_by"/>
                         <input type="hidden" name="sort_dir"/>
                         <div class="m-2">
                             <label for="per-page" class="form-label">Öge Sayısı</label>
                             <select class="form-select" name="per_page" id="per-page">
                                 @foreach(config('backend.per_page') as $config_per_page)
-                                    <option value="{{ $config_per_page }}" @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
+                                    <option value="{{ $config_per_page }}"
+                                            @if($per_page == $config_per_page) selected @endif>{{ $config_per_page }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="m-2">
                             <label for="quick-search">Hızlı Ara</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" value="{{ $quick_search ?? null }}" name="quick_search" id="quick-search" placeholder="Kullanıcı Ara"/>
+                                <input type="text" class="form-control" value="{{ $quick_search ?? null }}"
+                                       name="quick_search" id="quick-search" placeholder="Kullanıcı Ara"/>
                                 <button class="btn btn-primary btn-sm mr-sm-2" id="btnNavbarSearch" type="submit">
                                     <i id="search-icon" class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="m-2 mt-4">
-                            <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none" data-toggle="tooltip" data-placement="top" title="Temizle">
+                            <button type="button" id="reset-parameters" class="btn btn-sm btn-warning d-none"
+                                    data-toggle="tooltip" data-placement="top" title="Temizle">
                                 <i class="fa fa-undo"></i>
                             </button>
                         </div>
@@ -107,21 +111,32 @@
                                     <td>
                                         @if(!$user->isBanned())
                                             @if($user->isAdmin())
-                                                <div class="d-inline-block mt-2" data-toggle="tooltip" data-placement="top" title="Yöneticiler Yasaklanamaz">
-                                                    <a href="#" class="btn btn-sm btn-danger disabled"><i class="fas fa-user-slash"></i></a>
+                                                <div class="d-inline-block mt-2" data-toggle="tooltip"
+                                                     data-placement="top" title="Yöneticiler Yasaklanamaz">
+                                                    <a href="#" class="btn btn-sm btn-danger disabled"><i
+                                                                class="fas fa-user-slash"></i></a>
                                                 </div>
                                             @else
                                                 <div class="d-inline-block mt-2">
-                                                    <a href="{{ route('admin.ban-user', $user->id) }}" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Yasakla"><i class="fas fa-user-slash"></i></a>
+                                                    <a href="{{ route('admin.ban-user', $user->id) }}"
+                                                       class="btn btn-sm btn-danger" data-toggle="tooltip"
+                                                       data-placement="top" title="Yasakla"><i
+                                                                class="fas fa-user-slash"></i></a>
                                                 </div>
                                             @endif
                                         @else
                                             <div class="d-inline-block mt-2">
-                                                <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#remove-user-ban-modal-{{ $user->id }}" data-tooltip="tooltip" data-placement="top" title="Yasak Kaldır"><i class="fas fa-user-check"></i></a>
+                                                <a href="#" class="btn btn-sm btn-success" data-toggle="modal"
+                                                   data-target="#remove-user-ban-modal-{{ $user->id }}"
+                                                   data-tooltip="tooltip" data-placement="top" title="Yasak Kaldır"><i
+                                                            class="fas fa-user-check"></i></a>
                                             </div>
                                         @endif
                                         <div class="d-inline-block mt-2">
-                                            <a href="{{ route('admin.user-comments', $user->id) }}" class="btn btn-sm btn-primary" data-tooltip="tooltip" data-placement="top" title="Kullanıcı Yorumları"><i class="fas fa-comments"></i></a>
+                                            <a href="{{ route('admin.user-comments', $user->id) }}"
+                                               class="btn btn-sm btn-primary" data-tooltip="tooltip"
+                                               data-placement="top" title="Kullanıcı Yorumları"><i
+                                                        class="fas fa-comments"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -176,8 +191,12 @@
              }
 
              $('.sorter').css({'cursor': 'pointer'}).hover(
-                 function() { $(this).css('color', 'green'); },
-                 function() { $(this).css('color', 'white'); },
+                function() {
+                   $(this).css('color', 'green');
+                },
+                function() {
+                   $(this).css('color', 'white');
+                },
              ).click(function() {
                 var column = $(this).attr('data-column');
                 var dir    = "{{ $sort_dir }}";

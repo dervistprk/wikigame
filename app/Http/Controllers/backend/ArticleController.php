@@ -166,8 +166,13 @@ class ArticleController extends Controller
                 $file_extension        = '.' . File::extension($article->image);
                 $imageName             = Str::slug($request->input('title')) . $file_extension;
                 $article_data['image'] = '/uploads/articles/' . Str::slug($request->input('title')) . '/' . $imageName;
-                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists($old_path . '/' . $article->slug . $file_extension)) {
-                    rename($old_path . '/' . $article->slug . $file_extension, $path . '/' . Str::slug($request->input('title')) . $file_extension);
+                if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
+                        $old_path . '/' . $article->slug . $file_extension
+                    )) {
+                    rename(
+                        $old_path . '/' . $article->slug . $file_extension,
+                        $path . '/' . Str::slug($request->input('title')) . $file_extension
+                    );
                     File::delete($path . '/' . $article->slug . $file_extension);
                 }
             }

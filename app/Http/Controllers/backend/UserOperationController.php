@@ -21,9 +21,7 @@ use Validator;
 
 class UserOperationController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function index(Request $request)
     {
@@ -135,7 +133,10 @@ class UserOperationController extends Controller
         $comments = $user->comments()->where('body', 'LIKE', '%' . $quick_search . '%')
                          ->orderBy($sort_by, $sort_dir)->paginate($per_page)->appends('per_page', $per_page);
 
-        return view('backend.user-operations.user_comments', compact('user', 'comments', 'per_page', 'quick_search', 'sort_by', 'sort_dir'));
+        return view(
+            'backend.user-operations.user_comments',
+            compact('user', 'comments', 'per_page', 'quick_search', 'sort_by', 'sort_dir')
+        );
     }
 
     public function editUserComment(Request $request, $comment_id)
@@ -185,7 +186,10 @@ class UserOperationController extends Controller
 
             $comment->user->notify(new CommentEdited($comment, $content, $comment_old_body));
 
-            return redirect()->route('admin.user-comments', $comment->user_id)->with('message', 'Kullanıcı Yorumu Başarıyla Düzenlendi.');
+            return redirect()->route('admin.user-comments', $comment->user_id)->with(
+                'message',
+                'Kullanıcı Yorumu Başarıyla Düzenlendi.'
+            );
         }
 
         return view('backend.user-operations.edit_user_comment', compact('comment'));

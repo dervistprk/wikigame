@@ -20,8 +20,10 @@
     <link href="{{ asset('backend/css/file-input.css') }}" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/ui/trumbowyg.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/ui/trumbowyg.emoji.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css"
+          rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/ui/trumbowyg.emoji.min.css"
+          rel="stylesheet"/>
     @yield('custom-css')
 </head>
 <body class="sb-nav-fixed">
@@ -35,17 +37,21 @@
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i> {{ \Auth::user()->name . ' ' . \Auth::user()->surname}}
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false"><i
+                        class="fas fa-user fa-fw"></i> {{ \Auth::user()->name . ' ' . \Auth::user()->surname}}
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user-circle"></i> Profil</a>
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i
+                                class="fas fa-user-circle"></i> Profil</a>
                 </li>
                 <li>
                     <hr class="dropdown-divider"/>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    <a class="dropdown-item" href="{{ route('admin.logout') }}"><i
+                                class="fas fa-sign-out-alt"></i> Çıkış</a>
                 </li>
             </ul>
         </li>
@@ -58,7 +64,8 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     @foreach(config('backend.menus') as $menu)
-                        <a class="nav-link @if(Request::segment(2) == $menu['segment']) active @endif" href="{{ route('admin.' . $menu['route']) }}">
+                        <a class="nav-link @if(Request::segment(2) == $menu['segment']) active @endif"
+                           href="{{ route('admin.' . $menu['route']) }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-{{ $menu['icon'] }}"></i></div>
                             {{ $menu['title'] }}
                         </a>
@@ -97,8 +104,10 @@
 <script src="{{ asset('js/datepicker-tr.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/trumbowyg.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/langs/tr.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/trumbowyg.giphy.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js"
+        type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/trumbowyg.giphy.min.js"
+        type="text/javascript"></script>
 <script type="text/javascript">
    $(document).ready(function() {
       $(function() {
@@ -107,7 +116,7 @@
       });
 
       $('textarea').trumbowyg({
-         btns: [
+         btns             : [
             ['viewHTML'],
             ['undo', 'redo'],
             ['formatting'],

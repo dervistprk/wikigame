@@ -27,9 +27,7 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function registerForm()
     {
@@ -84,8 +82,14 @@ class UserController extends Controller
         ]);
 
         $user->notify(new UserConfirmation($user, $token));
+        flash()->addInfo('Doğrulama e-postası gönderildi.', 'Dikkat!');
 
-        return redirect()->route('login-form')->with('message', 'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.<br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen <a class="link-primary text-decoration-none" href="' . route('resend-verification') . '">tıklayın</a>.');
+        return redirect()->route('login-form')->with(
+            'message',
+            'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.
+             <br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen
+             <a class="link-primary text-decoration-none" href="' . route('resend-verification') . '">tıklayın</a>.'
+        );
     }
 
     public function resendVerification(Request $request)
@@ -98,7 +102,10 @@ class UserController extends Controller
 
             if ($user && $password_check) {
                 if ($user->isBanned()) {
-                    return redirect()->route('resend-verification')->with('message', 'Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.');
+                    return redirect()->route('resend-verification')->with(
+                        'message',
+                        'Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.'
+                    );
                 }
 
                 if (!$user->isVerified()) {
@@ -114,14 +121,23 @@ class UserController extends Controller
                     $user->notify(new UserConfirmation($user, $token));
 
                     flash()->addSuccess('Doğrulama e-postası tekrar gönderildi.', 'Başarılı');
-                    return redirect()->route('login-form')->with('message', 'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol edin.');
+                    return redirect()->route('login-form')->with(
+                        'message',
+                        'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol edin.'
+                    );
                 } else {
                     flash()->warning('E-posta daha önce doğrulanmış.', 'Uyarı');
-                    return redirect()->route('login-form')->with('message', 'Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.');
+                    return redirect()->route('login-form')->with(
+                        'message',
+                        'Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.'
+                    );
                 }
             } else {
                 flash()->error('E-posta veya şifre yanlış.', 'Hata');
-                return redirect()->route('resend-verification')->with('message', 'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyin.');
+                return redirect()->route('resend-verification')->with(
+                    'message',
+                    'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyin.'
+                );
             }
         }
 
@@ -138,10 +154,10 @@ class UserController extends Controller
         $remember = $request->input('remember_token');
 
         if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], (bool)$remember)) {
-            flash()->addSuccess('Başarıyla giriş yaptınız', 'Başarılı');
             return redirect()->route('user-profile');
         }
 
+        flash()->addError('E-Posta Adresi veya Şifre Hatalı!', 'Hata');
         return redirect()->route('login-form')->withErrors('E-Posta Adresi veya Şifre Hatalı')->withInput();
     }
 
@@ -202,7 +218,9 @@ class UserController extends Controller
                 ]);
 
                 if (!Hash::check($request->current_password, $user->password)) {
-                    return redirect()->route('update-profile')->withErrors('Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.');
+                    return redirect()->route('update-profile')->withErrors(
+                        'Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.'
+                    );
                 }
 
                 $user_data['password'] = Hash::make($request->password);
@@ -306,7 +324,7 @@ class UserController extends Controller
         $sub_comment->user()->associate(Auth::user());
         $sub_comment->body      = $request->input('reply_comment');
         $sub_comment->parent_id = $parent_comment_id;
-        $sub_comment_user = $sub_comment_id ? Comment::find($sub_comment_id)->user : null;
+        $sub_comment_user       = $sub_comment_id ? Comment::find($sub_comment_id)->user : null;
 
         if (Auth::user()->isAdmin()) {
             if ($sub_comment->commentable_type == 'App\Models\Game') {
@@ -334,8 +352,6 @@ class UserController extends Controller
         flash()->addWarning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
         return redirect()->route('game', $game->slug);
     }
-
-    //TODO: frontend yorum silme ve beğenme fonksiyonlarını hazırla.
 
     public function likeComment(Request $request)
     {
@@ -450,9 +466,7 @@ class UserController extends Controller
         return false;
     }
 
-    public function makeArticleComment(Request $request)
-    {
-    }
+    public function makeArticleComment(Request $request) {}
 
     public function logout()
     {
