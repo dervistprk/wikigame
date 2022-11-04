@@ -2,118 +2,118 @@
 body
 */
 body {
-    background-color: ghostwhite;
-    transition: 0.3s;
+    background-color : ghostwhite;
+    transition       : 0.3s;
 }
 
 .game-info {
-    background-color: #eeeeee;
-    transition: 0.3s;
+    background-color : #eeeeee;
+    transition       : 0.3s;
 }
 
 .container {
-    margin-top: 130px;
+    margin-top : 130px;
 }
 
 /*
 to top button
  */
 #topBtn {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 30px;
-    z-index: 99;
-    font-size: 18px;
+    display   : none;
+    position  : fixed;
+    bottom    : 20px;
+    right     : 30px;
+    z-index   : 99;
+    font-size : 18px;
 }
 
 /*
 header navbar
  */
 .nav-item::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 2px;
-    background: #1a202c;
-    transition: 0.4s
+    content    : '';
+    display    : block;
+    width      : 0;
+    height     : 2px;
+    background : #1a202c;
+    transition : 0.4s
 }
 
 .nav-item:hover::after {
-    width: 100%
+    width : 100%
 }
 
 #navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 60px;
-    display: block;
-    transition: top 0.4s;
-    z-index: 98;
+    position   : fixed;
+    top        : 0;
+    width      : 100%;
+    height     : 60px;
+    display    : block;
+    transition : top 0.4s;
+    z-index    : 98;
 }
 
 #navbar2 {
-    position: fixed;
-    top: 60px;
-    width: 100%;
-    height: 60px;
-    display: block;
-    transition: top 0.4s;
-    z-index: 97;
+    position   : fixed;
+    top        : 60px;
+    width      : 100%;
+    height     : 60px;
+    display    : block;
+    transition : top 0.4s;
+    z-index    : 97;
 }
 
 .navbar-dark, #navbar .navbar-collapse {
     /*background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);*/
-    background-color: #c83c2c;
+    background-color : #c83c2c;
 }
 
 #navbar a:hover, #navbar2 a:hover {
-    color: #1a202c;
+    color : #1a202c;
 }
 
 #navbar .dropdown-item:hover, #navbar2 .dropdown-item:hover {
-    color: #1a202c;
+    color : #1a202c;
 }
 
 #navbar .dropdown .dropdown-menu, #navbar .dropdown .dropdown-menu .dropdown-item {
     /*background: #21D4FD;*/
-    color: whitesmoke;
-    background-color: #ff4500;
+    color            : whitesmoke;
+    background-color : #ff4500;
 
 }
 
 #navbar2 .dropdown .dropdown-menu, #navbar2 .dropdown .dropdown-menu .dropdown-item {
     /*background: #007bff;*/
-    background-color: #f84c34;
+    background-color : #f84c34;
 }
 
 #navbar .dropdown .dropdown-menu .dropdown-item:hover, #navbar2 .dropdown .dropdown-menu .dropdown-item:hover {
     /*background: #0a58ca;*/
-    background: #f5773b;
+    background : #f5773b;
 }
 
 #navbar2, #navbar2 .navbar-collapse {
-    background-color: #f44937;
+    background-color : #f44937;
 }
 
 #navbar a:active, #navbar2 a:active {
-    color: #7886d7;
+    color : #7886d7;
 }
 
 .navbar-brand, .navbar a {
-    transition: 0.3s;
+    transition : 0.3s;
 }
 
 .nav-item, .dropdown-item {
-    text-align: center;
+    text-align : center;
 }
 
 /*
 footer
  */
 .footer {
-    background-color: #f44937;
+    background-color : #f44937;
     /*background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);*/
 }
 
@@ -121,91 +121,91 @@ footer
 card
  */
 .content-cards {
-    transition: 0.3s;
-    background-color: whitesmoke;
+    transition       : 0.3s;
+    background-color : whitesmoke;
 }
 
 .content-cards:hover {
-    background-color: lightgray;
+    background-color : lightgray;
 }
 
 .content-cards:active {
-    background-color: antiquewhite;
+    background-color : antiquewhite;
 }
 
 .comment-card {
-    background-color: whitesmoke;
+    background-color : whitesmoke;
 }
 
 /*
 headers-titles
  */
 .sysreq-header {
-    transition: 0.4s;
+    transition : 0.4s;
 }
 
 .dev-header {
-    color: #222;
+    color : #222222;
 }
 
 .hover-underline-animation {
-    display: inline-block;
-    position: relative;
-    color: #0087ca;
+    display  : inline-block;
+    position : relative;
+    color    : #0087ca;
 }
 
 .hover-underline-animation:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0);
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: darkblue;
-    transform-origin: bottom right;
-    transition: transform 0.25s ease-out;
+    content          : '';
+    position         : absolute;
+    width            : 100%;
+    transform        : scaleX(0);
+    height           : 2px;
+    bottom           : 0;
+    left             : 0;
+    background-color : darkblue;
+    transform-origin : bottom right;
+    transition       : transform 0.25s ease-out;
 }
 
 .hover-underline-animation:hover:after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
+    transform        : scaleX(1);
+    transform-origin : bottom left;
 }
 
 .pub-header {
-    color: #222;
-    transition: 0.4s;
+    color      : #222222;
+    transition : 0.4s;
 }
 
 .latest-header {
-    color: #222;
-    transition: 0.4s;
+    color      : #222222;
+    transition : 0.4s;
 }
 
 .popular-header {
-    color: #222;
-    transition: 0.4s;
+    color      : #222222;
+    transition : 0.4s;
 }
 
 /*
 links
  */
 .game-detail-links {
-    transition: 0.3s;
-    color: dodgerblue;
+    transition : 0.3s;
+    color      : dodgerblue;
 }
 
 .game-detail-links:hover {
-    color: darkblue;
+    color : darkblue;
 }
 
 .register-login-link {
-    transition: 0.3s;
-    color: #dc3545;
+    transition : 0.3s;
+    color      : #dc3545;
 }
 
 .register-login-link:hover {
-    color: #6a1a21;
+    color : #6a1a21;
 }
 
 
@@ -213,111 +213,111 @@ links
 selection
  */
 ::-moz-selection { /* Code for Firefox */
-    color: cornflowerblue;
-    background: #222;
+    color      : cornflowerblue;
+    background : #222222;
 }
 
 ::selection {
-    color: cornflowerblue;
-    background: #222;
+    color      : cornflowerblue;
+    background : #222222;
 }
 
 /*
 dark-mode selection
  */
 .fa-moon {
-    color: ghostwhite;
+    color : ghostwhite;
 }
 
 .fa-sun {
-    color: yellow;
+    color : yellow;
 }
 
 /*
 scrollbar
  */
 body::-webkit-scrollbar {
-    width: 14px; /* width of the entire scrollbar */
+    width : 14px; /* width of the entire scrollbar */
 }
 
 body::-webkit-scrollbar-track {
-    background: #212529; /* color of the tracking area */
+    background : #212529; /* color of the tracking area */
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #555; /* color of the scroll thumb */
-    border-radius: 20px; /* roundness of the scroll thumb */
-    border: 3px solid #1a1e21; /* creates padding around scroll thumb */
+    background-color : #555555; /* color of the scroll thumb */
+    border-radius    : 20px; /* roundness of the scroll thumb */
+    border           : 3px solid #1a1e21; /* creates padding around scroll thumb */
 }
 
 body::-webkit-scrollbar-thumb:hover {
-    background-color: #444;
+    background-color : #444444;
 }
 
 body::-webkit-scrollbar-thumb:active {
-    background-color: #5c636a;
+    background-color : #5c636a;
 }
 
 .list-group, .list-group-item {
-    background: whitesmoke;
-    color: black;
-    transition: 0.3s;
+    background : whitesmoke;
+    color      : black;
+    transition : 0.3s;
 }
 
 .list-group-item:hover {
-    background: lightgray;
+    background : lightgray;
 }
 
 /*
 Pagination
 */
 .page-item.active .page-link {
-    z-index: 3;
-    color: #222 !important;
-    background-color: #00acd6 !important;
-    border-color: #00acd6 !important;
-    border-radius: 50%;
-    padding: 6px 12px;
+    z-index          : 3;
+    color            : #222222 !important;
+    background-color : #00acd6 !important;
+    border-color     : #00acd6 !important;
+    border-radius    : 50%;
+    padding          : 6px 12px;
 }
 
 .page-link {
-    z-index: 3;
-    color: #222 !important;
-    background-color: #b6effb;
-    border-color: #b6effb;
-    border-radius: 50%;
-    padding: 6px 12px !important;
+    z-index          : 3;
+    color            : #222222 !important;
+    background-color : #b6effb;
+    border-color     : #b6effb;
+    border-radius    : 50%;
+    padding          : 6px 12px !important;
 }
 
 .page-item:first-child .page-link {
-    border-radius: 30% !important;
+    border-radius : 30% !important;
 }
 
 .page-item:last-child .page-link {
-    border-radius: 30% !important;
+    border-radius : 30% !important;
 }
 
 .pagination li {
-    padding: 3px;
+    padding : 3px;
 }
 
 .disabled .page-link {
-    color: #222 !important;
-    opacity: 0.5 !important;
+    color   : #222222 !important;
+    opacity : 0.5 !important;
 }
 
 /*
  tooltip
 */
 .tooltip-inner {
-    font-family: "Helvetica Neue", sans-serif;
+    font-family : "Helvetica Neue", sans-serif;
 }
 
 /*
  category drop-down clicking disabled
  */
 .categories-drop-down {
-    pointer-events: none;
+    pointer-events : none;
 }
 
 /*
@@ -325,34 +325,42 @@ Pagination
  */
 
 .carousel {
-    box-shadow: 6px 10px 10px 0 rgba(0, 0, 0, 0.432);
+    box-shadow : 6px 10px 10px 0 rgba(0, 0, 0, 0.432);
 }
 
 .resp-container {
-    position: relative;
-    overflow: hidden;
-    padding-top: 56.25%;
+    position    : relative;
+    overflow    : hidden;
+    padding-top : 56.25%;
 }
 
 .resp-iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
+    position : absolute;
+    top      : 0;
+    left     : 0;
+    width    : 100%;
+    height   : 100%;
+    border   : 0;
 }
 
 /*
  comment-body
  */
 .comment-body {
-    background: #d9edf7;
+    background : #d9edf7;
 }
 
 /*
  custom twitter button
  */
 .btn.btn-twitter-custom:hover {
-    color: #ffffff;
+    color : #ffffff;
+}
+
+/*
+search bar
+ */
+.search-input {
+    background : whitesmoke;
+    color      : #000000;
 }

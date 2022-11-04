@@ -8,7 +8,7 @@ use App\Models\Category;
 use App\Models\Developer;
 use App\Models\Game;
 use App\Models\Publisher;
-use DB;
+use App\Models\SearchView;
 use Illuminate\Http\Request;
 use Cache;
 
@@ -112,10 +112,11 @@ class HomeController extends Controller
 
     public function autoComplete(Request $request)
     {
-        $query   = $request->get('query');
-        $results = DB::table('games')->select('id', 'name', 'slug')
-                     ->where('name', 'LIKE', '%' . $query . '%')
-                     ->where('status', '=', 1)->orderBy('name')->get();
+        $query   = htmlspecialchars($request->get('query'), ENT_QUOTES);
+        $results = SearchView::select(['id', 'name', 'slug', 'cover_image'])->where('name', 'LIKE', '%' . $query . '%')
+                             ->orWhere('developer_name', 'LIKE', '%' . $query . '%')
+                             ->orWhere('publisher_name', 'LIKE', '%' . $query . '%')
+                             ->active()->orderBy('release_date', 'desc')->limit(3)->get();
         return response()->json($results);
     }
 }

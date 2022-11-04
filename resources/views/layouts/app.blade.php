@@ -50,7 +50,6 @@
 <script src="{{ asset('js/lazysizes.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/cookie-sent-3.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/datepicker-tr.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/typeahead.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/trumbowyg.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/langs/tr.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js"
@@ -77,10 +76,10 @@
       },
    });
 
-   $('.search-input').typeahead({
-      source     : function(request, response) {
+   $('.search-input').autocomplete({
+      source   : function(request, response) {
          $.ajax({
-            url       : "{{ route('autocompleteSearch') }}",
+            url       : '{{ route('autocompleteSearch') }}',
             type      : 'GET',
             dataType  : 'JSON',
             data      : {query: $('.search-input').val()},
@@ -92,20 +91,97 @@
                   return {
                      url  : item.slug,
                      value: item.name,
+                     img  : item.cover_image
                   };
                }));
                $('#search-icon').removeClass('fa-spinner fa-spin').addClass('fa-search');
             },
          });
       },
-      minLength  : 3,
-      highlight  : true,
-      displayText: function(item) {
-         return item.value;
+      open     : function() {
+         $('ul.ui-autocomplete').addClass('opened').css({'top': '120px', 'padding': '7px'});
+         if ($('body').data('theme') == 'dark') {
+            $('ul.ui-autocomplete').css({'background': "#222222", 'color': 'white', 'border-color': '#333333'});
+         } else {
+            $('ul.ui-autocomplete').css({'color': 'black'});
+         }
       },
-      updater    : function(event) {
-         window.location.href = '/oyun/' + event.url;
+      close    : function() {
+         $('ul.ui-autocomplete').removeClass('opened').css('display', 'block');
       },
+      minLength: 3,
+      delay    : 300,
+      select   : function(event, ui) {
+         event.preventDefault();
+         if (ui.item.img != '') {
+            window.location.href = '/oyun/' + ui.item.url;
+         } else {
+            window.location.href = ui.item.url;
+         }
+      },
+      response : function(event, ui) {
+         if (!ui.content.length) {
+            var no_result = {url: '#', value: 'Sonuç Bulunamadı', img: ''};
+            ui.content.push(no_result);
+         } else {
+            var see_all = {
+               url  : '/arama?search=' + encodeURIComponent($('.search-input').val()),
+               value: 'Tümünü Gör',
+               img  : ''
+            };
+            ui.content.push(see_all);
+         }
+      },
+      focus    : function(event, ui) {
+         event.preventDefault();
+      },
+   }).autocomplete('instance')._renderItem = function(ul, item) {
+      if ($('body').data('theme') == 'dark') {
+         $('<style>').text('li.custom-autocomplete-list a {color:#f8f8f8;}').appendTo('head');
+         $('<style>').text('li.custom-autocomplete-list:hover {background:#333333;}').appendTo('head');
+         $('<style>').text('li.custom-autocomplete-list .ui-menu-item-wrapper {background:transparent; border-color:transparent;}').appendTo('head');
+      } else {
+         $('<style>').text('li.custom-autocomplete-list:hover {background:#f8f8f8;}').appendTo('head');
+         $('<style>').text('li.custom-autocomplete-list .ui-menu-item-wrapper {background:transparent; border-color:transparent;}').appendTo('head');
+      }
+
+      if (item.img != '') {
+         return $('<li class="custom-autocomplete-list" style="margin-top: 5px; padding: 7px"></li>').data('item.autocomplete', item)
+            .append('<a style="text-decoration: none">' + "<img src='" + item.img + "' style='margin-right: 4px' alt='cover-image' width='50' height='65'/>" + item.value + '</a>').appendTo(ul);
+      } else if (item.url == '#') {
+         return $('<li class="custom-autocomplete-list text-center" style="margin-top: 5px; padding: 7px; pointer-events: none;"></li>').data('item.autocomplete', item)
+            .append('<span style="text-decoration: none">' + item.value + '</span>').appendTo(ul);
+      } else {
+         return $('<li class="custom-autocomplete-list text-center" style="margin-top: 5px; padding: 7px;"></li>').data('item.autocomplete', item)
+            .append('<span style="text-decoration: none">' + item.value + '</span>').appendTo(ul);
+      }
+   };
+
+   $('#btnNavbarSearch').on('click', function() {
+      if ($('.search-input').val() == '') {
+         return false;
+      }
+      window.location.href = 'arama?search=' + encodeURIComponent($('.search-input').val());
+   });
+
+   $('.search-input').on('keydown, keypress', function(e) {
+      var key = e.keyCode || e.which;
+      if (key == 13) {
+         if (parseInt($(this).val().length) > 2) {
+            $('#btnNavbarSearch').click();
+         } else {
+            alert('Arama yapabilmek için lütfen en az 3 harf girin.');
+            e.preventDefault();
+         }
+      }
+   });
+
+   $('.search-input').blur(function() {
+      $('ul.ui-autocomplete').fadeOut(300);
+   });
+
+   $(window).on('scroll', function() {
+      $('ul.ui-autocomplete').fadeOut(300);
    });
 
    $('.date-picker').datepicker({

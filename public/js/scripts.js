@@ -11,7 +11,9 @@
  * @type {HTMLElement}
  */
 var prevScrollpos = window.pageYOffset;
-window.onscroll   = function() {scrollFunction();};
+window.onscroll   = function() {
+   scrollFunction();
+};
 
 function scrollFunction() {
    var currentScrollPos = window.pageYOffset;

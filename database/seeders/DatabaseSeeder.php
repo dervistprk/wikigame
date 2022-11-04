@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Developer;
 use App\Models\GameDetail;
 use App\Models\Game;
@@ -44,6 +45,7 @@ class DatabaseSeeder extends Seeder
         UserVerify::factory(1)->create();
         GameImage::factory(10)->create();
         GameVideo::factory(10)->create();
-        Game::factory(10)->hasImages(1)->hasGenres(1)->hasPlatforms(1)->hasVideos(1)->create();
+        Comment::factory(7)->create();
+        Game::factory(10)->hasImages()->hasGenres()->hasPlatforms()->hasVideos()->hasComments(3)->create();
     }
 }
