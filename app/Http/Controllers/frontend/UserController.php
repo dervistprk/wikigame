@@ -65,13 +65,12 @@ class UserController extends Controller
             'gender',
             'about'
         ];
-
         foreach ($user_field as $field) {
             $user_data[$field] = $request->input($field);
         }
 
         $user           = new User($user_data);
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($request->input('password'));
         $user->save();
 
         $token = Str::random(64);
@@ -82,13 +81,10 @@ class UserController extends Controller
         ]);
 
         $user->notify(new UserConfirmation($user, $token));
-        flash()->addInfo('Doğrulama e-postası gönderildi.', 'Dikkat!');
+        flash()->addInfo(__('Doğrulama e-postası gönderildi.'), __('Uyarı'));
 
         return redirect()->route('login-form')->with(
-            'message',
-            'Belirtmiş olduğunuz e-posta adresine bir doğrulama postası gönderildi.
-             <br> Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen
-             <a class="link-primary text-decoration-none" href="' . route('resend-verification') . '">tıklayın</a>.'
+            'message', trans('messages.register_waiting_message')
         );
     }
 
@@ -97,14 +93,14 @@ class UserController extends Controller
         if ($request->isMethod('post')) {
             $token = Str::random(64);
 
-            $user           = User::where('email', $request->email)->first();
-            $password_check = $user ? Hash::check($request->password, $user->password) : null;
+            $user           = User::where('email', $request->input('email'))->first();
+            $password_check = $user ? Hash::check($request->input('password'), $user->password) : null;
 
             if ($user && $password_check) {
                 if ($user->isBanned()) {
                     return redirect()->route('resend-verification')->with(
                         'message',
-                        'Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.'
+                        __('Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.')
                     );
                 }
 
@@ -120,23 +116,23 @@ class UserController extends Controller
 
                     $user->notify(new UserConfirmation($user, $token));
 
-                    flash()->addSuccess('Doğrulama e-postası tekrar gönderildi.', 'Başarılı');
+                    flash()->addSuccess(__('Doğrulama e-postası tekrar gönderildi.'), __('Başarılı'));
                     return redirect()->route('login-form')->with(
                         'message',
-                        'Doğrulama E-Posta\'sı tekrar gönderildi. Lütfen gelen kutunuzu kontrol edin.'
+                        __('Doğrulama E-Postası tekrar gönderildi. Lütfen gelen kutunuzu kontrol edin.')
                     );
                 } else {
-                    flash()->warning('E-posta daha önce doğrulanmış.', 'Uyarı');
+                    flash()->addWarning(__('E-posta daha önce doğrulanmış.'), __('Uyarı'));
                     return redirect()->route('login-form')->with(
                         'message',
-                        'Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.'
+                        __('Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.')
                     );
                 }
             } else {
-                flash()->error('E-posta veya şifre yanlış.', 'Hata');
+                flash()->addError(__('E-posta veya şifre yanlış.'), __('Hata'));
                 return redirect()->route('resend-verification')->with(
                     'message',
-                    'Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyin.'
+                    __('Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyin.')
                 );
             }
         }
@@ -157,8 +153,8 @@ class UserController extends Controller
             return redirect()->route('user-profile');
         }
 
-        flash()->addError('E-Posta Adresi veya Şifre Hatalı!', 'Hata');
-        return redirect()->route('login-form')->withErrors('E-Posta Adresi veya Şifre Hatalı')->withInput();
+        flash()->addError(__('Üzgünüz, girmiş olduğunuz e-posta adresi veya şifre yanlış. Lütfen kontrol edip tekrar deneyin.'), __('Hata'));
+        return redirect()->route('login-form')->withErrors(__('E-posta veya şifre yanlış.'))->withInput();
     }
 
     public function userProfile(Request $request)
@@ -173,7 +169,7 @@ class UserController extends Controller
         }
 
         if (!in_array($request->ip(), $ips)) {
-            $ip_check_message = 'Cihaz IP adresi, izin verilen IP adresleri listesinde mevcut değil.';
+            $ip_check_message = __('Cihaz IP adresi, izin verilen IP adresleri listesinde mevcut değil.');
         }
 
         return view('frontend.users.profile', compact('user', 'ip_check_message'));
@@ -204,7 +200,7 @@ class UserController extends Controller
                 $user_data[$field] = $request->input($field);
             }
 
-            if ($request->current_password && $request->password && $request->password_confirmation) {
+            if ($request->input('current_password') && $request->input('password') && $request->input('password_confirmation')) {
                 $request->validate([
                     'password' => [
                         'confirmed',
@@ -217,18 +213,18 @@ class UserController extends Controller
                     ],
                 ]);
 
-                if (!Hash::check($request->current_password, $user->password)) {
+                if (!Hash::check($request->input('current_password'), $user->password)) {
                     return redirect()->route('update-profile')->withErrors(
-                        'Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.'
+                        __('Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.')
                     );
                 }
 
-                $user_data['password'] = Hash::make($request->password);
+                $user_data['password'] = Hash::make($request->input('password'));
             }
 
             User::where('id', $user->id)->update($user_data);
 
-            flash()->addSuccess('Profil Bilgileri Başarıyla Güncellendi.', 'Başarılı');
+            flash()->addSuccess(__('Profil Bilgileri Başarıyla Güncellendi.'), __('Başarılı'));
             return redirect()->route('user-profile');
         }
 
@@ -242,7 +238,7 @@ class UserController extends Controller
             ['token', '=', $token]
         ])->first();
 
-        $message = 'Üzgünüz, girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyin.';
+        $message = __('Üzgünüz, girmiş olduğunuz e-posta adresi sistemde bulunamadı. Lütfen kontrol edip tekrar deneyin.');
 
         if (!is_null($verifyUser)) {
             $user = $verifyUser->user;
@@ -250,9 +246,9 @@ class UserController extends Controller
             if (!$user->isVerified()) {
                 $verifyUser->user->is_email_verified = 1;
                 $verifyUser->user->save();
-                $message = "E-posta adresi başarıyla doğrulandı. Sisteme giriş yapabilirsiniz.";
+                $message = __('E-posta adresi başarıyla doğrulandı. Sisteme giriş yapabilirsiniz.');
             } else {
-                $message = "Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.";
+                $message = __('Girmiş olduğunuz e-posta adresi daha önceden doğrulanmış. Şifrenizle giriş yapabilirsiniz.');
             }
         }
 
@@ -275,12 +271,12 @@ class UserController extends Controller
         if (Auth::user()->isAdmin()) {
             $comment->is_verified = 1;
             $game->comments()->save($comment);
-            flash()->addSuccess('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            flash()->addSuccess(__('Yorumunuz başarıyla kaydedildi.'), __('Başarılı'));
             return redirect()->route('game', $game->slug);
         }
 
         $game->comments()->save($comment);
-        flash()->addWarning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
+        flash()->addWarning(__('Yorumunuz, onaylanması için yöneticiye iletildi.'), __('Onay Bekliyor'));
         return redirect()->route('game', $game->slug);
     }
 
@@ -297,7 +293,7 @@ class UserController extends Controller
             $comment->update([
                 'body' => $request->input('edit_comment')
             ]);
-            flash()->addSuccess('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            flash()->addSuccess(__('Yorumunuz başarıyla kaydedildi.'), __('Başarılı'));
             return redirect()->route('game', $game->slug);
         }
 
@@ -306,7 +302,7 @@ class UserController extends Controller
             'is_verified' => 0
         ]);
 
-        flash()->addWarning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
+        flash()->addWarning(__('Yorumunuz, onaylanması için yöneticiye iletildi.'), __('Onay Bekliyor'));
         return redirect()->route('game', $game->slug);
     }
 
@@ -344,12 +340,12 @@ class UserController extends Controller
             }
 
             $reply_comment_user->notify(new CommentVerified($sub_comment, $content));
-            flash()->addSuccess('Yorumunuz başarıyla kaydedildi.', 'Başarılı');
+            flash()->addSuccess(__('Yorumunuz başarıyla kaydedildi.'), __('Başarılı'));
             return redirect()->route('game', $game->slug);
         }
 
         $game->comments()->save($sub_comment);
-        flash()->addWarning('Yorumunuz onaylanması için yöneticiye iletildi.', 'Onay Bekliyor');
+        flash()->addWarning(__('Yorumunuz, onaylanması için yöneticiye iletildi.'), __('Onay Bekliyor'));
         return redirect()->route('game', $game->slug);
     }
 
@@ -427,14 +423,14 @@ class UserController extends Controller
             }
 
             $is_sub_comment  = (bool)$comment->parent;
-            $flasher_message = 'Yorum başarıyla silindi';
+            $flasher_message = __('Yorum Başarıyla Silindi');
 
             if ($comment->replies->count() > 0) {
                 foreach ($comment->replies as $reply) {
                     $reply->delete();
                     $reply->user->notify(new SubCommentDeletedWithParent($comment, $content));
                 }
-                $flasher_message = 'Yorum ve cevapları başarıyla silindi';
+                $flasher_message = __('Yorum ve Cevapları Başarıyla Silindi');
             }
 
             $comment->delete();

@@ -162,8 +162,8 @@ class PlatformController extends Controller
          */
 
         if ($request->ajax()) {
-            $platform         = Platform::with('games')->findOrFail($request->id);
-            $platform->status = $request->state == 'true' ? 1 : 0;
+            $platform         = Platform::with('games')->findOrFail($request->input('id'));
+            $platform->status = $request->input('state') == 'true' ? 1 : 0;
             $platform->save();
 
             if ($platform->games->count() > 0) {

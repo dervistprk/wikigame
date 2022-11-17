@@ -34,7 +34,7 @@ class UserRegisteredWithSocial extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -44,20 +44,20 @@ class UserRegisteredWithSocial extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('WikiGame Üyelik Bilgileri')
-            ->greeting('Merhaba ' . $this->user->name . ' ' . $this->user->surname)
-            ->line('WikiGame\'e hoşgeldiniz. Sizi aramızda görmekten mutluluk duyuyoruz.')
-            ->line(new HtmlString("<strong>$this->social</strong>  hizmetini kullanarak üye oldunuz. Giriş bilgileriniz aşağıda belirtilmiştir."))
-            ->line('Şifrenizi değiştirmenizi şiddetle tavsiye ederiz.')
-            ->line(new HtmlString('<strong>profilim->profil bilgilerimi güncelle</strong> adımlarını takip edebilirsiniz.'))
-            ->line(new HtmlString("<strong>Şifreniz: </strong> $this->password"))
-            ->action('Profilim', route('user-profile'))
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+        return (new MailMessage())
+            ->subject(__('WikiGame Üyelik Bilgileri'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->user->name, 'surname' => $this->user->surname]))
+            ->line(__('WikiGame\'e hoşgeldiniz. Sizi aramızda görmekten mutluluk duyuyoruz.'))
+            ->line(new HtmlString(trans('messages.registered_with_social_message', ['social' => $this->social])))
+            ->line(__('Şifrenizi değiştirmenizi şiddetle tavsiye ederiz.'))
+            ->line(new HtmlString(trans('messages.how_to_change_password_mail_line')))
+            ->line(new HtmlString(trans('messages.user_password_via_mail', ['password' => $this->password])))
+            ->action(__('Profilim'), route('user-profile'))
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -67,7 +67,7 @@ class UserRegisteredWithSocial extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

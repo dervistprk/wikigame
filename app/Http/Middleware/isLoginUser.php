@@ -24,7 +24,7 @@ class isLoginUser
             return $next($request);
         }
 
-        flash()->addError('Sayfa Erişilemez!', 'Hata');
-        return redirect()->route('login-form')->with('message', 'Gitmek istediğiniz sayfayı görebilmek için giriş yapmanız gerekmektedir.');
+        flash()->addError(__('Sayfa Erişilemez'), __('Hata'));
+        return redirect()->route('login-form')->with('message', __('Gitmek istediğiniz sayfayı görebilmek için giriş yapmanız gerekmektedir.'));
     }
 }

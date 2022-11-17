@@ -31,7 +31,7 @@ class UserConfirmation extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -41,17 +41,17 @@ class UserConfirmation extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('WikiGame Üyelik Doğrulama')
-            ->greeting('Merhaba ' . $this->user->name . ' ' . $this->user->surname)
-            ->line('WikiGame\'e hoşgeldiniz. Sizi aramızda görmekten mutluluk duyuyoruz.')
-            ->line('Üyeliğinizi tamamlamak için lütfen alttaki butona tıklayınız.')
-            ->action('Onayla', route('user-verify', [$this->user->id, $this->token]))
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+        return (new MailMessage())
+            ->subject(__('WikiGame Üyelik Doğrulama'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->user->name, 'surname' => $this->user->surname]))
+            ->line(__('WikiGame\'e hoşgeldiniz. Sizi aramızda görmekten mutluluk duyuyoruz.'))
+            ->line(__('Üyeliğinizi tamamlamak için lütfen alttaki butona tıklayınız.'))
+            ->action(__('Onayla'), route('user-verify', [$this->user->id, $this->token]))
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -61,7 +61,7 @@ class UserConfirmation extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

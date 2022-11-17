@@ -26,52 +26,61 @@
             @if(Auth::check())
                 @if(Auth::user()->id == $reply_user->id || Auth::user()->isAdmin())
                     <a href="#!" class="link-muted comment-action-links edit-comment-button" data-toggle="tooltip"
-                       data-bs-placement="top" title="Yorumu Düzenle"><i class="fas fa-pencil-alt ms-2"></i></a>
+                       data-bs-placement="top" title="{{ __('Düzenle') }}"><i class="fas fa-pencil-alt ms-2"></i></a>
                     <a href="#!" class="link-muted comment-action-links delete-comment-button"
-                       data-id="{{ $reply->id }}" data-toggle="tooltip" data-bs-placement="top" title="Yorumu Sil"><i
-                                class="fas fa-trash-alt ms-2"></i></a>
+                       data-id="{{ $reply->id }}" data-toggle="tooltip" data-bs-placement="top" title="{{ __('Sil') }}">
+                        <i class="fas fa-trash-alt ms-2"></i>
+                    </a>
                 @endif
                 @if(Auth::user()->id != $reply_user->id)
                     <a href="#!" class="link-muted comment-action-links reply-comment-button" data-toggle="tooltip"
-                       data-bs-placement="top" title="Yanıtla"><i class="fas fa-reply ms-2"></i></a>
+                       data-bs-placement="top" title="{{ __('Yanıtla') }}">
+                        <i class="fas fa-reply ms-2"></i>
+                    </a>
                     <a href="#!" class="link-muted comment-action-links like-comment-button" data-id="{{ $reply->id }}"
-                       data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğen"
-                       @if($disabled_like_button_reply) style="pointer-events: none" @endif><i
-                                class="fas fa-thumbs-up ms-2"></i></a>
+                       data-toggle="tooltip" data-bs-placement="top" title="{{ __('Beğen') }}"
+                       @if($disabled_like_button_reply) style="pointer-events: none" @endif>
+                        <i class="fas fa-thumbs-up ms-2"></i>
+                    </a>
                     @if($reply->likes > 0)
                         <span class="badge bg-primary rounded-pill like-count">{{ $reply->likes }}</span>
                     @endif
                     <a href="#!" class="link-muted comment-action-links dislike-comment-button"
-                       data-id="{{ $reply->id }}" data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğenme"
-                       @if($disabled_dislike_button_reply) style="pointer-events: none" @endif><i
-                                class="fas fa-thumbs-down ms-2"></i></a>
+                       data-id="{{ $reply->id }}" data-toggle="tooltip" data-bs-placement="top" title="{{ __('Beğenme') }}"
+                       @if($disabled_dislike_button_reply) style="pointer-events: none" @endif>
+                        <i class="fas fa-thumbs-down ms-2"></i>
+                    </a>
                     @if($reply->dislikes > 0)
                         <span class="badge bg-danger rounded-pill dislike-count">{{ $reply->dislikes }}</span>
                     @endif
                 @else
                     <a href="#!" class="link-muted comment-action-links like-comment-button" data-id="{{ $reply->id }}"
-                       data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğen"
-                       style="pointer-events: none"><i class="fas fa-thumbs-up ms-2"></i></a>
+                       data-toggle="tooltip" data-bs-placement="top" title="{{ __('Beğen') }}"
+                       style="pointer-events: none"><i class="fas fa-thumbs-up ms-2"></i>
+                    </a>
                     @if($reply->likes > 0)
                         <span class="badge bg-primary rounded-pill like-count">{{ $reply->likes }}</span>
                     @endif
                     <a href="#!" class="link-muted comment-action-links dislike-comment-button"
-                       data-id="{{ $reply->id }}" data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğenme"
-                       style="pointer-events: none"><i class="fas fa-thumbs-down ms-2"></i></a>
+                       data-id="{{ $reply->id }}" data-toggle="tooltip" data-bs-placement="top" title="{{ __('Beğenme') }}"
+                       style="pointer-events: none"><i class="fas fa-thumbs-down ms-2"></i>
+                    </a>
                     @if($reply->dislikes > 0)
                         <span class="badge bg-danger rounded-pill dislike-count">{{ $reply->dislikes }}</span>
                     @endif
                 @endif
             @else
                 <a href="#!" class="link-muted comment-action-links like-comment-button" data-id="{{ $reply->id }}"
-                   data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğen" style="pointer-events: none"><i
-                            class="fas fa-thumbs-up ms-2"></i></a>
+                   data-toggle="tooltip" data-bs-placement="top" title="{{ __('Beğen') }}" style="pointer-events: none">
+                    <i class="fas fa-thumbs-up ms-2"></i>
+                </a>
                 @if($reply->likes > 0)
                     <span class="badge bg-primary rounded-pill like-count">{{ $reply->likes }}</span>
                 @endif
                 <a href="#!" class="link-muted comment-action-links dislike-comment-button" data-id="{{ $reply->id }}"
-                   data-toggle="tooltip" data-bs-placement="top" title="Yorumu Beğenme" style="pointer-events: none"><i
-                            class="fas fa-thumbs-down ms-2"></i></a>
+                   data-toggle="tooltip" data-bs-placement="top" title="{{ __('Beğenme') }}" style="pointer-events: none">
+                    <i class="fas fa-thumbs-down ms-2"></i>
+                </a>
                 @if($reply->dislikes > 0)
                     <span class="badge bg-danger rounded-pill dislike-count">{{ $reply->dislikes }}</span>
                 @endif
@@ -90,12 +99,13 @@
                     <form method="post" action="{{ route('user-edit-game-comment', [$game->id, $reply->id]) }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="edit-comment" class="form-label fw-bold">Yorum Düzenle</label>
+                            <label for="edit-comment" class="form-label fw-bold game-header">{{ __('Yorum Düzenle') }}</label>
                             <textarea class="form-control comment-text" name="edit_comment" id="edit-comment"
-                                      minlength="30" required>{!! $reply->body !!}</textarea>
+                                      minlength="30" required>{!! $reply->body !!}
+                            </textarea>
                         </div>
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-sm btn-primary float-end">Kaydet</button>
+                            <button type="submit" class="btn btn-sm btn-primary float-end">{{ __('Kaydet') }}</button>
                         </div>
                     </form>
                 </div>
@@ -112,13 +122,14 @@
                           action="{{ route('user-reply-game-comment', [$game->id, $comment->id, $reply->id]) }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="reply-comment" class="form-label fw-bold">Cevap Yaz</label>
+                            <label for="reply-comment" class="form-label fw-bold">{{ __('Cevap Yaz') }}</label>
                             <textarea class="form-control comment-text" name="reply_comment" id="reply-comment"
-                                      minlength="30" required></textarea>
+                                      minlength="30" required>
+                            </textarea>
                         </div>
                         <input type="hidden" name="comment_id" value="{{ $reply->id }}"/>
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-sm btn-primary float-end">Yanıtla</button>
+                            <button type="submit" class="btn btn-sm btn-primary float-end">{{ __('Yanıtla') }}</button>
                         </div>
                     </form>
                 </div>

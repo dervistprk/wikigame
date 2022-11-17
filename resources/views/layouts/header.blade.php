@@ -13,7 +13,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    @foreach(config('frontend.menus') as $menu)
+                    @foreach(trans('navbar.menus') as $menu)
                         <li class="nav-item">
                             <a class="nav-link @if(Request::segment(1) == $menu['segment']) active @endif"
                                aria-current="page" href="{{ route($menu['route']) }}"><i
@@ -25,21 +25,23 @@
                     @if(Auth::guest())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle categories-drop-down" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> Üyelik</a>
+                               data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="fas fa-user-circle"></i> {{ __('Üyelik') }}
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
                                 <li>
                                     <a class="dropdown-item" href="{{ route('register-form') }}">
-                                        <i class="fas fa-user-plus"></i> Üye Ol
+                                        <i class="fas fa-user-plus"></i> {{ __('Üye Ol') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('login-form') }}">
-                                        <i class="fas fa-sign-in-alt"></i> Giriş Yap
+                                        <i class="fas fa-sign-in-alt"></i> {{ __('Giriş Yap') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('resend-verification') }}">
-                                        <i class="fas fa-envelope"></i> Doğrulama Postası
+                                        <i class="fas fa-envelope"></i> {{ __('Doğrulama Postası') }}
                                     </a>
                                 </li>
                             </ul>
@@ -47,21 +49,23 @@
                     @else
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle categories-drop-down" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user-circle"></i> Üyelik</a>
+                               data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="fas fa-user-circle"></i> {{ __('Üyelik') }}</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li>
                                     <a class="dropdown-item" href="{{ route('user-profile') }}">
-                                        <i class="fas fa-user-circle"></i> Profilim
+                                        <i class="fas fa-user-circle"></i> {{ __('Profilim') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('user-logout') }}">
-                                        <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+                                        <i class="fas fa-sign-out-alt"></i> {{ __('Çıkış Yap') }}
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     @endif
+                    @include('frontend.lang_switcher')
                     <div class="form-check form-switch me-3 mt-2">
                         <i class="fas fa-sun"></i>
                         <input type="checkbox" class="form-check-input" role="switch" id="darkSwitch">
@@ -85,8 +89,9 @@
                         @csrf
                         <div class="input-group">
                             <input class="form-control search-input" type="text" autocomplete="off"
-                                   placeholder="Aramak İstediğiniz Oyun Adını Yazın" aria-label="Ara"
-                                   aria-describedby="btnNavbarSearch" name="search" value="{{ request()->query('search') }}"/>
+                                   placeholder="{{ __('Aramak İstediğiniz Kelimeyi Yazın') }}" aria-label="Search"
+                                   aria-describedby="btnNavbarSearch" name="search"
+                                   value="{{ request()->query('search') }}"/>
                             <button class="btn btn-primary mr-sm-2" id="btnNavbarSearch" type="submit">
                                 <i id="search-icon" class="fas fa-search"></i>
                             </button>
@@ -103,7 +108,7 @@
                     @endforeach
                     <li class="nav-item ms-3">
                         <a class="nav-link @if(Request::segment(1) == 'tum-oyunlar') active @endif"
-                           href="{{ route('all-games') }}"><i class="fa fa-gamepad"></i> Tüm Oyunlar
+                           href="{{ route('all-games') }}"><i class="fa fa-gamepad"></i> {{ __('Tüm Oyunlar') }}
                         </a>
                     </li>
                 </ul>

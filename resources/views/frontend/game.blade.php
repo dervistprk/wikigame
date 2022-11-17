@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', isset($game->name) ? $game->name : 'Kayıtlı Oyun Bulunamadı')
+@section('title', isset($game->name) ? $game->name : __('Kayıtlı Oyun Bulunamadı'))
 @section('content')
     <div class="container">
         @if($errors->any())
@@ -26,16 +26,16 @@
             @include('frontend.game_details')
             <div class="row mt-2">
                 <div class="col">
-                    <h3 class="sysreq-header">Minimum Sistem Gereksinimleri</h3>
+                    <h3 class="sysreq-header">{{ __('Minimum Sistem Gereksinimleri') }}</h3>
                     @include('frontend.system_requirements_minimum')
                 </div>
                 <div class="col">
-                    <h3 class="sysreq-header">Önerilen Sistem Gereksinimleri</h3>
+                    <h3 class="sysreq-header">{{ __('Önerilen Sistem Gereksinimleri') }}</h3>
                     @include('frontend.system_requirements_recommended')
                 </div>
             </div>
-            <h3 class="game-header mt-2">Yorumlar @if($parent_comments->count() > 0)
-                                         ({{ $game->parentComments->count() }})
+            <h3 class="game-header mt-2">{{ __('Yorumlar') }} @if($parent_comments->count() > 0)
+                    ({{ $game->parentComments->count() }})
                 @endif</h3>
             <div class="game-info p-3 mt-3">
                 @if($parent_comments->count() > 0)
@@ -51,7 +51,7 @@
                                 @if($game->parentComments->count() > 5)
                                     <div class="d-flex justify-content-center align-items-center">
                                         <button class="btn btn-secondary m-2 see-more-comment" type="button"
-                                                data-page="2">Daha Fazla
+                                                data-page="2">{{ __('Daha Fazla') }}
                                         </button>
                                     </div>
                                 @endif
@@ -61,7 +61,7 @@
                 @else
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="alert alert-warning">
-                            Henüz yorum yapılmamış. İlk yorumu sen yap!
+                            {{ __('Henüz yorum yapılmamış. İlk yorumu sen yap!') }}
                         </div>
                     </div>
                 @endif
@@ -72,13 +72,15 @@
                             <form method="post" action="{{ route('user-make-game-comment', $game->id) }}">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="comment" class="form-label fw-bold">Yorum Yaz</label>
+                                    <label for="comment"
+                                           class="form-label fw-bold game-header">{{ __('Yorum Yaz') }}</label>
                                     <textarea class="form-control comment-text" name="comment" id="comment" rows="5"
-                                              placeholder="Yorum giriniz" minlength="30" required></textarea>
+                                              placeholder="{{ __('Yorum giriniz') }}" minlength="30" required>
+                                    </textarea>
                                 </div>
                                 <div class="mb-3 submit-comment-layout">
                                     <button type="submit"
-                                            class="btn btn-sm btn-warning float-end submit-comment">Gönder
+                                            class="btn btn-sm btn-warning float-end submit-comment">{{ __('Gönder') }}
                                     </button>
                                 </div>
                             </form>
@@ -87,18 +89,14 @@
                 @else
                     <div class="d-flex justify-content-center align-items-center mt-2">
                         <div class="alert alert-warning">
-                            Yorum yapabilmek için lütfen
-                            <a href="{{ route('login-form') }}"
-                               class="register-login-link text-decoration-none">giriş yap</a> veya
-                            <a href="{{ route('register-form') }}"
-                               class="register-login-link text-decoration-none">üye ol</a>.
+                            {!! trans('messages.register_or_login_to_comment') !!}
                         </div>
                     </div>
                 @endif
             </div>
             @if($other_games->count() > 0)
                 <div class="mt-2">
-                    <h2 class="game-header text-center">{{ $game->category->name }} Kategorisinde Popüler</h2>
+                    <h2 class="game-header text-center">{{ trans('titles.game_category_popular_title', ['category' => $game->category->name]) }}</h2>
                     @foreach($other_games as $other)
                         <div class="card-deck d-inline-block m-2" title="{{ $other->name }}">
                             <div class="card content-cards">
@@ -116,7 +114,7 @@
             @endif
         @else
             <div class="alert alert-secondary text-center m-2">
-                Sistemde kayıtlı oyun bulunamadı.
+                {{ __('Sistemde kayıtlı oyun bulunamadı.') }}
             </div>
         @endif
     </div>
@@ -188,7 +186,7 @@
              });
 
              $('.delete-comment-button').on('click', function() {
-                var confirm_text = 'Yorumu Silmek İstediğinizden Emin misiniz?';
+                var confirm_text = '{{ __('Yorumu Silmek İstediğinizden Emin misiniz?') }}';
                 if (confirm(confirm_text)) {
                    var comment_div;
                    var current_comment = $(this);
@@ -203,7 +201,7 @@
                          'X-CSRF-TOKEN': $('input[name="_token"]').val(),
                       },
                       beforeSend: function() {
-                         flasher.info('Yorum Siliniyor Lütfen Bekleyin <i class="fas fa-spin fa-spinner"></i>', 'Yükleniyor');
+                         flasher.info('{{ __('Yorum Siliniyor Lütfen Bekleyin') }} <i class="fas fa-spin fa-spinner"></i>', '{{ __('Siliniyor') }}');
                       },
                       success   : function(response) {
                          if (response.is_sub_comment) {
@@ -214,7 +212,7 @@
                          $(comment_div).fadeOut('normal', function() {
                             $(this).remove();
                          });
-                         flasher.success(response.flasher_message, 'Başarılı');
+                         flasher.success(response.flasher_message, '{{ __('Başarılı') }}');
                          if (response.reload) {
                             setTimeout(function() {
                                location.reload();
@@ -222,7 +220,7 @@
                          }
                       },
                       error     : function(xhr, status, error) {
-                         flasher.error('Yorum Silinirken Hata Oluştu', 'Hata');
+                         flasher.error('{{ __('Beklenmeyen Bir Hata Oluştu') }}', '{{ __('Hata') }}');
                          console.log(xhr.responseText);
                          console.log(status);
                          console.log(error);
@@ -244,16 +242,16 @@
                       'X-CSRF-TOKEN': $('input[name="_token"]').val(),
                    },
                    beforeSend: function() {
-                      flasher.info('Lütfen Bekleyin <i class="fas fa-spin fa-spinner"></i>', 'Yükleniyor');
+                      flasher.info('{{ __('Lütfen Bekleyin') }} <i class="fas fa-spin fa-spinner"></i>', '{{ __('Yükleniyor') }}');
                    },
                    success   : function() {
-                      flasher.success('Yorum Başarıyla Beğenildi', 'Başarılı');
+                      flasher.success('{{ __('Yorum Başarıyla Beğenildi') }}', '{{ __('Başarılı') }}');
                       setTimeout(function() {
                          location.reload();
                       }, 3000);
                    },
                    error     : function(xhr, status, error) {
-                      flasher.error('Yorum Beğenilirken Hata Oluştu', 'Hata');
+                      flasher.error('{{ __('Beklenmeyen Bir Hata Oluştu') }}', '{{ __('Hata') }}');
                       console.log(xhr.responseText);
                       console.log(status);
                       console.log(error);
@@ -274,16 +272,16 @@
                       'X-CSRF-TOKEN': $('input[name="_token"]').val(),
                    },
                    beforeSend: function() {
-                      flasher.info('Lütfen Bekleyin <i class="fas fa-spin fa-spinner"></i>', 'Yükleniyor');
+                      flasher.info('{{ __('Lütfen Bekleyin') }} <i class="fas fa-spin fa-spinner"></i>', '{{ __('Yükleniyor') }}');
                    },
                    success   : function() {
-                      flasher.success('Yorum Başarıyla Eksilendi', 'Başarılı');
+                      flasher.success('{{ __('Yorum Başarıyla Eksilendi') }}', '{{ __('Başarılı') }}');
                       setTimeout(function() {
                          location.reload();
                       }, 3000);
                    },
                    error     : function(xhr, status, error) {
-                      flasher.error('Yorum Eksilenirken Hata Oluştu', 'Hata');
+                      flasher.error('{{ __('Beklenmeyen Bir Hata Oluştu') }}', '{{ __('Hata') }}');
                       console.log(xhr.responseText);
                       console.log(status);
                       console.log(error);
@@ -298,7 +296,7 @@
                 $('.min-char-alert').remove();
                 e.preventDefault();
                 $('.submit-comment-layout').append(
-                   '<div class="alert alert-danger col-sm-6 float-start min-char-alert">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                   '<div class="alert alert-danger col-sm-6 float-start min-char-alert">{!! trans('messages.min_comment_char_limit') !!} </div>');
                 $('.min-char-alert').effect('shake');
              }
           });
@@ -310,7 +308,7 @@
                 $(this).siblings('.min-char-alert-edit').remove();
                 e.preventDefault();
                 $(this).parents('.edit-comment-layout').append(
-                   '<div class="alert alert-danger col-sm-9 float-start min-char-alert-edit">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                   '<div class="alert alert-danger col-sm-9 float-start min-char-alert-edit">{!! trans('messages.min_comment_char_limit') !!}</div>');
                 $(this).siblings('.min-char-alert-edit').effect('shake');
              }
           });
@@ -322,7 +320,7 @@
                 $(this).siblings('.min-char-alert-reply').remove();
                 e.preventDefault();
                 $(this).parents('.reply-comment-layout').append(
-                   '<div class="alert alert-danger col-sm-9 float-start min-char-alert-reply">Lütfen en az <strong>30</strong> karakter uzunluğunda bir yorum giriniz.</div>');
+                   '<div class="alert alert-danger col-sm-9 float-start min-char-alert-reply">{!! trans('messages.min_comment_char_limit') !!}</div>');
                 $(this).siblings('.min-char-alert-reply').effect('shake');
              }
           });
@@ -356,7 +354,7 @@
                    }
                 },
                 error     : function(xhr, status, error) {
-                   flasher.error('Yorumlar Yüklenirken Hata Oluştu', 'Hata');
+                   flasher.error('{{ __('Yorumlar Yüklenirken Hata Oluştu') }}', '{{ __('Hata') }}');
                    console.log(xhr.responseText);
                    console.log(status);
                    console.log(error);
@@ -387,7 +385,7 @@
                    }
                 },
                 error     : function(xhr, status, error) {
-                   flasher.error('Cevaplar Yüklenirken Hata Oluştu', 'Hata');
+                   flasher.error('{{ __('Cevaplar Yüklenirken Hata Oluştu') }}', '{{ __('Hata') }}');
                    console.log(xhr.responseText);
                    console.log(status);
                    console.log(error);
@@ -401,10 +399,10 @@
     <script type="text/javascript">
        var uri = window.location.pathname;
        @if(isset($game))
-           if (uri == '/rastgele-oyun') {
-              window.location.replace('/oyun/{{ $game->slug }}');
-           }
-       @endif
+       if (uri == '/rastgele-oyun') {
+          window.location.replace('/oyun/{{ $game->slug }}');
+       }
+        @endif
     </script>
 @endsection
 

@@ -22,14 +22,11 @@ class IsVerifyEmail
     {
         if (!Auth::user()->isVerified()) {
             Auth::logout();
-            $route = route('resend-verification');
-            flash()->addWarning('Üyelik Onayı Bekleniyor.', 'Dikkat!');
+            flash()->addWarning(__('Üyelik Onayı Bekleniyor.'), __('Dikkat'));
             return redirect()->route('login-form')
                              ->with(
                                  'message',
-                                 'Üyeliğiniz henüz onaylanmadı. Üyeliğiniz ile giriş yapabilmek için lütfen e-posta hesabınıza gönderilen onay linkine tıklayın.
-                                  <br>Doğrulama postasını almadınız mı? Tekrar göndermek için lütfen
-                                  <a class="link-primary text-decoration-none" href="' . $route . '">tıklayın</a>.'
+                                 trans('messages.waiting_membership_approval')
                              );
         }
         return $next($request);

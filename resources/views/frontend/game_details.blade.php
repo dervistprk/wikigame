@@ -6,13 +6,13 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <td><i class="fas fa-bookmark" style="color: orangered"></i> Türü</td>
-                            <td><i class="fas fa-calculator" style="color: blueviolet"></i> Geliştirici</td>
-                            <td><i class="fas fa-newspaper" style="color: wheat"></i> Dağıtıcı</td>
-                            <td><i class="fas fa-child" style="color: cornflowerblue"></i> Yaş Sınırı</td>
-                            <td><i class="fas fa-laptop" style="color: gray"></i> Platform</td>
-                            <td><i class="fas fa-calendar-alt" style="color: forestgreen"></i> Çıkış Tarihi</td>
-                            <td><i class="fas fa-globe" style="color: deepskyblue"></i> Resmi Website</td>
+                            <td><i class="fas fa-bookmark" style="color: orangered"></i> {{ __('Tür') }}</td>
+                            <td><i class="fas fa-calculator" style="color: blueviolet"></i> {{ __('Geliştirici') }}</td>
+                            <td><i class="fas fa-newspaper" style="color: wheat"></i> {{ __('Dağıtıcı') }}</td>
+                            <td><i class="fas fa-child" style="color: cornflowerblue"></i> {{ __('Yaş Sınırı') }}</td>
+                            <td><i class="fas fa-laptop" style="color: gray"></i> {{ __('Platform') }}</td>
+                            <td><i class="fas fa-calendar-alt" style="color: forestgreen"></i> {{ __('Çıkış Tarihi') }}</td>
+                            <td><i class="fas fa-globe" style="color: deepskyblue"></i> {{ __('Resmi Website') }}</td>
                         </tr>
                         </thead>
                         <tbody>

@@ -150,8 +150,7 @@ class ArticleController extends Controller
         }
 
         $article = Article::findOrFail($article_id);
-
-        $path = public_path('uploads/articles/') . Str::slug($request->input('title'));
+        $path    = public_path('uploads/articles/') . Str::slug($request->input('title'));
 
         if (!File::exists($path)) {
             File::makeDirectory($path, 0777, true);
@@ -214,8 +213,8 @@ class ArticleController extends Controller
     public function switchStatus(Request $request)
     {
         if ($request->ajax()) {
-            $article         = Article::findOrFail($request->id);
-            $article->status = $request->state == 'true' ? 1 : 0;
+            $article         = Article::findOrFail($request->input('id'));
+            $article->status = $request->input('state') == 'true' ? 1 : 0;
             $article->save();
             return true;
         }

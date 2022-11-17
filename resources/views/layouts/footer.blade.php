@@ -2,9 +2,9 @@
     <div class="container p-2">
         @php $socials = ['facebook', 'twitter', 'github', 'linkedin', 'youtube', 'instagram'] @endphp
         @foreach($socials as $social)
-            @if($settings->$social != null)
+            @if($settings->$social)
                 <div class="text-center d-inline-block" data-toggle="tooltip" data-placement="top"
-                     title="{{ ucfirst($social )}} Adresimiz">
+                     title="{{ trans('titles.footer_social_titles', ['social' => ucfirst($social)]) }}">
                     <a href="{{ $settings->$social }}" target="_blank" class="text-decoration-none">
                         <span class="fa-stack fa-lg">
                             <i class="fas fa-circle fa-stack-2x"></i>

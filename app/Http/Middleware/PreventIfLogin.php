@@ -21,8 +21,8 @@ class PreventIfLogin
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            flash()->addError('Sayfa Erişilemez!', 'Hata');
-            return redirect()->route('home')->with('message', 'Lütfen öncelikle mevcut oturumdan çıkış yapınız.');
+            flash()->addError(__('Sayfa Erişilemez'), __('Hata'));
+            return redirect()->route('home')->with('message', __('Lütfen öncelikle mevcut oturumdan çıkış yapınız.'));
         }
         return $next($request);
     }

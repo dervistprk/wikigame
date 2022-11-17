@@ -62,19 +62,19 @@ class SettingController extends Controller
         }
 
         if ($request->hasFile('favicon')) {
-            $imageName = 'favicon' . '.' . $request->favicon->getClientOriginalExtension();
+            $imageName = 'favicon' . '.' . $request->input('favicon')->getClientOriginalExtension();
             Image::make($request->file('favicon')->getRealPath())->resize(16, 16)->save($image_path . $imageName);
             $setting_data['favicon'] = '/assets/' . $imageName;
         }
 
         if ($request->hasFile('logo')) {
-            $imageName = 'logo' . '.' . $request->logo->getClientOriginalExtension();
+            $imageName = 'logo' . '.' . $request->input('logo')->getClientOriginalExtension();
             Image::make($request->file('logo')->getRealPath())->resize(40, 40)->save($image_path . $imageName);
             $setting_data['logo'] = '/assets/' . $imageName;
         }
 
         if ($request->hasFile('backend_favicon')) {
-            $imageName = 'backend_favicon' . '.' . $request->backend_favicon->getClientOriginalExtension();
+            $imageName = 'backend_favicon' . '.' . $request->input('backend_favicon')->getClientOriginalExtension();
             Image::make($request->file('backend_favicon')->getRealPath())->resize(16, 16)->save($image_path . $imageName);
             $setting_data['backend_favicon'] = '/assets/' . $imageName;
         }

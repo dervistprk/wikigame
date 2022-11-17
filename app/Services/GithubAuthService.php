@@ -7,11 +7,14 @@ use App\Models\UserVerify;
 use App\Notifications\UserRegisteredWithSocial;
 use Auth;
 use Carbon\Carbon;
+use Hash;
 use Illuminate\Support\Str;
 use Socialite;
 
 class GithubAuthService
 {
+    private $social = 'Github';
+
     /**
      * Create a redirect method to GitHub api.
      */
@@ -29,16 +32,19 @@ class GithubAuthService
         try {
             $user = Socialite::driver('github')->user();
         } catch (\Exception $e) {
-            flash()->addError('Github ile giriş hatası', 'Hata');
-            return redirect()->route('login-form')->withErrors('Github ile giriş yaparken bir sorun oluştu. Lütfen tekrar deneyin.');
+            flash()->addError(trans('messages.register_with_social_error', ['social' => $this->social]), __('Hata'));
+            return redirect()->route('login-form')->withErrors(trans('messages.register_with_social_error_msg', ['social' => $this->social]));
         }
 
         $existing_user = User::where('email', $user->getEmail())->first();
 
         if ($existing_user) {
             Auth::login($existing_user, true);
-            flash()->addSuccess('Hoşgeldiniz sayın ' . Auth::user()->name . ' ' . Auth::user()->surname, 'Hoşgeldiniz');
-            flash()->addInfo('Sisteme Github servisi ile giriş yaptınız', 'Başarılı');
+            flash()->addSuccess(
+                trans('messages.welcome_message', ['name' => Auth::user()->name, 'surname' => Auth::user()->surname]),
+                __('Hoşgeldiniz')
+            );
+            flash()->addInfo(trans('messages.login_with_social_success', ['social' => $this->social]), __('Başarılı'));
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);
@@ -48,8 +54,6 @@ class GithubAuthService
             $surname    = $name_array[count($name_array) - 1];
             unset($name_array[count($name_array) - 1]);
             $name = implode(' ', $name_array);
-
-            $social = 'Github';
 
             $simplify = trim(strtolower($name . $surname));
             $search   = array('Ç', 'ç', 'Ğ', 'ğ', 'ı', 'İ', 'Ö', 'ö', 'Ş', 'ş', 'Ü', 'ü');
@@ -61,10 +65,10 @@ class GithubAuthService
             $new_user->surname           = $surname;
             $new_user->email             = $user->getEmail();
             $new_user->user_name         = $simplify . '_' . $user->getId();
-            $new_user->password          = \Hash::make($password);
+            $new_user->password          = Hash::make($password);
             $new_user->github_id         = $user->getId();
             $new_user->birth_day         = Carbon::now();
-            $new_user->about             = 'Github servisi ile kayıt yapıldı.';
+            $new_user->about             = trans('messages.register_with_social_bio', ['social' => $this->social]);
             $new_user->is_email_verified = 1;
             $new_user->save();
 
@@ -73,15 +77,13 @@ class GithubAuthService
                 'token'   => $token
             ]);
 
-            $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $social));
+            $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $this->social));
 
             Auth::attempt(['email' => $new_user->email, 'password' => $password], true);
-            flash()->addSuccess('Sisteme Github servisi ile üye oldunuz', 'Başarılı');
+            flash()->addSuccess(trans('messages.register_with_social_success', ['social' => $this->social]), __('Başarılı'));
             return redirect()->route('user-profile')->with(
                 'message',
-                $social . ' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route(
-                    'update-profile'
-                ) . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.'
+                trans('messages.register_with_social_feedback', ['social' => $this->social])
             );
         }
     }

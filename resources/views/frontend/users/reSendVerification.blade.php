@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Doğrulama E-Posta\'sı Gönder')
+@section('title', __('Doğrulama E-Posta\'sı Gönder'))
 @section('content')
     <div class="container d-flex align-items-center justify-content-center">
         <form class="game-info rounded mt-2 needs-validation col-sm-8" novalidate
@@ -13,7 +13,8 @@
                                     <li>{{ $error }}</li>
                                 @endforeach
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+                                        aria-label="Close">
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -25,23 +26,23 @@
                     </div>
                 @endif
                 @csrf
-                <h2 class="text-center dev-header mt-1">Doğrulama E-Postası Gönder</h2>
+                <h2 class="text-center dev-header mt-1">{{ __('Doğrulama E-Posta\'sı Gönder') }}</h2>
                 <div class="justify-content-center align-items-center col-sm-6 offset-sm-3">
                     <div class="mb-3">
-                        <label for="email" class="fw-bold form-label">E-Posta</label>
+                        <label for="email" class="fw-bold form-label">{{ __('E-Posta') }}</label>
                         <div class="input-group mt-2">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             <input type="email" name="email" class="form-control" id="email"
-                                   placeholder="E-Posta Adresinizi Girin" value="{{ old('email') }}" required/>
+                                   placeholder="{{ __('E-Posta Adresinizi Girin') }}" value="{{ old('email') }}" required/>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="fw-bold form-label">Şifre</label>
+                        <label for="password" class="fw-bold form-label">{{ __('Şifre') }}</label>
                         <div class="input-group mt-2">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                             <input type="password" class="form-control" id="password" name="password" minlength="6"
                                    maxlength="255" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*"
-                                   placeholder="Şifrenizi Girin" required/>
+                                   placeholder="{{ __('Şifrenizi Girin') }}" required/>
                             <span class="input-group-text" style="cursor: pointer" id="show-eye">
                                 <i class="far fa-eye"></i>
                             </span>
@@ -53,7 +54,7 @@
                 </div>
                 <div class="text-center m-2">
                     <button type="submit" class="btn btn-success me-2 btn-register">
-                        <i class="fa fa-envelope"></i> Gönder
+                        <i class="fa fa-envelope"></i> {{ __('Gönder') }}
                     </button>
                 </div>
             </div>

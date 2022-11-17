@@ -11,14 +11,6 @@ $linkedin_service   = App\Services\LinkedinAuthService::class;
 $twitter_service    = App\Services\TwitterAuthService::class;
 
 return [
-    'menus'  => [
-        ['title' => 'Ana Sayfa', 'segment' => '', 'route' => 'home', 'icon' => 'home'],
-        ['title' => 'Rastgele Oyun', 'segment' => '---', 'route' => 'random-game', 'icon' => 'random'],
-        ['title' => 'Geliştiriciler', 'segment' => 'gelistiriciler', 'route' => 'developers', 'icon' => 'code'],
-        ['title' => 'Dağıtıcılar', 'segment' => 'dagiticilar', 'route' => 'publishers', 'icon' => 'newspaper'],
-        ['title' => 'Makaleler', 'segment' => 'makaleler', 'route' => 'articles', 'icon' => 'book-open'],
-        ['title' => 'Hakkında', 'segment' => 'hakkinda', 'route' => 'about', 'icon' => 'book'],
-    ],
     'routes' => [
         'home'               => [
             'method'     => 'get',
@@ -57,7 +49,7 @@ return [
         ],
         'developer'          => [
             'method'     => 'get',
-            'uri'        => 'gelistirici/{id}',
+            'uri'        => 'gelistirici/{slug}',
             'controller' => $game_controller,
             'function'   => 'developer',
             'middleware' => 'maintenance'
@@ -71,7 +63,7 @@ return [
         ],
         'publisher'          => [
             'method'     => 'get',
-            'uri'        => 'dagitici/{id}',
+            'uri'        => 'dagitici/{slug}',
             'controller' => $game_controller,
             'function'   => 'publisher',
             'middleware' => 'maintenance'
@@ -85,7 +77,7 @@ return [
         ],
         'category'           => [
             'method'     => 'get',
-            'uri'        => 'kategori/{id}',
+            'uri'        => 'kategori/{slug}',
             'controller' => $home_controller,
             'function'   => 'category',
             'middleware' => 'maintenance'
@@ -99,7 +91,7 @@ return [
         ],
         'article'            => [
             'method'     => 'get',
-            'uri'        => 'makale/{id}',
+            'uri'        => 'makale/{slug}',
             'controller' => $article_controller,
             'function'   => 'article',
             'middleware' => 'maintenance'
@@ -116,6 +108,13 @@ return [
             'uri'        => 'oto-arama',
             'controller' => $home_controller,
             'function'   => 'autoComplete',
+            'middleware' => 'maintenance'
+        ],
+        'switch-lang'        => [
+            'method'     => 'get',
+            'uri'        => '/dil-degistir',
+            'controller' => $home_controller,
+            'function'   => 'switchLanguage',
             'middleware' => 'maintenance'
         ],
         'register-form'      => [
@@ -295,5 +294,6 @@ return [
             'function'   => 'dislikeComment',
             'middleware' => ['maintenance', 'is_login_user', 'is_banned']
         ],
+
     ]
 ];

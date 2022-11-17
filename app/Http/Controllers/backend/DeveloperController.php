@@ -258,8 +258,8 @@ class DeveloperController extends Controller
          * @var Developer $developer
          */
         if ($request->ajax()) {
-            $developer         = Developer::with('games')->findOrFail($request->id);
-            $developer->status = $request->state == 'true' ? 1 : 0;
+            $developer         = Developer::with('games')->findOrFail($request->input('id'));
+            $developer->status = $request->input('state') == 'true' ? 1 : 0;
             $developer->save();
 
             if ($developer->games->count() > 0) {

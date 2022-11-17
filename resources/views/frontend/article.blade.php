@@ -13,7 +13,7 @@
         </div>
         @if($random_articles->count() > 0)
             <div class="container-fluid">
-                <h2 class="game-header text-center">Bunları da Okumak İsteyebilirsiniz</h2>
+                <h2 class="game-header text-center">{{ __('Bunları da Okumak İsteyebilirsiniz') }}</h2>
                 <div class="row mt-2 justify-content-center align-content-center">
                     @foreach($random_articles as $random_article)
                         <div class="col-sm-3">
@@ -38,7 +38,7 @@
     @else
         <div class="container">
             <div class="alert alert-secondary text-center m-2">
-                Sistemde kayıtlı makale bulunamadı.
+                {{ __('Sistemde kayıtlı makale bulunamadı.') }}
             </div>
         </div>
     @endif

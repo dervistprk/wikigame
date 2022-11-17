@@ -13,6 +13,8 @@
     <link href="{{ asset('css/dark-mode.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet"/>
     <link href="{{ asset('backend/css/jquery-ui-blitzer.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('backend/css/select2.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('backend/css/select2-bs5.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/cookie-sent-3.min.css') }}" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/ui/trumbowyg.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/giphy/ui/trumbowyg.giphy.min.css"
@@ -37,7 +39,7 @@
 @include('layouts.header')
 @yield('content')
 <button class="btn btn-warning rounded-circle" onclick="topFunction()" id="topBtn" data-toggle="tooltip"
-        data-placement="top" title="En Üste Git">
+        data-placement="top" title="{{ __('En Üste Git') }}">
     <i class="fas fa-angle-up"></i>
 </button>
 @include('layouts.footer')
@@ -50,6 +52,8 @@
 <script src="{{ asset('js/lazysizes.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/cookie-sent-3.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/datepicker-tr.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/select2.js') }}" type="text/javascript"></script>
+<script src="{{ asset('backend/js/select2-tr.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/trumbowyg.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/langs/tr.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.2/plugins/emoji/trumbowyg.emoji.min.js"
@@ -74,6 +78,12 @@
          'dismiss': 'Anladım',
          'link'   : 'Daha Fazla Bilgi',
       },
+   });
+
+   $(document).ready(function() {
+      $('body').tooltip({
+         selector: '.comment-action-links'
+      });
    });
 
    $('.search-input').autocomplete({
@@ -121,12 +131,14 @@
       },
       response : function(event, ui) {
          if (!ui.content.length) {
-            var no_result = {url: '#', value: 'Sonuç Bulunamadı', img: ''};
+            var no_result_text = '{{ __('Sonuç Bulunamadı') }}';
+            var no_result = {url: '#', value: no_result_text, img: ''};
             ui.content.push(no_result);
          } else {
+            var see_all_text = '{{ __('Tümünü Gör') }}';
             var see_all = {
                url  : '/arama?search=' + encodeURIComponent($('.search-input').val()),
-               value: 'Tümünü Gör',
+               value: see_all_text,
                img  : ''
             };
             ui.content.push(see_all);
@@ -164,7 +176,7 @@
       window.location.href = 'arama?search=' + encodeURIComponent($('.search-input').val());
    });
 
-   $('.search-input').on('keydown, keypress', function(e) {
+   $('.search-input').on('keydown, keypress, keyup', function(e) {
       var key = e.keyCode || e.which;
       if (key == 13) {
          if (parseInt($(this).val().length) > 2) {
@@ -172,6 +184,10 @@
          } else {
             alert('Arama yapabilmek için lütfen en az 3 harf girin.');
             e.preventDefault();
+         }
+      } else if (key == 8) {
+         if (parseInt($(this).val().length) < 3) {
+            $('ul.ui-autocomplete').fadeOut(300);
          }
       }
    });
@@ -189,7 +205,7 @@
       changeYear : true,
       showAnim   : 'slideDown',
       dateFormat : 'yy-mm-dd',
-      yearRange  : '1900:' + new Date().getFullYear(),
+      yearRange  : '1970:' + new Date().getFullYear(),
       maxDate    : '+0D',
    });
 
@@ -197,6 +213,7 @@
       'cursor': 'pointer',
    });
 
+   var site_lang = '{{ app()->getLocale() }}';
    $('.comment-text').trumbowyg({
       btns             : [
          ['undo', 'redo'],
@@ -216,9 +233,38 @@
             rating: 'pg',
          },
       },
-      lang             : 'tr',
+      lang             : site_lang,
       resetCss         : true,
       defaultLinkTarget: '_blank',
+   });
+
+   function addIcon(state) {
+      if (!state.id) {
+         return state.text;
+      }
+      var icon_url = '/assets/';
+      return $(
+         '<span><img src="' + icon_url + '/' + state.element.value.toLowerCase() + '.png" width="25" height="20" alt="lang-icon" class="img-flag" /> ' + state.text + '</span>'
+      );
+   }
+
+   $('#lang-selector').select2({
+      minimumResultsForSearch: -1,
+      templateResult         : addIcon,
+      dropdownCssClass       : ['text-info', 'fw-bold']
+   });
+
+   $('#lang-selector').on('change', function() {
+      var locale = $(this).val();
+      $.ajax({
+         url     : '{{ route('switch-lang') }}',
+         type    : 'GET',
+         dataType: 'JSON',
+         data    : {locale: locale},
+         success : function() {
+            location.reload();
+         },
+      });
    });
 
    (function() {

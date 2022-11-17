@@ -30,7 +30,7 @@ class UserBanned extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -40,19 +40,19 @@ class UserBanned extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->error()
-            ->subject('Hesap Yasaklandı')
-            ->greeting('Merhaba ' . $this->user->name . ' ' . $this->user->surname)
+            ->subject(__('Hesap Yasaklandı'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->user->name, 'surname' => $this->user->surname]))
             ->line('Sitemizde bulunan hesabınız kalıcı olarak yasaklanmıştır.')
-            ->line(new HtmlString('<h4>Yasaklanma Sebebi</h4>'))
+            ->line(new HtmlString('<h4>' . __('Yasaklanma Sebebi') . '</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->user->ban_reason . '</div>'))
-            ->line('Yasaklanma kararının yanlış olduğunu düşünüyorsanız bizimle iletişime geçebilirsiniz.')
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+            ->line(__('Yasaklanma kararının yanlış olduğunu düşünüyorsanız bizimle iletişime geçebilirsiniz.'))
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -62,7 +62,7 @@ class UserBanned extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

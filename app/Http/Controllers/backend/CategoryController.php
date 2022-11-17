@@ -159,8 +159,8 @@ class CategoryController extends Controller
          * @var Category $category
          */
         if ($request->ajax()) {
-            $category         = Category::with('games')->findOrFail($request->id);
-            $category->status = $request->state == 'true' ? 1 : 0;
+            $category         = Category::with('games')->findOrFail($request->input('id'));
+            $category->status = $request->input('state') == 'true' ? 1 : 0;
             $category->save();
 
             if ($category->games->count() > 0) {

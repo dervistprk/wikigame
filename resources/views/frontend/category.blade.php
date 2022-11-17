@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title', $game_category->name.' Kategorisi')
+@section('title', trans('titles.category_title', ['category' => $game_category->name]))
 @section('content')
     <div class="container">
         <div>
-            <h2 class="category-header">{{ $game_category->name }} Kategorisi</h2>
+            <h2 class="category-header">{{ trans('titles.category_title', ['category' => $game_category->name]) }}</h2>
             <div class="game-info mt-2 mb-2 p-3 rounded">
-                <h5 class="game-subtitle">Kategori Açıklaması</h5>
+                <h5 class="game-subtitle">{{ __('Kategori Açıklaması') }}</h5>
                 <p>{!! $game_category->description !!}</p>
             </div>
         </div>
         @if($games->count() > 0)
-            <h2 class="category-header">{{ $game_category->name }} Kategorisine Ait Oyunlar</h2>
+            <h2 class="category-header">{{ trans('titles.category_subgames_title', ['category' => $game_category->name]) }}</h2>
             @foreach($games as $game)
                 <div class="card-deck d-inline-block m-2" title="{{ $game->name }}">
                     <div class="card content-cards">

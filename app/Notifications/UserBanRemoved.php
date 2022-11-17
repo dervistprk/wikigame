@@ -29,7 +29,7 @@ class UserBanRemoved extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -39,17 +39,17 @@ class UserBanRemoved extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->success()
-            ->subject('Hesap Yasağı Kaldırıldı')
-            ->greeting('Merhaba ' . $this->user->name . ' ' . $this->user->surname)
-            ->line('Sitemizde bulunan hesabınızın yasağı kaldırılmıştır. Alttaki butona tıklayarak giriş yapabilirsiniz.')
-            ->action('Giriş Yap', route('login-form'))
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+            ->subject(__('Hesap Yasağı Kaldırıldı'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->user->name, 'surname' => $this->user->surname]))
+            ->line(__('Sitemizde bulunan hesabınızın yasağı kaldırılmıştır. Alttaki butona tıklayarak giriş yapabilirsiniz.'))
+            ->action(__('Giriş Yap'), route('login-form'))
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -59,7 +59,7 @@ class UserBanRemoved extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

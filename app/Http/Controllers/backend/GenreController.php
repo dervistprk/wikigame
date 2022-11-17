@@ -4,7 +4,6 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Genre;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Str;
 use Validator;
@@ -162,8 +161,8 @@ class GenreController extends Controller
          */
 
         if ($request->ajax()) {
-            $genre         = Genre::with('games')->findOrFail($request->id);
-            $genre->status = $request->state == 'true' ? 1 : 0;
+            $genre         = Genre::with('games')->findOrFail($request->input('id'));
+            $genre->status = $request->input('state') == 'true' ? 1 : 0;
             $genre->save();
 
             if ($genre->games->count() > 0) {

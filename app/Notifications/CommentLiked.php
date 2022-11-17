@@ -34,7 +34,7 @@ class CommentLiked extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -44,25 +44,32 @@ class CommentLiked extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
         return (new MailMessage())
             ->success()
-            ->subject('Yorum Beğenildi')
-            ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yoruma beğeni gelmiştir.')
-            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+            ->subject(__('Yorum Beğenildi'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->comment->user->name, 'surname' => $this->comment->user->surname]))
+            ->line(__('Yapmış olduğunuz yoruma beğeni geldi.'))
+            ->line(new HtmlString('<h4>' . __('Yorum İçeriği') . '</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
             ->line(
                 new HtmlString(
-                    'Yorumu beğenen kullanıcımız: <strong>' . $this->liked_user->name . ' ' . $this->liked_user->surname . ' [' . $this->liked_user->user_name . ']</strong>'
+                    trans(
+                        'messages.comment_dislike_user',
+                        [
+                            'name'      => $this->liked_user->name,
+                            'surname'   => $this->liked_user->surname,
+                            'user_name' => $this->liked_user->user_name
+                        ]
+                    )
                 )
             )
-            ->action('İçeriğe gitmek için tıklayın', $url)
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+            ->action(__('İçeriğe gitmek için tıklayın'), $url)
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -72,7 +79,7 @@ class CommentLiked extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

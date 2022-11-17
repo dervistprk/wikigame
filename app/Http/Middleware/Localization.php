@@ -6,9 +6,10 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
-class isBanned
+class Localization
 {
     /**
      * Handle an incoming request.
@@ -20,10 +21,8 @@ class isBanned
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->isBanned()) {
-            Auth::logout();
-            flash()->addError(__('Yasaklı Hesap'), __('Hata'));
-            return redirect()->route('login-form')->with('message', __('Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.'));
+        if (Session::has('locale')) {
+            App::setLocale(Session::get('locale'));
         }
         return $next($request);
     }

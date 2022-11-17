@@ -170,8 +170,8 @@ class GameController extends Controller
         }
 
         $game_data['description'] = strip_tags($request->input('description'));
-        $game_data['sub_title']   = ucfirst($request->sub_title);
-        $game_data['slug']        = Str::slug($request->name);
+        $game_data['sub_title']   = ucfirst($request->input('sub_title'));
+        $game_data['slug']        = Str::slug($request->input('name'));
 
         $validate_game_fields = Validator::make($game_data, $game_field_rules);
 
@@ -319,14 +319,14 @@ class GameController extends Controller
         }
 
         $cover_image    = $request->file('cover_image');
-        $coverImageName = Str::slug($request->name) . '-cover.' . $request->cover_image->getClientOriginalExtension();
+        $coverImageName = Str::slug($request->input('name')) . '-cover.' . $request->input('cover_image')->getClientOriginalExtension();
         Image::make($cover_image->getRealPath())->resize(230, 300)->save($image_path . '/' . $coverImageName);
-        $game_data['cover_image'] = '/uploads/games/' . Str::slug($request->name) . '/' . $coverImageName;
+        $game_data['cover_image'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $coverImageName;
 
         $image_1   = $request->file('image1');
-        $imageName = Str::slug($request->name) . '-1.' . $request->image1->getClientOriginalExtension();
+        $imageName = Str::slug($request->input('name')) . '-1.' . $request->input('image1')->getClientOriginalExtension();
         Image::make($image_1->getRealPath())->resize(1920, 1080)->save($image_path . '/' . $imageName);
-        $game_data['image1'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
+        $game_data['image1'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $imageName;
 
         $game         = new Game($game_data);
         $game_details = new GameDetail($detail_data);
@@ -373,7 +373,7 @@ class GameController extends Controller
 
                 $image_data = [
                     'game_id' => $game->id,
-                    'path'    => '/uploads/games/' . Str::slug($request->name) . '/' . $imageName,
+                    'path'    => '/uploads/games/' . Str::slug($request->input('name')) . '/' . $imageName,
                 ];
 
                 GameImage::create($image_data);
@@ -712,7 +712,7 @@ class GameController extends Controller
 
             if ($game->cover_image) {
                 $file_extension           = '.' . File::extension($game->cover_image);
-                $coverImageName           = Str::slug($request->name) . '-cover' . $file_extension;
+                $coverImageName           = Str::slug($request->input('name')) . '-cover' . $file_extension;
                 $file_data['cover_image'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $coverImageName;
                 if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
                         $old_path . '/' . $game->slug . '-cover' . $file_extension
@@ -744,14 +744,14 @@ class GameController extends Controller
             if ($game->images) {
                 foreach ($game->images as $image) {
                     $file_extension     = '.' . File::extension($image->path);
-                    $imageName          = Str::slug($request->name) . '-' . $image_counter . $file_extension;
-                    $image_data['path'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
+                    $imageName          = Str::slug($request->input('name')) . '-' . $image_counter . $file_extension;
+                    $image_data['path'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $imageName;
                     if (File::exists($old_path) && File::isDirectory($old_path) && File::exists(
                             $old_path . '/' . $game->slug . '-' . $image_counter . $file_extension
                         )) {
                         rename(
                             $old_path . '/' . $game->slug . '-' . $image_counter . $file_extension,
-                            $path . '/' . Str::slug($request->name) . '-' . $image_counter . $file_extension
+                            $path . '/' . Str::slug($request->input('name')) . '-' . $image_counter . $file_extension
                         );
                         File::delete($path . '/' . $game->slug . '-' . $image_counter . $file_extension);
                     }
@@ -768,16 +768,16 @@ class GameController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $image          = $request->file('cover_image');
-            $coverImageName = Str::slug($request->name) . '-cover.' . $request->cover_image->getClientOriginalExtension();
+            $coverImageName = Str::slug($request->input('name')) . '-cover.' . $request->input('cover_image')->getClientOriginalExtension();
             Image::make($image->getRealPath())->resize(230, 300)->save($path . '/' . $coverImageName);
-            $file_data['cover_image'] = '/uploads/games/' . Str::slug($request->name) . '/' . $coverImageName;
+            $file_data['cover_image'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $coverImageName;
         }
 
         if ($request->hasFile('image1')) {
             $image     = $request->file('image1');
-            $imageName = Str::slug($request->name) . '-1.' . $request->image1->getClientOriginalExtension();
+            $imageName = Str::slug($request->input('name')) . '-1.' . $request->input('image1')->getClientOriginalExtension();
             Image::make($image->getRealPath())->resize(1920, 1080)->save($path . '/' . $imageName);
-            $file_data['image1'] = '/uploads/games/' . Str::slug($request->name) . '/' . $imageName;
+            $file_data['image1'] = '/uploads/games/' . Str::slug($request->input('name')) . '/' . $imageName;
         }
 
         $game->update($game_data);
@@ -803,12 +803,12 @@ class GameController extends Controller
             }
 
             foreach ($image_fields['path'] as $image_path) {
-                $image_name = Str::slug($request->name) . '-' . $game_image_count + 2 . '.' . $image_path->getClientOriginalExtension();
+                $image_name = Str::slug($request->input('name')) . '-' . $game_image_count + 2 . '.' . $image_path->getClientOriginalExtension();
                 Image::make($image_path->getRealPath())->resize(1920, 1080)->save($path . '/' . $image_name);
 
                 $image_data = [
                     'game_id'    => $game->id,
-                    'path'       => '/uploads/games/' . Str::slug($request->name) . '/' . $image_name,
+                    'path'       => '/uploads/games/' . Str::slug($request->input('name')) . '/' . $image_name,
                     'image_hash' => \Str::random(20)
                 ];
 
@@ -935,7 +935,7 @@ class GameController extends Controller
         $publisher_status = $game->publisher->status;
 
         if ($category_status == 1 && $developer_status == 1 && $publisher_status == 1) {
-            $game->status = $request->state == 'true' ? 1 : 0;
+            $game->status = $request->input('state') == 'true' ? 1 : 0;
             $game->save();
             return true;
         }
@@ -972,8 +972,8 @@ class GameController extends Controller
          * @var GameVideo $video_to_be_deleted
          */
         if ($request->ajax()) {
-            $game                = Game::with('videos')->find($request->game_id);
-            $video_to_be_deleted = $game->videos->where('video_hash', '=', $request->video_hash)->first();
+            $game                = Game::with('videos')->find($request->input('game_id'));
+            $video_to_be_deleted = $game->videos->where('video_hash', '=', $request->input('video_hash'))->first();
 
             if ($video_to_be_deleted) {
                 $video_to_be_deleted->delete();

@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Geliştiriciler')
+@section('title', __('Geliştiriciler'))
 @section('content')
     <div class="container">
         @if($developers->count() > 0)
             <h2 class="dev-header">
-                Geliştiriciler
+                {{ __('Geliştiriciler') }}
             </h2>
             @foreach($developers as $developer)
                 <div class="card-deck d-inline-block m-2" title="{{ $developer->name }}">
@@ -22,7 +22,7 @@
             <div class="m-1">{!! $developers->links() !!}</div>
         @else
             <div class="alert alert-secondary text-center m-2">
-                Sistemde kayıtlı geliştirici bulunamadı.
+                {{ __('Sistemde kayıtlı geliştirici bulunamadı.') }}
             </div>
         @endif
     </div>

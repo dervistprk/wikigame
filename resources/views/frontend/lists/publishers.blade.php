@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Dağıtıcılar')
+@section('title', __('Dağıtıcılar'))
 @section('content')
     <div class="container">
         @if($publishers->count() > 0)
             <h2 class="pub-header">
-                Dağıtıcılar
+                {{ __('Dağıtıcılar') }}
             </h2>
             @foreach($publishers as $publisher)
                 <div class="card-deck d-inline-block m-2" title="{{ $publisher->name }}">
@@ -22,7 +22,7 @@
             <div class="m-1">{!! $publishers->links() !!}</div>
         @else
             <div class="alert alert-secondary text-center m-2">
-                Sistemde kayıtlı dağıtıcı bulunamadı.
+                {{ __('Sistemde kayıtlı dağıtıcı bulunamadı.') }}
             </div>
         @endif
     </div>

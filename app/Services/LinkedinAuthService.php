@@ -7,11 +7,14 @@ use App\Models\UserVerify;
 use App\Notifications\UserRegisteredWithSocial;
 use Auth;
 use Carbon\Carbon;
+use Hash;
 use Illuminate\Support\Str;
 use Socialite;
 
 class LinkedinAuthService
 {
+    private $social = 'LinkedIn';
+
     /**
      * Create a redirect method to LinkedIn api.
      */
@@ -28,21 +31,23 @@ class LinkedinAuthService
         try {
             $user = Socialite::driver('linkedin')->user();
         } catch (\Exception $e) {
-            flash()->addError('LinkedIn ile giriş hatası', 'Hata');
-            return redirect()->route('login-form')->withErrors('LinkedIn ile giriş yaparken bir sorun oluştu. Lütfen tekrar deneyin.');
+            flash()->addError(trans('messages.register_with_social_error', ['social' => $this->social]), __('Hata'));
+            return redirect()->route('login-form')->withErrors(trans('messages.register_with_social_error_msg', ['social' => $this->social]));
         }
 
         $existing_user = User::where('email', $user->getEmail())->first();
 
         if ($existing_user) {
             Auth::login($existing_user, true);
-            flash()->addSuccess('Hoşgeldiniz sayın ' . Auth::user()->name . ' ' . Auth::user()->surname, 'Hoşgeldiniz');
-            flash()->addInfo('Sisteme LinkedIn servisi ile giriş yaptınız', 'Başarılı');
+            flash()->addSuccess(
+                trans('messages.welcome_message', ['name' => Auth::user()->name, 'surname' => Auth::user()->surname]),
+                __('Hoşgeldiniz')
+            );
+            flash()->addInfo(trans('messages.login_with_social_success', ['social' => $this->social]), __('Başarılı'));
             return redirect()->route('user-profile');
         } else {
             $password = Str::random(10);
             $token    = $user->token;
-            $social   = 'LinkedIn';
 
             $simplify = trim(strtolower($user->first_name . $user->last_name));
             $search   = array('Ç', 'ç', 'Ğ', 'ğ', 'ı', 'İ', 'Ö', 'ö', 'Ş', 'ş', 'Ü', 'ü');
@@ -54,10 +59,10 @@ class LinkedinAuthService
             $new_user->surname           = $user->last_name;
             $new_user->email             = $user->getEmail();
             $new_user->user_name         = $simplify . '_' . $user->getId();
-            $new_user->password          = \Hash::make($password);
+            $new_user->password          = Hash::make($password);
             $new_user->linkedin_id       = $user->getId();
             $new_user->birth_day         = Carbon::now();
-            $new_user->about             = 'LinkedIn servisi ile kayıt yapıldı.';
+            $new_user->about             = trans('messages.register_with_social_bio', ['social' => $this->social]);
             $new_user->is_email_verified = 1;
             $new_user->save();
 
@@ -66,11 +71,11 @@ class LinkedinAuthService
                 'token'   => $token
             ]);
 
-            $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $social));
+            $new_user->notify(new UserRegisteredWithSocial($new_user, $password, $this->social));
 
             Auth::attempt(['email' => $new_user->email, 'password' => $password], true);
-            flash()->addSuccess('Sisteme LinkedIn servisi ile üye oldunuz', 'Başarılı');
-            return redirect()->route('user-profile')->with('message', $social . ' servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.');
+            flash()->addSuccess(trans('messages.register_with_social_success', ['social' => $this->social]), __('Başarılı'));
+            return redirect()->route('user-profile')->with('message', trans('messages.register_with_social_feedback', ['social' => $this->social]));
         }
     }
 }

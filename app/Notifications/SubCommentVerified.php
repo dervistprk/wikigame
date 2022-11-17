@@ -32,7 +32,7 @@ class SubCommentVerified extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -42,33 +42,33 @@ class SubCommentVerified extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
 
         if ($this->comment->is_verified == 0) {
             return (new MailMessage())
                 ->error()
-                ->subject('Yorum Cevabı Kaldırıldı')
-                ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-                ->line('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.')
-                ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')
-                ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+                ->subject(__('Yorum Cevabı Yayından Kaldırıldı'))
+                ->greeting(trans('messages.mail_greeting_message', ['name' => $this->comment->user->name, 'surname' => $this->comment->user->surname]))
+                ->line(__('Yapmış olduğunuz yoruma verilmiş olan bir cevap yayından kaldırıldı.'))
+                ->line(__('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.'))
+                ->line(new HtmlString('<h4>' . __('Yorum İçeriği') . '</h4>'))
                 ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-                ->action('İçeriğe gitmek için tıklayın', $url)
-                ->line('Wikigame ekibi olarak teşekkür ederiz.');
+                ->action(__('İçeriğe gitmek için tıklayın'), $url)
+                ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
         }
 
         return (new MailMessage())
-            ->subject('Yorum Cevaplandı')
-            ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yoruma bir cevap yazıldı.')
-            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+            ->subject(__('Yorum Cevaplandı'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->comment->user->name, 'surname' => $this->comment->user->surname]))
+            ->line(__('Yapmış olduğunuz yoruma bir cevap yazıldı.'))
+            ->line(new HtmlString('<h4>' . __('Yorum İçeriği') . '</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->action('İçeriğe gitmek için tıklayın', $url)
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+            ->action(__('İçeriğe gitmek için tıklayın'), $url)
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -78,7 +78,7 @@ class SubCommentVerified extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

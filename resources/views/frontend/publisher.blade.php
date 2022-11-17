@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Dağıtıcı Bilgileri')
+@section('title', $publisher->name .' ' .  __('Dağıtıcı Bilgileri') )
 @section('content')
     <div class="container">
         <div>
@@ -7,11 +7,11 @@
                  class="img-fluid img-thumbnail m-2" title="{{ $publisher->name }}">
             <h2 class="pub-header d-inline-block">{{ $publisher->name }}</h2>
             <div class="game-info p-3 mt-2 mb-2">
-                <h4 class="game-subtitle">Dağıtıcı Bilgileri</h4>
+                <h4 class="game-subtitle">{{ __('Dağıtıcı Bilgileri') }}</h4>
                 <p>{!! $publisher->description !!}</p>
             </div>
         </div>
-        <h2 class="pub-header text-center">Dağıtıcıya Ait Oyunlar</h2>
+        <h2 class="pub-header text-center">{{ __('Dağıtıcıya Ait Oyunlar') }}</h2>
         @foreach($games as $game)
             <div class="card-deck d-inline-block m-2" title="{{ $game->name }}">
                 <div class="card content-cards">
@@ -25,7 +25,7 @@
             </div>
         @endforeach
         @if(count($games) == 0)
-            <div class="alert alert-secondary text-center">Dağıtıcıya Ait Oyun Bulunamadı.</div>
+            <div class="alert alert-secondary text-center">{{ __('Dağıtıcıya Ait Oyun Bulunamadı.') }}</div>
         @endif
         <div class="m-2">{{ $games->links() }}</div>
     </div>

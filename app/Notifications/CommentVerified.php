@@ -32,7 +32,7 @@ class CommentVerified extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -44,33 +44,37 @@ class CommentVerified extends Notification
      *
      * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
 
         if ($this->comment->is_verified == 0) {
             return (new MailMessage())
                 ->error()
-                ->subject('Yorum Reddedildi')
-                ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-                ->line(
-                    'Yapmış olduğunuz yorum kurallarımız gereği reddedilmiştir. Lütfen site kurallarını dikkatli bir şekilde okuyup, yorumunuzu bu kurallar çerçevesinde yapın.'
+                ->subject(__('Yorum Reddedildi'))
+                ->greeting(
+                    trans('messages.mail_greeting_message', ['name' => $this->comment->user->name, 'surname' => $this->comment->user->surname])
                 )
-                ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+                ->line(
+                    __(
+                        'Yapmış olduğunuz yorum kurallarımız gereği silinmiştir. Lütfen site kurallarını dikkatli bir şekilde okuyup, yorumunuzu bu kurallar çerçevesinde yapın.'
+                    )
+                )
+                ->line(new HtmlString('<h4>' . __('Yorum İçeriği') . '</h4>'))
                 ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-                ->action('İçeriğe gitmek için tıklayın', $url)
-                ->line('Wikigame ekibi olarak teşekkür ederiz.');
+                ->action(__('İçeriğe gitmek için tıklayın'), $url)
+                ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
         }
 
         return (new MailMessage())
             ->success()
-            ->subject('Yorum Yayınlandı')
-            ->greeting('Merhaba ' . $this->comment->user->name . ' ' . $this->comment->user->surname)
-            ->line('Yapmış olduğunuz yorum yayına alınmıştır.')
-            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+            ->subject(__('Yorum Yayınlandı'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->comment->user->name, 'surname' => $this->comment->user->surname]))
+            ->line(__('Yapmış olduğunuz yorum yayına alınmıştır.'))
+            ->line(new HtmlString('<h4>' . __('Yorum İçeriği') . '</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->action('İçeriğe gitmek için tıklayın', $url)
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+            ->action(__('İçeriğe gitmek için tıklayın'), $url)
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -80,7 +84,7 @@ class CommentVerified extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

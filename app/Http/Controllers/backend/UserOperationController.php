@@ -198,10 +198,10 @@ class UserOperationController extends Controller
     public function verifyUserComment(Request $request)
     {
         if ($request->ajax()) {
-            $comment = Comment::findOrFail($request->id);
+            $comment = Comment::findOrFail($request->input('id'));
 
             if (!$comment->user->isBanned()) {
-                $comment->is_verified = $request->state == 'true' ? 1 : 0;
+                $comment->is_verified = $request->input('state') == 'true' ? 1 : 0;
                 $comment->save();
 
                 if ($comment->commentable_type == 'App\Models\Game') {
@@ -234,7 +234,7 @@ class UserOperationController extends Controller
     public function deleteUserComment(Request $request)
     {
         if ($request->ajax()) {
-            $comment = Comment::findOrFail($request->id);
+            $comment = Comment::findOrFail($request->input('id'));
             $user    = $comment->user;
 
             if ($comment->commentable_type == 'App\Models\Game') {

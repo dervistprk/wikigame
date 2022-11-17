@@ -32,7 +32,7 @@ class SubCommentPassived extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -42,21 +42,21 @@ class SubCommentPassived extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
         return (new MailMessage())
             ->error()
-            ->subject('Yorum Cevabı Yayından Kaldırıldı')
-            ->greeting('Merhaba.')
-            ->line('Cevap vermiş olduğunuz bir yorum kaldırıldığı için cevabınız da kaldırıldı.')
-            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+            ->subject(__('Yorum Cevabı Yayından Kaldırıldı'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->comment->user->name, 'surname' => $this->comment->user->surname]))
+            ->line(__('Cevap vermiş olduğunuz bir yorum kaldırıldığı için cevabınız da kaldırıldı.'))
+            ->line(new HtmlString('<h4>' . __('Yorum İçeriği') . '</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->line('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.')
-            ->action('İçeriğe gitmek için tıklayın', $url)
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+            ->line(__('Rahatsız olduğunuz herhangi bir durum olduğunda bizimle iletişime geçebilirsiniz.'))
+            ->action(__('İçeriğe gitmek için tıklayın'), $url)
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -66,7 +66,7 @@ class SubCommentPassived extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

@@ -223,8 +223,8 @@ class PublisherController extends Controller
          */
 
         if ($request->ajax()) {
-            $publisher         = Publisher::with('games')->findOrFail($request->id);
-            $publisher->status = $request->state == 'true' ? 1 : 0;
+            $publisher         = Publisher::with('games')->findOrFail($request->input('id'));
+            $publisher->status = $request->input('state') == 'true' ? 1 : 0;
             $publisher->save();
 
             if ($publisher->games->count() > 0) {

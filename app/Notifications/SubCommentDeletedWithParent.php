@@ -32,7 +32,7 @@ class SubCommentDeletedWithParent extends Notification
      *
      * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
@@ -42,20 +42,20 @@ class SubCommentDeletedWithParent extends Notification
      *
      * @param mixed $notifiable
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $this->content->name ? $url = url('/oyun/' . $this->content->slug) : $url = url('/makale/' . $this->content->slug);
         return (new MailMessage())
             ->error()
-            ->subject('Cevap Silindi')
-            ->greeting('Merhaba.')
-            ->line('Vermiş olduğunuz bir cevap, ilgili yorum silindiğinden dolayı silinmiştir.')
-            ->line(new HtmlString('<h4>Yorum İçeriği</h4>'))
+            ->subject(__('Cevap Silindi'))
+            ->greeting(trans('messages.mail_greeting_message', ['name' => $this->comment->user->name, 'surname' => $this->comment->user->surname]))
+            ->line(__('Vermiş olduğunuz bir cevap, ilgili yorum silindiğinden dolayı silinmiştir.'))
+            ->line(new HtmlString('<h4>' . __('Yorum İçeriği') . '</h4>'))
             ->line(new HtmlString('<div style="background: #F8F8FFFF; padding: 10px; border-radius: 12px">' . $this->comment->body . '</div>'))
-            ->action('İçeriğe gitmek için tıklayın', $url)
-            ->line('Wikigame ekibi olarak teşekkür ederiz.');
+            ->action(__('İçeriğe gitmek için tıklayın'), $url)
+            ->line(__('Wikigame ekibi olarak teşekkür ederiz.'));
     }
 
     /**
@@ -65,7 +65,7 @@ class SubCommentDeletedWithParent extends Notification
      *
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //

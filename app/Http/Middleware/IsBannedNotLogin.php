@@ -23,8 +23,8 @@ class IsBannedNotLogin
         $user = User::find($request->segment(3));
 
         if ($user->isBanned()) {
-            flash()->addError('Yasaklı Hesap!', 'Hata');
-            return redirect()->route('login-form')->with('message', 'Bu hesap sitemizden yasaklanmıştır.');
+            flash()->addError(__('Yasaklı Hesap'), __('Hata'));
+            return redirect()->route('login-form')->with('message', __('Bilgilerini girdiğiniz hesap sitemizden yasaklanmıştır.'));
         }
         return $next($request);
     }

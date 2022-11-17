@@ -11,6 +11,7 @@ use App\Models\Genre;
 use App\Models\Platform;
 use App\Models\Publisher;
 use App\Models\Setting;
+use Auth;
 use Carbon\Carbon;
 use Hash;
 use Illuminate\Http\Request;
@@ -63,7 +64,7 @@ class AdminController extends Controller
 
     public function admin()
     {
-        $admin = \Auth::user();
+        $admin = Auth::user();
         return view('backend.auth.admin', compact('admin'));
     }
 
@@ -83,16 +84,16 @@ class AdminController extends Controller
                 'different:current_password'
             ],
         ]);
-        $admin = \Auth::user();
+        $admin = Auth::user();
 
-        if (!Hash::check($request->current_password, $admin->password)) {
+        if (!Hash::check($request->input('current_password'), $admin->password)) {
             return redirect()->route('admin.profile')->withErrors(
                 'Mevcut şifrenizi yanlış girdiniz. Lütfen tekrar deneyin.'
             );
         }
 
-        $admin->email                = $request->email;
-        $admin->password             = Hash::make($request->password);
+        $admin->email                = $request->input('email');
+        $admin->password             = Hash::make($request->input('password'));
         $admin->password_change_time = Carbon::now();
         $admin->save();
         return redirect()->route('admin.dashboard')->with('message', 'Yönetici Bilgileri Başarı ile Güncellendi.');
