@@ -84,7 +84,8 @@ class UserController extends Controller
         flash()->addInfo(__('Doğrulama e-postası gönderildi.'), __('Uyarı'));
 
         return redirect()->route('login-form')->with(
-            'message', trans('messages.register_waiting_message')
+            'message',
+            trans('messages.register_waiting_message')
         );
     }
 
@@ -229,6 +230,32 @@ class UserController extends Controller
         }
 
         return view('frontend.users.updateProfile', compact('user'));
+    }
+
+    public function userComments(Request $request)
+    {
+        $order_by_values = [
+            'created_at'     => 'Önce Yeni',
+            'created_at_asc' => 'Önce Eski',
+            'likes'          => 'En Çok Beğenilen',
+            'dislikes'       => 'En Beğenilmeyen'
+        ];
+
+        if ($request->has('sort_by') && $request->has('sort_dir')) {
+            $sort_by  = $request->get('sort_by', 'id');
+            $sort_dir = $request->get('sort_dir', 'desc');
+
+            if ($sort_by == 'created_at_asc') {
+                $sort_by = 'created_at';
+            }
+
+            $comments = Auth::user()->comments()->orderBy($sort_by, $sort_dir)->paginate(10);
+            return view('frontend.users.comments', compact('comments', 'order_by_values', 'sort_by', 'sort_dir'));
+        }
+
+        $comments = Auth::user()->comments()->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('frontend.users.comments', compact('comments', 'order_by_values'));
     }
 
     public function verifyAccount($user_id, $token)

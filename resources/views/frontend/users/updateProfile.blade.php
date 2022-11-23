@@ -21,7 +21,7 @@
                 <a type="button" class="btn btn-primary btn-lg active" href=" {{route('update-profile')}}"
                    style="pointer-events: none">{{ __('Bilgilerim') }}</a>
                 <a type="button" class="btn btn-danger btn-lg" href="#">{{ __('Favorilerim') }}</a>
-                <a type="button" class="btn btn-info btn-lg" href="#">{{ __('Yorumlarım') }}</a>
+                <a type="button" class="btn btn-info btn-lg" href="{{ route('user-comments') }}">{{ __('Yorumlarım') }}</a>
             </div>
             <h2 class="dev-header text-center mt-2">{{ __('Profil Bilgilerimi Güncelle') }}</h2>
             <div class="m-4">

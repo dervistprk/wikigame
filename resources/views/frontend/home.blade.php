@@ -15,7 +15,7 @@
                     <div class="card content-cards">
                         <a href="{{ route('game', [$latest_game->slug]) }}" class="stretched-link" data-toggle="tooltip"
                            data-bs-placement="top" title="{{ $latest_game->name }}"></a>
-                        <img class="card-img-top img-fluid" src="{{$latest_game->cover_image}}"
+                        <img class="card-img-top img-fluid" src="{{ $latest_game->cover_image }}"
                              alt="{{ $latest_game->name }}">
                     </div>
                 </div>

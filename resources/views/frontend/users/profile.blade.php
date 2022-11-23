@@ -23,9 +23,9 @@
             </p>
         </div>
         <div class="btn-group h-100 d-flex align-items-center justify-content-center mt-2" role="group">
-            <a type="button" class="btn btn-primary btn-lg" href=" {{route('update-profile')}}">{{ __('Bilgilerim') }}</a>
+            <a type="button" class="btn btn-primary btn-lg" href=" {{ route('update-profile')}} ">{{ __('Bilgilerim') }}</a>
             <a type="button" class="btn btn-danger btn-lg" href="#">{{ __('Favorilerim') }}</a>
-            <a type="button" class="btn btn-info btn-lg" href="#">{{ __('Yorumlarım') }}</a>
+            <a type="button" class="btn btn-info btn-lg" href="{{ route('user-comments') }}">{{ __('Yorumlarım') }}</a>
         </div>
     </div>
 @endsection

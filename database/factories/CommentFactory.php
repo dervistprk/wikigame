@@ -28,7 +28,8 @@ class CommentFactory extends Factory
             'body'             => $this->faker->paragraph(4),
             'is_verified'      => 1,
             'likes'            => $this->faker->numberBetween(3, 30),
-            'dislikes'         => $this->faker->numberBetween(1, 15)
+            'dislikes'         => $this->faker->numberBetween(1, 15),
+            'created_at'       => $this->faker->dateTimeBetween()
         ];
     }
 }

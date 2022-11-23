@@ -224,6 +224,13 @@ return [
             'function'   => 'userProfile',
             'middleware' => ['maintenance', 'is_login_user', 'is_banned', 'is_verify_email']
         ],
+        'user-comments'             => [
+            'method'     => 'get',
+            'uri'        => 'yorumlarim',
+            'controller' => $user_controller,
+            'function'   => 'userComments',
+            'middleware' => ['maintenance', 'is_login_user', 'is_banned', 'is_verify_email', 'remove_token']
+        ],
         'update-profile'            => [
             'method'     => 'any',
             'uri'        => 'profil-guncelle',
