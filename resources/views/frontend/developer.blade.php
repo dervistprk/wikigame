@@ -13,10 +13,10 @@
         </div>
         <h2 class="dev-header text-center">{{ __('Geliştiriciye Ait Oyunlar') }}</h2>
         @foreach($games as $game)
-            <div class="card-deck m-2 d-inline-block" title="{{ $game->name }}">
+            <div class="card-deck game-card m-2 d-inline-block" title="{{ $game->name }}">
                 <div class="card content-cards">
                     <img class="card-img-top" src="{{$game->cover_image}}" alt="{{ $game->name }}"
-                         title="{{ $game->name }}" width="220" height="300">
+                         title="{{ $game->name }}">
                     <div class="card-body">
                         <h6 class="card-title">{{ $game->name }}</h6>
                         <a href="{{ route('game', [$game->slug]) }}" class="stretched-link"></a>

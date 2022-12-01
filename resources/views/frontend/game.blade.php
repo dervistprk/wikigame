@@ -98,7 +98,7 @@
                 <div class="mt-2">
                     <h2 class="game-header text-center">{{ trans('titles.game_category_popular_title', ['category' => $game->category->name]) }}</h2>
                     @foreach($other_games as $other)
-                        <div class="card-deck d-inline-block m-2" title="{{ $other->name }}">
+                        <div class="card-deck d-inline-block m-2 game-card" title="{{ $other->name }}">
                             <div class="card content-cards">
                                 <img class="card-img-top img-fluid lazyload" data-src="{{ $other->cover_image }}"
                                      src="{{ asset('assets/preview-image-game.png') }}" alt="{{ $other->name }}"

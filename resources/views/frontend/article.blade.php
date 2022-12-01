@@ -10,31 +10,24 @@
                 <h5 class="game-subtitle">{{$article->sub_title}}</h5>
                 <p>{!! $article->writing !!}</p>
             </div>
-        </div>
-        @if($random_articles->count() > 0)
-            <div class="container-fluid">
+            @if($random_articles->count() > 0)
                 <h2 class="game-header text-center">{{ __('Bunları da Okumak İsteyebilirsiniz') }}</h2>
-                <div class="row mt-2 justify-content-center align-content-center">
-                    @foreach($random_articles as $random_article)
-                        <div class="col-sm-3">
-                            <div class="card-deck d-inline-block" title="{{ $random_article->title }}">
-                                <div class="card content-cards">
-                                    <img class="card-img-top img-fluid lazyload" data-src="{{$random_article->image}}"
-                                         src="{{ asset('assets/preview-image-large.png') }}"
-                                         alt="{{ $random_article->title }}" title="{{ $random_article->title }}"
-                                         width="400" height="250" loading="lazy">
-                                    <div class="card-body">
-                                        <h6 class="card-title">{{ $random_article->title }}</h6>
-                                        <a href="{{ route('article', [$random_article->slug]) }}"
-                                           class="stretched-link"></a>
-                                    </div>
-                                </div>
+                @foreach($random_articles as $random_article)
+                    <div class="card-deck d-inline-block m-2" title="{{ $random_article->title }}">
+                        <div class="card content-cards article-card">
+                            <img class="card-img-top img-fluid lazyload" data-src="{{$random_article->image}}"
+                                 src="{{ asset('assets/preview-image-large.png') }}"
+                                 alt="{{ $random_article->title }}" title="{{ $random_article->title }}" loading="lazy">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $random_article->title }}</h5>
+                                <a href="{{ route('article', [$random_article->slug]) }}"
+                                   class="stretched-link"></a>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
+                    </div>
+                @endforeach
+        </div>
+    @endif
     @else
         <div class="container">
             <div class="alert alert-secondary text-center m-2">

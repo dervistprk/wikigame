@@ -15,8 +15,8 @@
                                 <a href="{{ route('article', $popular_article->slug) }}"
                                    class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1 w-75">{{ $popular_article->title }}</h6>
-                                        <small>{{ \Carbon\Carbon::parse($popular_article->created_at)->diffForHumans() }}</small>
+                                        <h6 class="mb-1 w-75 article-list-title">{{ $popular_article->title }}</h6>
+                                        <small class="article-list-title">{{ \Carbon\Carbon::parse($popular_article->created_at)->diffForHumans() }}</small>
                                     </div>
                                 </a>
                             @endforeach
@@ -33,8 +33,8 @@
                                 <a href="{{ route('article', $random_article->slug) }}"
                                    class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1 w-75">{{ $random_article->title }}</h6>
-                                        <small>{{ \Carbon\Carbon::parse($random_article->created_at)->diffForHumans() }}</small>
+                                        <h6 class="mb-1 w-75 article-list-title">{{ $random_article->title }}</h6>
+                                        <small class="article-list-title">{{ \Carbon\Carbon::parse($random_article->created_at)->diffForHumans() }}</small>
                                     </div>
                                 </a>
                             @endforeach

@@ -84,7 +84,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent2">
-                <div class="w-25">
+                <div class="search-bar">
                     <form class="form-inline" action="{{ route('search') }}" method="get">
                         @csrf
                         <div class="input-group">

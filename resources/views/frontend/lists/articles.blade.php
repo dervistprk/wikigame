@@ -1,7 +1,7 @@
 @foreach($articles as $article)
-    <div class="card-deck d-inline-block m-3 d-flex align-items-center justify-content-center"
+    <div class="card-deck d-inline-block m-2"
          title="{{ $article->title }}">
-        <div class="card content-cards" style="max-width:75%">
+        <div class="card content-cards article-card">
             <img class="card-img-top lazyload img-fluid" data-src="{{$article->image}}"
                  src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $article->title }}"
                  title="{{ $article->title }}" width="640" height="480" loading="lazy">

@@ -18,8 +18,7 @@
             @endif
             @csrf
             <div class="btn-group h-100 d-flex align-items-center justify-content-center m-2" role="group">
-                <a type="button" class="btn btn-primary btn-lg active" href=" {{route('update-profile')}}"
-                   style="pointer-events: none">{{ __('Bilgilerim') }}</a>
+                <a type="button" class="btn btn-primary btn-lg disabled" href=" {{route('update-profile')}}">{{ __('Bilgilerim') }}</a>
                 <a type="button" class="btn btn-danger btn-lg" href="#">{{ __('Favorilerim') }}</a>
                 <a type="button" class="btn btn-info btn-lg" href="{{ route('user-comments') }}">{{ __('Yorumlarım') }}</a>
             </div>

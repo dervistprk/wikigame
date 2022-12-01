@@ -230,5 +230,10 @@
   "Lütfen öncelikle mevcut oturumdan çıkış yapınız.": "Please log out of the current session first.",
   "Hoşgeldiniz": "Welcome",
   "Yorum Yapılan İçerik": "Commented Content",
-  "Yorum": "Comment"
+  "Yorum": "Comment",
+  "Sırala": "Sort By",
+  "Önce Yeni": "Newest First",
+  "Önce Eski": "Oldest First",
+  "En Çok Beğenilen": "Most Liked",
+  "En Beğenilmeyen": "Most Disliked"
 }

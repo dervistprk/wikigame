@@ -17,7 +17,7 @@
                 }
             }
         @endphp
-        <h6 class="fw-bold mb-1 d-inline-block">
+        <h6 class="fw-bold mb-1 d-inline-block comment-user-text">
             {{ $user->name . ' ' . $user->surname }} | <i>{{ $user->user_name }}</i>
         </h6>
         @if($user->isAdmin())

@@ -30,12 +30,12 @@
     <!-- Controls -->
     <button class="carousel-control-prev" id="prev-button" type="button" data-bs-target="#carouselExampleIndicators"
             data-bs-slide="prev">
-        <i class="fa fa-3x text-warning fa-arrow-alt-circle-left"></i>
+        <i class="fas text-warning fa-arrow-alt-circle-left" id="prev-arrow-icon"></i>
         <span class="visually-hidden">Previous</span>
     </button>
     <button class="carousel-control-next" id="next-button" type="button" data-bs-target="#carouselExampleIndicators"
             data-bs-slide="next">
-        <i class="fa fa-3x text-warning fa-arrow-alt-circle-right"></i>
+        <i class="fas text-warning fa-arrow-alt-circle-right" id="next-arrow-icon"></i>
         <span class="visually-hidden">Next</span>
     </button>
 </div>

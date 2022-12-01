@@ -364,3 +364,397 @@ search bar
     background : whitesmoke;
     color      : #000000;
 }
+
+
+/*
+responsive design
+ */
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width : 600px) {
+    .game-card {
+        width      : 175px;
+        max-height : 350px;
+    }
+
+    .dev-pub-card {
+        width      : 200px;
+        max-height : 200px;
+    }
+
+    .article-card {
+        width      : 250px;
+        max-height : 350px;
+    }
+
+    .card-title {
+        font-size : 12px;
+    }
+
+    .card-text {
+        font-size : 11px;
+    }
+
+    .comment-body {
+        font-size : 11px;
+    }
+
+    .dev-header, .game-header, .pub-header, .sysreq-header {
+        font-size : 20px;
+    }
+
+    .game-subtitle {
+        font-size : 17px;
+    }
+
+    .game-info, .article-list-title, .alert {
+        font-size : 13px;
+    }
+
+    .btn-lg {
+        font-size : 15px;
+    }
+
+    .footer-text {
+        font-size : 12px;
+    }
+
+    .search-bar {
+        margin : 7px 7px 0 7px;
+    }
+
+    .form-switch {
+        margin-left  : 42%;
+        margin-right : 42%;
+    }
+
+    .lang-switch-form {
+        margin-left  : 42%;
+        margin-right : 42%;
+    }
+
+    ul.ui-autocomplete {
+        z-index : 2000;
+    }
+
+    #next-arrow-icon, #prev-arrow-icon {
+        font-size: 1em;
+    }
+
+    .comment-user-text {
+        font-size: 14px;
+    }
+
+    .comment-sort-form {
+        margin-left: 45%;
+    }
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width : 600px) {
+    .game-card {
+        width      : 175px;
+        max-height : 350px;
+    }
+
+    .dev-pub-card {
+        width      : 200px;
+        max-height : 200px;
+    }
+
+    .article-card {
+        width      : 300px;
+        max-height : 400px;
+    }
+
+    .card-title {
+        font-size : 12px;
+    }
+
+    .card-text {
+        font-size : 11px;
+    }
+
+    .comment-body {
+        font-size : 11px;
+    }
+
+    .dev-header, .game-header, .pub-header, .sysreq-header {
+        font-size : 22px;
+    }
+
+    .game-subtitle {
+        font-size : 18px;
+    }
+
+    .game-info, .article-list-title, .alert {
+        font-size : 14px;
+    }
+
+    .btn-lg {
+        font-size : 16px;
+    }
+
+    .footer-text {
+        font-size : 13px;
+    }
+
+    .search-bar {
+        margin : 7px 7px 0 7px;
+    }
+
+    .form-switch {
+        margin-left  : 44%;
+        margin-right : 44%;
+    }
+
+    .lang-switch-form {
+        margin-left  : 44%;
+        margin-right : 44%;
+    }
+
+    ul.ui-autocomplete {
+        z-index : 2000;
+    }
+
+    #next-arrow-icon, #prev-arrow-icon {
+        font-size: 1em;
+    }
+
+    .comment-user-text {
+        font-size: 15px;
+    }
+
+    .comment-sort-form {
+        margin-left: 50%;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width : 768px) {
+    .game-card {
+        width      : 200px;
+        max-height : 370px;
+    }
+
+    .dev-pub-card {
+        width      : 250px;
+        max-height : 250px;
+    }
+
+    .article-card {
+        width      : 350px;
+        max-height : 450px;
+    }
+
+    .card-title {
+        font-size : 14px;
+    }
+
+    .card-text {
+        font-size : 13px;
+    }
+
+    .comment-body {
+        font-size : 13px;
+    }
+
+    .dev-header, .game-header, .pub-header, .sysreq-header {
+        font-size : 24px;
+    }
+
+    .game-subtitle {
+        font-size : 20px;
+    }
+
+    .game-info, .article-list-title, .alert {
+        font-size : 15px;
+    }
+
+    .btn-lg {
+        font-size : 17px;
+    }
+
+    .footer-text {
+        font-size : 14px;
+    }
+
+    .search-bar {
+        margin : 7px 7px 0 7px;
+    }
+
+    .form-switch {
+        margin-left  : 45%;
+        margin-right : 45%;
+    }
+
+    .lang-switch-form {
+        margin-left  : 45%;
+        margin-right : 45%;
+    }
+
+    ul.ui-autocomplete {
+        z-index : 2000;
+    }
+
+    #next-arrow-icon, #prev-arrow-icon {
+        font-size: 2em;
+    }
+
+    .comment-user-text {
+        font-size: 16px;
+    }
+
+    .comment-sort-form {
+        margin-left: 60%;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width : 992px) {
+    .game-card {
+        width      : 230px;
+        max-height : 400px;
+    }
+
+    .dev-pub-card {
+        width      : 300px;
+        max-height : 300px;
+    }
+
+    .article-card {
+        width      : 400px;
+        max-height : 500px;
+    }
+
+    .card-title {
+        font-size : 16px;
+    }
+
+    .card-text {
+        font-size : 15px;
+    }
+
+    .comment-body {
+        font-size : 15px;
+    }
+
+    .dev-header, .game-header, .pub-header, .sysreq-header {
+        font-size : 26px;
+    }
+
+    .game-subtitle {
+        font-size : 22px;
+    }
+
+    .game-info, .article-list-title, .alert {
+        font-size : 16px;
+    }
+
+    .btn-lg {
+        font-size : 18px;
+    }
+
+    .footer-text {
+        font-size : 16px;
+    }
+
+    .search-bar {
+        margin : 7px 7px 0 7px;
+    }
+
+    .form-switch {
+        margin-left  : 46%;
+        margin-right : 46%;
+    }
+
+    .lang-switch-form {
+        margin-left  : 46%;
+        margin-right : 46%;
+    }
+
+    ul.ui-autocomplete {
+        z-index : 2000;
+    }
+
+    #next-arrow-icon, #prev-arrow-icon {
+        font-size: 2em;
+    }
+
+    .comment-user-text {
+        font-size: 16px;
+    }
+
+    .comment-sort-form {
+        margin-left: 70%;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width : 1200px) {
+    .game-card {
+        width      : 230px;
+        max-height : 400px;
+    }
+
+    .dev-pub-card {
+        width      : 300px;
+        max-height : 300px;
+    }
+
+    .article-card {
+        width      : 400px;
+        max-height : 500px;
+    }
+
+    .card-title {
+        font-size : 16px;
+    }
+
+    .card-text {
+        font-size : 15px;
+    }
+
+    .comment-body {
+        font-size : 15px;
+    }
+
+    .dev-header, .game-header, .pub-header, .sysreq-header {
+        font-size : 28px;
+    }
+
+    .game-subtitle {
+        font-size : 24px;
+    }
+
+    .btn-lg {
+        font-size : 20px;
+    }
+
+    .footer-text {
+        font-size : 16px;
+    }
+
+    .search-bar {
+        width : 500px;
+    }
+
+    .form-switch {
+        margin-left  : 0;
+        margin-right : 0;
+    }
+
+    .lang-switch-form {
+        margin-left  : 0;
+        margin-right : 0;
+    }
+
+    #next-arrow-icon, #prev-arrow-icon {
+        font-size: 3em;
+    }
+
+    .comment-sort-form {
+        margin-left: 77%;
+    }
+}

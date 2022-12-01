@@ -11,7 +11,7 @@
         <h2 class="latest-header">{{ __('Son Eklenen Oyunlar') }}</h2>
         @if($latest_games->count() > 0)
             @foreach($latest_games as $latest_game)
-                <div class="card-deck d-inline-block m-1" title="{{ $latest_game->name }}">
+                <div class="card-deck d-inline-block m-2 game-card" title="{{ $latest_game->name }}">
                     <div class="card content-cards">
                         <a href="{{ route('game', [$latest_game->slug]) }}" class="stretched-link" data-toggle="tooltip"
                            data-bs-placement="top" title="{{ $latest_game->name }}"></a>
@@ -35,7 +35,7 @@
         <h2 class="popular-header">{{ __('Popüler Oyunlar') }}</h2>
         @if($popular_games->count() > 0)
             @foreach($popular_games as $popular_game)
-                <div class="card-deck d-inline-block m-1" title="{{ $popular_game->name }}">
+                <div class="card-deck d-inline-block m-2 game-card" title="{{ $popular_game->name }}">
                     <div class="card content-cards">
                         <a href="{{ route('game', [$popular_game->slug]) }}" class="stretched-link"
                            data-toggle="tooltip" data-bs-placement="top" title="{{ $popular_game->name }}"></a>
@@ -60,13 +60,13 @@
         <h2 class="popular-header">{{ __('Son Eklenen Makaleler') }}</h2>
         @if($latest_articles->count() > 0)
             @foreach($latest_articles as $latest_article)
-                <div class="card-deck d-inline-block m-1" title="{{ $latest_article->title }}">
-                    <div class="card content-cards" style="max-width: 500px; max-height: 400px;">
+                <div class="card-deck d-inline-block m-2 article-card" title="{{ $latest_article->title }}">
+                    <div class="card content-cards">
                         <a href="{{ route('article', [$latest_article->slug]) }}" class="stretched-link"
                            data-toggle="tooltip" data-bs-placement="top" title="{{ $latest_article->title }}"></a>
                         <img class="card-img-top img-fluid lazyload" data-src="{{$latest_article->image}}"
                              src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $latest_article->title }}"
-                             style="width: 500px; height: 300px" loading="lazy">
+                             loading="lazy">
                         <div class="card-body">
                             <p class="card-text">{{ $latest_article->sub_title }}</p>
                         </div>
@@ -88,13 +88,13 @@
         <h2 class="popular-header">{{ __('Popüler Makaleler') }}</h2>
         @if($popular_articles->count() > 0)
             @foreach($popular_articles as $popular_article)
-                <div class="card-deck d-inline-block m-1" title="{{ $popular_article->title }}">
+                <div class="card-deck d-inline-block m-2 article-card" title="{{ $popular_article->title }}">
                     <div class="card content-cards" style="max-width: 500px; max-height: 400px;">
                         <a href="{{ route('article', [$popular_article->slug]) }}" class="stretched-link"
                            data-toggle="tooltip" data-bs-placement="top" title="{{ $popular_article->title }}"></a>
                         <img class="card-img-top img-fluid lazyload" data-src="{{$popular_article->image}}"
                              src="{{ asset('assets/preview-image-large.png') }}" alt="{{ $popular_article->title }}"
-                             style="width: 500px; height: 300px" loading="lazy">
+                             loading="lazy">
                         <div class="card-body">
                             <p class="card-text">{{ $popular_article->sub_title }}</p>
                         </div>

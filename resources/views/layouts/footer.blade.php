@@ -8,14 +8,14 @@
                     <a href="{{ $settings->$social }}" target="_blank" class="text-decoration-none">
                         <span class="fa-stack fa-lg">
                             <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-{{$social}} fa-stack-1x fa-inverse"></i>
+                            <i class="fab fa-{{ $social }} fa-stack-1x fa-inverse"></i>
                         </span>
                     </a>
                 </div>
             @endif
         @endforeach
     </div>
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    <div class="text-center p-3 footer-text" style="background-color: rgba(0, 0, 0, 0.2);">
         @if($settings->footer_text)
             {{ $settings->footer_text }}
         @endif

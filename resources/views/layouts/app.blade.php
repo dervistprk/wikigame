@@ -132,11 +132,11 @@
       response : function(event, ui) {
          if (!ui.content.length) {
             var no_result_text = '{{ __('Sonuç Bulunamadı') }}';
-            var no_result = {url: '#', value: no_result_text, img: ''};
+            var no_result      = {url: '#', value: no_result_text, img: ''};
             ui.content.push(no_result);
          } else {
             var see_all_text = '{{ __('Tümünü Gör') }}';
-            var see_all = {
+            var see_all      = {
                url  : '/arama?search=' + encodeURIComponent($('.search-input').val()),
                value: see_all_text,
                img  : ''
@@ -169,11 +169,16 @@
       }
    };
 
-   $('#btnNavbarSearch').on('click', function() {
+   $('#btnNavbarSearch').on('click', function(e) {
       if ($('.search-input').val() == '') {
+         alert('Arama yapabilmek için lütfen en az 3 harf girin.');
          return false;
+      } else if (parseInt($('.search-input').val().length) < 3) {
+         alert('Arama yapabilmek için lütfen en az 3 harf girin.');
+         e.preventDefault();
+      } else {
+         window.location.href = 'arama?search=' + encodeURIComponent($('.search-input').val());
       }
-      window.location.href = 'arama?search=' + encodeURIComponent($('.search-input').val());
    });
 
    $('.search-input').on('keydown, keypress, keyup', function(e) {
