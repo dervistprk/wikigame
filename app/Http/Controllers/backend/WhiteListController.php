@@ -5,7 +5,6 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Models\WhiteList;
 use Illuminate\Http\Request;
-use Str;
 use Validator;
 
 class WhiteListController extends Controller
