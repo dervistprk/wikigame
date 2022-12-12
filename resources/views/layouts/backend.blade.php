@@ -38,20 +38,22 @@
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false"><i
-                        class="fas fa-user fa-fw"></i> {{ \Auth::user()->name . ' ' . \Auth::user()->surname}}
+               aria-expanded="false">
+                <i class="fas fa-user fa-fw"></i> {{ \Auth::user()->name . ' ' . \Auth::user()->surname}}
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i
-                                class="fas fa-user-circle"></i> Profil</a>
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                        <i class="fas fa-user-circle"></i> Profil
+                    </a>
                 </li>
                 <li>
                     <hr class="dropdown-divider"/>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="{{ route('admin.logout') }}"><i
-                                class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    <a class="dropdown-item" href="{{ route('admin.logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Çıkış
+                    </a>
                 </li>
             </ul>
         </li>
@@ -148,7 +150,7 @@
          changeYear : true,
          showAnim   : 'slideDown',
          dateFormat : 'yy-mm-dd',
-         yearRange  : '1900:' + new Date().getFullYear(),
+         yearRange  : '1970:' + new Date().getFullYear(),
          maxDate    : '+0D',
       });
 

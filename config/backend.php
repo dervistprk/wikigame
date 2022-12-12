@@ -11,6 +11,7 @@ $article_controller        = App\Http\Controllers\backend\ArticleController::cla
 $auth_controller           = App\Http\Controllers\backend\AuthController::class;
 $setting_controller        = App\Http\Controllers\backend\SettingController::class;
 $user_operation_controller = App\Http\Controllers\backend\UserOperationController::class;
+$whitelist_controller      = App\Http\Controllers\backend\WhiteListController::class;
 
 return [
     'menus'    => [
@@ -23,11 +24,12 @@ return [
         ['title' => 'Platformlar', 'segment' => 'platformlar', 'route' => 'platforms', 'icon' => 'laptop'],
         ['title' => 'Makaleler', 'segment' => 'makaleler', 'route' => 'articles', 'icon' => 'book-open'],
         ['title' => 'Kullanıcı İşlemleri', 'segment' => 'kullanici-islemleri', 'route' => 'user-operations', 'icon' => 'user-friends'],
+        ['title' => 'Beyaz Liste', 'segment' => 'beyaz-liste', 'route' => 'whitelist-users', 'icon' => 'lock-open'],
         ['title' => 'Ayarlar', 'segment' => 'ayarlar', 'route' => 'settings', 'icon' => 'cog'],
     ],
     'routes'   => [
         //dashboard and settings
-        'dashboard'                 => [
+        'dashboard'                  => [
             'method'     => 'get',
             'uri'        => 'yonetim',
             'controller' => $admin_controller,
@@ -36,7 +38,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'profile'                   => [
+        'profile'                    => [
             'method'     => 'get',
             'uri'        => 'profil',
             'controller' => $admin_controller,
@@ -45,7 +47,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'profile-post'              => [
+        'profile-post'               => [
             'method'     => 'post',
             'uri'        => 'profil',
             'controller' => $admin_controller,
@@ -54,7 +56,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'settings'                  => [
+        'settings'                   => [
             'method'     => 'get',
             'uri'        => 'ayarlar',
             'controller' => $setting_controller,
@@ -63,7 +65,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'settings-update'           => [
+        'settings-update'            => [
             'method'     => 'post',
             'uri'        => 'ayarlar',
             'controller' => $setting_controller,
@@ -72,9 +74,63 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
+        'whitelist-users'            => [
+            'method'     => 'get',
+            'uri'        => 'beyaz-liste',
+            'controller' => $whitelist_controller,
+            'function'   => 'index',
+            'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'],
+            'group_name' => 'admin.',
+            'prefix'     => 'admin'
+        ],
+        'create-whitelist-user'      => [
+            'method'     => 'get',
+            'uri'        => 'beyaz-liste-ekle',
+            'controller' => $whitelist_controller,
+            'function'   => 'create',
+            'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'],
+            'group_name' => 'admin.',
+            'prefix'     => 'admin'
+        ],
+        'create-whitelist-user-post' => [
+            'method'     => 'post',
+            'uri'        => 'beyaz-liste-ekle',
+            'controller' => $whitelist_controller,
+            'function'   => 'store',
+            'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'],
+            'group_name' => 'admin.',
+            'prefix'     => 'admin'
+        ],
+        'edit-whitelist-user'        => [
+            'method'     => 'get',
+            'uri'        => 'beyaz-liste-duzenle/{whitelist_id}',
+            'controller' => $whitelist_controller,
+            'function'   => 'edit',
+            'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'],
+            'group_name' => 'admin.',
+            'prefix'     => 'admin'
+        ],
+        'edit-whitelist-user-post'   => [
+            'method'     => 'post',
+            'uri'        => 'beyaz-liste-duzenle/{whitelist_id}',
+            'controller' => $whitelist_controller,
+            'function'   => 'update',
+            'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'],
+            'group_name' => 'admin.',
+            'prefix'     => 'admin'
+        ],
+        'delete-whitelist-user'      => [
+            'method'     => 'post',
+            'uri'        => 'beyaz-liste-sil',
+            'controller' => $whitelist_controller,
+            'function'   => 'destroy',
+            'middleware' => ['white_list', 'isAdmin', 'change_password_reminder'],
+            'group_name' => 'admin.',
+            'prefix'     => 'admin'
+        ],
 
         //games
-        'games'                     => [
+        'games'                      => [
             'method'     => 'get',
             'uri'        => 'oyunlar',
             'controller' => $backend_game_controller,
@@ -83,7 +139,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-game'               => [
+        'create-game'                => [
             'method'     => 'get',
             'uri'        => 'oyun-ekle',
             'controller' => $backend_game_controller,
@@ -92,7 +148,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-game-post'          => [
+        'create-game-post'           => [
             'method'     => 'post',
             'uri'        => 'oyun-ekle',
             'controller' => $backend_game_controller,
@@ -101,7 +157,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-game'                 => [
+        'edit-game'                  => [
             'method'     => 'get',
             'uri'        => 'oyun-duzenle/{id}',
             'controller' => $backend_game_controller,
@@ -110,7 +166,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-game-post'            => [
+        'edit-game-post'             => [
             'method'     => 'post',
             'uri'        => 'oyun-duzenle/{id}',
             'controller' => $backend_game_controller,
@@ -119,7 +175,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-game'               => [
+        'delete-game'                => [
             'method'     => 'get',
             'uri'        => 'oyun-sil/{id}',
             'controller' => $backend_game_controller,
@@ -128,7 +184,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'switch-game-status'        => [
+        'switch-game-status'         => [
             'method'     => 'post',
             'uri'        => 'oyun-durumu',
             'controller' => $backend_game_controller,
@@ -137,7 +193,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-single-game-image'  => [
+        'delete-single-game-image'   => [
             'method'     => 'post',
             'uri'        => 'resim-sil',
             'controller' => $backend_game_controller,
@@ -146,7 +202,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-game-video'         => [
+        'delete-game-video'          => [
             'method'     => 'post',
             'uri'        => 'video-sil',
             'controller' => $backend_game_controller,
@@ -155,7 +211,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-multiple-game'      => [
+        'delete-multiple-game'       => [
             'method'     => 'post',
             'uri'        => 'oyun-sil',
             'controller' => $backend_game_controller,
@@ -166,7 +222,7 @@ return [
         ],
 
         //platforms
-        'platforms'                 => [
+        'platforms'                  => [
             'method'     => 'get',
             'uri'        => 'platformlar',
             'controller' => $platform_controller,
@@ -175,7 +231,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-platform'           => [
+        'create-platform'            => [
             'method'     => 'get',
             'uri'        => 'platform-ekle',
             'controller' => $platform_controller,
@@ -184,7 +240,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-platform-post'      => [
+        'create-platform-post'       => [
             'method'     => 'post',
             'uri'        => 'platform-ekle',
             'controller' => $platform_controller,
@@ -193,7 +249,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-platform'             => [
+        'edit-platform'              => [
             'method'     => 'get',
             'uri'        => 'platform-duzenle/{id}',
             'controller' => $platform_controller,
@@ -202,7 +258,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-platform-post'        => [
+        'edit-platform-post'         => [
             'method'     => 'post',
             'uri'        => 'platform-duzenle/{id}',
             'controller' => $platform_controller,
@@ -211,7 +267,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-platform'           => [
+        'delete-platform'            => [
             'method'     => 'get',
             'uri'        => 'platform-sil/{id}',
             'controller' => $platform_controller,
@@ -220,7 +276,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'switch-platform-status'    => [
+        'switch-platform-status'     => [
             'method'     => 'post',
             'uri'        => 'platform-durumu',
             'controller' => $platform_controller,
@@ -229,7 +285,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-multiple-platform'  => [
+        'delete-multiple-platform'   => [
             'method'     => 'post',
             'uri'        => 'platform-sil',
             'controller' => $platform_controller,
@@ -240,7 +296,7 @@ return [
         ],
 
         //genres
-        'genres'                    => [
+        'genres'                     => [
             'method'     => 'get',
             'uri'        => 'turler',
             'controller' => $genre_controller,
@@ -249,7 +305,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-genre'              => [
+        'create-genre'               => [
             'method'     => 'get',
             'uri'        => 'tur-ekle',
             'controller' => $genre_controller,
@@ -258,7 +314,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-genre-post'         => [
+        'create-genre-post'          => [
             'method'     => 'post',
             'uri'        => 'tur-ekle',
             'controller' => $genre_controller,
@@ -267,7 +323,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-genre'                => [
+        'edit-genre'                 => [
             'method'     => 'get',
             'uri'        => 'tur-duzenle/{id}',
             'controller' => $genre_controller,
@@ -276,7 +332,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-genre-post'           => [
+        'edit-genre-post'            => [
             'method'     => 'post',
             'uri'        => 'tur-duzenle/{id}',
             'controller' => $genre_controller,
@@ -285,7 +341,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-genre'              => [
+        'delete-genre'               => [
             'method'     => 'get',
             'uri'        => 'tur-sil/{id}',
             'controller' => $genre_controller,
@@ -294,7 +350,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'switch-genre-status'       => [
+        'switch-genre-status'        => [
             'method'     => 'post',
             'uri'        => 'tur-durumu',
             'controller' => $genre_controller,
@@ -303,7 +359,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-multiple-genre'     => [
+        'delete-multiple-genre'      => [
             'method'     => 'post',
             'uri'        => 'tur-sil',
             'controller' => $genre_controller,
@@ -314,7 +370,7 @@ return [
         ],
 
         //categories
-        'categories'                => [
+        'categories'                 => [
             'method'     => 'get',
             'uri'        => 'kategoriler',
             'controller' => $category_controller,
@@ -323,7 +379,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-category'           => [
+        'create-category'            => [
             'method'     => 'get',
             'uri'        => 'kategori-ekle',
             'controller' => $category_controller,
@@ -332,7 +388,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-category-post'      => [
+        'create-category-post'       => [
             'method'     => 'post',
             'uri'        => 'kategori-ekle',
             'controller' => $category_controller,
@@ -341,7 +397,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-category'             => [
+        'edit-category'              => [
             'method'     => 'get',
             'uri'        => 'kategori-duzenle/{id}',
             'controller' => $category_controller,
@@ -350,7 +406,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-category-post'        => [
+        'edit-category-post'         => [
             'method'     => 'post',
             'uri'        => 'kategori-duzenle/{id}',
             'controller' => $category_controller,
@@ -359,7 +415,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-category'           => [
+        'delete-category'            => [
             'method'     => 'get',
             'uri'        => 'kategori-sil/{id}',
             'controller' => $category_controller,
@@ -368,7 +424,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'switch-category-status'    => [
+        'switch-category-status'     => [
             'method'     => 'post',
             'uri'        => 'kategori-durumu',
             'controller' => $category_controller,
@@ -377,7 +433,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-multiple-category'  => [
+        'delete-multiple-category'   => [
             'method'     => 'post',
             'uri'        => 'kategori-sil',
             'controller' => $category_controller,
@@ -388,7 +444,7 @@ return [
         ],
 
         //developers
-        'developers'                => [
+        'developers'                 => [
             'method'     => 'get',
             'uri'        => 'gelistiriciler',
             'controller' => $developer_controller,
@@ -397,7 +453,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-developer'          => [
+        'create-developer'           => [
             'method'     => 'get',
             'uri'        => 'gelistirici-ekle',
             'controller' => $developer_controller,
@@ -406,7 +462,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-developer-post'     => [
+        'create-developer-post'      => [
             'method'     => 'post',
             'uri'        => 'gelistirici-ekle',
             'controller' => $developer_controller,
@@ -415,7 +471,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-developer'            => [
+        'edit-developer'             => [
             'method'     => 'get',
             'uri'        => 'gelistirici-duzenle/{id}',
             'controller' => $developer_controller,
@@ -424,7 +480,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-developer-post'       => [
+        'edit-developer-post'        => [
             'method'     => 'post',
             'uri'        => 'gelistirici-duzenle/{id}',
             'controller' => $developer_controller,
@@ -433,7 +489,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-developer'          => [
+        'delete-developer'           => [
             'method'     => 'get',
             'uri'        => 'gelistirici-sil/{id}',
             'controller' => $developer_controller,
@@ -442,7 +498,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'switch-developer-status'   => [
+        'switch-developer-status'    => [
             'method'     => 'post',
             'uri'        => 'gelistirici-durumu',
             'controller' => $developer_controller,
@@ -451,7 +507,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-multiple-developer' => [
+        'delete-multiple-developer'  => [
             'method'     => 'post',
             'uri'        => 'gelistirici-sil',
             'controller' => $developer_controller,
@@ -462,7 +518,7 @@ return [
         ],
 
         //publishers
-        'publishers'                => [
+        'publishers'                 => [
             'method'     => 'get',
             'uri'        => 'dagiticilar',
             'controller' => $publisher_controller,
@@ -471,7 +527,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-publisher'          => [
+        'create-publisher'           => [
             'method'     => 'get',
             'uri'        => 'dagitici-ekle',
             'controller' => $publisher_controller,
@@ -480,7 +536,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-publisher-post'     => [
+        'create-publisher-post'      => [
             'method'     => 'post',
             'uri'        => 'dagitici-ekle',
             'controller' => $publisher_controller,
@@ -489,7 +545,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-publisher'            => [
+        'edit-publisher'             => [
             'method'     => 'get',
             'uri'        => 'dagitici-duzenle/{id}',
             'controller' => $publisher_controller,
@@ -498,7 +554,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-publisher-post'       => [
+        'edit-publisher-post'        => [
             'method'     => 'post',
             'uri'        => 'dagitici-duzenle/{id}',
             'controller' => $publisher_controller,
@@ -507,7 +563,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-publisher'          => [
+        'delete-publisher'           => [
             'method'     => 'get',
             'uri'        => 'dagitici-sil/{id}',
             'controller' => $publisher_controller,
@@ -516,7 +572,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'switch-publisher-status'   => [
+        'switch-publisher-status'    => [
             'method'     => 'post',
             'uri'        => 'dagitici-durumu',
             'controller' => $publisher_controller,
@@ -525,7 +581,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-multiple-publisher' => [
+        'delete-multiple-publisher'  => [
             'method'     => 'post',
             'uri'        => 'dagitici-sil',
             'controller' => $publisher_controller,
@@ -536,7 +592,7 @@ return [
         ],
 
         //articles
-        'articles'                  => [
+        'articles'                   => [
             'method'     => 'get',
             'uri'        => 'makaleler',
             'controller' => $article_controller,
@@ -545,7 +601,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-article'            => [
+        'create-article'             => [
             'method'     => 'get',
             'uri'        => 'makale-ekle',
             'controller' => $article_controller,
@@ -554,7 +610,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'create-article-post'       => [
+        'create-article-post'        => [
             'method'     => 'post',
             'uri'        => 'makale-ekle',
             'controller' => $article_controller,
@@ -563,7 +619,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-article'              => [
+        'edit-article'               => [
             'method'     => 'get',
             'uri'        => 'makale-duzenle/{id}',
             'controller' => $article_controller,
@@ -572,7 +628,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-article-post'         => [
+        'edit-article-post'          => [
             'method'     => 'post',
             'uri'        => 'makale-duzenle/{id}',
             'controller' => $article_controller,
@@ -581,7 +637,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-article'            => [
+        'delete-article'             => [
             'method'     => 'get',
             'uri'        => 'makale-sil/{id}',
             'controller' => $article_controller,
@@ -590,7 +646,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'switch-article-status'     => [
+        'switch-article-status'      => [
             'method'     => 'post',
             'uri'        => 'makale-durumu',
             'controller' => $article_controller,
@@ -599,7 +655,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-multiple-article'   => [
+        'delete-multiple-article'    => [
             'method'     => 'post',
             'uri'        => 'makale-sil',
             'controller' => $article_controller,
@@ -610,7 +666,7 @@ return [
         ],
 
         //user-operations
-        'user-operations'           => [
+        'user-operations'            => [
             'method'     => 'get',
             'uri'        => 'kullanici-islemleri',
             'controller' => $user_operation_controller,
@@ -619,7 +675,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'ban-user'                  => [
+        'ban-user'                   => [
             'method'     => 'any',
             'uri'        => 'kullanici-yasakla/{user_id}',
             'controller' => $user_operation_controller,
@@ -628,7 +684,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'remove-user-ban'           => [
+        'remove-user-ban'            => [
             'method'     => 'post',
             'uri'        => 'kullanici-yasak-kaldir',
             'controller' => $user_operation_controller,
@@ -637,7 +693,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'user-comments'             => [
+        'user-comments'              => [
             'method'     => 'get',
             'uri'        => 'kullanici-yorumlari/{user_id}',
             'controller' => $user_operation_controller,
@@ -646,7 +702,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'edit-user-comment'         => [
+        'edit-user-comment'          => [
             'method'     => 'any',
             'uri'        => 'yorum-duzenle/{comment_id}',
             'controller' => $user_operation_controller,
@@ -655,7 +711,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'verify-user-comment'       => [
+        'verify-user-comment'        => [
             'method'     => 'post',
             'uri'        => 'yorum-onayla',
             'controller' => $user_operation_controller,
@@ -664,7 +720,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'delete-user-comment'       => [
+        'delete-user-comment'        => [
             'method'     => 'post',
             'uri'        => 'yorum-sil',
             'controller' => $user_operation_controller,
@@ -675,7 +731,7 @@ return [
         ],
 
         //logout
-        'logout'                    => [
+        'logout'                     => [
             'method'     => 'get',
             'uri'        => 'cikis',
             'controller' => $auth_controller,
@@ -686,7 +742,7 @@ return [
         ],
 
         //login
-        'login'                     => [
+        'login'                      => [
             'method'     => 'get',
             'uri'        => 'giris',
             'controller' => $auth_controller,
@@ -695,7 +751,7 @@ return [
             'group_name' => 'admin.',
             'prefix'     => 'admin'
         ],
-        'login-post'                => [
+        'login-post'                 => [
             'method'     => 'post',
             'uri'        => 'giris',
             'controller' => $auth_controller,

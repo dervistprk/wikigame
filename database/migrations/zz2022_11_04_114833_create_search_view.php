@@ -14,7 +14,7 @@ class CreateSearchView extends Migration
     public function up()
     {
         DB::statement(
-            'CREATE VIEW search_view AS
+            'CREATE OR REPLACE VIEW search_view AS
                         SELECT g.id AS id,
                         g.name AS name,
                         g.slug AS slug,

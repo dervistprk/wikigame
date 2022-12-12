@@ -4,7 +4,6 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Platform;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Str;
 use Validator;

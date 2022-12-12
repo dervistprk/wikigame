@@ -16,6 +16,7 @@ class CreateWhitelistTable extends Migration
         Schema::create('whitelist', function(Blueprint $table) {
             $table->id();
             $table->string('ip');
+            $table->string('name');
             $table->timestamps();
         });
     }

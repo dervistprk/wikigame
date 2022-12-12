@@ -2,7 +2,7 @@
 @section('title', 'Dağıtıcı Ekle')
 @section('content')
     <div class="container">
-        <form class="mt-2" method="post" action="{{route('admin.create-publisher-post')}}"
+        <form class="mt-2" method="post" action="{{ route('admin.create-publisher-post') }}"
               enctype="multipart/form-data">
             @if($errors->any())
                 <div class="row justify-content-center">

@@ -2,7 +2,7 @@
 @section('title', 'Platform Ekle')
 @section('content')
     <div class="container">
-        <form class="mt-2 needs-validation" novalidate method="post" action="{{route('admin.create-platform-post')}}">
+        <form class="mt-2 needs-validation" novalidate method="post" action="{{ route('admin.create-platform-post') }}">
             @if($errors->any())
                 <div class="row justify-content-center">
                     <div class="col-sm-6">
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group mt-3 text-center">
                 <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Kaydet</button>
-                <a href="{{route('admin.platforms')}}" class="btn btn-danger"><i class="fa fa-backspace"></i> Vazgeç</a>
+                <a href="{{ route('admin.platforms') }}" class="btn btn-danger"><i class="fa fa-backspace"></i> Vazgeç</a>
             </div>
         </form>
     </div>
