@@ -21,7 +21,7 @@ class GenreFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->sentence(3);
+        $name = $this->faker->sentence(2);
         return [
             'name'   => $name,
             'slug'   => \Str::slug($name),

@@ -92,7 +92,7 @@
             url       : '{{ route('autocompleteSearch') }}',
             type      : 'GET',
             dataType  : 'JSON',
-            data      : {query: $('.search-input').val()},
+            data      : {query: $('.search-input').val().trim()},
             beforeSend: function() {
                $('#search-icon').removeClass('fa-paper-search').addClass('fa-spinner fa-spin');
             },
@@ -173,7 +173,7 @@
       if ($('.search-input').val() == '') {
          alert('Arama yapabilmek için lütfen en az 3 harf girin.');
          return false;
-      } else if (parseInt($('.search-input').val().length) < 3) {
+      } else if (parseInt($('.search-input').val().trim().length) < 3) {
          alert('Arama yapabilmek için lütfen en az 3 harf girin.');
          e.preventDefault();
       } else {
@@ -184,14 +184,14 @@
    $('.search-input').on('keydown, keypress, keyup', function(e) {
       var key = e.keyCode || e.which;
       if (key == 13) {
-         if (parseInt($(this).val().length) > 2) {
+         if (parseInt($(this).val().trim().length) > 2) {
             $('#btnNavbarSearch').click();
          } else {
             alert('Arama yapabilmek için lütfen en az 3 harf girin.');
             e.preventDefault();
          }
       } else if (key == 8) {
-         if (parseInt($(this).val().length) < 3) {
+         if (parseInt($(this).val().trim().length) < 3) {
             $('ul.ui-autocomplete').fadeOut(300);
          }
       }

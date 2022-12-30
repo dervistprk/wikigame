@@ -3,18 +3,54 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Developer;
 use App\Models\Game;
+use App\Models\Genre;
+use App\Models\Platform;
 use App\Models\Publisher;
+use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
     public function __construct() {}
 
-    public function list()
+    public function list(Request $request)
     {
-        $games = Game::active()->orderBy('name')->paginate(12);
-        return view('frontend.all_games', compact('games'));
+        $games      = Game::active()->orderBy('name');
+        $categories = Category::active()->orderBy('name')->get();
+        $developers = Developer::active()->orderBy('name')->get();
+        $publishers = Publisher::active()->orderBy('name')->get();
+        $genres     = Genre::active()->orderBy('name')->get();
+        $platforms  = Platform::active()->orderBy('name')->get();
+
+        if ($request->has('categories')) {
+            $games = $games->whereIn('category_id', (array)$request->get('categories'));
+        }
+
+        if ($request->has('genres')) {
+            $games = $games->whereHas('genres', function($q) use ($request) {
+                $q->whereIn('genre_id', (array)$request->get('genres'));
+            });
+        }
+
+        if ($request->has('platforms')) {
+            $games = $games->whereHas('platforms', function($q) use ($request) {
+                $q->whereIn('platform_id', (array)$request->get('platforms'));
+            });
+        }
+
+        if ($request->has('developers')) {
+            $games = $games->whereIn('developer_id', (array)$request->get('developers'));
+        }
+
+        if ($request->has('publishers')) {
+            $games = $games->whereIn('publisher_id', (array)$request->get('publishers'));
+        }
+
+        $games = $games->paginate(12);
+
+        return view('frontend.all_games', compact('games', 'categories', 'developers', 'publishers', 'genres', 'platforms'));
     }
 
     public function gameDetails($slug)

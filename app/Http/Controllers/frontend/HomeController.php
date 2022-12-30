@@ -119,7 +119,7 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $search     = $request->input('search');
+        $search     = htmlspecialchars(trim($request->input('search')));
         $games      = Game::active()->where('name', 'like', '%' . $search . '%')->get();
         $developers = Developer::active()->where('name', 'like', '%' . $search . '%')->get();
         $publishers = Publisher::active()->where('name', 'like', '%' . $search . '%')->get();
@@ -134,7 +134,7 @@ class HomeController extends Controller
 
     public function autoComplete(Request $request)
     {
-        $query   = htmlspecialchars($request->get('query'), ENT_QUOTES);
+        $query   = htmlspecialchars(trim($request->get('query')), ENT_QUOTES);
         $results = SearchView::select(['id', 'name', 'slug', 'cover_image'])->where('name', 'LIKE', '%' . $query . '%')
                              ->orWhere('developer_name', 'LIKE', '%' . $query . '%')
                              ->orWhere('publisher_name', 'LIKE', '%' . $query . '%')
