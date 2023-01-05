@@ -127,8 +127,8 @@ class GenreController extends Controller
         $genre = Genre::with('games')->findOrFail($genre_id);
 
         if ($genre->games->count() > 0) {
-            foreach ($genre->games as $game) {
-                GameController::destroy($game->id);
+            foreach ($genre->games as $g_game) {
+                $g_game->update(['status' => 0]);
             }
         }
 
@@ -144,7 +144,7 @@ class GenreController extends Controller
             foreach ($genres as $genre) {
                 if ($genre->games->count() > 0) {
                     foreach ($genre->games as $g_game) {
-                        GameController::destroy($g_game->id);
+                        $g_game->update(['status' => 0]);
                     }
                 }
                 $genre->delete();

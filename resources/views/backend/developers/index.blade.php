@@ -77,7 +77,7 @@
                                     $route  = 'developer';
                                     $developer->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center">
                                     <i class="fa fa fa-exclamation-triangle"></i></div><div>Bu geliştiriciyi silerseniz,
-                                     geliştiriciye bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                     geliştiriciye bağlı <strong>oyunlar</strong> pasife alınacaktır.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($developer->status == 0) alert-danger @endif">
                                     <td>

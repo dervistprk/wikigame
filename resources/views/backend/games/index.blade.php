@@ -106,34 +106,54 @@
                                         {{ $game->name }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.edit-category', [$game->category->id]) }}"
-                                           class="text-primary text-decoration-none">{{ $game->category->name }}</a>
+                                        @if($game->category)
+                                            <a href="{{ route('admin.edit-category', [$game->category->id]) }}"
+                                               class="text-primary text-decoration-none">{{ $game->category->name }}</a>
+                                        @else
+                                            <span class="text-danger font-weight-bold">Kategori Seçiniz</span>
+                                        @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.edit-developer', [$game->developer->id]) }}"
-                                           class="text-primary text-decoration-none">{{ $game->developer->name }}</a>
+                                        @if($game->developer)
+                                            <a href="{{ route('admin.edit-developer', [$game->developer->id]) }}"
+                                               class="text-primary text-decoration-none">{{ $game->developer->name }}</a>
+                                        @else
+                                            <span class="text-danger font-weight-bold">Geliştirici Seçiniz</span>
+                                        @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.edit-publisher', [$game->publisher->id]) }}"
-                                           class="text-primary text-decoration-none">{{ $game->publisher->name }}</a>
+                                        @if($game->publisher)
+                                            <a href="{{ route('admin.edit-publisher', [$game->publisher->id]) }}"
+                                               class="text-primary text-decoration-none">{{ $game->publisher->name }}</a>
+                                        @else
+                                            <span class="text-danger font-weight-bold">Dağıtıcı Seçiniz</span>
+                                        @endif
                                     </td>
                                     <td>
-                                        @php
-                                            $game_platforms = $game->platforms->pluck('name' ,'id')->toArray();
-                                        @endphp
-                                        @foreach($game_platforms as $platform_id => $platform)
-                                            <a href="{{ route('admin.edit-platform', $platform_id) }}"
-                                               class="text-primary text-decoration-none">{{ $platform }}</a><br>
-                                        @endforeach
+                                        @if($game->platforms->count() > 0)
+                                            @php
+                                                $game_platforms = $game->platforms->pluck('name' ,'id')->toArray();
+                                            @endphp
+                                            @foreach($game_platforms as $platform_id => $platform)
+                                                <a href="{{ route('admin.edit-platform', $platform_id) }}"
+                                                   class="text-primary text-decoration-none">{{ $platform }}</a><br>
+                                            @endforeach
+                                        @else
+                                            <span class="text-danger font-weight-bold">Platform Seçiniz</span>
+                                        @endif
                                     </td>
                                     <td>
-                                        @php
-                                            $game_genres = $game->genres->pluck('name' ,'id')->toArray();
-                                        @endphp
-                                        @foreach($game_genres as $genre_id => $genre)
-                                            <a href="{{ route('admin.edit-genre', $genre_id) }}"
-                                               class="text-primary text-decoration-none">{{ $genre }}</a><br>
-                                        @endforeach
+                                        @if($game->genres)
+                                            @php
+                                                $game_genres = $game->genres->pluck('name' ,'id')->toArray();
+                                            @endphp
+                                            @foreach($game_genres as $genre_id => $genre)
+                                                <a href="{{ route('admin.edit-genre', $genre_id) }}"
+                                                   class="text-primary text-decoration-none">{{ $genre }}</a><br>
+                                            @endforeach
+                                        @else
+                                            <span class="text-danger font-weight-bold">Tür Seçiniz</span>
+                                        @endif
                                     </td>
                                     <td>
                                         <a href="{{ $game->details->website }}"
@@ -216,9 +236,9 @@
 
                  @foreach($games as $game)
                 var game_id          = {{ $game->id }};
-                var category_status  = {{ $game->category->status }};
-                var developer_status = {{ $game->developer->status }};
-                var publisher_status = {{ $game->publisher->status }};
+                var category_status  = {{ $game->category ? $game->category->status : 0 }};
+                var developer_status = {{ $game->developer ? $game->developer->status : 0 }};
+                var publisher_status = {{ $game->publisher ? $game->publisher->status : 0 }};
 
                 var initialize_dialog = function() {
                    $('#dialog').dialog({

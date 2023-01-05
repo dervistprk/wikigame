@@ -13,7 +13,7 @@
                 @if(isset($target->games))
                     <div class="alert alert-warning">
                         <h6>Uyarı</h6>
-                        <p>Ögelere ait oyunlar mevcut ise oyunlar da silinecektir.</p>
+                        <p>Ögelere ait oyunlar mevcut ise oyunlar <strong>pasife</strong> alınacaktır.</p>
                     </div>
                 @endif
                 <div class="d-none" id="multiple-delete-message">

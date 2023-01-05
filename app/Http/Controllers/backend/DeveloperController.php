@@ -207,7 +207,7 @@ class DeveloperController extends Controller
 
         if ($developer->games->count() > 0) {
             foreach ($developer->games as $d_game) {
-                GameController::destroy($d_game->id);
+                $d_game->update(['status' => 0]);
             }
         }
 
@@ -233,7 +233,7 @@ class DeveloperController extends Controller
 
                 if ($developer->games->count() > 0) {
                     foreach ($developer->games as $d_game) {
-                        GameController::destroy($d_game->id);
+                        $d_game->update(['status' => 0]);
                     }
                 }
 

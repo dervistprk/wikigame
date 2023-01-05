@@ -77,7 +77,7 @@
                                     $route  = 'publisher';
                                     $publisher->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2">
                                         <div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu dağıtıcıyı silerseniz,
-                                        dağıtıcıya bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                        dağıtıcıya bağlı <strong>oyunlar</strong> pasife alınacaktır.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($publisher->status == 0) alert-danger @endif">
                                     <td>
@@ -342,7 +342,7 @@
                 success      : function() {
                    $('#multiple-delete-message').removeClass('d-none');
                    setTimeout(function() {
-                      $(location).prop('href', '{{ route('admin.genres') }}');
+                      $(location).prop('href', '{{ route('admin.publishers') }}');
                    }, 2000);
                 },
                 error        : function(xhr, status, error) {

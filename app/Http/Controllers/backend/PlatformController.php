@@ -127,8 +127,8 @@ class PlatformController extends Controller
         $platform = Platform::with('games')->findOrFail($platform_id);
 
         if ($platform->games->count() > 0) {
-            foreach ($platform->games as $game) {
-                GameController::destroy($game->id);
+            foreach ($platform->games as $p_game) {
+                $p_game->update(['status' => 0]);
             }
         }
 
@@ -144,7 +144,7 @@ class PlatformController extends Controller
             foreach ($platforms as $platform) {
                 if ($platform->games->count() > 0) {
                     foreach ($platform->games as $p_game) {
-                        GameController::destroy($p_game->id);
+                        $p_game->update(['status' => 0]);
                     }
                 }
                 $platform->delete();

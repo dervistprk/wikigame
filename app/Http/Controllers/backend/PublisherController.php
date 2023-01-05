@@ -199,7 +199,7 @@ class PublisherController extends Controller
 
         if ($publisher->games->count() > 0) {
             foreach ($publisher->games as $p_game) {
-                GameController::destroy($p_game->id);
+                $p_game->update(['status' => 0]);
             }
         }
 
@@ -249,7 +249,7 @@ class PublisherController extends Controller
 
                 if ($publisher->games->count() > 0) {
                     foreach ($publisher->games as $p_game) {
-                        GameController::destroy($p_game->id);
+                        $p_game->update(['status' => 0]);
                     }
                 }
 

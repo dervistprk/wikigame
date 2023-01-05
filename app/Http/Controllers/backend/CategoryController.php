@@ -127,7 +127,7 @@ class CategoryController extends Controller
 
         if ($category->games->count() > 0) {
             foreach ($category->games as $c_game) {
-                GameController::destroy($c_game->id);
+                $c_game->update(['status' => 0]);
             }
         }
 
@@ -143,7 +143,7 @@ class CategoryController extends Controller
             foreach ($categories as $category) {
                 if ($category->games->count() > 0) {
                     foreach ($category->games as $c_game) {
-                        GameController::destroy($c_game->id);
+                        $c_game->update(['status' => 0]);
                     }
                 }
                 $category->delete();

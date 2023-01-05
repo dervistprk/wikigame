@@ -33,9 +33,9 @@ class CreateGamesTable extends Migration
         });
 
         Schema::table('games', function(Blueprint $table) {
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('developer_id')->references('id')->on('developers')->onDelete('cascade');
-            $table->foreign('publisher_id')->references('id')->on('publishers')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+            $table->foreign('developer_id')->references('id')->on('developers')->onDelete('set null');
+            $table->foreign('publisher_id')->references('id')->on('publishers')->onDelete('set null');
             $table->foreign('sys_req_min_id')->references('id')->on('system_requirements_min')->onDelete('cascade');
             $table->foreign('sys_req_rec_id')->references('id')->on('system_requirements_rec')->onDelete('cascade');
             $table->foreign('game_details_id')->references('id')->on('game_details')->onDelete('cascade');

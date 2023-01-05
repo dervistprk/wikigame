@@ -88,13 +88,17 @@ class GameController extends Controller
             $sort_dir = 'desc';
         }
 
-        $games = Game::whereHas('details', function($q) use ($relation_search) {
-            return $q->where($relation_search);
-        })->whereHas('platforms', function($q) use ($platform_query) {
-            return $platform_query ? $q->whereIn('platform_id', $platform_query) : null;
-        })->whereHas('genres', function($q) use ($genre_query) {
-            return $genre_query ? $q->whereIn('genre_id', $genre_query) : null;
-        })->orderBy($sort_by, $sort_dir)->where($detailed_search)->paginate($per_page)->appends('per_page', $per_page);
+        if ($genre_query || $platform_query || $relation_search) {
+            $games = Game::whereHas('details', function($q) use ($relation_search) {
+                return $q->where($relation_search);
+            })->whereHas('platforms', function($q) use ($platform_query) {
+                return $platform_query ? $q->whereIn('platform_id', $platform_query) : null;
+            })->whereHas('genres', function($q) use ($genre_query) {
+                return $genre_query ? $q->whereIn('genre_id', $genre_query) : null;
+            })->orderBy($sort_by, $sort_dir)->where($detailed_search)->paginate($per_page)->appends('per_page', $per_page);
+        } else {
+            $games = Game::orderBy($sort_by, $sort_dir)->where($detailed_search)->paginate($per_page)->appends('per_page', $per_page);
+        }
 
         $developers = Developer::active()->get();
         $publishers = Publisher::active()->get();
@@ -929,10 +933,10 @@ class GameController extends Controller
 
     public function switchStatus(Request $request)
     {
-        $game             = Game::findOrFail($request->id);
-        $category_status  = $game->category->status;
-        $developer_status = $game->developer->status;
-        $publisher_status = $game->publisher->status;
+        $game             = Game::findOrFail($request->post('id'));
+        $category_status  = $game->category ? $game->category->status : 0;
+        $developer_status = $game->developer ? $game->developer->status : 0;
+        $publisher_status = $game->publisher ? $game->publisher->status : 0;
 
         if ($category_status == 1 && $developer_status == 1 && $publisher_status == 1) {
             $game->status = $request->input('state') == 'true' ? 1 : 0;

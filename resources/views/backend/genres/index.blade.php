@@ -74,7 +74,9 @@
                                     $plural = 'türleri';
                                     $target = $genre;
                                     $route  = 'genre';
-                                    $genre->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center"><i class="fa fa fa-exclamation-triangle"></i></div><div>Bu türü silerseniz, türe bağlı <strong>oyunlar</strong> da silinecektir.</div></div>' : $delete_warning_message = '';
+                                    $genre->games->count() > 0 ? $delete_warning_message = '<div class="alert alert-danger mt-2"><div class="text-center">
+                                    <i class="fa fa fa-exclamation-triangle"></i></div><div>Bu türü silerseniz, türe bağlı
+                                     <strong>oyunlar</strong> pasife alınacaktır.</div></div>' : $delete_warning_message = '';
                                 @endphp
                                 <tr class="@if($genre->status == 0) alert-danger @endif">
                                     <td>
@@ -105,8 +107,8 @@
                                         </div>
                                         <div class="d-inline-block">
                                             <input type="checkbox" data-id="{{ $genre->id }}" class="status-switch"
-                                                   name="status" @if($genre->status == 1) checked
-                                                   @endif data-toggle="toggle" data-size="sm" data-on="Aktif"
+                                                   name="status" @if($genre->status == 1) checked @endif
+                                                   data-toggle="toggle" data-size="sm" data-on="Aktif"
                                                    data-off="Pasif" data-onstyle="success" data-offstyle="danger">
                                         </div>
                                     </td>
