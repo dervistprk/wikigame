@@ -22,5 +22,6 @@ return [
     'login_with_social_success'        => 'Sisteme :social servisi ile giriş yaptınız',
     'register_with_social_bio'         => ':social servisi ile kayıt yapıldı.',
     'register_with_social_success'     => 'Sisteme :social servisi ile üye oldunuz',
-    'register_with_social_feedback'    => ':social servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.'
+    'register_with_social_feedback'    => ':social servisi ile üyelik işleminiz tamamlandı. Şifreniz, mail adresinize gönderildi. Bilgilerinizi <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">Profil Bilgilerimi Güncelle</a></strong> sayfasından değiştirebilirsiniz.',
+    'resend_verification_mail_info'    => 'Bu sayfadan yalnızca <b>onaylanmamış</b> üyelikler için yeniden doğrulama e-posta gönderme işlemi yapabilirsiniz.'
 ];

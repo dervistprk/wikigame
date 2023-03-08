@@ -27,6 +27,9 @@
                 @endif
                 @csrf
                 <h2 class="text-center dev-header mt-1">{{ __('Doğrulama E-Posta\'sı Gönder') }}</h2>
+                <div class="alert alert-info">
+                    {!! trans('messages.resend_verification_mail_info') !!}
+                </div>
                 <div class="justify-content-center align-items-center col-sm-6 offset-sm-3">
                     <div class="mb-3">
                         <label for="email" class="fw-bold form-label">{{ __('E-Posta') }}</label>

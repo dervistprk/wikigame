@@ -22,5 +22,6 @@ return [
     'login_with_social_success'        => 'You have logged into the system with the :social service',
     'register_with_social_bio'         => 'Registered with :social service.',
     'register_with_social_success'     => 'You have become a member of the system with the :social service',
-    'register_with_social_feedback'    => 'Your subscription with :social service has been completed. Your password has been sent to your e-mail address. You can change your information on the <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">My Information</a></strong> page.'
+    'register_with_social_feedback'    => 'Your subscription with :social service has been completed. Your password has been sent to your e-mail address. You can change your information on the <strong><a href="' . route('update-profile') . '" class="link-primary text-decoration-none">My Information</a></strong> page.',
+    'resend_verification_mail_info'    => 'From this page, you can only send a re-verification e-mail for <b>unconfirmed</b> memberships.'
 ];
