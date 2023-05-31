@@ -423,6 +423,15 @@ responsive design
         margin : 7px 7px 0 7px;
     }
 
+    .search-form {
+        margin-left: 14%;
+        margin-right: 14%;
+    }
+
+    .search-input::placeholder {
+        text-align: center;
+    }
+
     .form-switch {
         margin-left  : 42%;
         margin-right : 42%;
@@ -449,10 +458,15 @@ responsive design
         margin-left: 45%;
     }
 
+    .sys-req-icons {
+        width: 15px;
+        height: 15px;
+    }
+
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width : 600px) {
+@media only screen and (min-width : 600px) and (max-width: 767px) {
     .game-card {
         width      : 175px;
         max-height : 350px;
@@ -504,6 +518,15 @@ responsive design
         margin : 7px 7px 0 7px;
     }
 
+    .search-form {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+
+    .search-input::placeholder {
+        text-align: center;
+    }
+
     .form-switch {
         margin-left  : 44%;
         margin-right : 44%;
@@ -529,10 +552,15 @@ responsive design
     .comment-sort-form {
         margin-left: 50%;
     }
+
+    .sys-req-icons {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width : 768px) and (max-width: 991px){
     .game-card {
         width      : 200px;
         max-height : 370px;
@@ -584,6 +612,15 @@ responsive design
         margin : 7px 7px 0 7px;
     }
 
+    .search-form {
+        margin-left: 25%;
+        margin-right: 25%;
+    }
+
+    .search-input::placeholder {
+        text-align: center;
+    }
+
     .form-switch {
         margin-left  : 45%;
         margin-right : 45%;
@@ -609,10 +646,15 @@ responsive design
     .comment-sort-form {
         margin-left: 60%;
     }
+
+    .sys-req-icons {
+        width: 20px;
+        height: 20px;
+    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width : 992px) and (max-width: 1199px){
     .game-card {
         width      : 230px;
         max-height : 400px;
@@ -664,6 +706,15 @@ responsive design
         margin : 7px 7px 0 7px;
     }
 
+    .search-form {
+        margin-left: 30%;
+        margin-right: 30%;
+    }
+
+    .search-input::placeholder {
+        text-align: center;
+    }
+
     .form-switch {
         margin-left  : 46%;
         margin-right : 46%;
@@ -688,6 +739,11 @@ responsive design
 
     .comment-sort-form {
         margin-left: 70%;
+    }
+
+    .sys-req-icons {
+        width: 22px;
+        height: 22px;
     }
 }
 
@@ -737,7 +793,9 @@ responsive design
     }
 
     .search-bar {
-        width : 500px;
+        margin-right: 7px;
+        flex: 0 0 auto;
+        width: 27%;
     }
 
     .form-switch {

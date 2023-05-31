@@ -14,7 +14,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     @foreach(trans('navbar.menus') as $menu)
-                        <li class="nav-item">
+                        <li class="nav-item text-nowrap">
                             <a class="nav-link @if(Request::segment(1) == $menu['segment']) active @endif"
                                aria-current="page" href="{{ route($menu['route']) }}"><i
                                         class="fas fa-{{ $menu['icon'] }}"></i>
@@ -85,7 +85,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent2">
                 <div class="search-bar">
-                    <form class="form-inline" action="{{ route('search') }}" method="get">
+                    <form class="form-inline search-form" action="{{ route('search') }}" method="get">
                         @csrf
                         <div class="input-group">
                             <input class="form-control search-input" type="text" autocomplete="off"
@@ -98,16 +98,16 @@
                         </div>
                     </form>
                 </div>
-                <ul class="navbar-nav ms-3">
+                <ul class="navbar-nav">
                     @foreach($categories as $category)
-                        <li class="nav-item ms-3">
-                            <a class="nav-link @if(Request::segment(2) == $category->slug) active @endif"
+                        <li class="nav-item">
+                            <a class="nav-link @if(Request::segment(2) == $category->slug) active @endif text-nowrap"
                                href="{{ route('category', [$category->slug]) }}">{{ $category->name }}
                             </a>
                         </li>
                     @endforeach
-                    <li class="nav-item ms-3">
-                        <a class="nav-link @if(Request::segment(1) == 'tum-oyunlar') active @endif"
+                    <li class="nav-item">
+                        <a class="nav-link @if(Request::segment(1) == 'tum-oyunlar') active @endif text-nowrap"
                            href="{{ route('all-games') }}"><i class="fa fa-gamepad"></i> {{ __('Tüm Oyunlar') }}
                         </a>
                     </li>
