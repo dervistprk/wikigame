@@ -365,6 +365,10 @@ search bar
     color      : #000000;
 }
 
+.row:before, .row:after {
+    display: none !important;
+}
+
 
 /*
 responsive design
