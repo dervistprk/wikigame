@@ -176,13 +176,13 @@
                         <i class="fab fa-linkedin"></i> {{ __('LinkedIn ile Üye Ol') }}
                     </a>
                 </div>
-                {{--<div class="d-grid gap-2 mx-auto text-center" id="twitter-btn-overlay" data-toggle="tooltip"
+                <div class="d-grid gap-2 mx-auto text-center" id="twitter-btn-overlay" data-toggle="tooltip"
                      data-placement="top" title="{{ __('Lütfen kullanıcı sözleşmesini kabul edin') }}">
                     <a class="btn btn-outline-info btn-twitter-custom m-2" id="twitter-btn"
                        href="{{ route('redirect-twitter') }}">
                         <i class="fab fa-twitter"></i> {{ __('Twitter ile Üye Ol') }}
                     </a>
-                </div>--}}
+                </div>
             </div>
         </form>
         @include('frontend.modals.userAgreement')

@@ -13,7 +13,6 @@ use Socialite;
 
 class TwitterAuthService
 {
-    //TODO: twitter ve facebook apiler hatalı düzelt.(facebook için ssl sertifikası gerekli.)
     private $social = 'Twitter';
 
     /**
@@ -33,7 +32,7 @@ class TwitterAuthService
             $user = Socialite::driver('twitter')->user();
         } catch (\Exception $e) {
             flash()->addError(trans('messages.register_with_social_error', ['social' => $this->social]), __('Hata'));
-            return redirect()->route('login-form')->withErrors(trans('messages.register_with_social_error_msg', ['social' => 'Facebook']));
+            return redirect()->route('login-form')->withErrors(trans('messages.register_with_social_error_msg', ['social' => $this->social]));
         }
 
         $existing_user = User::where('email', $user->getEmail())->first();

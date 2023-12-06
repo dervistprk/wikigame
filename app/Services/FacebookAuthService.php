@@ -13,7 +13,6 @@ use Socialite;
 
 class FacebookAuthService
 {
-    //TODO: twitter ve facebook apiler hatalı düzelt.(facebook için ssl sertifikası gerekli.)
     private $social = 'Facebook';
 
     /**

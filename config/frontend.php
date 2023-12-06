@@ -210,7 +210,7 @@ return [
             'middleware' => ['maintenance', 'prevent_if_login']
         ],
         'handle-twitter'    => [
-            'method'     => 'post',
+            'method'     => 'any',
             'uri'        => 'callback-twitter',
             'controller' => $twitter_service,
             'function'   => 'handleTwitterCallback',
