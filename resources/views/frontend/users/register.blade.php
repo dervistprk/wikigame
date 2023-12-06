@@ -158,12 +158,12 @@
                         <i class="fab fa-google"></i> {{ __('Google ile Üye Ol') }}
                     </a>
                 </div>
-                {{--<div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip"
+                <div class="d-grid gap-2 mx-auto text-center" id="facebook-btn-overlay" data-toggle="tooltip"
                      data-placement="top" title="{{ __('Lütfen kullanıcı sözleşmesini kabul edin') }}">
                     <a class="btn btn-outline-primary m-2" id="facebook-btn" href="{{ route('redirect-facebook') }}">
                         <i class="fab fa-facebook"></i> {{ __('Facebook ile Üye Ol') }}
                     </a>
-                </div>--}}
+                </div>
                 <div class="d-grid gap-2 mx-auto text-center" id="github-btn-overlay" data-toggle="tooltip"
                      data-placement="top" title="{{ __('Lütfen kullanıcı sözleşmesini kabul edin') }}">
                     <a class="btn btn-outline-secondary m-2" id="github-btn" href="{{ route('redirect-github') }}">

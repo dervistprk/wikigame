@@ -168,7 +168,7 @@ return [
             'middleware' => ['maintenance', 'prevent_if_login']
         ],
         'handle-facebook'   => [
-            'method'     => 'post',
+            'method'     => 'any',
             'uri'        => 'callback-facebook',
             'controller' => $facebook_service,
             'function'   => 'handleFacebookCallback',
