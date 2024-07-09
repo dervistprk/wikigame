@@ -23,7 +23,7 @@ class SettingFactory extends Factory
             'about_text'       => 'Site hakkında yazısı eklenecektir.',
             'meta_description' => 'WikiGame oyunlar hakkında her türlü bilgiye ulaşabileceğiniz adres.',
             'facebook'         => 'https://www.facebook.com',
-            'twitter'          => 'https://www.twitter.com/dervistprk',
+            'twitter'          => 'https://www.x.com/dervistprk',
             'github'           => 'https://www.github.com/dervistprk',
             'linkedin'         => 'https://www.linkedin.com/in/derviş-toprak-0698a81b7/',
             'youtube'          => 'https://www.youtube.com',
