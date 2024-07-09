@@ -231,7 +231,7 @@
                                         @foreach($publishers as $publisher)
                                             <tr @if($publisher->status == 0) class="alert-danger" @endif>
                                                 <td>
-                                                    <img src="{{ $publisher->image }}" alt="developer_resmi"
+                                                    <img src="{{ $publisher->image }}" alt="dağıtıcı_resmi"
                                                          height="100" width="130"
                                                          class="img-fluid rounded img-thumbnail"
                                                          title="{{ $publisher->name }}">

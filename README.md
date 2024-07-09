@@ -3,6 +3,7 @@
 <p>Install composer dependencies by <code>composer install</code> command.</p>
 <p>Rename <b>.env.example</b> file to <b>.env</b> file and configure your database settings.</p>
 <p>Generate new app_key by <code>php artisan key:generate</code> command.</p>
+<p>Create a new database named <code>laravel_wikigame</code>.</p>
 <p>Create database tables and seed data inside it by <code>php artisan migrate:fresh --seed</code> command.</p>
 <p>You can use <a href="https://github.com/barryvdh/laravel-ide-helper" target="_blank">IDE Helper</a> library if you want. It is uncluded in the library <code>composer.json</code> file.</p>
 <p>Start your local development server by <code>php artisan serve</code> command. You will need a local server program for this.(Xampp, Wampp etc.)</p>

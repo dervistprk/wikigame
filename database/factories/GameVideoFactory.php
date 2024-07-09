@@ -22,12 +22,11 @@ class GameVideoFactory extends Factory
      */
     public function definition()
     {
-        $faker = \Faker\Factory::create();
-        $faker->addProvider(new Youtube($faker));
+        $this->faker->addProvider(new Youtube($this->faker));
         return [
             'game_id'    => $this->faker->numberBetween(1, 10),
             'video_hash' => \Str::random(20),
-            'url'        => $faker->youtubeEmbedUri()
+            'url'        => $this->faker->youtubeEmbedUri()
         ];
     }
 }
