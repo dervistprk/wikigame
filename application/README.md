@@ -1,5 +1,5 @@
-<h2>Wikigame</h2>
-<h4>Game encyclopedia website made with laravel framework.</h4>
+<h1>Wikigame</h1>
+<h2>Game encyclopedia website made with laravel framework.</h2>
 <p>Install composer dependencies by <code>composer install</code> command.</p>
 <p>Rename <b>.env.example</b> file to <b>.env</b> file and configure your database settings.</p>
 <p>Generate new app_key by <code>php artisan key:generate</code> command.</p>
@@ -19,3 +19,19 @@
     To see the frontend of the website simply go to <code>http://localhost:8000/</code><br>
     Thank you...
 </p>
+
+
+<h2>Setting up with Docker</h2>
+<h3>You can also run the project with docker instead of locally</h3>
+<p>Make sure you have docker installed in your locale. For Docker Desktop installation:<code><a href="https://www.docker.com/products/docker-desktop/" target="_blank">Docker Desktop</a></code></p>
+<p>First run the <code>docker-compose up -d --build</code> command in the project root directory in a terminal screen.</p>
+<p>Then connect to the container you created with the <code>docker-compose exec php sh</code> command.</p>
+<p>Then, go to the directory where the project files are in the container with the <code>cd /var/www/html</code> command.</p>
+<p>Then install the composer dependencies in the container with the <code>composer install</code> command.</p>
+<p>Generate new app_key by <code>php artisan key:generate</code> command.</p>
+<p>Connect to the mysql container with <code>docker-compose exec mysql sh</code> command.</p>
+<p>Run the <code>mysql -uroot -proot</code> command to login mysql database system.</p>
+<p>After logging into the database system, create the database to be used for the project by running the <code>create database laravel_wikigame;</code> command.</p>
+<p>Finally, connect to the PHP container again and run the <code>php artisan migrate:fresh --seed</code> command to create the tables in our database and add data to the tables.</p>
+<p>You can now access the application via browser at <code><a href="http://localhost:8080">localhost:8080</a></code>.</p>
+<p>You can now access the phpMyAdmin via browser at <code><a href="http://localhost:8090">localhost:8090</a></code>. Username:<code>root</code> Password:<code>root</code></p>
