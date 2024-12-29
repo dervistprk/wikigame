@@ -31,6 +31,7 @@
 <p>Then, go to the directory where the project files are in the container with the <code>cd /var/www/html</code> command.</p>
 <p>Then install the composer dependencies in the container with the <code>composer install</code> command.</p>
 <p>Generate new app_key by <code>php artisan key:generate</code> command.</p>
+<p>Exit sh screen by <code>exit</code> command.</p>
 <p>Connect to the mysql container with <code>docker-compose exec mysql sh</code> command.</p>
 <p>Run the <code>mysql -uroot -proot</code> command to login mysql database system.</p>
 <p>After logging into the database system, create the database to be used for the project by running the <code>create database laravel_wikigame;</code> command.</p>
